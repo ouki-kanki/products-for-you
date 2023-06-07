@@ -7,7 +7,7 @@ Products-For-You is a e-commerce web site made with django-rest-framework and Re
 ### BACKEND
 ### 1) create a virtual enviroment
 
-#### On windows
+### On windows
 
 * to create the env
 
@@ -23,6 +23,8 @@ Products-For-You is a e-commerce web site made with django-rest-framework and Re
 
 ``source <name_of_the_env>/bin/activate``
 
+---
+
 2) Install required dependencies[^1].
 
 
@@ -30,6 +32,28 @@ Products-For-You is a e-commerce web site made with django-rest-framework and Re
 ```python
 pip install -r requirement.txt
 ``` 
+---
+3) run the database (docker has to be configured on the operating system)
+
+go to  ``root -> backend -> db``
+
+``docker-compose up -d``
+
+---
+4) make migrations 
+```python
+python manage.py makemigrations
+```
+
+```python
+python manage.py migrate
+```
+---
+5) Create superuser
+
+```bash
+python manage.py createsuperuser
+```
 
 
 
