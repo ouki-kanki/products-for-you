@@ -124,4 +124,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Config to support custom users
 
-# AUTH_USER_MODEL = "user_control.CustomUser"
+AUTH_USER_MODEL = "user_control.CustomUser"
