@@ -35,9 +35,11 @@ pip install -r requirement.txt
 ---
 3) run the database (docker has to be configured on the operating system)
 
-go to  ``root -> backend -> db``
+- navigate to  ``root -> backend -> db``
 
-``docker-compose up -d``
+- ```shell
+  docker-compose up -d
+```
 
 ---
 4) make migrations 

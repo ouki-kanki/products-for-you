@@ -15,7 +15,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = UserCreationForm
 
 
-    list_display = ('email', 'role', 'updated_at', 'created_at', 'is_staff')
+    list_display = ('email', 'first_name', 'role', 'updated_at', 'created_at', 'is_staff')
     ordering = ('-created_at',)
     # exclude = ('date_joined', 'last_name', 'first_name')
 

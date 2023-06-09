@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     'user_control.apps.UserControlConfig',
+    'products.apps.ProductsConfig',
 
 ]
 
@@ -157,7 +158,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'api.authentication.TokenAuthentication',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+    'rest_framework.throttling.AnonRateThrottle',
+    'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1/minute',
+        'user': '1000/day'
+    }
 }
+
+
+
+
 
 
 # REST_AUTH_SERIALIZERS = {

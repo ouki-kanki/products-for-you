@@ -84,6 +84,12 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    @property
+    def first_name(self):
+        if self.user_detail is None:
+            return "michael jordan"
+        return self.user_detail.first_name
+
 
     class Meta:
         verbose_name = 'User'
