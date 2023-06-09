@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y2p9_peil5dbmc5=d=k_jc(8a_rnxzm_80yb+r@nc3go)016aw'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
@@ -32,7 +32,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_control.apps.UserControlConfig'
+
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    'user_control.apps.UserControlConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -81,6 +86,8 @@ DATABASES = {
     }
 }
 
+# *** --- PASSWORDS ---- ***
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -99,13 +106,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 
@@ -124,4 +140,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Config to support custom users
 
+
+
+
+
+# AUTHENTICATION
+
 AUTH_USER_MODEL = "user_control.CustomUser"
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'api.authentication.TokenAuthentication',
+    ),
+}
+
+
+# REST_AUTH_SERIALIZERS = {
+#     'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',
+#     'TOKEN_SERIALIZER': 'users.serializers.TokenSerializer'
+#     # 'LOGIN_SERIALIZER': 'users.serializers.CustomLoginSerializer'
+# }
+
+# REST_AUTH_REGISTER_SERIALIZERS = {
+#     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
+# }

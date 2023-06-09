@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import (
     UserManager,
+    AbstractUser,
     AbstractBaseUser,
     PermissionsMixin
 )
-from django.db.models.query import QuerySet
 
 from datetime import timezone
+
+from .managers import CustomUserManager, SoftDeleteManager
 
 Roles = (
     ("admin", "admin"),
@@ -16,37 +18,6 @@ Roles = (
     ("customer", "customer"),
     ("visitor", "visitor")
 )
-
-
-class CustomUserManager(UserManager):
-    def _create_user(self, email, password, **kwargs):
-        if not email:
-            raise ValueError("Email is not provided")
-        
-        email = self.normalize_email(email)
-        user = self.model(email=email, **kwargs)
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
-    
-    def create_user(self, email=None, password=None, **kwargs):
-        kwargs.setdefault('is_staff', False)
-        kwargs.setdefault('is_superuser', False)
-
-        return self._create_user(email, password, **kwargs)
-    
-    def create_superuser(self, email=None, password=None, **kwargs):
-        kwargs.setdefault('is_staff', True)
-        kwargs.setdefault('is_superuser', True)
-
-        return self._create_user(email, password, **kwargs)
-
-
-class SoftDeleteManager(models.Manager):
-    
-    def get_queryset(self):
-        return super().get_queryset().filter(is_deleted=True)
 
 
 class SoftDeleteModel(models.Model):
@@ -67,24 +38,37 @@ class SoftDeleteModel(models.Model):
         abstract = True
 
 
-# NOTE: maybe splti to dif table?
-class UserDetail(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    address_one = models.CharField(max_length=255, blank=True, null=True)
-    address_two = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    country = models.CharField(max_length=255, blank=True, null=True)
+def get_user_image(self, path):
+    return f'user_images/{self.pk}/user_image.png'
 
+def get_default_user_image():
+    return 'user_images/default_user_image.png'
+
+
+
+# NOTE: maybe split to dif table?
+class UserDetail(models.Model):
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    address_one = models.CharField(max_length=255, blank=True, default='')
+    address_two = models.CharField(max_length=255, blank=True, default='')
+    city = models.CharField(max_length=255, blank=True, default='')
+    country = models.CharField(max_length=255, blank=True, default='')
+    image = models.ImageField(max_length=255, upload_to=get_user_image, null=True, blank=True, default=get_default_user_image)
 
     def __str__(self):
         return f"{self.first_name} - {self.last_name}"
 
+    def get_user_image_filename(self):
+        '''
+        get the path of the user image
+        '''
+        return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]
 
-    
+
 class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
     email = models.EmailField(blank=True, default='', unique=True)
-    username = models.CharField(max_length=255, blank=True, null=True, default='')
+    username = models.CharField(max_length=255, blank=True, default='')
     user_detail = models.OneToOneField(UserDetail, on_delete=models.SET_NULL, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -113,48 +97,3 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
 
 
     
-
-# class CustomUserManager(BaseUserManager):
-
-#   def create_superuser(self, email, password, **kwargs):
-#     kwargs.setdefault('is_staff', True)
-#     kwargs.setdefault('is_superuser', True)
-#     kwargs.setdefault('is_active', True)
-
-#     if kwargs.get("is_staff") is not True:
-#       raise ValueError("Superuser must have is_staff=True.")
-
-#     if kwargs.get("is_superuser") is not True:
-#       raise ValueError("Superuser must have is_superuser=True")
-
-#     if not email:
-#       raise ValueError("Email is required")
-
-#     user = self.model(email=email, **kwargs)
-#     user.set_password(password)
-#     user.save()
-
-#     return user
-
-
-# # auto_now_add will set the timezone.now upon instance creation
-# # auto_now will set the timezone.now() upon save()
-# class CustomUser(AbstractBaseUser, PermissionsMixin):
-#   fullname = models.CharField(max_length=255)
-#   email = models.EmailField(unique=True)
-#   role = models.CharField(max_length=8, choices=Roles)
-#   created_at = models.DateTimeField(auto_now_add=True)
-#   updated_at = models.DateTimeField(auto_now=True)
-#   is_staff = models.BooleanField(default=False)
-#   is_superuser = models.BooleanField(default=False)
-#   is_active = models.BooleanField(default=True)
-#   last_login = models.DateTimeField(null=True)
-
-#   USERNAME_FIELD = "email"
-#   objects = CustomUserManager()
-
-#   def __str__(self) -> str:
-#     return self.email
-
-#   class Meta:
-#     ordering = ("created_at",)
