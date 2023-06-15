@@ -5,6 +5,7 @@ import './App.css'
 
 import Test from './components/Test';
 import { TestTwo } from './components/TestTwo';
+import ListUsersTest from './components/ListUsersTest'
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <button onClick={() => handleFetchUsers()}>
           Fetch Users
         </button>
+        <ListUsersTest/>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
