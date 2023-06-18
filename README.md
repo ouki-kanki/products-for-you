@@ -57,6 +57,19 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+## Client setup
+---
+- cd into client directory
+- install required dependencies
+
+``yarn`` 
+
+- start the development server
+
+``yarn run dev``
+
+> on windows machines there is a ps1 script that is called **start_app.ps1**. This script starts the database , runs the dev server on the client & opens a chrome browser on the correct address given that chrome is installed to default location on the system. 
+
 
 
 
