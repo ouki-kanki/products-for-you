@@ -35,12 +35,16 @@ class Product(models.Model):
     class meta:
         verbose_name = "Product"
 
+    def __str__(self):
+        return self.name
+
 
 # TODO: how can i join with variations?
 class ProductItem(models.Model):
     '''
     product table - item will have different price in relation with the different variations
     '''
+    # TODO: change the name to "product" bacause product_id brings confussion
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variation')
     sku = models.CharField(max_length=255)
     quantity = models.IntegerField()
@@ -48,9 +52,17 @@ class ProductItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def product_name(self):
+        return self.product_id.name
+
     class Meta:
         verbose_name = "Product Variation"
         db_table_comment = "Variation of Product"
+
+    def __str__(self):
+        return self.product_name
+        
 
 
 
