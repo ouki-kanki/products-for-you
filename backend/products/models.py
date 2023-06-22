@@ -2,11 +2,12 @@ from django.db import models
 from user_control.models import CustomUser as User
 
 
+
 # TODO: should i put variations here or add a diff app?
 # NOTE: models.PROTECT it seems that does not allow null=True
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='parent', blank=True, null=True)
+    parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
     icon = models.CharField()
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -18,9 +19,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
+    
 
 # TODO: TABLE FOR PRODUCT DETAILS, IMAGES
 
@@ -52,6 +51,7 @@ class ProductItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    # TODO: this hits the database to fetch product. check if it ok to do it that way
     @property
     def product_name(self):
         return self.product_id.name
@@ -61,7 +61,10 @@ class ProductItem(models.Model):
         db_table_comment = "Variation of Product"
 
     def __str__(self):
-        return self.product_name
+        return self.sku
+    
+    def __unicode__(self):
+        return f"sku - {self.sku} - {self.price} - {self.quantity}"
         
 
 
