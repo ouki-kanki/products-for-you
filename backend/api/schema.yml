@@ -1,0 +1,270 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /products/:
+    get:
+      operationId: products_list
+      description: list the products
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /products/categories/:
+    get:
+      operationId: products_categories_list
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /products/product-items/:
+    get:
+      operationId: products_product_items_list
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductItem'
+          description: ''
+  /users/:
+    get:
+      operationId: users_list
+      description: User list & detail
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+  /users/{id}:
+    get:
+      operationId: users_retrieve
+      description: User list & detail
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /users/register:
+    post:
+      operationId: users_register_create
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /users/token-auth:
+    post:
+      operationId: users_token_auth_create
+      description: customize the response
+      tags:
+      - users
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - name
+    CategoryPublic:
+      type: object
+      properties:
+        category:
+          type: string
+          readOnly: true
+      required:
+      - category
+    Product:
+      type: object
+      description: |-
+        product-list
+        endpoint: products/
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CategoryPublic'
+          readOnly: true
+        product_variation:
+          type: array
+          items:
+            type: string
+      required:
+      - category
+      - name
+      - product_variation
+    ProductItem:
+      type: object
+      description: |-
+        product_variation
+        endpoint: products/product-items/
+      properties:
+        product_name:
+          allOf:
+          - $ref: '#/components/schemas/ProductPublic'
+          readOnly: true
+        sku:
+          type: string
+          maxLength: 255
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - price
+      - product_name
+      - quantity
+      - sku
+    ProductPublic:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        id:
+          type: integer
+          readOnly: true
+        related_products:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - name
+      - related_products
+    RoleEnum:
+      enum:
+      - admin
+      - assistant
+      - editor
+      - sales_person
+      - customer
+      - visitor
+      type: string
+      description: |-
+        * `admin` - admin
+        * `assistant` - assistant
+        * `editor` - editor
+        * `sales_person` - sales_person
+        * `customer` - customer
+        * `visitor` - visitor
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        username:
+          type: string
+          maxLength: 255
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - id
+      - role
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
