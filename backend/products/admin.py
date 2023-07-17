@@ -36,6 +36,7 @@ class CustomAdminFileWidget(AdminFileWidget):
         return format_html("".join(result))
 
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('product_icon', 'name')
