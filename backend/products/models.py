@@ -1,11 +1,14 @@
-import os
 from pathlib import Path
 from django.db import models
+from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
+from django.utils.text import slugify
+
 
 from user_control.models import CustomUser as User
 
 from common.util.static_helpers import upload_icon
+from common.util.slugify_helper import slugify_unique
 
 # NOTE: models.PROTECT it seems that does not allow null=True
 
@@ -21,10 +24,13 @@ def upload_product_icon(instance, filename):
     return upload_icon('product', instance, filename)
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
+    # slug = models.SlugField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, blank=True)
     parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
-    icon = models.ImageField(upload_to=upload_category_icon, blank=True)
+    icon = models.ImageField(upload_to=upload_category_icon, blank=True, default='icons/placeholder.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     # TODO: maybe this field is usefull
@@ -32,15 +38,23 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
-
-    def image_tag(self):
-        if self.icon:
-            return format_html('<img src="{}" width="50px" height="50px">', self.icon.url) 
-        return 'no icon uploaded'
-
+    
     def __str__(self):
         return self.name
     
+# NOTE: sender is the class
+def category_pre_save(sender, instance, *args, **kwargs):
+    if instance.slug is None or instance.slug == "":
+        print("inside pre_save", instance.slug)
+        instance.slug = slugify(instance.name)
+
+def category_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        instance.save()
+    
+
+pre_save.connect(category_pre_save, sender=Category)
+post_save.connect(category_post_save, sender=Category)
 
 # TODO: TABLE FOR PRODUCT DETAILS, IMAGES
 
@@ -55,11 +69,12 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default='')
+    slug = models.SlugField(max_length=50, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    icon = models.ImageField(upload_to=upload_product_icon, blank=True)
+    icon = models.ImageField(upload_to=upload_product_icon, blank=True, default='icons/placeholder.jpg')
 
     class Meta:
         verbose_name = "Product"
@@ -67,6 +82,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+def product_pre_save(sender, instance, *args, **kwargs):
+    if instance.slug is "" or instance.slug is None:
+        slugify_unique(sender, instance, instance.name)
+        # instance.slug = slugify(instance.name)
+
+def product_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        instance.save()
+
+pre_save.connect(product_pre_save, Product)
+post_save.connect(product_post_save, Product)
 
 
 # TODO: how can i join with variations?

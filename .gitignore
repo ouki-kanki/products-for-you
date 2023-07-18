@@ -137,3 +137,6 @@ dmypy.json
 
 sandbox/
 sandbox.py
+
+# static files - media files
+media/

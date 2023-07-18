@@ -15,5 +15,7 @@ def render_icon(obj):
     is mandatory for the name of the field to be "icon" in order to render the icons
     '''
     if obj.icon:
+        print("this is the url of the icon: ", obj.icon.url)
         return format_html('<img src="{}" width="50px" height="50px"/>', obj.icon.url)
-    return 'there is no uploaded image'
+    # return format_html('<img src="{}" widht="50px" height="50px"/>', '/icons/placeholder.jpg')
+    return 'no icon'

@@ -55,7 +55,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_icon', 'name', 'brand')
+    list_display = ('product_icon', 'name', 'slug', 'brand')
 
     formfield_overrides = {
     models.ImageField: { 'widget': CustomAdminFileWidget }
