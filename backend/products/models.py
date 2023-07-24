@@ -24,6 +24,9 @@ def upload_product_icon(instance, filename):
     return upload_icon('product', instance, filename)
 
 
+def upload_product_item_image(instance, filename):
+    return upload_icon('product_item', instance, filename)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -96,14 +99,24 @@ pre_save.connect(product_pre_save, Product)
 post_save.connect(product_post_save, Product)
 
 
-# TODO: how can i join with variations?
+# NOT IMPLEMENTED
+# NOTE: this is an example of a manager
+class VariationManager(models.Manager):
+    def all(self):
+        # There is no field named "active" this is just for showing the functionality
+        return super(VariationManager, self).filter(active=True) 
+    
+    def sizes(self):
+        return super(VariationManager, self).filter(variation_option='size')
+
+
 class ProductItem(models.Model):
     '''
     PRODUCT - VARIANT
-    product table - item will have different price in relation with the different variations
     '''
     # TODO: change the name to "product" bacause product_id brings confussion
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    slug = models.SlugField(max_length=50, blank=True)
     sku = models.CharField(max_length=255)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -126,6 +139,20 @@ class ProductItem(models.Model):
     
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
+
+
+def product_item_pre_save(sender, instance, *args, **kwargs):
+    if instance.slug is "" or instance.slug is None:
+        # TODO: use something like (product-colorvalue) as slug
+        slugify_unique(sender, instance, instance.sku)
+        # instance.slug = slugify(instance.name)
+
+def product_item_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        instance.save()
+
+pre_save.connect(product_item_pre_save, ProductItem)
+post_save.connect(product_item_post_save, ProductItem)
     
 
 class Banner(models.Model):
@@ -135,6 +162,18 @@ class Banner(models.Model):
     image = models.CharField(max_length=255)
     alt_text = models.CharField(max_length=255)
         
+
+class ProductImage(models.Model):
+    product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=upload_product_item_image)
+    featured = models.BooleanField(default=False)
+    thumbnail = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product_item.product_name
 
 
 

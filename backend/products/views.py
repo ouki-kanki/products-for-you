@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Product, ProductItem, Category
 from .serializers import (
-    CategorySerializer, ProductSerializer, ProductItemSerializer 
+    CategorySerializer, ProductSerializer, ProductItemSerializer, ProductItemDetailSerializer
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -40,6 +40,7 @@ class CategoryOldListView(viewsets.ViewSet):
 class ProductListAPIView(generics.ListAPIView):
     '''
         list the products
+        endpoint: /products/
     '''
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -50,8 +51,22 @@ product_list_view = ProductListAPIView.as_view()
 
 
 class ProductItemListView(generics.ListAPIView):
+    # TODO: list the variations related to a product
+    '''
+        lists all the variations
+    '''
     queryset = ProductItem.objects.all()
     serializer_class = ProductItemSerializer
 
 product_item_list_view = ProductItemListView.as_view()
 
+
+class ProductItemDetailView(generics.RetrieveAPIView):
+    '''
+        detail of product variations using slug
+    '''
+    queryset = ProductItem.objects.all()
+    serializer_class = ProductItemDetailSerializer
+    lookup_field = 'slug'
+
+product_item_detail_view = ProductItemDetailView.as_view()

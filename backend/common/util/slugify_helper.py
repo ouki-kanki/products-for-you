@@ -13,13 +13,12 @@ def __lower_random(number_of_letters):
 
 def slugify_unique(sender, instance, source):
     '''
-    takes the class, the instance and the source that will be converted to slug, if the slug exists
+    takes the class, the instance and the source that will be used for slug, if the slug exists it will append a random hash to end of slug
     '''
     slug = slugify(source)
     qs = sender.objects.filter(slug=slug).exclude(id=instance.id)
 
     if qs.exists():
-        # slug = f'{slug}-{"".join(random.choice(string.ascii_lowercase) for _ in range(7))}'
         slug = f'{slug}-{__lower_random(4)}-{__lower_random(4)}'
 
     instance.slug = slug

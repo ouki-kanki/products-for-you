@@ -5,6 +5,8 @@ from user_control.models import CustomUser
 from .models import Product, ProductItem, Category, Brand
 
 
+
+#  ---- ** CATEGORY ** ----
 # TODO: maybe this will be needed to other places also. change the name and move it to another folder
 class CategoryChildrenSerializer(serializers.Serializer):
     '''
@@ -38,30 +40,7 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    '''
-    product-list
-    endpoint: products/
-    '''
-    category = CategoryPublicSerializer(read_only=True)
-    # NOTE: will return the string represantation of the child
-    #  the name has to be the name of the related_name on the table
-    product_variations = serializers.StringRelatedField(many=True)
-    # NOTE: brand = BrandSerializer() -> will give a json with the fields that are defined in the BrandSerializer
-    brand = serializers.StringRelatedField()
-
-    # TODO: needs implementation later on the product_detail 
-    # product_variation = serializers.SlugRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     slug_field='price'
-    # )
-
-
-    class Meta:
-        model = Product
-        fields = ('name', 'category', 'brand', 'product_variations') 
-
+# --** PRODUCT **--
 class ProductPublicSerializer(serializers.Serializer):
     name = serializers.CharField(read_only=True)
     id = serializers.IntegerField(read_only=True)
@@ -74,7 +53,6 @@ class ProductPublicSerializer(serializers.Serializer):
         return []
     
 
-
 class ProductItemSerializer(serializers.ModelSerializer):
     '''
     product_variation
@@ -82,6 +60,10 @@ class ProductItemSerializer(serializers.ModelSerializer):
     '''
     product_name = ProductPublicSerializer(source='product', read_only=True)
     # name = serializers.SerializerMethodField(read_only=True)
+
+    # NOTE: show the variations here? then product serializer will hit product item & variation tables 
+
+    # TODO: !!! here you need to include the related variations: for instance this could be (color: red, size: medium)
 
     class Meta:
         model = ProductItem
@@ -94,6 +76,68 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
     # def get_name(self, obj):
     #     return obj.product_id.name
+
+class ProductItemDetailSerializer(serializers.ModelSerializer):
+    # TODO: show selected variations
+    class Meta:
+        model = ProductItem
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {
+                'lookup_field': 'slug'
+            }
+        }
+        fields = [
+            'product_name',
+            'sku',
+            'quantity',
+            'price'
+        ]
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    '''
+    product-list
+    endpoint: products/
+    '''
+    category = CategoryPublicSerializer(read_only=True)
+    # NOTE: will return the string represantation of the child
+    #  the name has to be the name of the related_name on the table
+    # product_variations = serializers.StringRelatedField(many=True)
+    # NOTE: brand = BrandSerializer() -> will give a json with the fields that are defined in the BrandSerializer
+    brand = serializers.StringRelatedField()
+
+    # children = serializers.SerializerMethodField('_get_children')
+
+    # NOTE: source needs the ralated name delcared on the child model
+    variations = ProductItemSerializer(source='product_variations', many=True)
+    # NOTE: name has to be the related name for reverse lookup
+    # if it is different it will not give any error but it will show nothing
+    # 
+    # GIVES THE RELATED SKUS-SLUGS so that the front can build the url for each item
+    product_variations = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
+
+    # THIS WILL GIVE HYPERLINKS
+    # product_variations = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     # NOTE: need name on the url to do the reverse lookup
+    #     # view_name='product_item-detail'
+    #     view_name='product-items-list'
+    # )
+
+
+    # def _get_children(self, obj):
+    #     serializer = ProductItemSerializer
+
+    class Meta:
+        model = Product
+        fields = ('name', 'category', 'brand', 'product_variations', 'variations', ) 
+
+
+
+
+
 
     
 
