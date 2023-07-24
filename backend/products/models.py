@@ -125,7 +125,6 @@ class ProductItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-    # TODO: this hits the database to fetch product. check if it ok to do it that way
     @property
     def product_name(self):
         return self.product_id.name

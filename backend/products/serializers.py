@@ -3,7 +3,7 @@ from rest_framework.reverse import reverse
 from user_control.models import CustomUser
 
 from .models import Product, ProductItem, Category, Brand
-
+from variations.serializers import VariationOptionsSerializer
 
 
 #  ---- ** CATEGORY ** ----
@@ -53,17 +53,24 @@ class ProductPublicSerializer(serializers.Serializer):
         return []
     
 
+# class RelatedVariationsSerializer(serializers.RelatedField):
+
+#     def to_representation(self, value):
+#         print("the data", value)
+#         data = {
+#             "name": value.name
+#         }
+
+#         return data
+
+
 class ProductItemSerializer(serializers.ModelSerializer):
     '''
     product_variation
     endpoint: products/product-items/
     '''
-    product_name = ProductPublicSerializer(source='product', read_only=True)
-    # name = serializers.SerializerMethodField(read_only=True)
-
-    # NOTE: show the variations here? then product serializer will hit product item & variation tables 
-
-    # TODO: !!! here you need to include the related variations: for instance this could be (color: red, size: medium)
+    variation_option = VariationOptionsSerializer(many=True, read_only=True)
+    # variation_option = RelatedVariationsSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductItem
@@ -71,7 +78,8 @@ class ProductItemSerializer(serializers.ModelSerializer):
             'product_name',
             'sku',
             'quantity',
-            'price'
+            'price',
+            'variation_option'
         ]
 
     # def get_name(self, obj):
@@ -91,8 +99,11 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
             'product_name',
             'sku',
             'quantity',
-            'price'
+            'price',
         ]
+
+
+# class GetFirstRelated(serializers.Serializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -109,34 +120,35 @@ class ProductSerializer(serializers.ModelSerializer):
 
     # children = serializers.SerializerMethodField('_get_children')
 
-    # NOTE: source needs the ralated name delcared on the child model
-    variations = ProductItemSerializer(source='product_variations', many=True)
+    # NOTE: source needs the related name delcared on the child model
+    # -- This will fetch all the related variations!! --
+
+    # variations = ProductItemSerializer(source='product_variations', many=True, )
+
+    # variations = GetFirstRelated()
+
     # NOTE: name has to be the related name for reverse lookup
     # if it is different it will not give any error but it will show nothing
-    # 
-    # GIVES THE RELATED SKUS-SLUGS so that the front can build the url for each item
+
+    # gives a list of the related variations using the sku of each variation as slug so that the front can build the url for each item
     product_variations = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
 
-    # THIS WILL GIVE HYPERLINKS
-    # product_variations = serializers.HyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     # NOTE: need name on the url to do the reverse lookup
-    #     # view_name='product_item-detail'
-    #     view_name='product-items-list'
-    # )
+    first_related = serializers.SerializerMethodField()
 
 
-    # def _get_children(self, obj):
-    #     serializer = ProductItemSerializer
 
     class Meta:
         model = Product
-        fields = ('name', 'category', 'brand', 'product_variations', 'variations', ) 
+        fields = ('name', 'category', 'brand', 'product_variations', 'first_related') 
 
 
-
-
+    def get_first_related(self, obj):
+        # TODO: this validation is trash
+        if obj.product_variations.all():
+            item = obj.product_variations.first()
+            return ProductItemSerializer(item).data
+        
+        return "no related variation"
 
 
     
