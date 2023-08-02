@@ -3,9 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
 from django.utils.text import slugify
-
-
-from user_control.models import CustomUser as User
+from django.urls import reverse
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
@@ -26,6 +24,7 @@ def upload_product_icon(instance, filename):
 
 def upload_product_item_image(instance, filename):
     return upload_icon('product_item', instance, filename)
+
 
 
 class Category(models.Model):
@@ -83,6 +82,10 @@ class Product(models.Model):
         verbose_name = "Product"
         verbose_name_plural = "1. Products"
 
+    @property
+    def get_absolute_url(self):
+        return reverse("products:product_detail", kwargs={"slug": self.slug})
+
     def __str__(self):
         return self.name
 
@@ -114,7 +117,6 @@ class ProductItem(models.Model):
     '''
     PRODUCT - VARIANT
     '''
-    # TODO: change the name to "product" bacause product_id brings confussion
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     slug = models.SlugField(max_length=50, blank=True)
     sku = models.CharField(max_length=255)
@@ -124,6 +126,8 @@ class ProductItem(models.Model):
     variation_option = models.ManyToManyField('variations.VariationOptions')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    discount = models.ManyToManyField("products.Discount", verbose_name="product_discount")
+
 
     @property
     def product_name(self):
@@ -176,3 +180,15 @@ class ProductImage(models.Model):
 
 
 
+class Discount(models.Model):
+    code = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    discount_value = models.DecimalField(max_digits=2, decimal_places=2)
+    discount_type = models.CharField(max_length=255)
+    times_used = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=False)
+    max_times = models.PositiveIntegerField(default=3)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now_add=True)

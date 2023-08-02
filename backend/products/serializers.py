@@ -90,6 +90,10 @@ class ProductItemSerializer(serializers.ModelSerializer):
     variation_option = VariationOptionsSerializer(many=True, read_only=True)
     # variation_option = RelatedVariationsSerializer(many=True, read_only=True)
 
+    # TODO: if there is a discount show the discount price 
+    # check if this has to be inside the models or here
+
+
     class Meta:
         model = ProductItem
         fields = [
@@ -133,13 +137,15 @@ class ProductSerializer(serializers.ModelSerializer):
     product_variations = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
 
     first_related = serializers.SerializerMethodField()
-
+    product_link = serializers.SerializerMethodField()
 
 
     class Meta:
         model = Product
-        fields = ('name', 'category', 'brand', 'slug', 'product_variations', 'first_related') 
+        fields = ('name', 'category', 'brand', 'slug', 'product_variations', 'first_related', 'product_link',)
 
+    def get_product_link(self, obj):
+        return obj.get_absolute_url
 
     def get_first_related(self, obj):
         # TODO: this validation is trash

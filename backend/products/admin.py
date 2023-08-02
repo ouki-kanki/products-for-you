@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.html import format_html
 
-from .models import Product, ProductItem, Category, Brand
+from .models import Product, ProductItem, Category, Brand, Discount
 
 from common.util.static_helpers import render_icon
 
@@ -63,5 +63,9 @@ class ProductAdmin(admin.ModelAdmin):
 
     def product_icon(self, obj):
         return render_icon(obj)
+    
+@admin.register(Discount)
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ('code', 'discount_value', 'discount_type')
 
-admin.site.register((ProductItem, Brand),)
+admin.site.register((ProductItem, Brand, ),)
