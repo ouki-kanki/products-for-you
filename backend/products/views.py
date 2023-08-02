@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Product, ProductItem, Category
 from .serializers import (
-    CategorySerializer, ProductSerializer, ProductItemSerializer, ProductItemDetailSerializer
+    CategorySerializer, CategoryRelatedProducts, ProductSerializer, ProductItemSerializer, ProductAndRelatedVariationsSerializer 
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -15,6 +15,21 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 category_list_view = CategoryListView.as_view()
+
+
+class CategoryDetail(generics.RetrieveAPIView):
+    '''
+        detail of product category using slug
+        endpoint: /products/categories/<slug>
+    '''
+    queryset = Category.objects.all()
+    # TODO: show the related products
+    # for now it just gives the category
+    serializer_class = CategoryRelatedProducts
+    lookup_field = 'slug'
+
+category_detail_related_products_view = CategoryDetail.as_view()
+
 class CategoryOldListView(viewsets.ViewSet):
     '''
     viewset to show the categories
@@ -46,12 +61,25 @@ class ProductListAPIView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
 
-
 product_list_view = ProductListAPIView.as_view()
 
 
+class ProductDetailAndRelatedVariations(generics.RetrieveAPIView):
+    '''
+    detail of the product alongside the related variations
+    endpoint: /products/<slug>
+    '''
+    queryset = Product.objects.all()
+    serializer_class = ProductAndRelatedVariationsSerializer
+    lookup_field = 'slug'
+
+
+
+product_detail_related_variations_view = ProductDetailAndRelatedVariations.as_view()   
+
+
 class ProductItemListView(generics.ListAPIView):
-    # TODO: list the variations related to a product
+    # TODO: list the variations related to a product, maybe have to change, it will give performance issues 
     '''
         lists all the variations
     '''
@@ -64,9 +92,10 @@ product_item_list_view = ProductItemListView.as_view()
 class ProductItemDetailView(generics.RetrieveAPIView):
     '''
         detail of product variations using slug
+        endpoint: /products/product-items/<slug>
     '''
     queryset = ProductItem.objects.all()
-    serializer_class = ProductItemDetailSerializer
+    serializer_class = ProductItemSerializer
     lookup_field = 'slug'
 
 product_item_detail_view = ProductItemDetailView.as_view()

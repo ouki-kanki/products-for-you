@@ -39,7 +39,7 @@ class CustomAdminFileWidget(AdminFileWidget):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('product_icon', 'name')
+    list_display = ('product_icon', 'name', 'slug')
     # list_editable = ['name']
     readonly_fields = ('product_icon',)
 

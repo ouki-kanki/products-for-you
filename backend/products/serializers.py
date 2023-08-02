@@ -25,6 +25,23 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('name', 'icon', 'children')
 
+# TODO: show the related products for the category
+class CategoryRelatedProducts(serializers.ModelSerializer):
+    '''
+    details of the category with related products
+    '''
+    related_products = serializers.SerializerMethodField()
+
+    def get_related_products(self, obj):
+        if obj.products.all():
+            items = obj.products.all()
+            return ProductSerializer(items, many=True).data    
+        return "no related variations"
+
+    class Meta:
+        model = Category
+        fields = ('name', 'related_products', )
+
 
 class CategoryPublicSerializer(serializers.Serializer):
     category = serializers.CharField(read_only=True)
@@ -64,6 +81,7 @@ class ProductPublicSerializer(serializers.Serializer):
 #         return data
 
 
+# --- VARIATION OF THE PRODUCT --
 class ProductItemSerializer(serializers.ModelSerializer):
     '''
     product_variation
@@ -85,25 +103,6 @@ class ProductItemSerializer(serializers.ModelSerializer):
     # def get_name(self, obj):
     #     return obj.product_id.name
 
-class ProductItemDetailSerializer(serializers.ModelSerializer):
-    # TODO: show selected variations
-    class Meta:
-        model = ProductItem
-        lookup_field = 'slug'
-        extra_kwargs = {
-            'url': {
-                'lookup_field': 'slug'
-            }
-        }
-        fields = [
-            'product_name',
-            'sku',
-            'quantity',
-            'price',
-        ]
-
-
-# class GetFirstRelated(serializers.Serializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -139,7 +138,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('name', 'category', 'brand', 'product_variations', 'first_related') 
+        fields = ('name', 'category', 'brand', 'slug', 'product_variations', 'first_related') 
 
 
     def get_first_related(self, obj):
@@ -152,4 +151,20 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
     
+
+class ProductAndRelatedVariationsSerializer(serializers.ModelSerializer):
+    related_variations = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Product
+        fields = ('name', 'category', 'brand', 'related_variations',)
+
+
+    def get_related_variations(self, obj):
+        if obj.product_variations.all():
+            items = obj.product_variations.all()
+            print("the items", items)
+            return ProductItemSerializer(items, many=True).data
+        
+        return "no related variations"
 
