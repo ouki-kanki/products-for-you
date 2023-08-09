@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
 from django.utils.text import slugify
 from django.urls import reverse
+from django.core.validators import MaxValueValidator
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
@@ -181,9 +182,16 @@ class ProductImage(models.Model):
 
 
 class Discount(models.Model):
+    '''
+    many to many relation with the variant of products
+    '''
     code = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    discount_value = models.DecimalField(max_digits=2, decimal_places=2)
+    # discount_value = models.DecimalField(max_digits=2, decimal_places=2)
+    discount_value = models.PositiveBigIntegerField(verbose_name='discount percentage', 
+        validators=[
+            MaxValueValidator(100, message="max value is 100")
+    ])
     discount_type = models.CharField(max_length=255)
     times_used = models.PositiveIntegerField()
     is_active = models.BooleanField(default=False)
@@ -192,3 +200,6 @@ class Discount(models.Model):
     end_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.code} - {self.discount_value}%"

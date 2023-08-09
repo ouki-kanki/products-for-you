@@ -2,8 +2,10 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 from user_control.models import CustomUser
 
-from .models import Product, ProductItem, Category, Brand
+from .models import Product, ProductItem, Category, Brand, Discount
 from variations.serializers import VariationOptionsSerializer
+
+import decimal
 
 
 #  ---- ** CATEGORY ** ----
@@ -81,18 +83,47 @@ class ProductPublicSerializer(serializers.Serializer):
 #         return data
 
 
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = '__all__'
+
+
 # --- VARIATION OF THE PRODUCT --
 class ProductItemSerializer(serializers.ModelSerializer):
     '''
     product_variation
     endpoint: products/product-items/
+    # TODO: have to make another serializer for the detail
+    & products/product-items/<sku>
     '''
     variation_option = VariationOptionsSerializer(many=True, read_only=True)
+    discounts = serializers.SerializerMethodField()
     # variation_option = RelatedVariationsSerializer(many=True, read_only=True)
+    discount_price = serializers.SerializerMethodField()
+    # TODO: calculate the tota discounted price
 
-    # TODO: if there is a discount show the discount price 
-    # check if this has to be inside the models or here
 
+    def get_discount_price(self, obj):
+        items = obj.discount.all()
+
+
+        if items:
+            total_discount_perc = sum([discount.discount_value for discount in items])
+
+            normalized_total_discount_perc = total_discount_perc if total_discount_perc < 100 else 100
+
+            return obj.price - (obj.price * (decimal.Decimal(normalized_total_discount_perc) / 100))
+        return 'there is no discount'
+
+
+    def get_discounts(self, obj):
+        items = obj.discount.all()
+        
+
+        if items:
+            return DiscountSerializer(items, many=True).data
+        return 'no related discounts'
 
     class Meta:
         model = ProductItem
@@ -101,7 +132,9 @@ class ProductItemSerializer(serializers.ModelSerializer):
             'sku',
             'quantity',
             'price',
-            'variation_option'
+            'variation_option',
+            'discounts',
+            'discount_price'
         ]
 
     # def get_name(self, obj):
@@ -159,11 +192,17 @@ class ProductSerializer(serializers.ModelSerializer):
     
 
 class ProductAndRelatedVariationsSerializer(serializers.ModelSerializer):
+    '''
+    endpoint: /products/<slug>
+    '''
     related_variations = serializers.SerializerMethodField()
     
     class Meta:
         model = Product
-        fields = ('name', 'category', 'brand', 'related_variations',)
+        fields = ('name', 
+                  'category', 
+                  'brand', 
+                  'related_variations',)
 
 
     def get_related_variations(self, obj):
