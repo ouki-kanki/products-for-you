@@ -10,7 +10,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('users/', include('user_control.urls')),
-    path('products/', include('products.urls'))
+    path('products/', include('products.urls')),
+    path('cart/', include('shopping_cart.urls'))
     # TODO: check this!!! not implemented for the moment
 ]
 
