@@ -24,6 +24,8 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (arg, thunk
     console.log("this is the error --", message)
     // TODO: send action to show some kind feedback to the user
     // throw new Error(err)
+
+    //  is this the workaround to show feed ?
     return thunkApi.rejectWithValue(message)
   }
 
