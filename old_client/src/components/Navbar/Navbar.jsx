@@ -14,6 +14,7 @@ const NavBar = () => {
   }, [lastScrollValue])
 
   const handleNav = () => {
+    // TODO: improve efficiency
     if (window.scrollY > lastScrollValue) {
       setShowNav(false)
     } else {
