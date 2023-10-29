@@ -1,18 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-
+import { BASE_URL } from '../../api/baseConfig';
+import { IPayload as IUsersState } from '../../types';
 
 // TODO: move it to another file 
-interface IServerError {
-  statusCode: number,
-  description: string,
-  message?: string
-} 
-
-// interface UsersState {
-//   data: Array<unknown>,
-//   status: 'idle' | 'success' | 'error',
-//   error: ServerError | string
-// }
+// interface IServerError {
+//   statusCode: number,
+//   description: string,
+//   message?: string
+// } 
 
 interface IUser {
   name: string,
@@ -21,11 +16,11 @@ interface IUser {
 
 type IUsers = Array<IUser>
 
-interface IUsersState<T> {
-  data: Array<T>,
-  status: 'idle' | 'success' | 'error' | 'pending',
-  error: IServerError | string | unknown
-} 
+// interface IUsersState<T> {
+//   data: Array<T>,
+//   status: 'idle' | 'success' | 'error' | 'pending',
+//   error: IServerError | string | unknown
+// } 
 
 const initialState: IUsersState<IUser> = {
   data: [],
@@ -37,7 +32,7 @@ const initialState: IUsersState<IUser> = {
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async (arg, thunkApi) => {
   try {
-    const response = await fetch('http://localhost:8000/users')
+    const response = await fetch(`${BASE_URL}users`)
 
     if (response.status !== 200) {
       throw new Error(response.statusText)
@@ -80,23 +75,6 @@ export const usersSlice = createSlice({
       state.error = action.payload
     })
   }
-  // extraReducers: builder => {
-  //   builder
-  //     .addCase(fetchUsers.pending, (state , action) => {
-  //       state.status = 'loading'
-  //     })
-  //     .addCase(fetchUsers.fulfilled, (state, { payload })) => {
-  //       console.log("the action", { payload })
-  //       state.data = payload ? payload : []
-  //       state.status = 'idle'
-  //     }
-  //     .addCase(fetchUsers.rejected, (state, action) => {
-  //       console.log('rej inside the reducer', action.payload)
-
-  //       state.error = action.payload
-  //       state.status = 'idle'
-  //     })
-  // }
 })
 
 

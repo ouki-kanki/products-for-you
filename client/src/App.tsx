@@ -1,16 +1,32 @@
 import { useState } from 'react'
 import './App.css'
 
-import { selectUsers } from './store'
+import { selectUsers } from './app/store'
 import { useAppDispatch, useAppSelector } from './hooks'
 import { fetchUsers } from './features/users/usersSlice'
+import { useGetProductsQuery } from './features/products/productsSlice'
+
 
 function App() {
   const [count, setCount] = useState(0)
   const users = useAppSelector(selectUsers)
   const dispatch = useAppDispatch()
 
-  console.log(" the users", users)
+  const {
+    data: products,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetProductsQuery()
+
+  if (isLoading) {
+    return (
+      <div>IS LOADING</div>
+    )
+  }
+  // console.log(" the users", users)
+  console.log("the data", products)
   return (
     <>
       <div>
