@@ -1,0 +1,90 @@
+.productContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 30px 200px auto;
+  height: 100%;
+  /* padding: 3rem; */
+}
+
+.topRegion {
+  grid-row: 1;
+}
+
+.medRegion {
+  // display: flex;
+  display: grid;
+  grid-row: 2;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ml {
+  border: 1px solid red;
+  position: relative;
+}
+
+.imageContainer {
+  border: 1px solid magenta;
+  position: absolute;
+  left: -80px;
+  filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.5));
+  /* background-color: rgb(255, 251, 245); */
+  border-radius: 50%;
+  height: 300px;
+  width: 250px;
+
+  /* width: 50px; */
+  /* width: 100%; */
+}
+
+.imageMain {
+  max-width: 100%;
+  transition: transform .2s ease-out;
+}
+
+.imageHovered {
+  transform: scale(1.1);
+}
+
+.mr {
+  border: 1px solid green;
+}
+
+.bottomRegion {
+  display: flex;
+  flex-direction: column;
+}
+
+.actionContainer {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.heartIcon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+  // transition: transform .2sec linear;
+  @include transition-transform-quick();
+}
+
+.quickCheckoutIcon {
+  margin-right: .5rem;
+}
+
+.heartIcon:hover {
+  @include transform-scale();
+}
+
+.addIcon {
+  // position: absolute;
+  @include transition-transform-quick();
+}
+
+.addIcon:hover {
+  @include transform-scale();
+}

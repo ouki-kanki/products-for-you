@@ -12,3 +12,15 @@ export interface IPayload<T> {
   error: IServerError | string | unknown
 }
 
+
+// Data from server
+
+export interface IProduct {
+  title: string;
+  description: string;
+  price: number;
+  img: string;
+  rating: number;
+  amount: number;
+  color: string[];
+}

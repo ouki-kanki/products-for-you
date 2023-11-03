@@ -1,0 +1,8 @@
+/* TODO: there is another class name sidebarContainer in the layouts file  */
+
+
+/* TODO need to change this name to something else */
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+}

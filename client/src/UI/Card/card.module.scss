@@ -1,0 +1,27 @@
+.cardContainer {
+  position: relative;
+  background-color: #fff;
+  height: 28em;
+  padding: 2rem 1.3rem;
+  border-radius: 5% 3% 2em 3%;
+  // overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  transition: transform ease 150ms;
+  cursor: pointer;
+  background: linear-gradient(-45deg, rgba(247, 156, 144, 0.7), rgba(255, 102, 90, 0.7), rgba(255, 102, 90, 0.7));
+ /* border: 3px solid #ff4d40; */
+}
+
+.medium {
+  width: 23em;
+}
+
+.wide {
+  width: 25em;
+}
+
+.cardContainer:hover {
+  transform: scale(1.03);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px; 
+}
+
