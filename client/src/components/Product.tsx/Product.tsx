@@ -2,8 +2,9 @@ import {useState} from 'react'
 import styles from './product.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faStar } from '@fortawesome/free-regular-svg-icons';
+import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
+
 
 import { Card } from '../../UI/Card/Card';
 import { Button } from '../../UI/Button/Button';
@@ -63,8 +64,23 @@ export const Product = ({ title }: Iproduct) => {
             </div>
 
             <div className={styles.mr}>
-              <h3 className={styles.priceContainer}>price: 100$</h3>
-
+              <div className={styles.mrFirst}>
+                <h3 className={styles.priceContainer}>price: 100$</h3>
+                <div className={styles.ratingsContainer}>
+                <FontAwesomeIcon
+                  className={styles.starIcon} 
+                  icon={faSolidStar} 
+                  size='lg'/>
+                <FontAwesomeIcon
+                  className={styles.starIcon} 
+                  icon={faSolidStar} 
+                  size='lg'/>
+                <FontAwesomeIcon
+                  className={styles.starIcon} 
+                  icon={faStar} 
+                  size='lg'/>
+                </div>
+              </div>
               <div className={styles.variationsContainer}>
                 <div className={styles.varImageContainer}>
                   <img src={kdDeepBlue} alt="variation image" />
