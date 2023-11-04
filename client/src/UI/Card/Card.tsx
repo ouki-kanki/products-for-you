@@ -2,7 +2,6 @@ import React, { PropsWithChildren } from 'react'
 import styles from './card.module.scss'
 
 
-
 type WidthType = 'medium' | 'wide'
 
 type CardProps = {

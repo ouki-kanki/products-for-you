@@ -11,6 +11,8 @@ import { useGetProductsQuery } from './features/products/productsSlice'
 import { NavBar } from './components/NavBar/NavBar'
 import { Sidebar } from './components/Sidebar/Sidebar'
 
+import { Button } from './UI/Button/Button';
+
 import { Home, 
          About, 
          Cart, 
@@ -21,6 +23,7 @@ import { Home,
          Settings,
          ProductsPage,
         } from './components/pages'
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -64,14 +67,12 @@ function App() {
         </div>
         <div className='rest__container__for-testing'>
           <button onClick={() => dispatch(fetchUsers())}>fetch users</button>
+          <Button>push</Button>
           <h1>Vite + React</h1>
           <div className="card">
             <button onClick={() => setCount((count) => count + 1)}>
               count is {count}
             </button>
-            <p>
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
           </div>
           <p className="read-the-docs">
             Click on the Vite and React logos to learn more
