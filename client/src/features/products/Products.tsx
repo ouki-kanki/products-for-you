@@ -6,8 +6,8 @@ export const Products = () => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.productsContainer}>
-        {Array.from({length: 5}).map(_ => (
-          <div className={styles.productContainer}>
+        {Array.from({length: 5}).map((_, i) => (
+          <div className={styles.productContainer} key={i}>
             <Product title="yo"/>
           </div>
         ))}

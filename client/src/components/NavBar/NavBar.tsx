@@ -1,5 +1,13 @@
 import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
+import { Link } from 'react-router-dom';
+
+
+import { Search } from '../../UI/Forms';
+import { Button } from '../../UI/Button/Button';
+
+import cartIcon from '../../assets/svg_icons/cart.svg';
+import bellIcon from '../../assets/svg_icons/bell.svg'
 
 
 export const NavBar = () => {
@@ -28,10 +36,23 @@ export const NavBar = () => {
 
 
   return (
-    <ul className={showNav ? styles.navContainer : styles.navContainer__hidden}>
-      <li>Cart</li>
-      <li>Account</li>
-      <li>Setting</li>
-    </ul>
+    <div className={showNav ? styles.navContainer : styles.navContainer__hidden}>
+      <div className={styles.searchContainer}>
+        <Search/>
+      </div>
+      <div className={styles.buttonsContainer}>
+        <Link
+          className={styles.icons}
+          to='/cart'>
+          <img src={cartIcon} alt="cart button" />
+        </Link>
+        <Link
+          className={styles.icons}
+          to='/'>
+          <img src={bellIcon} alt="notification button" />
+        </Link>
+        <Button size='m'>Login</Button>
+      </div>
+    </div>
   )
 }

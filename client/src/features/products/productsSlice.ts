@@ -24,5 +24,6 @@ export const productsSlice = createApi({
 })
 
 export const {
-  useGetProductsQuery
+  useGetProductsQuery,
+  useLazyGetProductsQuery
 } = productsSlice

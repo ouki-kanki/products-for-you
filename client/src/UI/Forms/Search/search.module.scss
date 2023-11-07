@@ -1,0 +1,45 @@
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  // TODO: check if this is ok 
+  svg {
+    path {
+      // color: $search_color_primary;
+      color: '#dcdcdc'
+    }
+  }
+}
+
+.input {
+  height: $btn_height;
+  // color: $search_color_primary;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 2px solid  #dcdcdc;
+  font-size: medium;
+  font-weight: bold;
+
+  &::placeholder {
+    color: $search_color_primary;
+    font-size: medium;
+    font-weight: bold;
+  }
+
+  &::after {
+    content: "\f001";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+  }
+
+
+}
+
+.searchIcon {
+  position: absolute;
+  // top: 34%;
+  right: 20px;
+  // background-color: red;
+  color: red;
+}

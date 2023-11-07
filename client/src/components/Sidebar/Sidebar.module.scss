@@ -1,0 +1,38 @@
+/* TODO: there is another class name sidebarContainer in the layouts file  */
+
+
+/* TODO need to change this name to something else */
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkContainer {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+
+  svg {
+    height: 20px;
+    margin-right: 1.3em;
+  }
+  &:first-child {
+    // margin-right: 2em;
+  }
+}
+
+.cartIcon {
+  svg {
+    color: red;
+  }
+  path {
+    color: red;
+    fill: red;
+  }
+
+  img {
+    color: red;
+  }
+}
