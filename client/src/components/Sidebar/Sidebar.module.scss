@@ -1,4 +1,21 @@
 /* TODO: there is another class name sidebarContainer in the layouts file  */
+.sidebarContainer {
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100vh;
+  background-color: white;
+  width: $sidebar-width;
+}
+
+a {
+  color: $dark-gray;
+
+  &:hover {
+    color: #2c2c2c;
+  }
+}
+
 
 
 /* TODO need to change this name to something else */
@@ -7,32 +24,18 @@
   flex-direction: column;
 }
 
-.linkContainer {
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-
-  svg {
-    height: 20px;
-    margin-right: 1.3em;
-  }
-  &:first-child {
-    // margin-right: 2em;
+.icon {
+  path {
+    fill: #555555;
   }
 }
 
 .cartIcon {
   svg {
-    color: red;
+    // color: red;
   }
   path {
     color: red;
     fill: red;
-  }
-
-  img {
-    color: red;
   }
 }

@@ -61,9 +61,9 @@ function App() {
   return (
     <>
     {/* <div className='main__container'> */}
-      <div className='sidebar__container'>
+      {/* <div className='sidebar__container'> */}
         <Sidebar/>
-      </div>
+      {/* </div> */}
       <div className='content__nav-container'>
         <NavBar/>
         <div className='routes__container'>

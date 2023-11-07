@@ -1,12 +1,75 @@
-/// <reference types="vite-plugin-svgr/client" />
+import { useState } from 'react';
 import { NavLink } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 
+import { SideBarField } from './SideBarField';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
+import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
+
+
+import HomeIcon from '../../assets/svg_icons/home.svg?react';
 import CartIcon from '../../assets/svg_icons/cart.svg?react'
+import ClockIcon from '../../assets/svg_icons/clock.svg?react';
+import EnvelopeIcon from '../../assets/svg_icons/envelope.svg?react';
+import GearIcon from '../../assets/svg_icons/gear.svg?react';
+import AccountIcon from '../../assets/svg_icons/account.svg?react';
+import PigIcon from '../../assets/svg_icons/pig.svg?react';
+
+
+
+const sideBarData = [
+  {
+    title: 'Home',
+    icon: <HomeIcon className={styles.icon}/>,
+    link: '/'
+  },
+  {
+    title: 'Categories',
+    icon: <FontAwesomeIcon icon={faSquare}/>,
+    link: '/categories'
+  },
+  {
+    title: 'Products',
+    icon: <FontAwesomeIcon icon={faBoxOpen}/>,
+    link: '/products'
+  },
+  {
+    title: 'Cart',
+    icon: <CartIcon className={styles.icon}/>,
+    link: '/cart'
+  },
+  {
+    title: 'Selling',
+    icon: <PigIcon className={styles.icon}/>,
+    link: '/selling'
+  },
+  {
+    title: 'Profile',
+    icon: <AccountIcon className={styles.icon}/>,
+    link: '/account'
+  },
+  {
+    title: 'Purchase History',
+    icon: <ClockIcon className={styles.icon}/>,
+    link: '/purchase-history'
+  },
+  {
+    title: 'Contact Us',
+    icon: <EnvelopeIcon className={styles.icon}/>,
+    link: '/contact'
+  },
+  {
+    title: 'Settings',
+    icon: <GearIcon className={styles.icon}/>,
+    link: '/settings'
+  },
+]
+
 
 export const Sidebar = () => {
+
   return (
     <div className={styles.sidebarContainer}>
       <h2>Products for you</h2>
@@ -14,29 +77,13 @@ export const Sidebar = () => {
         <NavLink to="/">Home</NavLink>
       </ul>
       <nav className={styles.rightContainer}>
-          <div className={styles.linkContainer}>
-            <FontAwesomeIcon 
-              icon={faSquare}
-              className={styles.icon}
-              />
-            <NavLink to="/categories">Categories</NavLink>
-          </div>
-          <div className={styles.linkContainer}>
-            <CartIcon
-              className={styles.cartIcon}
+          {sideBarData.map(({ title, icon, link }) => (
+            <SideBarField
+              title={title}
+              icon={icon}
+              link={link}
             />
-            {/* <img
-              className={`${styles.icon} ${styles.cartIcon}`} 
-              src={cartIcon} 
-              alt="" /> */}
-            <NavLink to="/cart">Cart</NavLink>
-          </div>
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/purchase-history">Purchase History (not imple)</NavLink>
-          <NavLink to="/contact">Contact Us (not imple)</NavLink>
-          <NavLink to="/account">Account</NavLink>
-          <NavLink to="/settings">Settings</NavLink>
-          <NavLink to="/products">Products</NavLink>
+          ))}
       </nav>
     </div>
   );

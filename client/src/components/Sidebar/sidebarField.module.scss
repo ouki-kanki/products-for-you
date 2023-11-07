@@ -1,0 +1,26 @@
+.linkContainer {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+
+  svg {
+    height: 20px;
+    width: 30px;
+    margin-right: 1.3em;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+  &:first-child {
+    // margin-right: 2em;
+  }
+}
+
+.hovered {
+  svg {
+    transform: scale(1.2);
+  }
+}
