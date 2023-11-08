@@ -3,7 +3,7 @@ import styles from './navbar.module.scss';
 import { Link } from 'react-router-dom';
 
 
-import { Search } from '../../UI/Forms';
+import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
 
 import cartIcon from '../../assets/svg_icons/cart.svg';
@@ -38,7 +38,7 @@ export const NavBar = () => {
   return (
     <div className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       <div className={styles.searchContainer}>
-        <Search/>
+        <SearchForm/>
       </div>
       <div className={styles.buttonsContainer}>
         <Link

@@ -1,4 +1,3 @@
-/* TODO: there is another class name sidebarContainer in the layouts file  */
 .sidebarContainer {
   top: 0;
   left: 0;
@@ -6,22 +5,40 @@
   height: 100vh;
   background-color: white;
   width: $sidebar-width;
-}
-
-a {
-  color: $dark-gray;
-
-  &:hover {
-    color: #2c2c2c;
-  }
-}
-
-
-
-/* TODO need to change this name to something else */
-.rightContainer {
   display: flex;
   flex-direction: column;
+  // border: $border-green;
+}
+
+.logoContainer {
+  font-family: 'Kaushan Script', cursive;
+  margin-bottom: 6rem;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.fieldsContainer {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+.footer{
+  // border: $border-red;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 0 1.2rem 1.2rem;
+  font-size: small;
+  font-weight: bold;
+  
+  &> * {
+    padding-bottom: .3rem;
+    color: $font_light_1_brown;
+  }
 }
 
 .icon {
@@ -37,5 +54,14 @@ a {
   path {
     color: red;
     fill: red;
+  }
+}
+
+a {
+  // color: $dark-gray;
+  color: #5b5b5b;
+
+  &:hover {
+    color: #2c2c2c;
   }
 }

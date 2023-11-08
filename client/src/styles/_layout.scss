@@ -2,12 +2,15 @@
 
 
 // dimensions.
-
+$sidebar-width: 250px;
 
 
 // up to 1200
 $btn_height: 40px;
 
+// var
+$border-red: 1px solid red; 
+$border-green: 1px solid green; 
 
 .main__container {
   display: flex;

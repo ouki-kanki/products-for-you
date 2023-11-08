@@ -23,13 +23,16 @@
 
   & div {
     color: inherit;
-  }
-  &:hover {
-  }
-  
+  }  
 }
 
 .chatButtonContainer:hover {
-  color: red;
+  // color: red;
   box-shadow: $box-shadow-btn-d;
+}
+
+.chatIcon {
+  path {
+    fill: $dark-gray;
+  }
 }

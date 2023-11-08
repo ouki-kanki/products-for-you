@@ -1,13 +1,12 @@
 import styles from './chatButton.module.scss'
-import chatIcon from '../../assets/svg_icons/chat.svg';
+import ChatIcon from '../../assets/svg_icons/chat.svg?react';
 
 
 export const ChatButton = () => {
   return (
     <div className={styles.chatButtonContainer}>
-      <div className="iconContainer">
-        <img src={chatIcon} alt="chat icon of chat btn" />  
-      </div>      
+        <ChatIcon 
+          className={styles.chatIcon}/>
       <div>Chat with us!</div>
       </div>
   )

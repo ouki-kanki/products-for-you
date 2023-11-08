@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  border: 2px solid $dark-gray;
+  border-radius: 10px;
+  // padding: 5px 10px; 
+  width: fit-content;
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  
+  & > div {
+    position: relative;
+    padding: 10px;
+    transition: background-color 0.2s ease-out;
+    user-select: none;
+
+    &:hover {
+      color: whitesmoke;
+      background-color: #555;
+    }
+
+    &:active {
+      background-color: $font_light_1_brown;
+    }
+  }  
+}
+
+.btn:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: $dark-gray;
+    width: 2px;
+    height: 100%
+}
+
+.active {
+  background-color: $font_light_1_brown;
+  // border-radius: 10px;
+}

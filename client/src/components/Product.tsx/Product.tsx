@@ -95,6 +95,7 @@ export const Product = ({ title }: Iproduct) => {
 
               
               <div className={styles.contentContainer}>
+                <h3>features</h3>
                 <ul>
                   <li>jumping higher</li>
                   <li>boost</li>
@@ -105,13 +106,13 @@ export const Product = ({ title }: Iproduct) => {
             </div>
           </div>
 
-          <div className={styles.bottomRegion}>
+          {/* <div className={styles.bottomRegion}>
             <ul>
               <li>waterproof</li>
               <li>flexible</li>
               <li>awesome</li>
             </ul>
-          </div>
+          </div> */}
           <div className={styles.actionContainer}>
             <Button>buy now</Button>
             <FontAwesomeIcon

@@ -42,4 +42,14 @@
   right: 20px;
   // background-color: red;
   color: red;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.searchBtn {
+  padding: 0;
+  width: 100%d;
 }

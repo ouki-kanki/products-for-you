@@ -1,7 +1,7 @@
 .productContainer {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 30px 200px auto;
+  grid-template-rows: 30px 200px;
   height: 100%;
   /* padding: 3rem; */
 }
@@ -12,6 +12,7 @@
 
 .medRegion {
   // display: flex;
+
   display: grid;
   grid-row: 2;
   grid-template-columns: 1fr 1fr;
@@ -49,7 +50,7 @@
   // border: 1px solid green;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 150px 1fr;
+  grid-template-rows: 1fr 120px 1fr;
   // flex-direction: column;
   // justify-content: space-between;
 }

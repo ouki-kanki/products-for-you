@@ -29,6 +29,8 @@ import { Home,
          ProductsPage,
         } from './components/pages'
 
+import { Search } from './components/pages/Search';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -46,6 +48,7 @@ function App() {
     }
   ] = useLazyGetProductsQuery()
 
+  // lazy use of rtk 
   const handleFetchProducts = () => {
     trigger()
   }
@@ -56,14 +59,11 @@ function App() {
       <div>IS LOADING</div>
     )
   }
-  // console.log(" the users", users)
+
   console.log("the data", products)
   return (
     <>
-    {/* <div className='main__container'> */}
-      {/* <div className='sidebar__container'> */}
-        <Sidebar/>
-      {/* </div> */}
+      <Sidebar/>
       <div className='content__nav-container'>
         <NavBar/>
         <div className='routes__container'>
@@ -79,11 +79,8 @@ function App() {
             <Route path='/account' element={<Account/>}/>
             <Route path='/settings' element={<Settings/>}/>
             <Route path='/products' element={<ProductsPage/>}/>
+            <Route path='/search' element={<Search/>}/>
           </Routes>
-        </div>
-
-        <div>
-          <Button variant='secondary'>Chat with Us</Button>
         </div>
 
         <div className='rest__container__for-testing'>
@@ -94,10 +91,6 @@ function App() {
               count is {count}
             </button>
           </div>
-          <p className="read-the-docs">
-            Click on the Vite and React logos to learn more
-          </p>
-          <h1>yoyo</h1>
         </div>
       </div>
     {/* </div> */}
