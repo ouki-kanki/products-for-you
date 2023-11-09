@@ -31,3 +31,25 @@ $border-green: 1px solid green;
   left: $sidebar-width;
   position: relative;
 }
+
+// ** images **
+
+.img__cover {
+  width: 100%;
+  aspect-ratio: 1 / 1; // width 1 , height 1 
+  object-fit: cover;
+}
+
+// stack the element inside the "stacked" container
+// NOTE: use z-index to arange what element will be on top
+.stacked {
+  display: grid;
+
+  & > * {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+}
+
+
+
