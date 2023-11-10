@@ -65,21 +65,18 @@ function App() {
     <>
       <Sidebar/>
       <div className='content__nav-container'>
-        <NavBar/>
         <div className='routes__container'>
-          <div className='chatButtonContainer'>
-            <ChatButton/>        
-          </div>
           <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/categories' element={<Categories/>}/>
-            <Route path='/cart' element={<Cart/>}/>
-            <Route path='/about' element={<About/>}/>
-            <Route path='/contact' element={<Contact/>}/>
-            <Route path='/account' element={<Account/>}/>
-            <Route path='/settings' element={<Settings/>}/>
-            <Route path='/products' element={<ProductsPage/>}/>
-            <Route path='/search' element={<Search/>}/>
+            <Route path='/' element={<Home/>}>
+              <Route path='/categories' element={<Categories/>}/>
+              <Route path='/cart' element={<Cart/>}/>
+              <Route path='/about' element={<About/>}/>
+              <Route path='/contact' element={<Contact/>}/>
+              <Route path='/account' element={<Account/>}/>
+              <Route path='/settings' element={<Settings/>}/>
+              <Route path='/products' element={<ProductsPage/>}/>
+              <Route path='/search' element={<Search/>}/>
+            </Route>
           </Routes>
         </div>
 

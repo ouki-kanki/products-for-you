@@ -36,7 +36,7 @@ export const NavBar = () => {
 
 
   return (
-    <div className={showNav ? styles.navContainer : styles.navContainer__hidden}>
+    <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       <div className={styles.searchContainer}>
         <SearchForm/>
       </div>
@@ -51,8 +51,17 @@ export const NavBar = () => {
           to='/'>
           <img src={bellIcon} alt="notification button" />
         </Link>
-        <Button size='m'>Login</Button>
+        <div className='margin-right-10'>
+          <Button size='m'>Login</Button>
+        </div>
+        <div className={styles.signUp}>
+          Sign Up
+        </div>
+        {/* <Button 
+          variant='secondary'
+          size='m'
+          >Sing Up</Button> */}
       </div>
-    </div>
+    </nav>
   )
 }

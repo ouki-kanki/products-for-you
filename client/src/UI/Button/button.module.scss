@@ -2,7 +2,7 @@
 .buttonContainer {
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   box-shadow: $box-shadow-btn;
   text-transform: uppercase;
   font-weight: 700;
@@ -24,6 +24,11 @@
     background: $radial-gradient-bl;
 
   }
+
+  &secondary {
+    color: beige;
+    background-color: $gray;
+  }
   
   &:hover {
     @include box-shadow-scale(1.04);
@@ -33,5 +38,7 @@
     box-shadow: none;
   }
 }
+
+
 
 
