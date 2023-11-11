@@ -1,0 +1,13 @@
+.gridContainer {
+  @include basic_auto_grid;
+  // TODO: this has to be the same on all pages 
+  padding: 20px 50px;
+
+  > div {
+    height: 120px;
+    background-color: hotpink;
+  }
+}
+
+.categoryCard {
+}

@@ -1,6 +1,8 @@
 import {useState} from 'react'
 import styles from './product.module.scss';
 
+import { useHover } from '../../hooks/useHover';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faStar } from '@fortawesome/free-regular-svg-icons';
 import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
@@ -27,14 +29,15 @@ interface Iproduct {
 
 
 export const Product = ({ title }: Iproduct) => {
-  const [isHovered, setIshovered] = useState(false)
+  // const [isHovered, setIshovered] = useState(false)
+  const { isHovered, activateHover, deactivateHover } = useHover()
 
   const handleMouseEnter = () => {
-    setIshovered(true)
+    activateHover()
   }
 
   const handleMouseLeave = () => {
-    setIshovered(false)  
+    deactivateHover()
   }
 
   return (

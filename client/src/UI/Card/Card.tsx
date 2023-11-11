@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 import styles from './card.module.scss'
 
 
-type WidthType = 'medium' | 'wide'
+type WidthType = 'medium' | 'wide' | 'fluid'
 
 type CardProps = {
   width: WidthType
@@ -24,7 +24,9 @@ export const Card = ({ children, width }: PropsWithChildren<CardProps> ) => {
       case 'medium':
         return medium
       case 'wide':
-        return wide        
+        return wide
+      case 'fluid':
+        return ''       
     }
   }
   
