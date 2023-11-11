@@ -29,7 +29,6 @@ interface Iproduct {
 
 
 export const Product = ({ title }: Iproduct) => {
-  // const [isHovered, setIshovered] = useState(false)
   const { isHovered, activateHover, deactivateHover } = useHover()
 
   const handleMouseEnter = () => {

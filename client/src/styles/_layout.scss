@@ -59,11 +59,17 @@ $border-green: 1px solid green;
 // MIXINS
 // TODO have mixins also in a seperate folder, have to deal with that.
 
-@mixin basic_auto_grid() {
+@mixin basic_auto_grid($min: 15rem) {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
   grid-gap: 1.5rem;  
 }
+
+// @mixin basic_auto_grid() {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+//   grid-gap: 1.5rem;  
+// }
 
 
 

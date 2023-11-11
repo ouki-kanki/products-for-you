@@ -1,10 +1,10 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, HTMLProps } from 'react'
 import styles from './card.module.scss'
 
 
 type WidthType = 'medium' | 'wide' | 'fluid'
 
-type CardProps = {
+interface ICardProps extends HTMLProps<HTMLDivElement>  {
   width: WidthType
 }
 
@@ -17,7 +17,7 @@ type CardProps = {
  * 
  * this have an embedded badding 2rem 1.3rem
  */
-export const Card = ({ children, width }: PropsWithChildren<CardProps> ) => {
+export const Card = ({ children, width, ...rest }: PropsWithChildren<ICardProps> ) => {
   const style = (width: WidthType): string => {
     const { medium, wide } = styles
     switch(width) {
@@ -33,6 +33,7 @@ export const Card = ({ children, width }: PropsWithChildren<CardProps> ) => {
   return (
     <div 
       className={`${styles.cardContainer} ${style(width)}`}
+      { ...rest }
       >
       {children}
     </div>

@@ -1,10 +1,11 @@
 .gridContainer {
-  @include basic_auto_grid;
+  // TODO: value behaves in a weird manner. check why is that
+  @include basic_auto_grid(18rem);
   // TODO: this has to be the same on all pages 
   padding: 20px 50px;
 
   > div {
-    height: 120px;
+    // height: 120px;
     background-color: hotpink;
   }
 }
