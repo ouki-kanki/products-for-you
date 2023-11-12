@@ -3,7 +3,7 @@
   top: 0;
   display: flex;
   height: 3.5rem;
-  padding: 10px 10px;
+  padding: 10px 20px;
   margin-left: auto;
   justify-content: flex-end;
   align-items: flex-end;
@@ -54,7 +54,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // text-align: center;
+  cursor: pointer;
+  
+  &:hover {
+    & span {
+      color: #917e7e;
+      font-weight: bold;
+      line-height: 150%;
+      transform: translateY(-3px) scaleY(1.2);
+    }
+  }
+  
+  & span {
+    transition: transform .2s ease-in;
+    color: $font_light_1_brown;
+
+    &:hover {
+    }
+  }
+
 }
 
 

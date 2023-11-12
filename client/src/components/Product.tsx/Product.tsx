@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import styles from './product.module.scss';
 
 import { useHover } from '../../hooks/useHover';
@@ -10,7 +10,6 @@ import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons
 
 import { Card } from '../../UI/Card/Card';
 import { Button } from '../../UI/Button/Button';
-
 
 import kdeImage from '../../assets/kd14_low_res.png'
 import kdeRight from '../../assets/kd14_right.jpg'
@@ -30,26 +29,23 @@ interface Iproduct {
 
 export const Product = ({ title }: Iproduct) => {
   const { isHovered, activateHover, deactivateHover } = useHover()
+  const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
 
-  const handleMouseEnter = () => {
-    activateHover()
-  }
-
-  const handleMouseLeave = () => {
-    deactivateHover()
-  }
+  console.log(currentImage)
 
   return (
     <div>
-      <Card width='medium'>
+      <Card
+        onMouseEnter={activateHover}
+        onMouseLeave={deactivateHover} 
+        width='medium'
+        >
         <FontAwesomeIcon
           className={styles.heartIcon} 
           icon={faHeart} 
           size='2x'/>
         <div 
           className={styles.productContainer}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
           >
           <div className={styles.topRegion}>
             <h2>asesome t-shirt!</h2>
@@ -59,7 +55,7 @@ export const Product = ({ title }: Iproduct) => {
             <div className={styles.ml}>
               <div className={styles.imageContainer}>
                 <img 
-                  src={kdeImage}
+                  src={currentImage}
                   className={`${styles.imageMain} ${isHovered && styles.imageHovered}`} 
                   alt="shoe image" />
               </div>
@@ -123,18 +119,28 @@ export const Product = ({ title }: Iproduct) => {
               size='2x'
               />    
           </div>
+
+          {/* <div className={`${styles.productPreview} ${styles.hidden}`}>
+            <img src={currentImage} alt="product preview"/>
+          </div> */}
         </div>
 
         {/* view selectors */}
         <div 
           className={`${styles.productViewsContainer} ${isHovered && styles.productViewsContainer_stayBack}`}>
-          <div>
+          <div
+            onClick={() => setCurrentImage(kdeRight)}
+          >
             <img src={kdeRight} alt="right view of the product" />
           </div>
-          <div>
+          <div
+            onClick={() => setCurrentImage(kdeTop)}
+          >
             <img src={kdeTop} alt="top view of the product" />
           </div>
-          <div>
+          <div
+            onClick={() => setCurrentImage(kdeBack)}
+            >
             <img src={kdeBack} alt="back view of the product" />
           </div>
         </div>

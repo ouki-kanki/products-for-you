@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
 import { Link } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
@@ -13,6 +14,7 @@ import bellIcon from '../../assets/svg_icons/bell.svg'
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
+  const navigate = useNavigate()
 
   const handleNavShow =  useCallback(() => {
     setTimeout(() => {
@@ -34,6 +36,10 @@ export const NavBar = () => {
     }
   }, [lastScrollValue, handleNavShow])
 
+  const handleSignUp = () => {
+    navigate('/sign-up')
+  }
+
 
   return (
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
@@ -54,13 +60,12 @@ export const NavBar = () => {
         <div className='margin-right-10'>
           <Button size='m'>Login</Button>
         </div>
-        <div className={styles.signUp}>
-          Sign Up
+        <div 
+          className={styles.signUp}
+          onClick={handleSignUp}
+          >
+          Sign <span>U</span>p
         </div>
-        {/* <Button 
-          variant='secondary'
-          size='m'
-          >Sing Up</Button> */}
       </div>
     </nav>
   )
