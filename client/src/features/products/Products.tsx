@@ -1,8 +1,13 @@
 import styles from './products.module.scss';
 import { Product } from "../../components/Product.tsx/Product"
-
+import { Modal } from '../../components/Modal/Modal';
 
 export const Products = () => {
+  const handleClose = () => {
+    
+  }
+
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.productsContainer}>
@@ -12,6 +17,9 @@ export const Products = () => {
           </div>
         ))}
       </div>
+      <Modal isOpen={true} onClose={handleClose}>
+        yoyoyo
+      </Modal>
     </div>
   )
 }

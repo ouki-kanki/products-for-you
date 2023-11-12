@@ -12,11 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruckFast, faPaintRoller } from '@fortawesome/free-solid-svg-icons';
 import { faPaypal } from '@fortawesome/free-brands-svg-icons';
 
-
-import { NavBar } from './components/NavBar/NavBar'
 import { Sidebar } from './components/Sidebar/Sidebar'
-import { Button } from './UI/Button/Button';
-import { ChatButton } from './components/Buttons/ChatButton';
 
 import { Home, 
          About, 
@@ -24,7 +20,6 @@ import { Home,
          Account, 
          Categories, 
          Contact,
-         ListProductsTest, 
          Settings,
          ProductsPage,
         } from './components/pages'
