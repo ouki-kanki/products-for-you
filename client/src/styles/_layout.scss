@@ -12,28 +12,25 @@ $sidebar-width: 250px;
 // up to 1200
 $btn_height: 40px;
 
-// var
-$border-red: 1px solid red; 
-$border-green: 1px solid green; 
 
-.main__container {
+// .main__container {
+//   display: flex;
+// }
+
+.app_container {
   display: flex;
-}
-
-.sidebar__container {
-  top: 0;
-  left: 0;
-  background-color: black;
-  position: fixed;
-  height: 100vh;
-  background-color: azure;
-  width: 200px;
+  // flex-direction: column;
 }
 
 .content__nav-container {
-  width: calc(100% - $sidebar-width);
-  left: $sidebar-width;
+  flex-grow: 1;
+  // width: calc(100% - $sidebar-width);
+  // left: $sidebar-width;
   position: relative;
+
+  // & __hidden {
+  //   width: 100%;
+  // }
 }
 
 // ** images **
@@ -71,6 +68,23 @@ $border-green: 1px solid green;
 //   grid-gap: 1.5rem;  
 // }
 
+// BASIC STYLE FOR ICONS
 
-
+@mixin icon_btn_square() {
+  width: $btn_height;
+  height: $btn_height;
+  margin-right: .4rem;
+  cursor: pointer;
+  
+  background: linear-gradient(133deg, rgba(49, 39, 65, 0.50) 6.04%, rgba(195, 180, 221, 0.50) 94.35%);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  & img {
+    width: 60%;
+    // top: 50%;
+  }
+}
 

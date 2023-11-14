@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { NavLink, Link } from "react-router-dom";
+import type { RootState } from '../../app/store';
+
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
+import { useSelector } from 'react-redux';
+
 
 import { SideBarField } from './SideBarField';
 
@@ -11,10 +15,19 @@ import { sideBarData } from './sidebarData';
 
 
 export const Sidebar = () => {
+  const navigate = useNavigate()
+  const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
+  console.log(isSideBarHidden);
+
+  const navContainerStyles = `
+    ${styles.sidebarContainer} 
+    ${isSideBarHidden ? styles.sidebarContainer__hidden : ''}
+  `
 
   return (
-    <div className={styles.sidebarContainer}>
-      <div 
+    <div className={navContainerStyles}>
+      <div
+        onClick={() => navigate('/')} 
         className={styles.logoContainer}
         >
         <h2>Products for you</h2>

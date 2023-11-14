@@ -7,7 +7,6 @@ export const Products = () => {
     
   }
 
-
   return (
     <div className={styles.mainContainer}>
       <div className={styles.productsContainer}>

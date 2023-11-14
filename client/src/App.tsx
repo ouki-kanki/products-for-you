@@ -22,6 +22,7 @@ import { Home,
          Contact,
          Settings,
          ProductsPage,
+         Login
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
@@ -55,9 +56,11 @@ function App() {
     )
   }
 
+  // TODO: receive hide navbar state from redux to change the class of the content to be max - width
+
   console.log("the data", products)
   return (
-    <>
+    <div className='app_container'>
       <Sidebar/>
       <div className='content__nav-container'>
         <div className='routes__container'>
@@ -71,6 +74,7 @@ function App() {
               <Route path='/settings' element={<Settings/>}/>
               <Route path='/products' element={<ProductsPage/>}/>
               <Route path='/search' element={<Search/>}/>
+              <Route path='login' element={<Login/>}/>
             </Route>
           </Routes>
         </div>
@@ -86,7 +90,7 @@ function App() {
         </div>
       </div>
     {/* </div> */}
-    </>
+    </div>
   )
 }
 

@@ -1,13 +1,18 @@
 .sidebarContainer {
   top: 0;
   left: 0;
-  position: fixed;
+  // position: fixed;
   height: 100vh;
   background-color: white;
   width: $sidebar-width;
   display: flex;
   flex-direction: column;
-  // border: $border-green;
+  transition: transform .3s ease-out;
+
+  &__hidden {
+    transform: translateX(-300px);
+    // left: -300px;
+  }
 }
 
 .logoContainer {
@@ -17,6 +22,7 @@
   font-size: 1rem;
   text-align: center;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .fieldsContainer {

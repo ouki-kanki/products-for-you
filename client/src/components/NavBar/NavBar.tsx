@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
-import { Link } from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
+
+import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
@@ -15,6 +17,13 @@ export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
   const navigate = useNavigate()
+  const location = useLocation();
+
+  console.log(location.pathname)
+
+  const handleNavigate = (destination: string) => () => {
+    navigate(destination);
+  }
 
   const handleNavShow =  useCallback(() => {
     setTimeout(() => {
@@ -28,6 +37,7 @@ export const NavBar = () => {
     }, 50)
   }, [lastScrollValue])
 
+  // TODO: refactor in a custom hook
   useEffect(() => {
     window.addEventListener('scroll', handleNavShow)
 
@@ -35,10 +45,6 @@ export const NavBar = () => {
       window.removeEventListener('scroll', handleNavShow)
     }
   }, [lastScrollValue, handleNavShow])
-
-  const handleSignUp = () => {
-    navigate('/sign-up')
-  }
 
 
   return (
@@ -58,11 +64,13 @@ export const NavBar = () => {
           <img src={bellIcon} alt="notification button" />
         </Link>
         <div className='margin-right-10'>
-          <Button size='m'>Login</Button>
+          <Button
+            onClick={handleNavigate('login')} 
+            size='m'>Login</Button>
         </div>
         <div 
           className={styles.signUp}
-          onClick={handleSignUp}
+          onClick={handleNavigate('sign-up')}
           >
           Sign <span>U</span>p
         </div>
