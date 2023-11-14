@@ -12,11 +12,6 @@ $sidebar-width: 250px;
 // up to 1200
 $btn_height: 40px;
 
-
-// .main__container {
-//   display: flex;
-// }
-
 .app_container {
   display: flex;
   // flex-direction: column;
@@ -27,14 +22,9 @@ $btn_height: 40px;
   // width: calc(100% - $sidebar-width);
   // left: $sidebar-width;
   position: relative;
-
-  // & __hidden {
-  //   width: 100%;
-  // }
 }
 
 // ** images **
-
 .img__cover {
   width: 100%;
   aspect-ratio: 1 / 1; // width 1 , height 1 

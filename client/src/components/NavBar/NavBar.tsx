@@ -12,14 +12,21 @@ import { Button } from '../../UI/Button/Button';
 import cartIcon from '../../assets/svg_icons/cart.svg';
 import bellIcon from '../../assets/svg_icons/bell.svg'
 
+import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// the native type provited from react gives errors
+interface IKeyboardEvent {
+  key: string
+}
+
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
   const navigate = useNavigate()
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  console.log(location.pathname)
 
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
@@ -37,42 +44,71 @@ export const NavBar = () => {
     }, 50)
   }, [lastScrollValue])
 
-  // TODO: refactor in a custom hook
+  // TODO: does the warning that navigate is missing from deps gives problems ?
+  const handleBack = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") { 
+      navigate('/')     
+      console.log('yoyoyo', e)
+    }
+  }, [])
+
+
   useEffect(() => {
+
     window.addEventListener('scroll', handleNavShow)
+    window.addEventListener('keydown', handleBack as EventListenerOrEventListenerObject);
 
     return () => {
       window.removeEventListener('scroll', handleNavShow)
+      window.removeEventListener('keydown', handleBack as EventListenerOrEventListenerObject)
     }
-  }, [lastScrollValue, handleNavShow])
+  }, [lastScrollValue, handleNavShow, handleBack])
+
 
 
   return (
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
-      <div className={styles.searchContainer}>
-        <SearchForm/>
+      {/* LEFT SIDE */}
+      <div className={styles.leftContainer}>
+        {pathname === '/login' && (
+          <Link
+            to='/'
+            className={`${styles.icons} ${styles.back}`}
+            > 
+            <FontAwesomeIcon
+              size='2x' 
+              icon={faHandPointLeft}/>
+          </Link>
+        )}
       </div>
-      <div className={styles.buttonsContainer}>
-        <Link
-          className={styles.icons}
-          to='/cart'>
-          <img src={cartIcon} alt="cart button" />
-        </Link>
-        <Link
-          className={styles.icons}
-          to='/'>
-          <img src={bellIcon} alt="notification button" />
-        </Link>
-        <div className='margin-right-10'>
-          <Button
-            onClick={handleNavigate('login')} 
-            size='m'>Login</Button>
+
+      {/* RIGHT SIDE */}
+      <div className={styles.rightContainer}>
+        <div className={styles.searchContainer}>
+          <SearchForm/>
         </div>
-        <div 
-          className={styles.signUp}
-          onClick={handleNavigate('sign-up')}
-          >
-          Sign <span>U</span>p
+        <div className={styles.buttonsContainer}>
+          <Link
+            className={styles.icons}
+            to='/cart'>
+            <img src={cartIcon} alt="cart button" />
+          </Link>
+          <Link
+            className={styles.icons}
+            to='/'>
+            <img src={bellIcon} alt="notification button" />
+          </Link>
+          <div className='margin-right-10'>
+            <Button
+              onClick={handleNavigate('login')} 
+              size='m'>Login</Button>
+          </div>
+          <div 
+            className={styles.signUp}
+            onClick={handleNavigate('sign-up')}
+            >
+            Sign <span>U</span>p
+          </div>
         </div>
       </div>
     </nav>

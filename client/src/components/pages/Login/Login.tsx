@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { showSidebar, hideSidebar } from '../../../features/UiFeatures/UiFeaturesSlice'
 
 import { useDispatch } from 'react-redux'
@@ -10,7 +10,6 @@ export const Login = () => {
 
     return () => {
       dispatch(showSidebar())
-      console.log("unmount login")
     }
   }, [])
 
