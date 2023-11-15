@@ -2,16 +2,28 @@ import { InputHTMLAttributes, forwardRef } from 'react'
 import styles from './Input.module.scss'
 
 
-interface IInput extends InputHTMLAttributes<HTMLInputElement>{
+interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
   placeholder?: string;
-  value: string;
+  value?: string;
   variant: 'primary' | 'secondary' | 'error'
-  disabled: boolean,
+  disabled?: boolean,
+  hasLabel?: boolean
 }
 
-export type Ref = HTMLInputElement
+interface IInputWithLabel extends IInputBase {
+  hasLabel: true,
+  label: string
+}
 
-export const Input = forwardRef<Ref, IInput>(({ placeholder, value, variant = 'primary', disabled = false, ...rest }, ref) => {
+interface IInputWithoutLabel extends IInputBase {
+  hasLabel?: false;
+}
+
+type IInput = IInputWithLabel | IInputWithoutLabel
+
+type Ref = HTMLInputElement
+
+export const Input = forwardRef<Ref, IInput>(({ placeholder, value, variant = 'primary', disabled = false, hasLabel=false, label, ...rest }, ref) => {
 
   const inputStyles = `
     ${styles.input}
@@ -20,12 +32,15 @@ export const Input = forwardRef<Ref, IInput>(({ placeholder, value, variant = 'p
   `
 
   return (
-    <input
-      className={inputStyles}
-      placeholder={placeholder}
-      value={value}
-      ref={ref}
-      { ...rest }
-    />
+    <div className={styles.inputContainer}>
+      <label>{label}</label>
+      <input
+        className={inputStyles}
+        placeholder={placeholder}
+        value={value}
+        ref={ref}
+        { ...rest }
+      />
+    </div>
   )
 })

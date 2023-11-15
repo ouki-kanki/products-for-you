@@ -20,8 +20,8 @@
   display: flex;
 }
 
-.back {
-
+.leftContainer {
+  margin-left: 1.2rem;
 }
 
 .searchContainer {
@@ -77,11 +77,14 @@
   & span {
     transition: transform .2s ease-in;
     color: $font_light_1_brown;
-
-    &:hover {
-    }
   }
+}
 
+// TODO: make this utility
+.centerField {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 

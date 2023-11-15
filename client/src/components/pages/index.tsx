@@ -7,3 +7,4 @@ export {default as Account} from './Account'
 export {default as Settings} from './Settings'
 export { ProductsPage } from './ProductsPage';
 export { Login } from './Login/Login';
+export { SignUp } from './SignUp/SignUp';

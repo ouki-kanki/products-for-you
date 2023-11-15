@@ -15,11 +15,6 @@ import bellIcon from '../../assets/svg_icons/bell.svg'
 import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-// the native type provited from react gives errors
-interface IKeyboardEvent {
-  key: string
-}
-
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
@@ -98,10 +93,14 @@ export const NavBar = () => {
             to='/'>
             <img src={bellIcon} alt="notification button" />
           </Link>
-          <div className='margin-right-10'>
-            <Button
-              onClick={handleNavigate('login')} 
-              size='m'>Login</Button>
+          <div className={`margin-right-10 ${styles.centerField}`}>
+            { pathname === '/login' ? 
+              <p className='annotation'>Don't Have an Account ? </p>
+                                    :
+              <Button
+                onClick={handleNavigate('login')} 
+                size='m'>Login</Button>
+            }
           </div>
           <div 
             className={styles.signUp}

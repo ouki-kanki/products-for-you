@@ -1,3 +1,13 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  
+  label {
+    align-self: flex-start;
+  }
+}
+
+
 .input {
   height: $btn_height;
   // color: $search_color_primary;
@@ -17,7 +27,8 @@
   }
 
   &::placeholder {
-    color: $search_color_primary;
+    // color: $search_color_primary;
+    color: #bdbdbd;
     font-size: medium;
     font-weight: bold;
   }

@@ -22,7 +22,8 @@ import { Home,
          Contact,
          Settings,
          ProductsPage,
-         Login
+         Login,
+         SignUp
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
@@ -75,6 +76,7 @@ function App() {
               <Route path='/products' element={<ProductsPage/>}/>
               <Route path='/search' element={<Search/>}/>
               <Route path='login' element={<Login/>}/>
+              <Route path='sign-up' element={<SignUp/>}/>
             </Route>
           </Routes>
         </div>
