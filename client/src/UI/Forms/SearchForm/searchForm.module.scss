@@ -14,7 +14,6 @@
 
 .input {
   height: $btn_height;
-  // color: $search_color_primary;
   padding: 10px 20px;
   border-radius: 10px;
   border: 2px solid  #dcdcdc;
@@ -35,19 +34,11 @@
     font-size: medium;
     font-weight: bold;
   }
-
-  // &::after {
-  //   content: "\f001";
-  //   font-family: 'Font Awesome 5 Free';
-  //   font-weight: 900;
-  // }
 }
 
 .searchIcon {
   position: absolute;
-  // top: 34%;
   right: 20px;
-  // background-color: red;
   color: red;
   cursor: pointer;
 

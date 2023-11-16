@@ -1,8 +1,11 @@
 import React from 'react'
 
+import { WithoutSidebar } from '../../../hocs/WithoutSidebar'
 
 export const SignUp = () => {
   return (
-    <div>SignUp</div>
+    <WithoutSidebar>
+      <div>SignUp</div>
+    </WithoutSidebar>  
   )
 }

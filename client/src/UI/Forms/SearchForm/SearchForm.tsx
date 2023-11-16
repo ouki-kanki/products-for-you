@@ -49,7 +49,6 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
           onClick={handleSubmit}
           className={styles.searchIcon} 
           icon={faSearch} 
-          // color=''
           size='1x'/>
       </form>
   )

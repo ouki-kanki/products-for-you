@@ -1,87 +1,96 @@
-import { useEffect } from 'react'
-import { showSidebar, hideSidebar } from '../../../features/UiFeatures/UiFeaturesSlice'
+import { useRef, useEffect, useState } from 'react';
 import styles from './login.module.scss'
 
-import { Input } from '../../../UI/Forms/Input/Input'
+import type { IInput, IInputBase } from '../../../UI/Forms/Inputs/Input/Input';
+
+import { WithoutSidebar } from '../../../hocs/WithoutSidebar'
+
+import { Input, InputWithPassword } from '../../../UI/Forms/Inputs'
 import { Button } from '../../../UI/Button/Button'
 
-import { useDispatch } from 'react-redux'
 
-interface ILoginDataField {
-  label: string;
-  placeholder: string;
-  type?: string,
-  hasLabel?: boolean; 
-}
 
-const loginData: Array<ILoginDataField> = [
+interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel'> {
+  id: number,
+  hasLabel: boolean
+} 
+
+
+const loginFields: Array<IloginInput> = [
+  // TODO : when there is a field label make it so there is no use for the flag 'hasLabel'
   {
-    label: 'email',
-    placeholder: 'put your email',
+    id: 1,
+    label: 'Email',
+    placeholder: '',
+    hasLabel: true,
   },
   {
+    id: 2,
     label: 'Password',
     placeholder: 'Enter password',
-    type: 'password'
+    type: 'password',
+    hasLabel: true,
   }
 ]
 
 
 export const Login = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(hideSidebar())
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  })
 
-    return () => {
-      dispatch(showSidebar())
+  const firstInputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    if (firstInputRef.current) {
+      firstInputRef.current.focus()
     }
-  }, [])
+  })
 
   return (
-    <div className={styles.mainContainer}>
-      <div className={styles.cardContainer}>
-        <div className={styles.divider}></div>
-        <div className={styles.leftContainer}>
-          yoyo
-        </div>
-        <div className={styles.rightContainer}>
-          <div className={styles.formContainer}>
-            <form className={styles.form}>
-              <h2>Login</h2>
-              <div className={styles.inputContainer}>
-                <Input
-                  placeholder='yo'
-                  variant='primary'
-
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <Input
-                  placeholder='yo'
-                  variant='primary'              
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <Input
-                  placeholder='yo'
-                  variant='primary'
-                  hasLabel={true}  
-                  label='tototo'
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <Input
-                  placeholder='yo'
-                  variant='primary'              
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <Button>Login</Button>
-              </div>
-            </form>
+    <WithoutSidebar>
+      <div className={styles.mainContainer}>
+        <div className={styles.cardContainer}>
+          <div className={styles.divider}></div>
+          <div className={styles.leftContainer}>
+            yoyo
+          </div>
+          <div className={styles.rightContainer}>
+            <div className={styles.formContainer}>
+              <form className={styles.form}>
+                <h2>Login</h2>
+                {loginFields.map(({ placeholder, label, hasLabel, type, id }) => (
+                  <div className={styles.inputContainer} key={id}>
+                    {hasLabel ?
+                    (
+                      <Input
+                        ref= {id === 1 ? firstInputRef : null}
+                        placeholder={placeholder}
+                        hasLabel={hasLabel}
+                        label={label as string}
+                        type={type}
+                        variant='primary'
+                      />
+                      ) :
+                      <Input
+                        ref= {id === 1 ? firstInputRef : null}
+                        placeholder={placeholder}
+                        label={label as string}
+                        type={type}
+                        variant='primary'
+                      />
+                    }
+                  </div>
+                ))}
+                <div className={styles.inputContainer}>
+                  <Button>Login</Button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </WithoutSidebar>
   )
 }

@@ -42,7 +42,8 @@ export const NavBar = () => {
   // TODO: does the warning that navigate is missing from deps gives problems ?
   const handleBack = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape") { 
-      navigate('/')     
+      navigate(-1) // this is like legacy history?
+
       console.log('yoyoyo', e)
     }
   }, [])
@@ -65,7 +66,7 @@ export const NavBar = () => {
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       {/* LEFT SIDE */}
       <div className={styles.leftContainer}>
-        {pathname === '/login' && (
+        {pathname !== '/' && (
           <Link
             to='/'
             className={`${styles.icons} ${styles.back}`}

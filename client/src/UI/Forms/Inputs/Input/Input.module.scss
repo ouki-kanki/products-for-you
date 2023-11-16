@@ -1,5 +1,6 @@
-.inputContainer {
+.inputWithLabel {
   display: flex;
+  width: 270px;
   flex-direction: column;
   
   label {
@@ -7,10 +8,23 @@
   }
 }
 
+.inputContainer {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  svg {
+    path {
+      color: #dcdcdc;
+    }
+  }
+}
+
 
 .input {
   height: $btn_height;
-  // color: $search_color_primary;
+  flex-grow: 1;
   padding: 10px 20px;
   border-radius: 10px;
   border: 2px solid  #dcdcdc;
@@ -34,20 +48,17 @@
   }
 }
 
-.searchIcon {
+.icon {
   position: absolute;
-  // top: 34%;
   right: 20px;
-  // background-color: red;
-  color: red;
   cursor: pointer;
-
+  user-select: none;
   &:hover {
     transform: scale(1.1);
   }
 }
 
-.searchBtn {
-  padding: 0;
-  width: 100%d;
-}
+// .searchBtn {
+//   padding: 0;
+//   width: 100%;
+// }

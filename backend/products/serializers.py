@@ -107,7 +107,6 @@ class ProductItemSerializer(serializers.ModelSerializer):
     def get_discount_price(self, obj):
         items = obj.discount.all()
 
-
         if items:
             total_discount_perc = sum([discount.discount_value for discount in items])
 
@@ -115,7 +114,6 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
             return obj.price - (obj.price * (decimal.Decimal(normalized_total_discount_perc) / 100))
         return 'there is no discount'
-
 
     def get_discounts(self, obj):
         items = obj.discount.all()
