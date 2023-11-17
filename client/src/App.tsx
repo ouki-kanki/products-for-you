@@ -83,15 +83,8 @@ function App() {
 
         <div className='rest__container__for-testing'>
           <button onClick={() => dispatch(fetchUsers())}>fetch users</button>
-          <h1>Vite + React</h1>
-          <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>
-              count is {count}
-            </button>
-          </div>
         </div>
       </div>
-    {/* </div> */}
     </div>
   )
 }

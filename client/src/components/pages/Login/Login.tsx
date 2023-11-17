@@ -5,7 +5,7 @@ import type { IInput, IInputBase } from '../../../UI/Forms/Inputs/Input/Input';
 
 import { WithoutSidebar } from '../../../hocs/WithoutSidebar'
 
-import { Input, InputWithPassword } from '../../../UI/Forms/Inputs'
+import { Input } from '../../../UI/Forms/Inputs'
 import { Button } from '../../../UI/Button/Button'
 
 
