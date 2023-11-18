@@ -13,39 +13,23 @@ type Ref = HTMLInputElement
 export interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
   placeholder?: string;
   value?: string;
-  variant?: 'primary' | 'secondary' | 'error'
-  disabled?: boolean,
-  label?: string,
-  hasLabel?: never,
-  type?: string
+  variant?: 'primary' | 'secondary' | 'error';
+  disabled?: boolean;
+  label?: string;
+  type?: string;
+  error?: string | null
 }
 
-interface IInputWithLabel extends Omit<IInputBase, 'hasLabel' | 'label'> {
-  hasLabel: true,
-  label: string
-}
-
-// interface IInputBase extends InputHTMLAttributes<HTMLInputElement> {
-//   placeholder: string;
-//   value?: string;
-//   variant?: 'primary' | 'secondary' | 'error'
-//   disabled: boolean;
-//   hasLabel
+  // hasLabel: never;
+// interface IInputWithLabel extends Omit<IInputBase, 'hasLabel' | 'label'> {
+//   label: string
 // }
 
-export type IInput = IInputBase | IInputWithLabel
+// export type IInput = IInputBase | IInputWithLabel
 
 
-export const Input = forwardRef<Ref, IInput>(({ placeholder, value, variant = 'primary', disabled = false, hasLabel= false, type, label, ...rest }, ref) => {
+export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant = 'primary', type, label, error, ...rest }, ref) => {
   const [isHidden, setIsHidden] = useState(true);
-  // const inputStyles = `
-  //   ${styles.input}
-  //   ${disabled && styles[`input${disabled}`]}
-  //   ${styles[`input[${variant}]`]}
-  // `
-
-  console.log(isHidden);
-
 
   // TODO: find a more elegand way 
   /**
@@ -64,12 +48,12 @@ export const Input = forwardRef<Ref, IInput>(({ placeholder, value, variant = 'p
 
   return (
     <div className={styles.inputWithLabel}>
-      {hasLabel && (
+      {label && (
         <label>{label}</label>
       )}
       <div className={styles.inputContainer}>
         <input
-          className={styles.input}
+          className={`${styles.input} ${error && styles.error}`}
           placeholder={placeholder}
           // 1 - password & hidden -> type . 
           type={handleType(type as string)}
@@ -86,6 +70,9 @@ export const Input = forwardRef<Ref, IInput>(({ placeholder, value, variant = 'p
           )
         }
       </div>
+      {error && (
+        <div className={styles.errorMessage}>{error}</div>
+      )}
     </div>
   )
 })

@@ -13,7 +13,6 @@ interface ICategory {
 export const Category = ({ title, image, alt }: ICategory) => {
   const { activateHover, deactivateHover, isHovered } = useHover()
 
-  console.log(isHovered)
 
   return (
     <Card

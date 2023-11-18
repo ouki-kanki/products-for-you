@@ -1,7 +1,9 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, ChangeEvent, SyntheticEvent } from 'react';
 import styles from './login.module.scss'
 
-import type { IInput, IInputBase } from '../../../UI/Forms/Inputs/Input/Input';
+import type { IInputBase } from '../../../UI/Forms/Inputs/Input/Input';
+import { useValidation } from '../../../hooks/useValidation/useValidation';
+
 
 import { WithoutSidebar } from '../../../hocs/WithoutSidebar'
 
@@ -9,36 +11,65 @@ import { Input } from '../../../UI/Forms/Inputs'
 import { Button } from '../../../UI/Button/Button'
 
 
+//  types
 
-interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel'> {
+type Ievent = ChangeEvent<HTMLInputElement>
+
+interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
   id: number,
-  hasLabel: boolean
+  value: string
+  onChange: (e: Ievent) => void,
+  onBlur: () => void,
+  error: string | null 
 } 
 
 
-const loginFields: Array<IloginInput> = [
-  // TODO : when there is a field label make it so there is no use for the flag 'hasLabel'
-  {
-    id: 1,
-    label: 'Email',
-    placeholder: '',
-    hasLabel: true,
-  },
-  {
-    id: 2,
-    label: 'Password',
-    placeholder: 'Enter password',
-    type: 'password',
-    hasLabel: true,
-  }
-]
+//  helpers
 
+const getLoginFields = (handleEmailChange: (e: Ievent) => void, handlePasswordChange: (e: Ievent) => void, email: string, password: string, handleInputBlur: () => void, emailError: string | null , passwordError: string | null): Array<IloginInput> => (
+  [
+    {
+      id: 1,
+      label: 'Email',
+      value: email,
+      placeholder: '',
+      onChange: handleEmailChange,
+      onBlur: handleInputBlur,
+      error: emailError
+    },
+    {
+      id: 2,
+      label: 'Password',
+      value: password,
+      placeholder: 'Enter password',
+      type: 'password',
+      onChange: handlePasswordChange,
+      onBlur: handleInputBlur,
+      error: passwordError,
+    }
+  ]
+)
+
+//  ** MAIN COMPONENT ** 
 
 export const Login = () => {
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
-  })
+  const {
+    email,
+    emailError,
+    password,
+    passwordError,
+    passwordStrength,
+    handleEmailChange,
+    handlePasswordChange,
+    handleInputBlur,
+    isTouched,
+    isValid
+  } = useValidation();
+
+  // console.log(isTouched, passwordError, emailError, passwordStrength)
+  console.log("valid", isValid)
+
+  const loginFields = getLoginFields(handleEmailChange, handlePasswordChange, email, password, handleInputBlur, emailError, passwordError)
 
   const firstInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -46,8 +77,14 @@ export const Login = () => {
     if (firstInputRef.current) {
       firstInputRef.current.focus()
     }
-  })
+  }, [])
 
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault()
+    // console.log("submit is clicked")
+  }
+
+  // console.log(email, password);
   return (
     <WithoutSidebar>
       <div className={styles.mainContainer}>
@@ -58,33 +95,21 @@ export const Login = () => {
           </div>
           <div className={styles.rightContainer}>
             <div className={styles.formContainer}>
-              <form className={styles.form}>
+              <form className={styles.form} onSubmit={handleSubmit}>
                 <h2>Login</h2>
-                {loginFields.map(({ placeholder, label, hasLabel, type, id }) => (
+                {loginFields.map(({ id, ...rest }) => (
                   <div className={styles.inputContainer} key={id}>
-                    {hasLabel ?
-                    (
-                      <Input
-                        ref= {id === 1 ? firstInputRef : null}
-                        placeholder={placeholder}
-                        hasLabel={hasLabel}
-                        label={label as string}
-                        type={type}
-                        variant='primary'
-                      />
-                      ) :
-                      <Input
-                        ref= {id === 1 ? firstInputRef : null}
-                        placeholder={placeholder}
-                        label={label as string}
-                        type={type}
-                        variant='primary'
-                      />
-                    }
+                    <Input
+                      ref= {id === 1 ? firstInputRef : null}
+                      {...rest}
+                    />
                   </div>
                 ))}
                 <div className={styles.inputContainer}>
-                  <Button>Login</Button>
+                  <Button 
+                    type='submit'
+                    disabled={!isValid}
+                    >Login</Button>
                 </div>
               </form>
             </div>

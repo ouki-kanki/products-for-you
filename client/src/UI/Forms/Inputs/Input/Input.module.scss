@@ -31,20 +31,29 @@
   font-size: medium;
   font-weight: bold;
   transition: border .1s ease-out;
-
+  
   &:hover {
     border: 3px solid #a7a7a7;
   }
-
+  
   &:focus {
     outline: none;
   }
-
+  
   &::placeholder {
     // color: $search_color_primary;
     color: #bdbdbd;
     font-size: medium;
     font-weight: bold;
+  }
+}
+
+.error {
+  border: 2px solid crimson;
+  transition: border .1s ease-out;
+
+  &:hover {
+    border: 3px solid firebrick;
   }
 }
 
@@ -58,7 +67,8 @@
   }
 }
 
-// .searchBtn {
-//   padding: 0;
-//   width: 100%;
-// }
+.errorMessage {
+  color: tomato;
+  // font-weight: bold;
+  font-size: small;
+}

@@ -7,13 +7,14 @@ interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode | string;
   type?: 'submit' | 'button' | 'reset';
   variant?: 'primary' | 'secondary' | 'danger';
-  shape?: 'square' | 'rounded'
+  shape?: 'square' | 'rounded';
+  disabled?: boolean
 }
 
 type Ref = HTMLButtonElement;
 
 
-export const Button = forwardRef<Ref, IButton>(({ size = 'm', children, type = 'button', variant = 'primary', shape = 'square', ...rest }, ref) => {
+export const Button = forwardRef<Ref, IButton>(({ size = 'm', children, type = 'button', variant = 'primary', shape = 'square', disabled = false, ...rest }, ref) => {
 
   const buttonProps = `
     ${styles.buttonContainer} 
@@ -25,9 +26,10 @@ export const Button = forwardRef<Ref, IButton>(({ size = 'm', children, type = '
 
   return (
     <button
-      className={buttonProps}
+      className={`${buttonProps} ${disabled && styles.disabled}`}
       type={type}
       ref={ref}
+      disabled={disabled}
       { ...rest } >{children}</button>
   )
 })
