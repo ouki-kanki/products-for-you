@@ -24,6 +24,10 @@ const  validationReducer: Reducer<IValidationState, IValidationAction> = (state 
       return { ...state, passwordStrength: action.payload }
     case ActionTypes.SET_IS_TOUCHED:
       return { ...state, isTouched: true }
+    case ActionTypes.SET_EMAIL_IS_VALID:
+      return { ...state, isEmailValid: action.payload }
+    case ActionTypes.SET_PASSWORD_IS_VALID:
+      return { ...state, isPasswordValid: action.payload }
     case ActionTypes.SET_IS_VALID:
       return { ...state, isValid: action.payload }
     default:
@@ -37,27 +41,36 @@ const initialState: IValidationState = {
   emailError: '',
   passwordError: '',
   passwordStrength: '',
+  isEmailValid: false,
+  isPasswordValid: false,
   isValid: false,
   isTouched: false
 }
 
+// TODO this is crap have to refactor to a better solution cause now if somedody nees to add a field for validation he has to change the types, the reducer and a bacnch of crap . have to make the validators general and decouple the logic for each validation maybe to a new method. 
 export const useValidation = () => {
   const [state, dispatch] = useReducer(validationReducer, initialState)
 
-  useEffect(() => {
-    // TODO : this is false 
-    console.log("inside the effect", state.emailError, state.passwordError, state.isTouched)
-    if (state.isTouched && !state.emailError && !state.passwordError) {
-      dispatch({ type: ActionTypes.SET_IS_VALID, payload: true })
-    } 
+  // const { isValid, isPasswordValid, isEmailValid } = state
+  // console.log('email: ', isEmailValid, ' password: ', isPasswordValid, ' general: ', isValid  )
 
-  }, [state.emailError, state.passwordError, state.isTouched])
+  useEffect(() => {
+    if (state.isEmailValid && state.isPasswordValid) {
+      dispatch({ type: ActionTypes.SET_IS_VALID, payload: true })
+    } else {
+      dispatch({ type: ActionTypes.SET_IS_VALID, payload: false })
+    }
+  }, [state.isEmailValid, state.isPasswordValid])
 
   // validators
   const emailValidator = (email: string) => {
     const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/    
     if (!regex.test(email) && state.isTouched) {
       dispatch({ type: ActionTypes.SET_EMAIL_ERROR, payload: 'Please provide a valid email' })
+      dispatch({ type: ActionTypes.SET_EMAIL_IS_VALID, payload: false })
+      // is touched and no error 
+    } else if (state.isTouched) {
+      dispatch({ type: ActionTypes.SET_EMAIL_IS_VALID, payload: true })
     }
   }
 
@@ -65,7 +78,6 @@ export const useValidation = () => {
     if (!state.isTouched) {
       return
     }
-
     const tracker = getTracker(password)
 
     let error = null;
@@ -88,6 +100,9 @@ export const useValidation = () => {
 
     if (error) {
       dispatch({ type: ActionTypes.SET_PASSWORD_ERROR, payload: error })
+      dispatch({ type: ActionTypes.SET_PASSWORD_IS_VALID, payload: false })
+    } else if (state.isTouched) {
+      dispatch({ type: ActionTypes.SET_PASSWORD_IS_VALID, payload: true })
     }
   }
 
@@ -99,10 +114,13 @@ export const useValidation = () => {
 
   const handlePasswordChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: ActionTypes.SET_PASSWORD, payload: value })
+
+    // TODO strength for now can only be tier 1 or mirror.have to check how complex is the pass and not only the length . how many uppercase, special chars, no repeated char etc
     const passStrength = getPasswordStrength(value, getTracker)
     dispatch({ type: ActionTypes.SET_PASSWORD_STRENGTH, payload: passStrength })
     passwordValidator(value, getTracker)
   }
+
 
   // TODO: this affects all the inputs inside the form, i have to make it to affect each input seperatelly but in an elegant fashion. i don't want to put extra field to state for each input if it's possible 
   const handleInputBlur = () => {

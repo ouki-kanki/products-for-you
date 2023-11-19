@@ -59,7 +59,7 @@ function App() {
 
   // TODO: receive hide navbar state from redux to change the class of the content to be max - width
 
-  console.log("the data", products)
+  // console.log("the data", products)
   return (
     <div className='app_container'>
       <Sidebar/>

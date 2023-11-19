@@ -16,6 +16,8 @@ export interface IValidationState {
   emailError: string | null;
   passwordError: string | null;
   passwordStrength: string;
+  isEmailValid: boolean;
+  isPasswordValid: boolean;
   isValid: boolean;
   isTouched: boolean;
 }
@@ -27,6 +29,8 @@ export const enum ActionTypes {
   SET_PASSWORD_ERROR,
   SET_PASSWORD_STRENGTH,
   SET_IS_TOUCHED,
+  SET_EMAIL_IS_VALID,
+  SET_PASSWORD_IS_VALID,
   SET_IS_VALID
 }
 
@@ -36,6 +40,9 @@ export type IValidationAction =
   | { type: ActionTypes.SET_PASSWORD,  payload: string}
   | { type: ActionTypes.SET_PASSWORD_ERROR,  payload: string | null}
   | { type: ActionTypes.SET_PASSWORD_STRENGTH,  payload: string}
+  | { type: ActionTypes.SET_IS_VALID,  payload: boolean}
+  | { type: ActionTypes.SET_EMAIL_IS_VALID, payload: boolean}
+  | { type: ActionTypes.SET_PASSWORD_IS_VALID, payload: boolean}
   | { type: ActionTypes.SET_IS_VALID,  payload: boolean}
   | { type: ActionTypes.SET_IS_TOUCHED }
 

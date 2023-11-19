@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, ChangeEvent, SyntheticEvent } from 'react';
+import { useRef, useEffect, ChangeEvent, SyntheticEvent } from 'react';
 import styles from './login.module.scss'
 
 import type { IInputBase } from '../../../UI/Forms/Inputs/Input/Input';
@@ -20,6 +20,7 @@ interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
   value: string
   onChange: (e: Ievent) => void,
   onBlur: () => void,
+  onFocus: () => void,
   error: string | null 
 } 
 
@@ -35,6 +36,7 @@ const getLoginFields = (handleEmailChange: (e: Ievent) => void, handlePasswordCh
       placeholder: '',
       onChange: handleEmailChange,
       onBlur: handleInputBlur,
+      onFocus: handleInputBlur,
       error: emailError
     },
     {
@@ -45,6 +47,7 @@ const getLoginFields = (handleEmailChange: (e: Ievent) => void, handlePasswordCh
       type: 'password',
       onChange: handlePasswordChange,
       onBlur: handleInputBlur,
+      onFocus: handleInputBlur,
       error: passwordError,
     }
   ]
@@ -62,12 +65,10 @@ export const Login = () => {
     handleEmailChange,
     handlePasswordChange,
     handleInputBlur,
-    isTouched,
     isValid
   } = useValidation();
 
   // console.log(isTouched, passwordError, emailError, passwordStrength)
-  console.log("valid", isValid)
 
   const loginFields = getLoginFields(handleEmailChange, handlePasswordChange, email, password, handleInputBlur, emailError, passwordError)
 
@@ -81,10 +82,8 @@ export const Login = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
-    // console.log("submit is clicked")
   }
 
-  // console.log(email, password);
   return (
     <WithoutSidebar>
       <div className={styles.mainContainer}>
