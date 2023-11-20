@@ -22,7 +22,7 @@ import { Home,
          Contact,
          Settings,
          ProductsPage,
-         Login,
+         LoginPage,
          SignUp
         } from './components/pages'
 
@@ -75,7 +75,7 @@ function App() {
               <Route path='/settings' element={<Settings/>}/>
               <Route path='/products' element={<ProductsPage/>}/>
               <Route path='/search' element={<Search/>}/>
-              <Route path='login' element={<Login/>}/>
+              <Route path='login' element={<LoginPage/>}/>
               <Route path='sign-up' element={<SignUp/>}/>
             </Route>
           </Routes>

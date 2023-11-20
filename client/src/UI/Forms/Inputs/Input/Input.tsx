@@ -28,7 +28,7 @@ export interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
 // export type IInput = IInputBase | IInputWithLabel
 
 
-export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant = 'primary', type, label, error, ...rest }, ref) => {
+export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant = 'primary', name, type, label, error, ...rest }, ref) => {
   const [isHidden, setIsHidden] = useState(true);
 
   // TODO: find a more elegand way 
@@ -49,10 +49,11 @@ export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant 
   return (
     <div className={styles.inputWithLabel}>
       {label && (
-        <label>{label}</label>
+        <label htmlFor={name}>{label}</label>
       )}
       <div className={styles.inputContainer}>
         <input
+          name={name}
           className={`${styles.input} ${error && styles.error}`}
           placeholder={placeholder}
           // 1 - password & hidden -> type . 

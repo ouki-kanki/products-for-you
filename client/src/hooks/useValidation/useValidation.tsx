@@ -42,7 +42,7 @@ const initialState: IValidationState = {
   passwordError: '',
   passwordStrength: '',
   isEmailValid: false,
-  isPasswordValid: false,
+  isPasswordValid: true,
   isValid: false,
   isTouched: false
 }
@@ -78,6 +78,8 @@ export const useValidation = () => {
     if (!state.isTouched) {
       return
     }
+    return
+    
     const tracker = getTracker(password)
 
     let error = null;

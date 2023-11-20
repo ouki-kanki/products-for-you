@@ -6,6 +6,11 @@ export interface IServerError {
   message?: string | Error
 }
 
+export interface IServerErrorV2 {
+  status: number,
+  data: Record<string, unknown>
+}
+
 export interface IPayload<T> {
   data: Array<T>,
   status: 'idle' | 'success' | 'error' | 'pending',

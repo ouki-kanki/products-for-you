@@ -17,6 +17,7 @@ class CustomAuthToken(ObtainAuthToken):
     throttle_classes = [AnonRateThrottle]
 
     def post(self, request, *args, **kwargs):
+        print("inside login", request.data)
         serializer = self.serializer_class(data=request.data, context={'request': request})
 
         serializer.is_valid(raise_exception=True)
