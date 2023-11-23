@@ -1,9 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState, ReactNode } from 'react'
 
-const Contact = () => {
+interface IPropTypes {
+  children: ReactNode
+}
+
+
+
+const Wrapper = (props: IPropTypes) => {
+  console.log("inside the wrapper")
   return (
-    <div>Contact</div>
+    setTimeout(() => {
+      console.log("inside the timeout")
+      return props.children
+    }, 4000)
+  )
+}
+
+
+const Contact = ( ) => {
+
+
+  return (
+    <div>
+      <Wrapper>
+        <div>yoyoy</div>
+      </Wrapper>
+    </div>
   )
 }
 
 export default Contact
+
+

@@ -52,7 +52,7 @@ export const sideBarData: IsidebarData[] = [
   {
     title: 'Profile',
     icon: <AccountIcon className={styles.icon}/>,
-    link: '/account'
+    link: '/profile'
   },
   {
     title: 'Purchase History',

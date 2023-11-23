@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import './index.scss';
 import { Routes, Route } from 'react-router-dom'
+import { ProtectedRoute } from './hocs/ProtectedRoute';
 
 import { selectUsers } from './app/store'
 import { useAppDispatch, useAppSelector } from './hooks'
+import { setToken } from './features/auth/Login/loginSlice';
+
 import { fetchUsers } from './features/users/usersSlice'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
 
@@ -23,10 +26,12 @@ import { Home,
          Settings,
          ProductsPage,
          LoginPage,
-         SignUp
+         SignUp,
+         Profile
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
+import { useDebouncedEffect } from './hooks/useDebounced';
 
 
 function App() {
@@ -45,6 +50,20 @@ function App() {
     }
   ] = useLazyGetProductsQuery()
 
+  // SET TOKEN FROM LOCAL
+  const handleSetToken = useCallback((token: string | null) => {
+    if (token) {
+      dispatch(setToken(token))
+    }
+  }, [dispatch])
+
+  const debouncedHandleSetToken = useCallback(() => {
+    const token = localStorage.getItem('token')
+    handleSetToken(token)
+  }, [handleSetToken])
+
+  useDebouncedEffect(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
+
   // lazy use of rtk 
   const handleFetchProducts = () => {
     trigger()
@@ -57,9 +76,6 @@ function App() {
     )
   }
 
-  // TODO: receive hide navbar state from redux to change the class of the content to be max - width
-
-  // console.log("the data", products)
   return (
     <div className='app_container'>
       <Sidebar/>
@@ -77,6 +93,9 @@ function App() {
               <Route path='/search' element={<Search/>}/>
               <Route path='login' element={<LoginPage/>}/>
               <Route path='sign-up' element={<SignUp/>}/>
+              <Route element={<ProtectedRoute/>}>
+                <Route path='profile' element={<Profile/>}/>
+              </Route>
             </Route>
           </Routes>
         </div>

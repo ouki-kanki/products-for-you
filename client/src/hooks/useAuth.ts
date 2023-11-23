@@ -1,10 +1,34 @@
-import { useMemo} from 'react';
+import { useMemo, useCallback} from 'react';
 import { useSelector } from 'react-redux';
+import { selectToken } from '../features/auth/Login/loginSlice';
+import { logOut } from '../features/auth/Login/loginSlice';
+import { useAppDispatch } from '../hooks';
+interface IReturnedObj {
+  token: string | null,
+  logout: () => void
+}
 
-export const useAuth = () => {
-  // const user = useSelector(selectCurrentUser)
-  // const user = {}
-  // this is the example from of dock the obj is const user = { user: jonh, pass: 1234 } that why it desctructs the value
-   
-  // return useMemo(() => ({ user }), [user])
+// TODO: maybe return user info (id, email, token)
+/**
+ * 
+ * @returns {object} - the generated token or a null value
+ * @property {string} token 
+ */
+export const useAuth = (): IReturnedObj => {
+  const token = useSelector(selectToken)
+  const dispatch = useAppDispatch()
+
+  return useMemo(() => {
+    const logout = () => {
+      console.log("inside the memo")
+      dispatch(logOut())
+      localStorage.setItem('token', '')
+    }
+
+    return {
+      token,
+      logout
+    }
+  }
+  , [token, dispatch])
 }
