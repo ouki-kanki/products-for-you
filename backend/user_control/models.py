@@ -97,6 +97,10 @@ class UserDetail(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def email(self):
+        return self.user.email
+
     def get_image(self):
         if self.image:
              return 'http://127.0.0.1:8000' + self.image.url

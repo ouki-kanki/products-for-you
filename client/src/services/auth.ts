@@ -19,7 +19,7 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (builder) => ({
     login: builder.mutation<UserResponse | void, ILoginRequest>({
-      query: (payload) => ({
+      query: (payload) => ({  
         url: '/users/token-auth',
         method: 'POST',
         body: payload,

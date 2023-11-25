@@ -55,6 +55,10 @@ class PasswordChangeSerializer(serializers.Serializer):
     
 
 class UserDetailSerializer(serializers.ModelSerializer):
+    email = serializers.SerializerMethodField()
     class Meta:
         model = UserDetail
-        fields = '__all__'
+        exclude = ('id', 'created_at', 'updated_at', 'user')
+
+    def get_email(self, obj):
+        return obj.email
