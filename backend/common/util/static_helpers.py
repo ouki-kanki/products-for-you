@@ -1,5 +1,8 @@
 from django.utils.html import format_html
 
+from PIL import Image
+from io import BytesIO
+from django.core.files import File
 
 def upload_icon(name_of_folder: str, instance, filename):
     '''
@@ -31,4 +34,18 @@ def render_link_with_image(value):
                     width="100" height="100"
                     style="object-fit: cover;"
                     />
-                </a>'''    
+                </a>'''
+
+def make_thumbnail(image, size=(300, 200)):
+    '''
+    takes the imgage and the desired size anr return the resized image
+    '''
+    img = Image.open(image.path)
+    img.convert('RGB')
+    img.thumbnail(size)
+
+    thumb_io = BytesIO()
+    img.save(thumb_io, 'JPEG', quality=85)
+
+    thumbnail = File(thumb_io, name=image.name)
+    return thumbnail

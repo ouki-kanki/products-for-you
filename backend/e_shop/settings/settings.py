@@ -9,7 +9,6 @@ import os
 from pathlib import Path
 from decouple import config
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -186,7 +185,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'api.authentication.TokenAuthentication',
+        'common.config.config_auth.useBearerForAuth',
     ),
     'DEFAULT_THROTTLE_CLASSES': [
     'rest_framework.throttling.AnonRateThrottle',

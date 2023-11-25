@@ -1,12 +1,14 @@
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins, status, generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
-from .models import CustomUser as User
-from .serializers import UserSerializer, RegistrationSerializer
+from rest_framework.permissions import IsAuthenticated
+
+from .models import CustomUser as User, UserDetail
+from .serializers import UserSerializer, RegistrationSerializer, UserDetailSerializer
 
 
 # LOGIN
@@ -59,7 +61,26 @@ users_list_view = UsersViewSet.as_view({
     'get': 'list'
 })
 
+# TODO: this retrieves the user model , not the user detail 
+# it will bring confusion, have to change the names 
 users_detail_view = UsersViewSet.as_view({
     'get': 'retrieve'
 })
 
+
+
+class UserProfileView(generics.GenericAPIView,
+                     mixins.RetrieveModelMixin):
+    '''
+        returns data from the UserDetail table
+    '''
+    serializer_class = UserDetailSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'user'
+    queryset = UserDetail.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, args, kwargs)
+
+
+user_profile_view = UserProfileView.as_view()

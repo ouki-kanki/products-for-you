@@ -10,6 +10,7 @@ from django.contrib.auth.models import (
 from datetime import timezone
 
 from .managers import CustomUserManager, SoftDeleteManager
+from common.util.static_helpers import make_thumbnail
 
 from PIL import Image
 from io import BytesIO
@@ -101,32 +102,18 @@ class UserDetail(models.Model):
              return 'http://127.0.0.1:8000' + self.image.url
         return 'there is no image'
 
-    def make_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(self.image.path)
-        img.convert('RGB')
-        img.thumbnail(size)
-
-        thumb_io = BytesIO()
-        img.save(thumb_io, 'JPEG', quality=85)
-
-        thumbnail = File(thumb_io, name=image.name)
-        return thumbnail
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if (self.image):
-            self.image = self.make_thumbnail(self.image)
-        
-        super().save(*args, **kwargs)
-
-
-
-
-    def __str__(self):
-        return f"{self.first_name} - {self.last_name}"
-
     def get_user_image_filename(self):
         '''
         get the path of the user image
         '''
         return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if (self.image):
+            self.image = make_thumbnail(self.image)
+        
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.first_name} - {self.last_name}"

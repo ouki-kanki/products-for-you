@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from .models import CustomUser as User
+from .models import CustomUser as User, UserDetail
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -52,3 +52,9 @@ class PasswordChangeSerializer(serializers.Serializer):
         if not self.context['request'].user.check_password(value):
             raise serializers.ValidationError({'current_password': 'Does not match'})
         return value
+    
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserDetail
+        fields = '__all__'
