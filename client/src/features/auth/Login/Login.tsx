@@ -103,9 +103,7 @@ export const Login = () => {
     try {
       const data = await login(credentials).unwrap() as UserResponse
       if (data) {
-        console.log("the data", data)
         const { token, user_id } = data;
-
         localStorage.setItem('token', token)
 
         // TODO: make a util func to change keys to camelcase 
@@ -115,7 +113,6 @@ export const Login = () => {
         }
         dispatch(setCredentials(userData))
         navigate('/')
-        // dispatch(setToken(token))
       }
     } catch (error) {
       console.log("the error", error)

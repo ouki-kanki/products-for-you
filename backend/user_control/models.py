@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.files import File
 from django.contrib.auth.models import (
     UserManager,
     AbstractUser,
@@ -9,6 +10,9 @@ from django.contrib.auth.models import (
 from datetime import timezone
 
 from .managers import CustomUserManager, SoftDeleteManager
+
+from PIL import Image
+from io import BytesIO
 
 Roles = (
     ("admin", "admin"),
@@ -38,38 +42,9 @@ class SoftDeleteModel(models.Model):
         abstract = True
 
 
-def get_user_image(self, path):
-    return f'user_images/{self.pk}/user_image.png'
-
-def get_default_user_image():
-    return 'user_images/default_user_image.png'
-
-
-
-# NOTE: maybe split to dif table?
-class UserDetail(models.Model):
-    first_name = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255, blank=True)
-    address_one = models.CharField(max_length=255, blank=True, default='')
-    address_two = models.CharField(max_length=255, blank=True, default='')
-    city = models.CharField(max_length=255, blank=True, default='')
-    country = models.CharField(max_length=255, blank=True, default='')
-    image = models.ImageField(max_length=255, upload_to=get_user_image, null=True, blank=True, default=get_default_user_image)
-
-    def __str__(self):
-        return f"{self.first_name} - {self.last_name}"
-
-    def get_user_image_filename(self):
-        '''
-        get the path of the user image
-        '''
-        return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]
-
-
 class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
     email = models.EmailField(blank=True, default='', unique=True)
     username = models.CharField(max_length=255, blank=True, default='')
-    user_detail = models.OneToOneField(UserDetail, on_delete=models.SET_NULL, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -86,9 +61,10 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
 
     @property
     def first_name(self):
-        if self.user_detail is None:
-            return "michael jordan"
-        return self.user_detail.first_name
+        return 'have to  use user_detail'
+        # if self.user_detail is None:
+        #     return "michael jordan"
+        # return self.user_detail.first_name
 
 
     class Meta:
@@ -102,4 +78,55 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
         return self.email
 
 
-    
+def get_user_image(self, path):
+    return f'user_images/{self.pk}/user_image.png'
+
+def get_default_user_image():
+    return 'user_images/default_user_image.png'
+
+class UserDetail(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    address_one = models.CharField(max_length=255, blank=True, default='')
+    address_two = models.CharField(max_length=255, blank=True, default='')
+    city = models.CharField(max_length=255, blank=True, default='')
+    country = models.CharField(max_length=255, blank=True, default='')
+    image = models.ImageField(max_length=255, upload_to=get_user_image, null=True, blank=True, default=get_default_user_image)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_image(self):
+        if self.image:
+             return 'http://127.0.0.1:8000' + self.image.url
+        return 'there is no image'
+
+    def make_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(self.image.path)
+        img.convert('RGB')
+        img.thumbnail(size)
+
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'JPEG', quality=85)
+
+        thumbnail = File(thumb_io, name=image.name)
+        return thumbnail
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if (self.image):
+            self.image = self.make_thumbnail(self.image)
+        
+        super().save(*args, **kwargs)
+
+
+
+
+    def __str__(self):
+        return f"{self.first_name} - {self.last_name}"
+
+    def get_user_image_filename(self):
+        '''
+        get the path of the user image
+        '''
+        return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]

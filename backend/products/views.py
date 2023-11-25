@@ -99,3 +99,11 @@ class ProductItemDetailView(generics.RetrieveAPIView):
     lookup_field = 'slug'
 
 product_item_detail_view = ProductItemDetailView.as_view()
+
+
+
+class ProductLatestListView(generics.ListAPIView):
+    queryset = ProductItem.objects.all()[0:10]
+    serializer_class = ProductItemSerializer
+
+product_latest_view = ProductLatestListView.as_view()

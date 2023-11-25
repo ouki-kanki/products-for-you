@@ -19,3 +19,16 @@ def render_icon(obj):
         return format_html('<img src="{}" width="50px" height="50px"/>', obj.icon.url)
     # return format_html('<img src="{}" widht="50px" height="50px"/>', '/icons/placeholder.jpg')
     return 'no icon'
+
+
+def render_link_with_image(value):
+    '''
+    take a url and return an image link to use inside the customfile widget inside the admin
+    '''
+    return  f'''<a href="{value.url}" target="_blank">
+                    <img 
+                    src="{value.url}" alt="{value}" 
+                    width="100" height="100"
+                    style="object-fit: cover;"
+                    />
+                </a>'''    

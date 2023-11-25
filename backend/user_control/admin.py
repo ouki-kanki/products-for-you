@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
+from django.db import models
 
-from .models import CustomUser
+from .models import CustomUser, UserDetail
 from .forms import UserCreationForm, UserChangeForm
+from widgets.custom_admin_widgets import CustomAdminFileWidget
 
 admin.site.unregister(Group)
 
@@ -60,4 +62,14 @@ class CustomUserAdmin(UserAdmin):
 
 
 
+@admin.register(UserDetail)
+class UserDetailAdmim(admin.ModelAdmin):
+    model = UserDetail
+    list_display = ('user', 'first_name', 'last_name', 'created_at')
 
+    formfield_overrides = {
+        models.ImageField: { 'widget': CustomAdminFileWidget }
+    }
+
+    ordering = ('-created_at',)
+# admin.site.register(UserDetail)

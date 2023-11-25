@@ -1,13 +1,18 @@
 from pathlib import Path
+from io import BytesIO
+
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
 from django.utils.text import slugify
 from django.urls import reverse
 from django.core.validators import MaxValueValidator
+from django.core.files import File
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
+
+from PIL import Image
 
 # NOTE: models.PROTECT it seems that does not allow null=True
 
@@ -84,11 +89,16 @@ class Product(models.Model):
         verbose_name_plural = "1. Products"
 
     @property
-    def get_absolute_url(self):
+    def get_absolute_url_v1(self):
         return reverse("products:product_detail", kwargs={"slug": self.slug})
-
+    
+    @property
+    def get_absolute_url(self):
+        return f'/{self.category.slug}/{self.slug}/'
+    
     def __str__(self):
         return self.name
+
 
 def product_pre_save(sender, instance, *args, **kwargs):
     if instance.slug is "" or instance.slug is None:
@@ -178,7 +188,35 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.product_item.product_name
+    
+    def get_image(self):
+        if self.image:
+            # TODO: import the base url and use it 
+            # this simplifies the url for the client
+            return 'http://127.0.0.1:8000' + self.image.url
+        return 'there is no image provided'
+    
+    def get_thumbnail(self):
+        if self.image and self.thumbnail:
+            return self.generate_thumbnail(self.image)
+        # TODO: change the thumbnail field to (hasThumbnail) and then 
+        # create a thumbnail image field and to the below
+        # self.thumbnail = self.generate_thumbnail(self.image)
+        # self.save to save to the database
+        # return 'http://127.0.0:8000' + self.thumbnail.url
+        else:
+            return 'there is no provided image'
+        
+    def generate_thumbnail(self, image, size=(300, 200)):
+        img = Image.open(image)
+        img.convert('RGB')
+        img.thumbnail(size)
 
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'JPEG', quality=85)
+
+        thumbnail = File(thumb_io, name=image.name)
+        return thumbnail
 
 
 class Discount(models.Model):
