@@ -5,18 +5,11 @@ import { ProtectedRoute } from './hocs/ProtectedRoute';
 
 import { selectUsers } from './app/store'
 import { useAppDispatch, useAppSelector } from './hooks'
-import { setToken } from './features/auth/Login/loginSlice';
-
 import { fetchUsers } from './features/users/usersSlice'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruckFast, faPaintRoller } from '@fortawesome/free-solid-svg-icons';
-import { faPaypal } from '@fortawesome/free-brands-svg-icons';
+import { setCredentials } from './features/auth/Login/loginSlice';
 
 import { Sidebar } from './components/Sidebar/Sidebar'
-
 import { Home, 
          About, 
          Cart, 
@@ -33,11 +26,15 @@ import { Home,
 import { Search } from './components/pages/Search';
 import { useDebouncedEffect } from './hooks/useDebounced';
 
+import { useDispatch } from 'react-redux';
+
+import type { ICredentials } from './types';
+
 
 function App() {
   const [count, setCount] = useState(0)
+  const dispatch = useDispatch()
   const users = useAppSelector(selectUsers)
-  const dispatch = useAppDispatch()
 
   const [
     trigger,
@@ -51,16 +48,25 @@ function App() {
   ] = useLazyGetProductsQuery()
 
   // SET TOKEN FROM LOCAL
-  const handleSetToken = useCallback((token: string | null) => {
-    if (token) {
-      dispatch(setToken(token))
+
+  // TODO : remove the following logic from the app and put it to another file . create a custom hook useKeepLoggedIn
+  const handleSetCredentials = useCallback((creds: ICredentials) => {
+    const { userId, token } = creds
+
+    const data = {
+      userId: Number(userId),
+      token
     }
+
+    dispatch(setCredentials(data))
   }, [dispatch])
+
 
   const debouncedHandleSetToken = useCallback(() => {
     const token = localStorage.getItem('token')
-    handleSetToken(token)
-  }, [handleSetToken])
+    const userId = localStorage.getItem('user_id');
+    handleSetCredentials({ userId, token })
+  }, [handleSetCredentials])
 
   useDebouncedEffect(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
 

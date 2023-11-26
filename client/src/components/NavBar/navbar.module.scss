@@ -87,4 +87,25 @@
   justify-content: center;
 }
 
+.profileImageContainer {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: $box-shadow-btn-m;
+  margin-right: 5px;
+  cursor: pointer;
+
+  & img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+    // border-radius: 50%;
+  }
+}
+
 

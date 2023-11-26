@@ -8,6 +8,7 @@ export interface ILoginRequest {
 }
 
 // TODO: have to omit email and created from here
+// remove from the serializer 
 export interface UserResponse {
   user_id: number,
   token: string,
@@ -16,6 +17,7 @@ export interface UserResponse {
 }
 
 export const authApi = createApi({
+  reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (builder) => ({
     login: builder.mutation<UserResponse | void, ILoginRequest>({
@@ -24,15 +26,13 @@ export const authApi = createApi({
         method: 'POST',
         body: payload,
         headers: {
-          // 'Content-type': 'application/json; charset=UTF-8'
         }
       }),
       // transformErrorResponse: (
         // response: {{ status, data }:IServerErrorV2},
         // meta,
         // arg 
-      // ) => 
-      
+      // ) =>       
     })
   })
 })

@@ -27,7 +27,16 @@ export interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
 
 // export type IInput = IInputBase | IInputWithLabel
 
-
+/**
+ * accepts 
+ * placeholder optional
+ * value optional
+ * variant - primary, secondary, error
+ * disabled - boolean
+ * label string
+ * type string
+ * error string | null
+ */
 export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant = 'primary', name, type, label, error, ...rest }, ref) => {
   const [isHidden, setIsHidden] = useState(true);
 

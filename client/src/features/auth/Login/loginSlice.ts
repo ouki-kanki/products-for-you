@@ -14,12 +14,11 @@ const slice = createSlice({
     setToken: (state, { payload }: PayloadAction<string>) => {
       state.token = payload
     },
-    setCredentials: (state, { payload: { userId, token },}: PayloadAction<{ userId: number; token: string }>
+    setCredentials: (state, { payload: { userId, token },}: PayloadAction<{ userId: number | null; token: string | null }>
     ) => {
       (state.userId = userId), (state.token = token);
     },
     logOut: (state) => {
-      console.log("inside the action")
       state.userId = null;
       state.token = null;
     },

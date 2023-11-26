@@ -26,8 +26,9 @@ interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
 import { useNavigate } from 'react-router-dom';
 import { setCredentials, setToken } from './loginSlice';
 import { useDispatch } from 'react-redux';
-import { useLoginMutation } from '../../../services/auth';
+import { useLoginMutation } from '../../../api/auth';
 import type { ILoginRequest, UserResponse } from '../../../services/auth';
+
 
 //  helpers
 
@@ -105,6 +106,8 @@ export const Login = () => {
       if (data) {
         const { token, user_id } = data;
         localStorage.setItem('token', token)
+        localStorage.setItem('user_id', user_id);
+
 
         // TODO: make a util func to change keys to camelcase 
         const userData = {

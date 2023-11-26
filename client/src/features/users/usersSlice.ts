@@ -16,7 +16,7 @@ interface IUser {
 
 type IUsers = Array<IUser>
 
-// interface IUsersState<T> {
+// interface IUsersState<T> { 
 //   data: Array<T>,
 //   status: 'idle' | 'success' | 'error' | 'pending',
 //   error: IServerError | string | unknown

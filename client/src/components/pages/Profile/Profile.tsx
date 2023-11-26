@@ -1,5 +1,9 @@
+import { UserProfile } from "../../../features/users/userProfile/UserProfile"
+
 export const Profile = () => {
   return (
-      <div>Profile</div>
+      <div>
+        <UserProfile/>        
+      </div>
   )
 }

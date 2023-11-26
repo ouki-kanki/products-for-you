@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
 import { useAuth } from '../../hooks/useAuth';
@@ -14,15 +15,39 @@ import bellIcon from '../../assets/svg_icons/bell.svg'
 import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import type { RootState } from '../../app/store';
+import { useGetProfileQuery } from '../../api/userApi';
+
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
   const navigate = useNavigate()
   const { pathname } = useLocation();
-
   const { token, logout } = useAuth()
-  console.log("the token", token)
+  // const profile = useSelector((state: RootState) => state.user.profile)
+  const userId = useSelector((state: RootState) => state.auth.userId)
+  // const { trigger, data, error } = useProfile()
+
+  // TODO: THIS IS A NASTY FIX !!! have to fix later 
+  const { data, isFetching, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
+
+  // TODO : transfrom the response inside the query to retrive only the image and the name 
+
+  // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT 
+
+  // console.log("the data", data)
+  // console.log("isFetching", isFetching)
+  // console.log("is Loading", isLoading)
+
+  // useEffect(() => {
+  //   if (profile === null) {
+  //     console.log("inside the trigger")
+  //     trigger('1')
+  //   }
+  // }, [userId])
+
+
 
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
@@ -49,7 +74,6 @@ export const NavBar = () => {
 
 
   useEffect(() => {
-
     window.addEventListener('scroll', handleNavShow)
     window.addEventListener('keydown', handleBack as EventListenerOrEventListenerObject);
 
@@ -97,17 +121,28 @@ export const NavBar = () => {
         <div className={styles.searchContainer}>
           <SearchForm/>
         </div>
+
         <div className={styles.buttonsContainer}>
           <Link
             className={styles.icons}
             to='/cart'>
             <img src={cartIcon} alt="cart button" />
           </Link>
+
           <Link
             className={styles.icons}
             to='/'>
             <img src={bellIcon} alt="notification button" />
           </Link>
+          {data && token && (
+            <div
+              onClick={handleNavigate('/profile')} 
+              className={styles.profileImageContainer}>
+              {/* <div>yoyo</div> */}
+              <img src={data.image} alt='profile image' />
+            </div>
+          )}
+
           <div className={`margin-right-10 ${styles.centerField}`}>
             { pathname === '/login' 
               ? <p className='annotation'>Don't Have an Account ? </p>
