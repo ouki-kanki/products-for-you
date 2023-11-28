@@ -7,11 +7,7 @@ import { useValidation } from '../../../hooks/useValidation/useValidation';
 import { Input } from '../../../UI/Forms/Inputs/Input/Input';
 import { Button } from '../../../UI/Button/Button';
 
-
-import type { IServerErrorV2 } from '../../../types';
-
 type Ievent = ChangeEvent<HTMLInputElement>
-
 interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
   id: number,
   value: string
@@ -21,14 +17,15 @@ interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
   error: string | null 
 } 
 
-
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../app/store';
 // AUTH IMPORTS
 import { useNavigate } from 'react-router-dom';
-import { setCredentials, setToken } from './loginSlice';
+import { setCredentials } from './loginSlice';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '../../../api/auth';
 import type { ILoginRequest, UserResponse } from '../../../services/auth';
-
+import { useAuth } from '../../../hooks/useAuth';
 
 //  helpers
 
@@ -73,6 +70,17 @@ export const Login = () => {
     handleInputBlur,
     isValid
   } = useValidation();
+
+  const userId = useSelector((state: RootState) => state.auth.userId)
+
+  // TODO: complains about missing dependency but even in the router docs they have it like this.have to check 
+  useEffect(() => {
+      if (userId) {
+        navigate('/')
+      }
+  }, [userId])
+
+  console.log("the user id", userId)
 
   // RTK
   const dispatch = useDispatch()
@@ -121,6 +129,8 @@ export const Login = () => {
       console.log("the error", error)
     }
   }
+
+
 
   return (
     <div className={styles.mainContainer}>

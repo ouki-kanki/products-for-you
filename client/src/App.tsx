@@ -20,7 +20,8 @@ import { Home,
          ProductsPage,
          LoginPage,
          SignUp,
-         Profile
+         Profile,
+         ErrorPage
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
@@ -88,6 +89,7 @@ function App() {
       <div className='content__nav-container'>
         <div className='routes__container'>
           <Routes>
+            <Route path='*' element={<ErrorPage/>}/>
             <Route path='/' element={<Home/>}>
               <Route path='/categories' element={<Categories/>}/>
               <Route path='/cart' element={<Cart/>}/>

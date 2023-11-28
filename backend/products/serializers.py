@@ -140,6 +140,18 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
 
 
+# V2
+
+class ProductAndFeaturedVariationSerializer(serializers.ModelSerializer):
+    variations = ProductItemSerializer(many=True, read_only=True)
+    featured_variation = ProductItemSerializer(required=False, read_only=True)
+
+    class Meta:
+        model= Product
+        exclude = ('created_at', 'modified_at')
+
+
+
 class ProductSerializer(serializers.ModelSerializer):
     '''
     product-list

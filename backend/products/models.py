@@ -133,6 +133,7 @@ class ProductItem(models.Model):
     sku = models.CharField(max_length=255)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    is_featured = models.BooleanField(default=False)
     # to avoid circular imports 
     variation_option = models.ManyToManyField('variations.VariationOptions')
     created_at = models.DateTimeField(auto_now_add=True)

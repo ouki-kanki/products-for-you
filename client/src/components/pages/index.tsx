@@ -9,3 +9,4 @@ export { ProductsPage } from './ProductsPage';
 export { LoginPage } from './LoginPage/LoginPage';
 export { SignUp } from './SignUp/SignUp';
 export { Profile } from './Profile/Profile'
+export { ErrorPage } from './ErrorPage/ErrorPage';

@@ -7,7 +7,8 @@ from rest_framework.response import Response
 
 from .models import Product, ProductItem, Category
 from .serializers import (
-    CategorySerializer, CategoryRelatedProducts, ProductSerializer, ProductItemSerializer, ProductAndRelatedVariationsSerializer 
+    CategorySerializer, CategoryRelatedProducts, ProductSerializer, ProductItemSerializer, ProductAndRelatedVariationsSerializer,
+    ProductAndFeaturedVariationSerializer 
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -64,6 +65,13 @@ class ProductListAPIView(generics.ListAPIView):
 product_list_view = ProductListAPIView.as_view()
 
 
+class ProductListAndFeaturedVariationAPIView(generics.ListAPIView):
+    '''
+        list the products and for each product if there is a featured
+        variation show the featured variation otherwise so the latest variation
+    '''
+
+
 class ProductDetailAndRelatedVariations(generics.RetrieveAPIView):
     '''
     detail of the product alongside the related variations
@@ -107,3 +115,36 @@ class ProductLatestListView(generics.ListAPIView):
     serializer_class = ProductItemSerializer
 
 product_latest_view = ProductLatestListView.as_view()
+
+class ProductAndFeaturedVariationListView(generics.ListAPIView):
+    '''
+    it will return each product with the first featured variation
+    or if there is no featured the last imported variation
+    '''
+    queryset = Product.objects.all()
+    serializer_class = ProductAndFeaturedVariationSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        data = []
+        for product in serializer.data:
+            featured_variation = self.get_featured_variation(product['id'])
+            if featured_variation:
+                product['variations'] = ProductItemSerializer(featured_variation).data
+                # print("featured var", featured_variation.price)
+                # product.update(list(featured_variation.items()))
+            data.append(product)
+        return Response(data)
+
+
+    def get_featured_variation(self, product_id):
+        variations = ProductItem.objects.filter(product_id=product_id, is_featured=True)
+
+        if variations.exists():
+            return variations.first()
+        else:
+            return ProductItem.objects.filter(product_id=product_id).order_by('-created_at').first()
+        
+
+product_and_featured_variation_view = ProductAndFeaturedVariationListView.as_view()
