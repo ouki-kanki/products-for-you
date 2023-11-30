@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 from user_control.models import CustomUser
 
-from .models import Product, ProductItem, Category, Brand, Discount
+from .models import Product, ProductItem, Category, Brand, Discount, ProductImage
 from variations.serializers import VariationOptionsSerializer
 
 import decimal
@@ -89,6 +89,12 @@ class DiscountSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ('image',)
+
+
 # --- VARIATION OF THE PRODUCT --
 class ProductItemSerializer(serializers.ModelSerializer):
     '''
@@ -102,6 +108,8 @@ class ProductItemSerializer(serializers.ModelSerializer):
     # variation_option = RelatedVariationsSerializer(many=True, read_only=True)
     discount_price = serializers.SerializerMethodField()
     # TODO: calculate the tota discounted price
+
+    # images = ProductImageSerializer(many=True, read_only=True)
 
 
     def get_discount_price(self, obj):
@@ -123,6 +131,9 @@ class ProductItemSerializer(serializers.ModelSerializer):
             return DiscountSerializer(items, many=True).data
         return 'no related discounts'
 
+
+    # TODO: can also fetch the images here.is this the best practice performance wise ?
+
     class Meta:
         model = ProductItem
         fields = [
@@ -138,12 +149,20 @@ class ProductItemSerializer(serializers.ModelSerializer):
     # def get_name(self, obj):
     #     return obj.product_id.name
 
+# v1 -- fetch product items . if the product has isFeatured - True fetch it otherwise fetch the last created . () 
+# TODO: i want functionality where only one product can have featured = True
+class FeaturedVariationSerializerV1(serializers.ModelSerializer):
+    class Meta:
+        model = ProductItem
+        exclude = ('crated_at', 'modified_at')
+
 
 
 # V2
-
+# gives the product with the related variations and the images for each variation 
 class ProductAndFeaturedVariationSerializer(serializers.ModelSerializer):
     variations = ProductItemSerializer(many=True, read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     featured_variation = ProductItemSerializer(required=False, read_only=True)
 
     class Meta:
@@ -155,7 +174,6 @@ class ProductAndFeaturedVariationSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     '''
     product-list
-    endpoint: products/
     '''
     category = CategoryPublicSerializer(read_only=True)
     # NOTE: will return the string represantation of the child
@@ -218,8 +236,54 @@ class ProductAndRelatedVariationsSerializer(serializers.ModelSerializer):
     def get_related_variations(self, obj):
         if obj.product_variations.all():
             items = obj.product_variations.all()
-            print("the items", items)
+
             return ProductItemSerializer(items, many=True).data
         
         return "no related variations"
+
+    # --- V3 -----
+
+class ProductImageSerializerV3(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ('image', 'featured')
+
+    
+class ProductVariationSerializerV3(serializers.ModelSerializer):
+    product_image = ProductImageSerializer(many=True, read_only=True)
+    # discount = serializers.StringRelatedField(many=True)
+    # variation_option to give the variation chars
+    class Meta:
+        model = ProductItem
+        fields = ('quantity', 'price', 'product_image')
+
+
+
+# TODO: how can i get the featured item in a not nested manner ? should i do it here inside the seriailizer or inside the view ? 
+class ProductSerializerV3(serializers.ModelSerializer):
+    # TODO: need only the featured var or the last imported
+    featured_product = ProductVariationSerializerV3(source='product_variations', many=True, read_only=True)
+    # TODO need to add the category reverse rel
+    # TODO need to add the brand reverse rel
+    # TODO where to put count to count the number of products ? here or inside views?
+    # quantity = serializers.IntegerField(source='product_variations.quantity', read_only=True) 
+    # featured_variation = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        # fields = ('name', 'featured_variation')
+        fields = ('name', 'featured_product')
+
+    # def get_featured_variation(self, obj):
+    #     featured_variation = obj.product_variations.filter(is_featured=True).first()
+    #     return ProductVariationSerializerV3(featured_variation).data if featured_variation else None
+    
+    
+    
+    # def to_representation(self, instance):
+    #     print(instance.featured_variation)
+    #     data = super().to_representation(instance)
+    #     if data['featured_variation']:
+    #         return { 'name': data['name'], 'quantity': data['featured_variation']['quantity'] }
+    #     return data
 

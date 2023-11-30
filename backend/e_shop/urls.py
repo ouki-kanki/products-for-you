@@ -11,13 +11,10 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('users/', include('user_control.urls')),
     path('products/', include('products.urls')),
-    path('cart/', include('shopping_cart.urls'))
-    # TODO: check this!!! not implemented for the moment
+    path('cart/', include('shopping_cart.urls')),    
 ]
-
-# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 if settings.DEBUG:
     print("iinside url static config")
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

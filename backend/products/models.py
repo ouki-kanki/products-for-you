@@ -8,6 +8,7 @@ from django.utils.text import slugify
 from django.urls import reverse
 from django.core.validators import MaxValueValidator
 from django.core.files import File
+from django.dispatch import receiver
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
@@ -155,21 +156,26 @@ class ProductItem(models.Model):
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
 
-
+# NOTE: used decorator instead of connect 
+@receiver(pre_save, sender=ProductItem)
 def product_item_pre_save(sender, instance, *args, **kwargs):
+    # if is flagged as featured remove the flag from the rest of the variations
+    if instance.is_featured:
+        product_items = ProductItem.objects.filter(is_featured=True).exclude(pk=instance.pk)
+        if product_items:
+            product_items.update(is_featured=False)
+
     if instance.slug is "" or instance.slug is None:
         # TODO: use something like (product-colorvalue) as slug
         slugify_unique(sender, instance, instance.sku)
+    
         # instance.slug = slugify(instance.name)
-
+@receiver(post_save, sender=ProductItem)
 def product_item_post_save(sender, instance, created, *args, **kwargs):
     if created:
         instance.save()
 
-pre_save.connect(product_item_pre_save, ProductItem)
-post_save.connect(product_item_post_save, ProductItem)
     
-
 class Banner(models.Model):
     '''
     BANNERS FOR THE LANDING PAGE
@@ -179,7 +185,7 @@ class Banner(models.Model):
         
 
 class ProductImage(models.Model):
-    product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
+    product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='product_image')
     image = models.ImageField(upload_to=upload_product_item_image)
     featured = models.BooleanField(default=False)
     thumbnail = models.BooleanField(default=False)
@@ -243,3 +249,5 @@ class Discount(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.discount_value}%"
+
+

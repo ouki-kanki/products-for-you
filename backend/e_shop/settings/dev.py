@@ -7,12 +7,14 @@ ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
 
 INSTALLED_APPS += [
     'drf_spectacular',
-    'drf_spectacular_sidecar'
+    'drf_spectacular_sidecar',
+    'silk'
 ]
 
 DEBUG = True
 
 WSGI_APPLICATION = 'e_shop.wsgi.dev.application'
+
 
 # DATABASES = {
 #     'default': {
@@ -42,3 +44,9 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://127.0.0.1:3000',
 )
+
+# FOR DEBUG TOOLBAR
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
