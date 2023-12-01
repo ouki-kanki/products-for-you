@@ -1,9 +1,16 @@
 from django.contrib import admin
 from django.conf import settings
 from django.db import models
+from django import forms
 
-from .models import Product, ProductItem, Category, Brand, Discount
-
+from .models import (
+    Product, 
+    ProductItem, 
+    Category, 
+    Brand, 
+    Discount,
+    ProductImage
+)
 from common.util.static_helpers import render_icon
 from widgets.custom_admin_widgets import CustomAdminFileWidget
 
@@ -37,6 +44,28 @@ class ProductAdmin(admin.ModelAdmin):
     
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
-    list_display = ('code', 'discount_value', 'discount_type')
+    list_display = ('code', 'discount_value', 'discount_type', 'is_active', 'created_at', )
 
-admin.site.register((ProductItem, Brand, ),)
+
+
+class ProductItemSelect(forms.Select):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex, attrs
+        )
+        if value:
+            option["attrs"]["product_variation"] = value.instance.sku
+        return option
+
+
+
+
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    # form = ProductImageForm
+    list_display = ('product_item', 'image', 'featured', 'thumbnail',)
+
+admin.site.register((ProductItem, Brand),)
+

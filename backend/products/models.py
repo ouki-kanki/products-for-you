@@ -1,4 +1,3 @@
-from pathlib import Path
 from io import BytesIO
 
 from django.db import models
@@ -150,8 +149,12 @@ class ProductItem(models.Model):
         verbose_name = "Product Variation"
         db_table_comment = "Variation of Product"
 
+    
     def __str__(self):
-        return self.product_name
+        qs = self.variation_option.all()
+        variation_value = ', '.join(option.value for option in qs)
+        # return self.product_name
+        return f'{self.product_name} sku: {self.sku} - {variation_value}'
     
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"

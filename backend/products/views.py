@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from .models import Product, ProductItem, Category
 from .serializers import (
     CategorySerializer, CategoryRelatedProducts, ProductSerializer, ProductItemSerializer, ProductAndRelatedVariationsSerializer,
-    ProductAndFeaturedVariationSerializer,
+    ProductAndFeaturedVariationSerializer, ProductAndLastCreatedVariationSerializerV3,
     ProductSerializerV3
 )
 
@@ -176,3 +176,17 @@ class ProductAndFeaturedVariationListViewV3(generics.ListAPIView):
     
 
 product_and_featured_variation_view_V3 = ProductAndFeaturedVariationListViewV3.as_view()
+
+
+class ProductAndLastCreatedVariationsListViewV3(generics.ListAPIView):
+    # queryset = Product.objects.prefetch_related(
+        # Prefetch('product_variations', queryset=ProductItem.objects.order_by('-created_at')[:1])
+    # )
+    queryset = Product.objects.prefetch_related(
+        Prefetch('product_variations' , queryset=ProductItem.objects.all().prefetch_related('product_image'))
+    )
+
+    serializer_class = ProductAndLastCreatedVariationSerializerV3
+
+
+product_and_last_created_variations_view_V3 = ProductAndLastCreatedVariationsListViewV3.as_view()

@@ -251,12 +251,36 @@ class ProductImageSerializerV3(serializers.ModelSerializer):
     
 class ProductVariationSerializerV3(serializers.ModelSerializer):
     product_image = ProductImageSerializer(many=True, read_only=True)
+    # variation_option_name = serializers.StringRelatedField(source='variation_option', many=True)
+
+    current_variation = serializers.SerializerMethodField()
     # discount = serializers.StringRelatedField(many=True)
     # variation_option to give the variation chars
+
+    def get_current_variation(self, obj):
+        variations = obj.variation_option.all()
+        return VariationOptionsSerializer(variations, many=True).data
     class Meta:
         model = ProductItem
-        fields = ('quantity', 'price', 'product_image')
+        fields = ('quantity', 'price', 'product_image', 'current_variation',)
 
+
+class ProductAndLastCreatedVariationSerializerV3(serializers.ModelSerializer):
+    '''
+    this returns the last created variation for each product.it does not return the last created products.
+    '''
+    last_created = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ('name', 'last_created')
+
+    def get_last_created(self, obj):
+        last_variation = obj.product_variations.order_by('-created_at').first()
+        if last_variation:
+            return ProductVariationSerializerV3(last_variation).data
+        else: 
+            return 'no variations for the product'
 
 
 # TODO: how can i get the featured item in a not nested manner ? should i do it here inside the seriailizer or inside the view ? 
@@ -266,8 +290,6 @@ class ProductSerializerV3(serializers.ModelSerializer):
     # TODO need to add the category reverse rel
     # TODO need to add the brand reverse rel
     # TODO where to put count to count the number of products ? here or inside views?
-    # quantity = serializers.IntegerField(source='product_variations.quantity', read_only=True) 
-    # featured_variation = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -277,7 +299,6 @@ class ProductSerializerV3(serializers.ModelSerializer):
     # def get_featured_variation(self, obj):
     #     featured_variation = obj.product_variations.filter(is_featured=True).first()
     #     return ProductVariationSerializerV3(featured_variation).data if featured_variation else None
-    
     
     
     # def to_representation(self, instance):
