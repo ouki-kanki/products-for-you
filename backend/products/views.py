@@ -12,7 +12,9 @@ from .models import Product, ProductItem, Category
 from .serializers import (
     CategorySerializer, CategoryRelatedProducts, ProductSerializer, ProductItemSerializer, ProductAndRelatedVariationsSerializer,
     ProductAndFeaturedVariationSerializer, ProductAndLastCreatedVariationSerializerV3,
-    ProductSerializerV3
+    ProductSerializerV3,
+    ProductVariationSerializerV3,
+    ProductAndCategoriesSErializer
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -158,7 +160,6 @@ class ProductAndFeaturedVariationListView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def list(self, request, *args, **kwargs):
-        print('insdie the list')
         return super().list(request, *args, **kwargs)
 
 
@@ -173,7 +174,6 @@ class ProductAndFeaturedVariationListViewV3(generics.ListAPIView):
                  .prefetch_related('product_image')
                  )
     )
-
     serializer_class = ProductSerializerV3
     
 
@@ -213,3 +213,31 @@ class LatestProductsListApiView(generics.ListAPIView):
 
 latest_products_view_with_page = LatestProductsListApiView.as_view()
 
+
+
+class LastestFeaturedVariationsListApiView(generics.ListAPIView):
+    '''
+    get the latest featured variations with paginination
+    '''
+    queryset = ProductItem.objects.select_related('product_id') \
+            .filter(is_featured=True) \
+            .order_by('-created_at')
+
+    # queryset = ProductItem.objects.prefetch_related(
+    #     Prefetch('product_id', queryset=Product.objects.all())
+    # ).order_by('-created_at')
+
+    serializer_class = ProductVariationSerializerV3
+    pagination_class = CustomPageNumberPagination
+
+latest_featured_variations_with_page = LastestFeaturedVariationsListApiView.as_view()
+
+class ProductsAndParentCategoriesListApiView(generics.ListAPIView):
+    '''
+    get products along with their parent categories
+    '''
+    queryset = Product.objects.select_related('category')
+    serializer_class = ProductAndCategoriesSErializer
+
+
+get_product_and_parent_categories_view = ProductsAndParentCategoriesListApiView.as_view()

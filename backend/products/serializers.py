@@ -38,7 +38,7 @@ class CategoryRelatedProducts(serializers.ModelSerializer):
         if obj.products.all():
             items = obj.products.all()
             return ProductSerializer(items, many=True).data    
-        return "no related variations"
+        return "no related products"
 
     class Meta:
         model = Category
@@ -248,9 +248,19 @@ class ProductImageSerializerV3(serializers.ModelSerializer):
         model = ProductImage
         fields = ('image', 'featured')
 
-    
+
+class ProductSerializerForTest(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Product
+
+# 
 class ProductVariationSerializerV3(serializers.ModelSerializer):
     product_image = ProductImageSerializer(many=True, read_only=True)
+    product = ProductSerializerForTest(source='product_id')
+
+    # product_id = ProductTest
+
     # variation_option_name = serializers.StringRelatedField(source='variation_option', many=True)
 
     current_variation = serializers.SerializerMethodField()
@@ -262,7 +272,7 @@ class ProductVariationSerializerV3(serializers.ModelSerializer):
         return VariationOptionsSerializer(variations, many=True).data
     class Meta:
         model = ProductItem
-        fields = ('quantity', 'price', 'product_image', 'current_variation',)
+        fields = ('quantity', 'price', 'product_image', 'current_variation', 'product')
 
 
 class ProductAndLastCreatedVariationSerializerV3(serializers.ModelSerializer):
@@ -291,20 +301,52 @@ class ProductSerializerV3(serializers.ModelSerializer):
     # TODO need to add the brand reverse rel
     # TODO where to put count to count the number of products ? here or inside views?
 
+
     class Meta:
         model = Product
-        # fields = ('name', 'featured_variation')
         fields = ('name', 'featured_product')
 
-    # def get_featured_variation(self, obj):
-    #     featured_variation = obj.product_variations.filter(is_featured=True).first()
-    #     return ProductVariationSerializerV3(featured_variation).data if featured_variation else None
-    
-    
-    # def to_representation(self, instance):
-    #     print(instance.featured_variation)
-    #     data = super().to_representation(instance)
-    #     if data['featured_variation']:
-    #         return { 'name': data['name'], 'quantity': data['featured_variation']['quantity'] }
-    #     return data
+class CategoryAndParentCategoriesSerializerV3(serializers.Serializer):
+    '''
+    can be used in product to fetch the category and its parents if there are any
+    '''
+    name = serializers.CharField(max_length=255)
+    parent_category = serializers.SerializerMethodField()
+    icon = serializers.ImageField(allow_null=True)
+
+    def get_parent_category(self, obj):
+        parent_category = obj.parent_category
+        if parent_category:
+            return CategoryAndParentCategoriesSerializerV3(parent_category).data
+        return None
+
+def get_parent_category(category, list_of_categories):
+    '''
+    returns list of categories in the form parent > parent > child
+    '''
+    list_of_categories.append(category['name'])
+    if not category['parent_category']:
+        return list_of_categories[::-1]
+    return get_parent_category(category['parent_category'], list_of_categories)
+
+class ProductAndCategoriesSErializer(serializers.ModelSerializer):
+    category = CategoryAndParentCategoriesSerializerV3(read_only=True)
+    class Meta:
+        model = Product
+        fields = ('name', 'category', )
+
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        category = ret['category']
+        # print(category['name'])
+        list_of_categories = get_parent_category(category, [])
+        # print(list_of_categories)
+        ret['category'] = list_of_categories
+        # while category['parent_category']:
+            # list_of_categories.append(category['name'])
+        
+        # ret['category'] = list_of_categories
+        # return super().to_representation(instance)
+        return ret
 

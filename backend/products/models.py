@@ -128,6 +128,7 @@ class ProductItem(models.Model):
     '''
     PRODUCT - VARIANT
     '''
+    # TODO: change product_id to product because it confusing
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     slug = models.SlugField(max_length=50, blank=True)
     sku = models.CharField(max_length=255)
@@ -164,9 +165,12 @@ class ProductItem(models.Model):
 def product_item_pre_save(sender, instance, *args, **kwargs):
     # if is flagged as featured remove the flag from the rest of the variations
     if instance.is_featured:
-        product_items = ProductItem.objects.filter(is_featured=True).exclude(pk=instance.pk)
-        if product_items:
-            product_items.update(is_featured=False)
+        print("inside the featured override")
+        other_featured_variations = ProductItem.objects.filter(product_id=instance.product_id, is_featured=True) \
+            .exclude(pk=instance.pk)
+
+        if other_featured_variations:
+            other_featured_variations.update(is_featured=False)
 
     if instance.slug is "" or instance.slug is None:
         # TODO: use something like (product-colorvalue) as slug
@@ -252,5 +256,8 @@ class Discount(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.discount_value}%"
+
+
+
 
 

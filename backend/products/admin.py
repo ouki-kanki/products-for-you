@@ -70,6 +70,8 @@ class ProductAdmin(admin.ModelAdmin):
 
         if not obj.product_variations.exists():
             self.message_user(request, self.message, level=messages.WARNING)
+
+        
     
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
