@@ -5,6 +5,8 @@ from rest_framework import (
     generics, mixins, permissions, authentication, viewsets
 )
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
+
 
 from .models import Product, ProductItem, Category
 from .serializers import (
@@ -190,3 +192,24 @@ class ProductAndLastCreatedVariationsListViewV3(generics.ListAPIView):
 
 
 product_and_last_created_variations_view_V3 = ProductAndLastCreatedVariationsListViewV3.as_view()
+
+
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    page_size = 10
+
+
+class LatestProductsListApiView(generics.ListAPIView):
+    '''
+        gets the 10 latest products
+    '''
+    queryset = Product.objects.order_by('-created_at').prefetch_related(
+        Prefetch('product_variations', queryset=ProductItem.objects.filter(is_featured=True) \
+        .prefetch_related('product_image')
+    ))
+    serializer_class = ProductSerializerV3
+    pagination_class = CustomPageNumberPagination
+
+latest_products_view_with_page = LatestProductsListApiView.as_view()
+

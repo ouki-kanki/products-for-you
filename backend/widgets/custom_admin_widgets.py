@@ -18,3 +18,5 @@ class CustomAdminFileWidget(AdminFileWidget):
         result.append(super().render(name, value, attrs, renderer))
 
         return format_html("".join(result))
+        # else:
+            # return super().render(name, value, attrs, renderer)

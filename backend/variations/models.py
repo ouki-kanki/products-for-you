@@ -59,3 +59,12 @@ class VariationOptionalField(models.Model):
     
     def __str__(self):
         return self.parent_value
+    
+
+class Product(models.Model):
+    name = models.CharField()
+
+class ProductItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variatons')
+
+

@@ -9,7 +9,11 @@ def upload_icon(name_of_folder: str, instance, filename):
     takes the name of the folder in which the file will be uploaded,
     the incance and filename (produced by the framework)
     '''
-    return f'{name_of_folder}/images/{instance.name}/{filename}'
+    print("inside the upload icon method")
+    if instance.icon:
+        return f'{name_of_folder}/images/{instance.name}/{filename}'
+    return f'/media/icons/placeholder.jpg'
+        
 
 
 def render_icon(obj):
@@ -17,11 +21,11 @@ def render_icon(obj):
     take an instance and return the url of the image if it exists
     is mandatory for the name of the field to be "icon" in order to render the icons
     '''
+    print("inside the render_icon method")
     if obj.icon:
-        print("this is the url of the icon: ", obj.icon.url)
         return format_html('<img src="{}" width="50px" height="50px"/>', obj.icon.url)
-    # return format_html('<img src="{}" widht="50px" height="50px"/>', '/icons/placeholder.jpg')
-    return 'no icon'
+
+    return format_html('<img src="{}" width="50px height="50px"/>', '/media/icons/placeholder.jpg')
 
 
 def render_link_with_image(value):
