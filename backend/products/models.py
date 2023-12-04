@@ -1,3 +1,4 @@
+import os
 from io import BytesIO
 
 from django.db import models
@@ -19,17 +20,23 @@ from PIL import Image
 
 # HELPERS
 
-# TODO: need to dry this
+# TODO: need to dry this 
 def upload_category_icon(instance, filename):
     # NOTE: this will save to /images/categoryname/filename
-    return upload_icon('category', instance, filename)
+    return upload_icon('category', instance, filename, 'icon', 'name')
 
 def upload_product_icon(instance, filename):
-    return upload_icon('product', instance, filename)
+    return upload_icon('product', instance, filename, 'icon', 'name')
 
-
+# need to provide the folder name in this case use the slug from the parent
 def upload_product_item_image(instance, filename):
-    return upload_icon('product_item', instance, filename)
+    product_name_from_parent = str(instance.product_item)    
+    return upload_icon('product_item', 'images', instance, 'image', product_name_from_parent, filename)
+
+
+# uploads to media/product_item/thumbnail/
+def upload_product_thumb(instance, filename):
+    return upload_icon('product_item', 'thumbnails', instance, 'thumbnail', '', filename)
 
 
 
@@ -82,6 +89,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    is_featured_product=models.BooleanField(default=False, verbose_name='Featured Product')
     icon = models.ImageField(upload_to=upload_product_icon, blank=True, default='icons/placeholder.jpg')
 
     class Meta:
@@ -94,6 +102,7 @@ class Product(models.Model):
     
     @property
     def get_absolute_url(self):
+        # TODO: have to do this recursivelly because the parent category may have parent category also
         return f'/{self.category.slug}/{self.slug}/'
     
     def __str__(self):
@@ -101,7 +110,7 @@ class Product(models.Model):
 
 
 def product_pre_save(sender, instance, *args, **kwargs):
-    if instance.slug is "" or instance.slug is None:
+    if instance.slug == "" or instance.slug is None:
         slugify_unique(sender, instance, instance.name)
         # instance.slug = slugify(instance.name)
 
@@ -153,9 +162,10 @@ class ProductItem(models.Model):
     
     def __str__(self):
         qs = self.variation_option.all()
-        variation_value = ', '.join(option.value for option in qs)
+        # returns the variations joined in a string
+        variation_values = ', '.join(option.value for option in qs)
         # return self.product_name
-        return f'{self.product_name} sku: {self.sku} - {variation_value}'
+        return f'{self.product_name}, {self.sku}-{variation_values}'
     
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
@@ -165,7 +175,6 @@ class ProductItem(models.Model):
 def product_item_pre_save(sender, instance, *args, **kwargs):
     # if is flagged as featured remove the flag from the rest of the variations
     if instance.is_featured:
-        print("inside the featured override")
         other_featured_variations = ProductItem.objects.filter(product_id=instance.product_id, is_featured=True) \
             .exclude(pk=instance.pk)
 
@@ -194,8 +203,9 @@ class Banner(models.Model):
 class ProductImage(models.Model):
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='product_image')
     image = models.ImageField(upload_to=upload_product_item_image)
-    featured = models.BooleanField(default=False)
-    thumbnail = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)
+    has_thumbnail = models.BooleanField(default=False)
+    thumbnail = models.ImageField(upload_to=upload_product_thumb, blank=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -203,34 +213,44 @@ class ProductImage(models.Model):
     def __str__(self):
         return self.product_item.product_name
     
+    
     def get_image(self):
         if self.image:
             # TODO: import the base url and use it 
             # this simplifies the url for the client
             return 'http://127.0.0.1:8000' + self.image.url
         return 'there is no image provided'
-    
-    def get_thumbnail(self):
-        if self.image and self.thumbnail:
-            return self.generate_thumbnail(self.image)
-        # TODO: change the thumbnail field to (hasThumbnail) and then 
-        # create a thumbnail image field and to the below
-        # self.thumbnail = self.generate_thumbnail(self.image)
-        # self.save to save to the database
-        # return 'http://127.0.0:8000' + self.thumbnail.url
-        else:
-            return 'there is no provided image'
-        
-    def generate_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(image)
+
+    def generate_thumbnail(self, size=(300, 200)):
+        self.refresh_from_db()
+        img = Image.open(self.image.path)
         img.convert('RGB')
         img.thumbnail(size)
 
         thumb_io = BytesIO()
         img.save(thumb_io, 'JPEG', quality=85)
+        base_name = os.path.basename(self.image.name) # because this returns the alleready created path, i want the name
+        thumb_name = f'thumbnail_{base_name}' # gets the name from the uploaded file.
+        self.thumbnail.save(thumb_name, File(thumb_io), save=False)
 
-        thumbnail = File(thumb_io, name=image.name)
-        return thumbnail
+
+
+@receiver(pre_save, sender=ProductImage)
+def product_image_pre_save(sender, instance, *args, **kwargs):
+    '''
+    TODO: the same is used in product item. have to DRY it.
+    '''
+    if instance.is_featured:
+        other_featured_images = ProductImage.objects.filter(product_item=instance.product_item, is_featured=True).exclude(pk=instance.pk)
+
+        if other_featured_images:
+            other_featured_images.update(is_featured=False) 
+
+
+@receiver(post_save, sender=ProductImage)
+def product_image_post_save(sender, instance, *args, **kwargs):
+    if instance.has_thumbnail:
+        instance.generate_thumbnail()
 
 
 class Discount(models.Model):

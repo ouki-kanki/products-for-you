@@ -1,3 +1,4 @@
+import decimal
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from user_control.models import CustomUser
@@ -5,7 +6,7 @@ from user_control.models import CustomUser
 from .models import Product, ProductItem, Category, Brand, Discount, ProductImage
 from variations.serializers import VariationOptionsSerializer
 
-import decimal
+from .utils import get_list_of_parent_categories
 
 
 #  ---- ** CATEGORY ** ----
@@ -70,29 +71,12 @@ class ProductPublicSerializer(serializers.Serializer):
     def get_related_products(self, obj):
         print("the obj", obj)
         return []
-    
-
-# class RelatedVariationsSerializer(serializers.RelatedField):
-
-#     def to_representation(self, value):
-#         print("the data", value)
-#         data = {
-#             "name": value.name
-#         }
-
-#         return data
 
 
 class DiscountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discount
         fields = '__all__'
-
-
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ('image',)
 
 
 # --- VARIATION OF THE PRODUCT --
@@ -162,7 +146,7 @@ class FeaturedVariationSerializerV1(serializers.ModelSerializer):
 # gives the product with the related variations and the images for each variation 
 class ProductAndFeaturedVariationSerializer(serializers.ModelSerializer):
     variations = ProductItemSerializer(many=True, read_only=True)
-    images = ProductImageSerializer(many=True, read_only=True)
+    # images = ProductImageSerializerV3(many=True, read_only=True)
     featured_variation = ProductItemSerializer(required=False, read_only=True)
 
     class Meta:
@@ -183,13 +167,8 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = serializers.StringRelatedField()
 
     # children = serializers.SerializerMethodField('_get_children')
-
-    # NOTE: source needs the related name delcared on the child model
-    # -- This will fetch all the related variations!! --
-
     # variations = ProductItemSerializer(source='product_variations', many=True, )
 
-    # variations = GetFirstRelated()
 
     # NOTE: name has to be the related name for reverse lookup
     # if it is different it will not give any error but it will show nothing
@@ -241,38 +220,12 @@ class ProductAndRelatedVariationsSerializer(serializers.ModelSerializer):
         
         return "no related variations"
 
-    # --- V3 -----
 
-class ProductImageSerializerV3(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ('image', 'featured')
-
-
+    # --- V3 ---- #
 class ProductSerializerForTest(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Product
-
-# 
-class ProductVariationSerializerV3(serializers.ModelSerializer):
-    product_image = ProductImageSerializer(many=True, read_only=True)
-    product = ProductSerializerForTest(source='product_id')
-
-    # product_id = ProductTest
-
-    # variation_option_name = serializers.StringRelatedField(source='variation_option', many=True)
-
-    current_variation = serializers.SerializerMethodField()
-    # discount = serializers.StringRelatedField(many=True)
-    # variation_option to give the variation chars
-
-    def get_current_variation(self, obj):
-        variations = obj.variation_option.all()
-        return VariationOptionsSerializer(variations, many=True).data
-    class Meta:
-        model = ProductItem
-        fields = ('quantity', 'price', 'product_image', 'current_variation', 'product')
 
 
 class ProductAndLastCreatedVariationSerializerV3(serializers.ModelSerializer):
@@ -293,22 +246,9 @@ class ProductAndLastCreatedVariationSerializerV3(serializers.ModelSerializer):
             return 'no variations for the product'
 
 
-# TODO: how can i get the featured item in a not nested manner ? should i do it here inside the seriailizer or inside the view ? 
-class ProductSerializerV3(serializers.ModelSerializer):
-    # TODO: need only the featured var or the last imported
-    featured_product = ProductVariationSerializerV3(source='product_variations', many=True, read_only=True)
-    # TODO need to add the category reverse rel
-    # TODO need to add the brand reverse rel
-    # TODO where to put count to count the number of products ? here or inside views?
-
-
-    class Meta:
-        model = Product
-        fields = ('name', 'featured_product')
-
 class CategoryAndParentCategoriesSerializerV3(serializers.Serializer):
     '''
-    can be used in product to fetch the category and its parents if there are any
+    fetches the parent categories recursivelly
     '''
     name = serializers.CharField(max_length=255)
     parent_category = serializers.SerializerMethodField()
@@ -320,16 +260,8 @@ class CategoryAndParentCategoriesSerializerV3(serializers.Serializer):
             return CategoryAndParentCategoriesSerializerV3(parent_category).data
         return None
 
-def get_parent_category(category, list_of_categories):
-    '''
-    returns list of categories in the form parent > parent > child
-    '''
-    list_of_categories.append(category['name'])
-    if not category['parent_category']:
-        return list_of_categories[::-1]
-    return get_parent_category(category['parent_category'], list_of_categories)
 
-class ProductAndCategoriesSErializer(serializers.ModelSerializer):
+class ProductAndCategoriesSerializerV3(serializers.ModelSerializer):
     category = CategoryAndParentCategoriesSerializerV3(read_only=True)
     class Meta:
         model = Product
@@ -339,14 +271,45 @@ class ProductAndCategoriesSErializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         category = ret['category']
-        # print(category['name'])
-        list_of_categories = get_parent_category(category, [])
-        # print(list_of_categories)
+        list_of_categories = get_list_of_parent_categories(category, [])
         ret['category'] = list_of_categories
-        # while category['parent_category']:
-            # list_of_categories.append(category['name'])
-        
-        # ret['category'] = list_of_categories
-        # return super().to_representation(instance)
+
         return ret
 
+
+class ProductImageSerializerV3(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ('id', 'image', 'is_featured')
+
+
+# --- USED TO GET LATEST PRODUCTS -- *** PRIME SER ** 
+class ProductVariationSerializerV3(serializers.ModelSerializer):
+    product_image = ProductImageSerializerV3(many=True, read_only=True)
+    # product = ProductSerializerForTest(source='product_id')
+    product = ProductAndCategoriesSerializerV3(source='product_id')
+    current_variation = serializers.SerializerMethodField()
+    # discount = serializers.StringRelatedField(many=True)
+
+
+    def get_current_variation(self, obj):
+        variations = obj.variation_option.all()
+        return VariationOptionsSerializer(variations, many=True).data
+    class Meta:
+        model = ProductItem
+        fields = (
+            'quantity', 
+            'price',
+            'product_image', 
+            'current_variation', 
+            'product')
+
+
+
+class ProductSerializerV3(serializers.ModelSerializer):
+    featured_product = ProductVariationSerializerV3(source='product_variations', many=True, read_only=True)
+    # TODO where to put count to count the number of products ? here or inside views?
+
+    class Meta:
+        model = Product
+        fields = ('name', 'featured_product')

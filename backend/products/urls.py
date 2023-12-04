@@ -8,16 +8,17 @@ from .views import (
     product_and_last_created_variations_view_V3,
     latest_products_view_with_page,
     latest_featured_variations_with_page,
-    get_product_and_parent_categories_view
+    get_product_and_parent_categories_view,
+    featured_products_view
 )
 
 app_name = 'products'
 urlpatterns = [
     # NOTE: testing (consumes product table along with related variations)
     path('', product_list_view),
-     # lists the products,
-    path('latest', latest_products_view_with_page),
+    path('featured-products', featured_products_view),
     path('latest_variations', latest_featured_variations_with_page),
+    path('latest', latest_products_view_with_page),
     path('products-categories', get_product_and_parent_categories_view),
     path('featured', product_and_featured_variation_view),
     path('featured-v3', product_and_featured_variation_view_V3),

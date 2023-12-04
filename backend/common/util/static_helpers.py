@@ -1,29 +1,54 @@
+import os
 from django.utils.html import format_html
+from django.core.exceptions import ValidationError
 
 from PIL import Image
 from io import BytesIO
 from django.core.files import File
 
-def upload_icon(name_of_folder: str, instance, filename):
+
+def sanitize_file_name(item_name):
+    if item_name is None:
+        # TODO: use this error inside the admin to show an error message
+        raise ValidationError("cannot create name from the parent item. check the name of the parent item and if the parent item exists")
+    cleaned_value = ''.join(c if c.isalnum() or c in {'_', '-'} else '_' for c in item_name)
+
+    return cleaned_value
+
+# used inside the model to upload the image to certain folder
+def upload_icon(root_folder_name: str, images_folder_name: str, instance, name_of_field: str, file_name_from_parent='', filename=''):
     '''
-    takes the name of the folder in which the file will be uploaded,
-    the incance and filename (produced by the framework)
+    Generates the upload path for product images
+
+    Args:
+        root_folder_name (str): this is the name of the folder after media folder
+        images_folder_name (str): this is the name of the folder that will contain the images .it is child of the first param
+        instance (ProductImage): this is the instance of the model
+        name_of_field (str): this is the field name for the image in the model. it has to be the same as the the model field 
+        file_name_from_parent (str): this is the value that the __str__ method of the parent produces.it will be used to generate the filename
+        filename (str): this is name for the image from the uploaded file ti will be concat with file_name_from_parent
+    Returns:
+        str: the path of the image or the thumb
     '''
-    print("inside the upload icon method")
-    if instance.icon:
-        return f'{name_of_folder}/images/{instance.name}/{filename}'
+    if getattr(instance, name_of_field):
+        path = f'{root_folder_name}/{images_folder_name}'
+        concat_file_name = ''
+        if file_name_from_parent:
+            concat_file_name = f'{sanitize_file_name(file_name_from_parent)}_{filename}'
+        else:
+            concat_file_name = filename
+
+        return f'{path}/{concat_file_name}'
     return f'/media/icons/placeholder.jpg'
-        
 
-
-def render_icon(obj):
+    
+def render_icon(obj, model_property):
     '''
+    needs the obj and the property of the model responsible for the image
     take an instance and return the url of the image if it exists
-    is mandatory for the name of the field to be "icon" in order to render the icons
     '''
-    print("inside the render_icon method")
-    if obj.icon:
-        return format_html('<img src="{}" width="50px" height="50px"/>', obj.icon.url)
+    if getattr(obj, model_property):
+        return format_html('<img src="{}" width="50px" height="50px"/>', getattr(obj, model_property).url)
 
     return format_html('<img src="{}" width="50px height="50px"/>', '/media/icons/placeholder.jpg')
 

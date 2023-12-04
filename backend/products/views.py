@@ -14,7 +14,7 @@ from .serializers import (
     ProductAndFeaturedVariationSerializer, ProductAndLastCreatedVariationSerializerV3,
     ProductSerializerV3,
     ProductVariationSerializerV3,
-    ProductAndCategoriesSErializer
+    ProductAndCategoriesSerializerV3
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -214,15 +214,19 @@ class LatestProductsListApiView(generics.ListAPIView):
 latest_products_view_with_page = LatestProductsListApiView.as_view()
 
 
-
+# --- CORE ---
 class LastestFeaturedVariationsListApiView(generics.ListAPIView):
     '''
     get the latest featured variations with paginination
+    endpoint: latest-variations
+    gets the latest products with the featured variation for each product
+    TODO: fetch the brand and check the performance 
     '''
-    queryset = ProductItem.objects.select_related('product_id') \
+    queryset = ProductItem.objects.select_related('product_id__category', 'product_id') \
             .filter(is_featured=True) \
             .order_by('-created_at')
 
+    # NOTE: more queries less time . why ? check with a big ammount of products 
     # queryset = ProductItem.objects.prefetch_related(
     #     Prefetch('product_id', queryset=Product.objects.all())
     # ).order_by('-created_at')
@@ -232,12 +236,24 @@ class LastestFeaturedVariationsListApiView(generics.ListAPIView):
 
 latest_featured_variations_with_page = LastestFeaturedVariationsListApiView.as_view()
 
+
+#  --- CORE ---- 
+class FeaturedProductsListView(generics.ListAPIView):
+    queryset = ProductItem.objects.select_related('product_id__category', 'product_id') \
+            .filter(is_featured=True, product_id__is_featured_product=True) \
+            .order_by('-created_at')
+
+    serializer_class = ProductVariationSerializerV3
+    pagination_class = CustomPageNumberPagination
+
+featured_products_view = FeaturedProductsListView.as_view()
+
 class ProductsAndParentCategoriesListApiView(generics.ListAPIView):
     '''
     get products along with their parent categories
     '''
     queryset = Product.objects.select_related('category')
-    serializer_class = ProductAndCategoriesSErializer
+    serializer_class = ProductAndCategoriesSerializerV3
 
 
 get_product_and_parent_categories_view = ProductsAndParentCategoriesListApiView.as_view()

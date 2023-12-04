@@ -21,7 +21,7 @@ admin.site.site_header = 'Products For You Administration'
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('product_icon', 'name', 'slug')
+    list_display = ('name', 'product_icon', 'slug')
     # list_editable = ['name']
     readonly_fields = ('product_icon',)
 
@@ -42,10 +42,11 @@ class ProductItemInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug', 'brand')
+    list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured_product')
+    list_filter = ('is_featured_product', )
     inlines = [ProductItemInline]
     message = "Warning.There are no variations for this product.please provide at least one variation"
-    no_featured_warning = "Warning. there has one featured variation. please provide a featured variation"
+    no_featured_warning = "Warning. please provide a featured variation"
 
     formfield_overrides = {
     models.ImageField: { 'widget': CustomAdminFileWidget }
@@ -63,7 +64,7 @@ class ProductAdmin(admin.ModelAdmin):
         return super().changeform_view(request, object_id, form_url, extra_context)
 
     def product_icon(self, obj):
-        return render_icon(obj)
+        return render_icon(obj, 'icon')
     
     def save_model(self, request: Any, obj: Any, form: Any, change: Any) -> None:
         super().save_model(request, obj, form, change)
@@ -81,7 +82,17 @@ class DiscountAdmin(admin.ModelAdmin):
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     # form = ProductImageForm
-    list_display = ('product_item', 'image', 'featured', 'thumbnail',)
+    list_display = ('product_item', 'product_image', 'is_featured', 'has_thumbnail')
+    exclude = ('thumbnail', )
+    
+    formfield_overrides = {
+        models.ImageField: { 'widget': CustomAdminFileWidget }
+    }
 
+    def product_image(self, obj):
+        return render_icon(obj, 'image')
+
+
+# TODO: subclass the admin for productItem and add an inline imageAdmin 
 admin.site.register((ProductItem, Brand),)
 

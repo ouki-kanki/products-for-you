@@ -1,0 +1,2 @@
+class ProductItemError(Exception):
+    pass
