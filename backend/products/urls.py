@@ -29,18 +29,3 @@ urlpatterns = [
     path('categories/', category_list_view),
     path('categories/<slug:slug>/', category_detail_related_products_view)
 ]
-
-
-# products = [
-#     {
-#         name: ''
-#         category: '',
-#         description: '',
-#         icon: ''
-#         variations: [
-#             sku: '',
-#             quantity: '',
-#             price: null
-#         ]
-#     }
-# ]

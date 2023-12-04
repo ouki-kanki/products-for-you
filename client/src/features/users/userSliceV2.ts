@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '@reduxjs/toolkit/query';
 import type { IUserProfile } from '../../api/userApi';
 
 
