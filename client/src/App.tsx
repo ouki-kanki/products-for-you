@@ -21,7 +21,8 @@ import { Home,
          LoginPage,
          SignUp,
          Profile,
-         ErrorPage
+         ErrorPage,
+         LandingPage
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
@@ -74,7 +75,7 @@ function App() {
   // lazy use of rtk 
   const handleFetchProducts = () => {
     trigger()
-  }
+  }  
 
 
   if (isLoading) {
@@ -91,6 +92,7 @@ function App() {
           <Routes>
             <Route path='*' element={<ErrorPage/>}/>
             <Route path='/' element={<Home/>}>
+              <Route index element={<LandingPage/>}/>
               <Route path='/categories' element={<Categories/>}/>
               <Route path='/cart' element={<Cart/>}/>
               <Route path='/about' element={<About/>}/>
@@ -106,10 +108,6 @@ function App() {
               </Route>
             </Route>
           </Routes>
-        </div>
-
-        <div className='rest__container__for-testing'>
-          <button onClick={() => dispatch(fetchUsers())}>fetch users</button>
         </div>
       </div>
     </div>

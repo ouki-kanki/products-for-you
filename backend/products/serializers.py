@@ -286,14 +286,21 @@ class ProductImageSerializerV3(serializers.ModelSerializer):
 # --- USED TO GET LATEST PRODUCTS -- *** PRIME SER ** 
 class ProductVariationSerializerV3(serializers.ModelSerializer):
     product_images = ProductImageSerializerV3(many=True, read_only=True, source='product_image')
-    # product = ProductAndCategoriesSerializerV3(source='product_id')
     current_variation = serializers.SerializerMethodField()
     # discount = serializers.StringRelatedField(many=True)
     name = serializers.SerializerMethodField()
     category = ProductAndCategoriesSerializerV3(source='product_id')
+    description = serializers.SerializerMethodField()
+    features = serializers.SerializerMethodField()
 
     def get_name(self, obj):
         return obj.product_id.name
+    
+    def get_description(self, obj):
+        return obj.product_id.description
+    
+    def get_features(self, obj):
+        return obj.product_id.features
 
     def get_current_variation(self, obj):
         variations = obj.variation_option.all()
@@ -312,8 +319,10 @@ class ProductVariationSerializerV3(serializers.ModelSerializer):
         model = ProductItem
         fields = (
             'name',
+            'description',
             'quantity', 
             'price',
+            'features',
             'product_images', 
             'current_variation', 
             'category')

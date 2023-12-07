@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='icon',
-            field=models.ImageField(blank=True, default='icons/placeholder.jpg', upload_to=products.models.upload_product_icon),
+            field=models.ImageField(blank=True, default='icons/placeholder.jpg', upload_to='products/icons/'),
         ),
     ]

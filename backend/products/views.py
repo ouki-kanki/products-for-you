@@ -234,11 +234,18 @@ class LastestFeaturedVariationsListApiView(generics.ListAPIView):
     serializer_class = ProductVariationSerializerV3
     pagination_class = CustomPageNumberPagination
 
+    def get(self, request, *args, **kwargs):
+        # print("the req", request)
+        return super().get(request, *args, **kwargs)
+
 latest_featured_variations_with_page = LastestFeaturedVariationsListApiView.as_view()
 
 
 #  --- CORE ---- 
 class FeaturedProductsListView(generics.ListAPIView):
+    """
+    returns the products that are flagged with "is_featured"
+    """
     queryset = ProductItem.objects.select_related('product_id__category', 'product_id') \
             .filter(is_featured=True, product_id__is_featured_product=True) \
             .order_by('-created_at')
@@ -247,6 +254,7 @@ class FeaturedProductsListView(generics.ListAPIView):
     pagination_class = CustomPageNumberPagination
 
 featured_products_view = FeaturedProductsListView.as_view()
+
 
 class ProductsAndParentCategoriesListApiView(generics.ListAPIView):
     '''

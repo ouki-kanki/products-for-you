@@ -1,19 +1,19 @@
 import os
-from io import BytesIO
-
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
 from django.utils.text import slugify
 from django.urls import reverse
 from django.core.validators import MaxValueValidator
-from django.core.files import File
 from django.dispatch import receiver
+from django.contrib.postgres.fields import ArrayField
+from django.core.files.storage import default_storage
+from django.conf import settings
+
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
-
-from PIL import Image
+from services.imageServices import generate_thumbnail, generate_thumbnailV2
 
 # NOTE: models.PROTECT it seems that does not allow null=True
 
@@ -25,27 +25,38 @@ def upload_category_icon(instance, filename):
     # NOTE: this will save to /images/categoryname/filename
     return upload_icon('category', instance, filename, 'icon', 'name')
 
-def upload_product_icon(instance, filename):
-    return upload_icon('product', instance, filename, 'icon', 'name')
-
 # need to provide the folder name in this case use the slug from the parent
 def upload_product_item_image(instance, filename):
-    product_name_from_parent = str(instance.product_item)    
-    return upload_icon('product_item', 'images', instance, 'image', product_name_from_parent, filename)
+    variation_name = str(instance.product_item)    
+    return upload_icon(
+        'products', 
+        instance.product_item.product_id.name,
+        variation_name, 
+        'images', 
+        instance, 
+        'image', 
+        filename)
 
 
 # uploads to media/product_item/thumbnail/
 def upload_product_thumb(instance, filename):
-    return upload_icon('product_item', 'thumbnails', instance, 'thumbnail', '', filename)
-
+    variation_name = str(instance.product_item)
+    return upload_icon(
+        'products',
+        instance.product_item.product_id.name,
+        variation_name, 
+        'thumbnails', 
+        instance, 
+        'thumbnail',
+        filename)
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
     # slug = models.SlugField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, blank=True)
     parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
-    icon = models.ImageField(upload_to=upload_category_icon, blank=True, default='icons/placeholder.jpg')
+    icon = models.ImageField(upload_to='categories/', blank=True, default='icons/placeholder.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     # TODO: maybe this field is usefull
@@ -57,14 +68,37 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_category = Category.objects.get(pk=self.pk)
+            old_icon_path = old_category.icon.path
+
+            # delete the old img and don't collect garbage
+            if default_storage.exists(old_icon_path):
+                default_storage.delete(old_icon_path)
+
+        # super().save(*args, **kwargs)
+
+        if self.icon:
+            icon = generate_thumbnailV2(self, 'icon')
+            self.icon = icon
+        original_icon_path = self.icon.url
+        # original_icon_path = 'categories/air.jpg'
+        # original_icon_rel_path = os.path.relpath(original_icon_path, settings.MEDIA_ROOT)
+
+        super().save(*args, **kwargs)
+
+
+
 # NOTE: sender is the class
 def category_pre_save(sender, instance, *args, **kwargs):
     if instance.slug is None or instance.slug == "":
         print("inside pre_save", instance.slug)
         instance.slug = slugify(instance.name)
 
+
 def category_post_save(sender, instance, created, *args, **kwargs):
-    if created:
+    if created: 
         instance.save()
     
 
@@ -72,6 +106,7 @@ pre_save.connect(category_pre_save, sender=Category)
 post_save.connect(category_post_save, sender=Category)
 
 # TODO: TABLE FOR PRODUCT DETAILS, IMAGES
+
 
 class Brand(models.Model):
     name = models.CharField(max_length=50)
@@ -84,13 +119,14 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default='')
+    features = ArrayField(models.CharField(max_length=255), blank=True, null=True)
     slug = models.SlugField(max_length=50, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_featured_product=models.BooleanField(default=False, verbose_name='Featured Product')
-    icon = models.ImageField(upload_to=upload_product_icon, blank=True, default='icons/placeholder.jpg')
+    icon = models.ImageField(upload_to='products/icons/', blank=True, default='icons/placeholder.jpg')
 
     class Meta:
         verbose_name = "Product"
@@ -114,9 +150,11 @@ def product_pre_save(sender, instance, *args, **kwargs):
         slugify_unique(sender, instance, instance.name)
         # instance.slug = slugify(instance.name)
 
+
 def product_post_save(sender, instance, created, *args, **kwargs):
     if created:
         instance.save()
+
 
 pre_save.connect(product_pre_save, Product)
 post_save.connect(product_post_save, Product)
@@ -134,9 +172,9 @@ class VariationManager(models.Manager):
 
 
 class ProductItem(models.Model):
-    '''
-    PRODUCT - VARIANT
-    '''
+    """
+    RPODUCT - VARIANT
+    """
     # TODO: change product_id to product because it confusing
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     slug = models.SlugField(max_length=50, blank=True)
@@ -144,12 +182,10 @@ class ProductItem(models.Model):
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_featured = models.BooleanField(default=False)
-    # to avoid circular imports 
-    variation_option = models.ManyToManyField('variations.VariationOptions')
+    variation_option = models.ManyToManyField('variations.VariationOptions') # to avoid circular imports
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     discount = models.ManyToManyField("products.Discount", verbose_name="product_discount")
-
 
     @property
     def product_name(self):
@@ -159,7 +195,6 @@ class ProductItem(models.Model):
         verbose_name = "Product Variation"
         db_table_comment = "Variation of Product"
 
-    
     def __str__(self):
         qs = self.variation_option.all()
         # returns the variations joined in a string
@@ -170,7 +205,7 @@ class ProductItem(models.Model):
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
 
-# NOTE: used decorator instead of connect 
+
 @receiver(pre_save, sender=ProductItem)
 def product_item_pre_save(sender, instance, *args, **kwargs):
     # if is flagged as featured remove the flag from the rest of the variations
@@ -205,6 +240,7 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to=upload_product_item_image)
     is_featured = models.BooleanField(default=False)
     has_thumbnail = models.BooleanField(default=False)
+    remove_background = models.BooleanField(default=False, help_text="experimental, works with white background")
     thumbnail = models.ImageField(upload_to=upload_product_thumb, blank=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -213,27 +249,6 @@ class ProductImage(models.Model):
     def __str__(self):
         return self.product_item.product_name
     
-    
-    def get_image(self):
-        if self.image:
-            # TODO: import the base url and use it 
-            # this simplifies the url for the client
-            return 'http://127.0.0.1:8000' + self.image.url
-        return 'there is no image provided'
-
-    def generate_thumbnail(self, size=(300, 200)):
-        self.refresh_from_db()
-        img = Image.open(self.image.path)
-        img.convert('RGB')
-        img.thumbnail(size)
-
-        thumb_io = BytesIO()
-        img.save(thumb_io, 'JPEG', quality=85)
-        base_name = os.path.basename(self.image.name) # because this returns the alleready created path, i want the name
-        thumb_name = f'thumbnail_{base_name}' # gets the name from the uploaded file.
-        self.thumbnail.save(thumb_name, File(thumb_io), save=False)
-
-
 
 @receiver(pre_save, sender=ProductImage)
 def product_image_pre_save(sender, instance, *args, **kwargs):
@@ -249,8 +264,11 @@ def product_image_pre_save(sender, instance, *args, **kwargs):
 
 @receiver(post_save, sender=ProductImage)
 def product_image_post_save(sender, instance, *args, **kwargs):
+    # output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
+    # if instance.remove_background:
+        # remove_background(instance.image, output_path)
     if instance.has_thumbnail:
-        instance.generate_thumbnail()
+        generate_thumbnail(instance)
 
 
 class Discount(models.Model):

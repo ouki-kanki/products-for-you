@@ -17,7 +17,7 @@ urlpatterns = [
     # NOTE: testing (consumes product table along with related variations)
     path('', product_list_view),
     path('featured-products', featured_products_view),
-    path('latest_variations', latest_featured_variations_with_page),
+    path('latest-products', latest_featured_variations_with_page),
     path('latest', latest_products_view_with_page),
     path('products-categories', get_product_and_parent_categories_view),
     path('featured', product_and_featured_variation_view),

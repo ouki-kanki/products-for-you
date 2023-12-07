@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.files import File
 from django.contrib.auth.models import (
     UserManager,
     AbstractUser,
@@ -11,6 +10,7 @@ from datetime import timezone
 
 from .managers import CustomUserManager, SoftDeleteManager
 from common.util.static_helpers import make_thumbnail
+
 
 from PIL import Image
 from io import BytesIO

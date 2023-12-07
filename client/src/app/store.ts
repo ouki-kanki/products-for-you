@@ -5,7 +5,7 @@ import uiReducer from '../features/UiFeatures/UiFeaturesSlice';
 import { productsSlice } from "../features/products/productsSlice";
 import authReducer from '../features/auth/Login/loginSlice';
 import userReducer from '../features/users/userSliceV2';
-import { authApi, userApi } from "../api";
+import { authApi, userApi, productsApi } from "../api";
 
 // TODO: getDefaultMiddleware is deprecated
 export const store = configureStore({
@@ -16,13 +16,15 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     auth: authReducer,
     [userApi.reducerPath]: userApi.reducer,
-    user: userReducer
+    user: userReducer,
+    [productsApi.reducerPath]: productsApi.reducer
   },
   middleware: (getDefaultMiddleware) => (
     getDefaultMiddleware().concat([
       productsSlice.middleware,
       authApi.middleware,
-      userApi.middleware
+      userApi.middleware,
+      productsApi.middleware
     ])
   )
 })

@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from django import forms
 from django.http.request import HttpRequest
+from django.contrib.postgres.fields import ArrayField
+
 
 from .models import (
     Product, 
@@ -30,7 +32,7 @@ class CategoryAdmin(admin.ModelAdmin):
     }
     
     def product_icon(self, obj):
-        return render_icon(obj)
+        return render_icon(obj, 'icon')
 
 # Register your models here.
 
@@ -39,19 +41,27 @@ class ProductItemInline(admin.TabularInline):
     # extra 0 will remove the ability to add variations inside tha product admin panel
     extra = 1    
 
+class ProductForm(forms.ModelForm):
+    features = forms.CharField(widget=forms.Textarea())
+
+    class Meta:
+        model = Product
+        fields = "__all__"
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured_product')
     list_filter = ('is_featured_product', )
     inlines = [ProductItemInline]
+    form = ProductForm
     message = "Warning.There are no variations for this product.please provide at least one variation"
     no_featured_warning = "Warning. please provide a featured variation"
 
     formfield_overrides = {
-    models.ImageField: { 'widget': CustomAdminFileWidget }
+    models.ImageField: { 'widget': CustomAdminFileWidget },
     }
 
+    
     def changeform_view(self, request: HttpRequest, object_id: str | None = ..., form_url: str = ..., extra_context: dict[str, bool] | None = ...) -> Any:
         product_items = ProductItem.objects.filter(product_id=object_id)
         isFeaturedExists = product_items.filter(is_featured=True)
@@ -84,6 +94,7 @@ class ProductImageAdmin(admin.ModelAdmin):
     # form = ProductImageForm
     list_display = ('product_item', 'product_image', 'is_featured', 'has_thumbnail')
     exclude = ('thumbnail', )
+    ordering = ('product_item',)
     
     formfield_overrides = {
         models.ImageField: { 'widget': CustomAdminFileWidget }
@@ -93,6 +104,18 @@ class ProductImageAdmin(admin.ModelAdmin):
         return render_icon(obj, 'image')
 
 
-# TODO: subclass the admin for productItem and add an inline imageAdmin 
-admin.site.register((ProductItem, Brand),)
+@admin.register(ProductItem)
+class ProductItemAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'product_id', 'get_category')
+    list_select_related = ('product_id', )
+    # list_display_links = ('product_id',)
+    list_filter = ('product_id',)
+
+    def get_category(self, obj):
+        return obj.product_id.category
+    
+    get_category.short_description = 'Category'
+
+
+admin.site.register((Brand),)
 

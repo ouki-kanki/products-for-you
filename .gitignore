@@ -140,3 +140,4 @@ sandbox.py
 
 # static files - media files
 **/media/
+**/backup

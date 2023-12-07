@@ -1,11 +1,13 @@
 import os
 from django.utils.html import format_html
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 from PIL import Image
 from io import BytesIO
 from django.core.files import File
 
+from services.imageServices import remove_background
 
 def sanitize_file_name(item_name):
     if item_name is None:
@@ -16,30 +18,39 @@ def sanitize_file_name(item_name):
     return cleaned_value
 
 # used inside the model to upload the image to certain folder
-def upload_icon(root_folder_name: str, images_folder_name: str, instance, name_of_field: str, file_name_from_parent='', filename=''):
+def upload_icon(root_folder_name: str, parent_folder_name: str, variation_name: str, images_folder_name: str, instance, name_of_field: str, filename=''):
     '''
     Generates the upload path for product images
-
     Args:
         root_folder_name (str): this is the name of the folder after media folder
-        images_folder_name (str): this is the name of the folder that will contain the images .it is child of the first param
+        parent_folder_name for example if products is the parent and variations the child the name would be 'products'
+        variation_name (str): it will be use to name the folder of the variation
+        images_folder_name (str): this is the name of the folder that will contain the images
         instance (ProductImage): this is the instance of the model
         name_of_field (str): this is the field name for the image in the model. it has to be the same as the the model field 
         file_name_from_parent (str): this is the value that the __str__ method of the parent produces.it will be used to generate the filename
         filename (str): this is name for the image from the uploaded file ti will be concat with file_name_from_parent
+    EXAMPLE: product/t_shirt/product_variations/images/foo.jpg
     Returns:
         str: the path of the image or the thumb
     '''
+    # only if there is image or thumb 
     if getattr(instance, name_of_field):
-        path = f'{root_folder_name}/{images_folder_name}'
-        concat_file_name = ''
-        if file_name_from_parent:
-            concat_file_name = f'{sanitize_file_name(file_name_from_parent)}_{filename}'
-        else:
-            concat_file_name = filename
+        # remove invalid chars if any
+        parent_folder_name, variation_name = map(lambda x: sanitize_file_name(x), [parent_folder_name, variation_name]) 
 
-        return f'{path}/{concat_file_name}'
-    return f'/media/icons/placeholder.jpg'
+        media_root = settings.MEDIA_ROOT
+        path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name)
+        # out_path = os.path.join(media_root, path, filename)
+        out_path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name, filename)
+        test_path = os.path.join(media_root, root_folder_name, 'test', f'{filename}.png')
+
+        if instance.remove_background and name_of_field == 'thumbnail':
+            remove_background(getattr(instance, 'image'), test_path)            
+        return out_path
+    
+    # return '/media/icons/placeholder.jpg'
+    return os.path.join(media_root, 'icons', 'placeholder.jpg')
 
     
 def render_icon(obj, model_property):

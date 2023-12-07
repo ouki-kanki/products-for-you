@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='icon',
-            field=models.ImageField(blank=True, upload_to=products.models.upload_product_icon),
+            field=models.ImageField(blank=True, upload_to='products/icons'),
         ),
     ]
