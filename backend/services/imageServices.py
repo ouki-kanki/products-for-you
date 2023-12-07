@@ -20,6 +20,7 @@ def generate_thumbnailV2(instance, name_of_field, size=(300, 200)):
     """
     if not getattr(instance, name_of_field):
         return
+
     
     # with Image.open(getattr(instance, name_of_field)) as original_image:
     original_image = Image.open(getattr(instance, name_of_field))
@@ -33,25 +34,16 @@ def generate_thumbnailV2(instance, name_of_field, size=(300, 200)):
     image.close()
 
     name_of_the_file = getattr(instance, name_of_field).name
-
-
-    # temp_file, temp_filename = tempfile.mkstemp(suffix='.jpg')
-
     # remove the portion before / othewise it will create a subforlder with same name as the parent folder
+    category_name = instance.name
     cleared_name_the_file = name_of_the_file.split('/')[-1]
-    # getattr(instance, name_of_field).save(
-    #     cleared_name_the_file,
-    #     File(temp_thumb),
-    #     save=False,
-    # )
+    category_with_filename = f'{category_name}_{cleared_name_the_file}'
 
+    image_file = File(temp_thumb, name=category_with_filename)
+    # temp_thumb.close()
 
-
-    icon_field = getattr(instance, name_of_field)
-    return File(temp_thumb, name=cleared_name_the_file)
-    # icon_field.storage.save(cleared_name_the_file, File(temp_thumb))
+    return image_file
     
-    temp_thumb.close()
 
     # # delete the original image and save the temp_file 
     # if default_storage.exists(name_of_the_file):

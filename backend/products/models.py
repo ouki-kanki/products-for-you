@@ -69,22 +69,30 @@ class Category(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        if self.pk:
-            old_category = Category.objects.get(pk=self.pk)
-            old_icon_path = old_category.icon.path
+        if not self.pk:
+            return
+        # delete the old img and don't collect garbage
+        old_category = Category.objects.get(pk=self.pk)
+        old_icon_path = old_category.icon.path
+        reference_to_old_icon = old_category.icon
+        new_icon = self.icon
 
-            # delete the old img and don't collect garbage
-            if default_storage.exists(old_icon_path):
-                default_storage.delete(old_icon_path)
+        # if user did not upload a new icon return 
+        if (reference_to_old_icon == new_icon):
+            return
 
-        # super().save(*args, **kwargs)
+        if default_storage.exists(old_icon_path):
+            default_storage.delete(old_icon_path)
 
         if self.icon:
             icon = generate_thumbnailV2(self, 'icon')
             self.icon = icon
-        original_icon_path = self.icon.url
-        # original_icon_path = 'categories/air.jpg'
-        # original_icon_rel_path = os.path.relpath(original_icon_path, settings.MEDIA_ROOT)
+
+            super().save(*args, **kwargs)
+            icon.close()
+            return
+
+
 
         super().save(*args, **kwargs)
 
