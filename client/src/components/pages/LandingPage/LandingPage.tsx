@@ -4,7 +4,9 @@ import { ProductV2 } from "../../Product.tsx/ProductV2"
 export const LandingPage = () => {
   const { data, isLoading } = useGetLatestProductsQuery('10')
 
-  console.log(data[0].features)
+  if (data) {
+    console.log(data[0].features)
+  }
 
   return (
     <div>

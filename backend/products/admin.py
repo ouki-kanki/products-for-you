@@ -1,11 +1,14 @@
+import os
+import json
 from typing import Any
 from django.contrib import admin, messages
 from django.conf import settings
 from django.db import models
 from django import forms
 from django.http.request import HttpRequest
-from django.contrib.postgres.fields import ArrayField
+from django.http.response import HttpResponse
 
+from services.imageServices import delete_image_from_filesystem
 
 from .models import (
     Product, 
@@ -18,14 +21,26 @@ from .models import (
 from common.util.static_helpers import render_icon
 from widgets.custom_admin_widgets import CustomAdminFileWidget
 
+from .fields.admin_fields import FeaturesField
+
 admin.site.site_title = 'products-for-you admin'
 admin.site.site_header = 'Products For You Administration'
 
+
+# TODO: move all the forms to a seperate file
+class CategoryAdminForm(forms.ModelForm):
+    icon_name = forms.CharField(required=False)
+
+    class Meta:
+        model = Category
+        fields = '__all__'
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug')
-    # list_editable = ['name']
+    list_display = ('name', 'product_icon', 'slug', 'created_at')
     readonly_fields = ('product_icon',)
+    actions = ('delete_categories',)
+    form = CategoryAdminForm
 
     formfield_overrides = {
         models.ImageField: { 'widget': CustomAdminFileWidget }
@@ -33,6 +48,31 @@ class CategoryAdmin(admin.ModelAdmin):
     
     def product_icon(self, obj):
         return render_icon(obj, 'icon')
+    
+    def delete_categories(self, request, queryset):
+        """
+        remove the records and the images from disk
+        """
+        for obj in queryset:
+            if obj.icon:
+                delete_image_from_filesystem(obj, 'icon')
+        # run the default del
+        queryset.delete()
+    
+    # NOT WORKING FOR NOW 
+    def response_change(self, request: HttpRequest, obj: Any) -> HttpResponse:
+        """
+        change the name of the imageFile on the disk.
+        - deactivated for now - 
+        NOTE: needs debugging (it seems there is conflict with the mechanism in the models that removes the old file and replaces it with new)
+        """
+        icon_name = request.POST.get('icon_name', '')
+
+        if icon_name and obj.icon:
+            obj.icon.name = icon_name
+            # obj.save()
+
+        return super().response_change(request, obj)
 
 # Register your models here.
 
@@ -41,26 +81,34 @@ class ProductItemInline(admin.TabularInline):
     # extra 0 will remove the ability to add variations inside tha product admin panel
     extra = 1    
 
-class ProductForm(forms.ModelForm):
-    features = forms.CharField(widget=forms.Textarea())
 
+class ProductForm(forms.ModelForm):
+    features = FeaturesField() # NOTE: this corresponds to the name of the field in the database
+    
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+
+        self.fields['features'].widget.attrs['placeholder'] = "insert comma seperated values. ex: foo, bar, "
+    
     class Meta:
         model = Product
         fields = "__all__"
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured_product')
     list_filter = ('is_featured_product', )
     inlines = [ProductItemInline]
+    actions = ('delete_products', )
     form = ProductForm
     message = "Warning.There are no variations for this product.please provide at least one variation"
     no_featured_warning = "Warning. please provide a featured variation"
 
     formfield_overrides = {
     models.ImageField: { 'widget': CustomAdminFileWidget },
+    # ArrayField: { 'widget': FeaturesField }
     }
-
     
     def changeform_view(self, request: HttpRequest, object_id: str | None = ..., form_url: str = ..., extra_context: dict[str, bool] | None = ...) -> Any:
         product_items = ProductItem.objects.filter(product_id=object_id)
@@ -82,7 +130,11 @@ class ProductAdmin(admin.ModelAdmin):
         if not obj.product_variations.exists():
             self.message_user(request, self.message, level=messages.WARNING)
 
-        
+    def delete_products(self, request, queryset):
+        for obj in queryset:
+            if obj.icon:
+                delete_image_from_filesystem(obj, 'icon')
+        queryset.delete()
     
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
@@ -91,10 +143,12 @@ class DiscountAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    # form = ProductImageForm
     list_display = ('product_item', 'product_image', 'is_featured', 'has_thumbnail')
+    list_filter = ('product_item', )
     exclude = ('thumbnail', )
     ordering = ('product_item',)
+    actions = ('delete_record_and_images',)
+
     
     formfield_overrides = {
         models.ImageField: { 'widget': CustomAdminFileWidget }
@@ -102,6 +156,18 @@ class ProductImageAdmin(admin.ModelAdmin):
 
     def product_image(self, obj):
         return render_icon(obj, 'image')
+        
+    def delete_record_and_images(self, request, queryset):
+        """
+        remove the images from disk and then delete the record
+        """
+        for obj in queryset:
+            if obj.image:
+                delete_image_from_filesystem(obj, 'image')
+            if obj.thumbnail:
+                delete_image_from_filesystem(obj, 'thumbnail')
+        
+        queryset.delete()
 
 
 @admin.register(ProductItem)

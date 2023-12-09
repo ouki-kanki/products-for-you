@@ -1,4 +1,5 @@
 import os
+from io import IOBase
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
@@ -7,14 +8,18 @@ from django.urls import reverse
 from django.core.validators import MaxValueValidator
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
-from django.core.files.storage import default_storage
 from django.conf import settings
 
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
-from services.imageServices import generate_thumbnail, generate_thumbnailV2
-
+from services.imageServices import (
+    generate_thumbnail, 
+    generate_thumbnailV2,
+    remove_background,
+    compare_images_delete_prev_if_not_same,
+    delete_image_from_filesystem
+)
 # NOTE: models.PROTECT it seems that does not allow null=True
 
 
@@ -53,7 +58,6 @@ def upload_product_thumb(instance, filename):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    # slug = models.SlugField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, blank=True)
     parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
     icon = models.ImageField(upload_to='categories/', blank=True, default='icons/placeholder.jpg')
@@ -68,33 +72,36 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
+    def gen_thumb(self):
+        icon = generate_thumbnailV2(self, 'icon', self.name)
+        self.icon = icon
+        if isinstance(icon, IOBase):
+            icon.close()
+    
     def save(self, *args, **kwargs):
         if not self.pk:
-            return
-        # delete the old img and don't collect garbage
-        old_category = Category.objects.get(pk=self.pk)
-        old_icon_path = old_category.icon.path
-        reference_to_old_icon = old_category.icon
-        new_icon = self.icon
-
-        # if user did not upload a new icon return 
-        if (reference_to_old_icon == new_icon):
+            if self.icon:
+                self.gen_thumb()
+            super().save(*args, **kwargs)
             return
 
-        if default_storage.exists(old_icon_path):
-            default_storage.delete(old_icon_path)
+        prev_category_obj = Category.objects.get(pk=self.pk)        
+        is_same = compare_images_delete_prev_if_not_same(self, prev_category_obj, 'icon')
+
+        if is_same:
+            return
 
         if self.icon:
-            icon = generate_thumbnailV2(self, 'icon')
-            self.icon = icon
-
+            self.gen_thumb()
             super().save(*args, **kwargs)
-            icon.close()
             return
-
-
-
+        
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.icon:
+            delete_image_from_filesystem(self, 'icon')
+        super().delete(*args, **kwargs)
 
 
 
@@ -105,13 +112,13 @@ def category_pre_save(sender, instance, *args, **kwargs):
         instance.slug = slugify(instance.name)
 
 
-def category_post_save(sender, instance, created, *args, **kwargs):
-    if created: 
-        instance.save()
+# def category_post_save(sender, instance, created, *args, **kwargs):
+#     if created: 
+#         instance.save()
     
 
 pre_save.connect(category_pre_save, sender=Category)
-post_save.connect(category_post_save, sender=Category)
+# post_save.connect(category_post_save, sender=Category)
 
 # TODO: TABLE FOR PRODUCT DETAILS, IMAGES
 
@@ -151,6 +158,39 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        # this will trigger if this is first created instance so we do not need to clear the filesystem
+        if not self.pk:
+            if self.icon:
+                icon = generate_thumbnailV2(self, 'icon', self.name)
+                self.icon = icon
+                if isinstance(icon, IOBase):
+                    icon.close()
+            super().save(*args, **kwargs)
+            return
+        # it did not save yet. we fetch from the database the prev obj
+        prev_obj = Product.objects.get(pk=self.pk)
+        is_same = compare_images_delete_prev_if_not_same(self, prev_obj, 'icon')
+
+        # the case that user did not upload a new icon and just hit save
+        if is_same: 
+            return
+
+        if self.icon:
+            icon = generate_thumbnailV2(self, 'icon', self.name)
+            self.icon = icon
+            if isinstance(icon, IOBase):
+                icon.close()
+            super().save(*args, **kwargs)
+            return
+        
+        super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        if self.icon:
+            delete_image_from_filesystem(self, 'icon')
+        super().delete(*args, **kwargs)
 
 
 def product_pre_save(sender, instance, *args, **kwargs):
@@ -257,6 +297,41 @@ class ProductImage(models.Model):
     def __str__(self):
         return self.product_item.product_name
     
+    def save(self, *args, **kwargs):
+        # super().save(*args, **kwargs)
+        # if not self.pk:
+        #     super().save(*args, **kwargs)
+        #     return
+        # self.refresh_from_db()
+
+        # check if there is record in the database to make the check
+        is_same = False
+        if self.pk:
+            prev_obj = ProductImage.objects.get(pk=self.pk)
+            is_same = compare_images_delete_prev_if_not_same(self, prev_obj, 'image')
+
+        # TODO if the user saves without uploading after save the app deletes the thumb and keeps only the or
+        if self.has_thumbnail:
+            # self.refresh_from_db()
+            if self.pk:
+                # TODO: this is a nasty fix. for some reason the prev obj is always the same .have to check why 
+                compare_images_delete_prev_if_not_same(self, prev_obj, 'thumbnail', force_delete=True)
+                if is_same:
+                    return
+            thumb = generate_thumbnailV2(self, 'image', self.product_item)
+            self.thumbnail = thumb
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            delete_image_from_filesystem(self, 'image')
+        
+        if self.thumbnail:
+            delete_image_from_filesystem(self, 'thumbnail')
+
+        super().delete(*args, **kwargs)
+
+
 
 @receiver(pre_save, sender=ProductImage)
 def product_image_pre_save(sender, instance, *args, **kwargs):
@@ -272,11 +347,10 @@ def product_image_pre_save(sender, instance, *args, **kwargs):
 
 @receiver(post_save, sender=ProductImage)
 def product_image_post_save(sender, instance, *args, **kwargs):
-    # output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
-    # if instance.remove_background:
-        # remove_background(instance.image, output_path)
-    if instance.has_thumbnail:
-        generate_thumbnail(instance)
+    output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
+    if instance.remove_background:
+        remove_background(instance.image, output_path)
+
 
 
 class Discount(models.Model):

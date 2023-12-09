@@ -34,23 +34,24 @@ def upload_icon(root_folder_name: str, parent_folder_name: str, variation_name: 
     Returns:
         str: the path of the image or the thumb
     '''
+    media_root = settings.MEDIA_ROOT
+
     # only if there is image or thumb 
-    if getattr(instance, name_of_field):
+    # if getattr(instance, name_of_field):
         # remove invalid chars if any
-        parent_folder_name, variation_name = map(lambda x: sanitize_file_name(x), [parent_folder_name, variation_name]) 
+    parent_folder_name, variation_name = map(lambda x: sanitize_file_name(x), [parent_folder_name, variation_name]) 
 
-        media_root = settings.MEDIA_ROOT
-        path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name)
-        # out_path = os.path.join(media_root, path, filename)
-        out_path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name, filename)
-        test_path = os.path.join(media_root, root_folder_name, 'test', f'{filename}.png')
+    path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name)
+    # out_path = os.path.join(media_root, path, filename)
+    out_path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name, filename)
+    test_path = os.path.join(media_root, root_folder_name, 'test', f'{filename}.png')
 
-        if instance.remove_background and name_of_field == 'thumbnail':
-            remove_background(getattr(instance, 'image'), test_path)            
-        return out_path
+    if instance.remove_background and name_of_field == 'thumbnail':
+        remove_background(getattr(instance, 'image'), test_path)            
+    return out_path
     
     # return '/media/icons/placeholder.jpg'
-    return os.path.join(media_root, 'icons', 'placeholder.jpg')
+    # return os.path.join(media_root, 'icons', 'placeholder.jpg')
 
     
 def render_icon(obj, model_property):

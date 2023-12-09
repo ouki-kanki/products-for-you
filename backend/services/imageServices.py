@@ -6,23 +6,23 @@ from io import BytesIO
 
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.core.exceptions import SuspiciousFileOperation
 
 from PIL import Image
 
 
-def generate_thumbnailV2(instance, name_of_field, size=(300, 200)):
+def generate_thumbnailV2(instance, name_of_field, suffix, size=(300, 200)):
     """
-    creates a thumbnail from the existing image and deletes the original image
+    creates a thumbnail from the existing image
 
     instance: the model instance
-    name_of_field: the name of the field for the image
+    name_of_field: the name of the field that holds the image
+    suffix (str): it will be used combined with the filename suffix_filename to construct the name of the file 
     size: the size of the output thumb
     """
     if not getattr(instance, name_of_field):
         return
-
     
-    # with Image.open(getattr(instance, name_of_field)) as original_image:
     original_image = Image.open(getattr(instance, name_of_field))
     image = original_image.convert("RGB")    
     image.thumbnail(size, Image.ANTIALIAS)
@@ -34,20 +34,12 @@ def generate_thumbnailV2(instance, name_of_field, size=(300, 200)):
     image.close()
 
     name_of_the_file = getattr(instance, name_of_field).name
-    # remove the portion before / othewise it will create a subforlder with same name as the parent folder
-    category_name = instance.name
-    cleared_name_the_file = name_of_the_file.split('/')[-1]
-    category_with_filename = f'{category_name}_{cleared_name_the_file}'
+
+    category_with_filename = f'{suffix}_{name_of_the_file}'
 
     image_file = File(temp_thumb, name=category_with_filename)
-    # temp_thumb.close()
 
     return image_file
-    
-
-    # # delete the original image and save the temp_file 
-    # if default_storage.exists(name_of_the_file):
-    #     default_storage.delete(name_of_the_file)
 
 
 def generate_thumbnail(instance, size=(300, 200)):
@@ -85,3 +77,44 @@ def remove_background(input_image_field, output_path, col_low=(0, 0, 100), col_u
 
     result[:, :, :3] = image
     cv2.imwrite(output_path, result)
+
+
+def compare_images_delete_prev_if_not_same(instance, old_instance, name_of_image_field: str, **kwargs) -> bool:
+    """
+    compares the prev and currenct instance on the provided field and if they are not the same it deletes the image from disk
+    return: returns a boolean of the comparison
+    """
+    force_delete = kwargs.get('force_delete', False)
+    reference_to_prev_image = getattr(old_instance, name_of_image_field)
+    reference_to_current_image = getattr(instance, name_of_image_field)
+    old_image_path = reference_to_prev_image.path
+
+    is_same = reference_to_prev_image == reference_to_current_image
+
+    if not is_same or force_delete:
+        try:
+            if default_storage.exists(old_image_path):
+                default_storage.delete(old_image_path)
+        except SuspiciousFileOperation:
+            # TODO: throw an error and use a manager to show the errors on the admin
+            print(f"file not found in {old_image_path}")
+        except Exception as e:
+            print("there was an error", e)
+    
+    return is_same
+    
+
+def delete_image_from_filesystem(instance, name_of_field):
+    """
+    takes the inctance and the name of the field for the image and
+    deletes the file from disk
+    instance: item instance
+    name_of_field (str): the name of the image_field
+    """
+    try:
+        item_path = getattr(instance, name_of_field).path
+        if os.path.isfile(item_path):
+            os.remove(item_path)
+    except Exception as e:
+        # TODO: throw an error and catch it in the manager to so in the admin some notif
+        print("yo cannot del")    
