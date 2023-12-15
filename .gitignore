@@ -141,3 +141,8 @@ sandbox.py
 # static files - media files
 **/media/
 **/backup
+**/db_backups/
+
+
+# config
+config.xml

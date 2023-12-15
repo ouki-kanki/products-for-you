@@ -134,7 +134,7 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default='')
-    features = ArrayField(models.CharField(max_length=255), blank=True, null=True)
+    features = ArrayField(models.CharField(max_length=255), default=list, blank=True, null=True)
     slug = models.SlugField(max_length=50, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
@@ -376,8 +376,3 @@ class Discount(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.discount_value}%"
-
-
-
-
-

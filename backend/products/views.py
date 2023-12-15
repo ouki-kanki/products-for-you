@@ -8,13 +8,17 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
 
-from .models import Product, ProductItem, Category
+from .models import Product, ProductItem, Category, Brand
 from .serializers import (
     CategorySerializer, CategoryRelatedProducts, ProductSerializer, ProductItemSerializer, ProductAndRelatedVariationsSerializer,
     ProductAndFeaturedVariationSerializer, ProductAndLastCreatedVariationSerializerV3,
     ProductSerializerV3,
     ProductVariationSerializerV3,
-    ProductAndCategoriesSerializerV3
+    ProductAndCategoriesSerializerV3,
+    BrandSerializer,
+    ProductSerializerV4,
+    ProductItemSerializerV4,
+    ProductItemDetailSerializerV4
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -220,6 +224,7 @@ class LastestFeaturedVariationsListApiView(generics.ListAPIView):
     get the latest featured variations with paginination
     endpoint: latest-variations
     gets the latest products with the featured variation for each product
+    endpoint: products/latest-products
     TODO: fetch the brand and check the performance 
     '''
     queryset = ProductItem.objects.select_related('product_id__category', 'product_id') \
@@ -265,3 +270,68 @@ class ProductsAndParentCategoriesListApiView(generics.ListAPIView):
 
 
 get_product_and_parent_categories_view = ProductsAndParentCategoriesListApiView.as_view()
+
+
+class BrandListApiView(generics.ListAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+
+get_brand_view = BrandListApiView.as_view()
+
+
+# V4 
+class ProductsAndRelatedVariationsView(generics.ListAPIView):
+    """
+    endpoint: products-v4
+    """
+    queryset = Product.objects.select_related('brand', 'category') \
+                    .prefetch_related(
+                        'product_variations',
+                        'product_variations__variation_option',
+                        'product_variations__product_image'
+                    ).order_by('-created_at')
+    
+    serializer_class = ProductSerializerV4
+    
+products_and_related_variations_view = ProductsAndRelatedVariationsView.as_view()
+
+
+class ProductDetailViewV4(generics.ListAPIView):
+    queryset = ProductItem.objects.all()
+    serializer_class = ProductItemDetailSerializerV4
+    lookup_field = 'pk'
+    # lookup_url_kwarg = '' # TODO: maybe have to use in order to use the slug but make the query using the primary key ?
+
+
+product_detail_view_v4 = ProductDetailViewV4.as_view()
+
+
+class RelatedProductsView(generics.ListAPIView):
+    """
+    get the related products of the same category
+    TODO: use prefetch and select to min the qyeries 
+    """
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializerV4
+    pagination_class = CustomPageNumberPagination
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        product_id = self.kwargs['pk']
+        product = Product.objects.get(id=product_id)
+        qs = qs.filter(category=product.category).exclude(id=product_id)
+        return qs
+
+
+class ProductPreview(generics.RetrieveAPIView):
+    """
+    is used on the product cards when the user clicks the icon to change 
+    variation for each product.
+    """
+    queryset = ProductItem.objects.all()
+    serializer_class = ProductItemSerializerV4
+    lookup_field = 'pk'
+
+
+product_preview = ProductPreview.as_view()
+    

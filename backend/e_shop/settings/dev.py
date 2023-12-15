@@ -1,6 +1,7 @@
 '''settins for dev env'''
 
 import os
+import sys
 from .settings import *
 
 ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
@@ -8,7 +9,8 @@ ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
 INSTALLED_APPS += [
     'drf_spectacular',
     'drf_spectacular_sidecar',
-    'silk'
+    'silk',
+    # 'django_nose'
 ]
 
 DEBUG = True
@@ -50,3 +52,12 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# NOSE_ARGS = [
+#     '--with-coverage',
+#     '--cover-package=products'
+# ]
+
+
+DBBACKUP_DIR = BASE_DIR / 'db_backups'

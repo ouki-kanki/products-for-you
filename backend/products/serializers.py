@@ -154,7 +154,7 @@ class ProductAndFeaturedVariationSerializer(serializers.ModelSerializer):
         exclude = ('created_at', 'modified_at')
 
 
-
+# OBSOLETE
 class ProductSerializer(serializers.ModelSerializer):
     '''
     product-list
@@ -277,21 +277,22 @@ class ProductAndCategoriesSerializerV3(serializers.ModelSerializer):
         return ret
 
 
-class ProductImageSerializerV3(serializers.ModelSerializer):
+class ProductThumbNailSerializerV3(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('id', 'image', 'is_featured')
+        fields = ('id', 'thumbnail', 'is_featured')
 
 
 # --- USED TO GET LATEST PRODUCTS -- *** PRIME SER ** 
 class ProductVariationSerializerV3(serializers.ModelSerializer):
-    product_images = ProductImageSerializerV3(many=True, read_only=True, source='product_image')
+    product_images = ProductThumbNailSerializerV3(many=True, read_only=True, source='product_image')
     current_variation = serializers.SerializerMethodField()
     # discount = serializers.StringRelatedField(many=True)
     name = serializers.SerializerMethodField()
     category = ProductAndCategoriesSerializerV3(source='product_id')
     description = serializers.SerializerMethodField()
     features = serializers.SerializerMethodField()
+
 
     def get_name(self, obj):
         return obj.product_id.name
@@ -303,7 +304,7 @@ class ProductVariationSerializerV3(serializers.ModelSerializer):
         return obj.product_id.features
 
     def get_current_variation(self, obj):
-        variations = obj.variation_option.all()
+        variations = obj.variation_option.all() 
         return VariationOptionsSerializer(variations, many=True).data
     
     def to_representation(self, instance):
@@ -336,3 +337,104 @@ class ProductSerializerV3(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('name', 'featured_product')
+
+class ProductItemSerializerV4(serializers.ModelSerializer):
+    variation_details = serializers.SerializerMethodField()
+    product_thumbnails = ProductThumbNailSerializerV3(many=True, read_only=True, source='product_image')
+
+    def get_variation_details(self, obj):
+        variations = obj.variation_option.all() 
+        return VariationOptionsSerializer(variations, many=True).data
+
+    class Meta:
+        model = ProductItem
+        fields = (
+            'id',
+            'quantity',
+            'price',
+            # 'variation_option',
+            'product_thumbnails',
+            'variation_details'
+        )
+
+
+#  -- OBSOLETE -- 
+class ReverseUrlAndThumbsVariationSerializer(serializers.ModelSerializer):
+    """
+    the related variations reverse urls and the featured thumbs
+    """
+    thumb = serializers.SerializerMethodField()
+
+    # def get_url(self, obj):
+    #     print("yoyoyo")
+    #     return reverse('products:product-item-detail', kwargs={'pk': obj.pk})
+
+    def get_thumb(self, obj):
+        featured_thumb = obj.product_image.filter(is_featured=True).first()
+        return ProductThumbNailSerializerV3(featured_thumb).data
+    class Meta:
+        model = ProductItem
+        fields = (
+            # 'url',
+            'thumb',
+        )
+
+
+class ProductSerializerV4(serializers.ModelSerializer):
+    category = CategoryAndParentCategoriesSerializerV3(read_only=True)
+    # variations = ProductItemSerializerV4(source='product_variations',  many=True, read_only=True)
+    selected_variation = serializers.SerializerMethodField()
+    # brand = BrandSerializer(read_only=True)
+    brand = serializers.SerializerMethodField()
+    # variations = ReverseUrlAndThumbsVariationSerializer(source='product_variations', many=True, read_only=True)
+    variations = serializers.SerializerMethodField()
+
+    def get_variations(self, obj):
+        variations = obj.product_variations.all()
+        # TODO: check the time complexity here
+        return [
+            {
+                'url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
+                'thumb': variation.product_image.filter(is_featured=True).first().thumbnail.url if variation.product_image.filter(is_featured=True).exists() else None
+            }
+            for variation in variations
+        ]
+
+    def get_brand(self, obj):
+        return obj.brand.name
+
+    def get_selected_variation(self, obj):
+        """
+        return the featured variation, if there is none, return the last created
+        """
+        variation = obj.product_variations.filter(is_featured=True).first()
+        if not variation:
+            variation = obj.product_variations.last()
+        return ProductItemSerializerV4(variation).data 
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        category = ret['category']
+        list_of_categories = get_list_of_parent_categories(category, [])
+        ret['category'] = list_of_categories
+
+        return ret
+    class Meta:
+        model = Product
+        fields = (
+            'name',
+            'description',
+            'features',
+            'category', # implement this check above
+            'brand', 
+            'icon',
+            'selected_variation',
+            'variations'
+        )
+
+
+class ProductItemDetailSerializerV4(serializers.ModelSerializer):
+    class Meta:
+        model = ProductItem
+        exclude = ('created_at', 'modified_at',)
+

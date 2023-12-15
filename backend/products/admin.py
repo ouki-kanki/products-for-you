@@ -97,7 +97,7 @@ class ProductForm(forms.ModelForm):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured_product')
+    list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured_product', 'created_at',)
     list_filter = ('is_featured_product', )
     inlines = [ProductItemInline]
     actions = ('delete_products', )
@@ -140,7 +140,7 @@ class ProductAdmin(admin.ModelAdmin):
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('code', 'discount_value', 'discount_type', 'is_active', 'created_at', )
 
-
+  
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     list_display = ('product_item', 'product_image', 'is_featured', 'has_thumbnail')
@@ -170,12 +170,19 @@ class ProductImageAdmin(admin.ModelAdmin):
         queryset.delete()
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    exclude = ['thumbnail',]
+    extra = 1  
+
+
 @admin.register(ProductItem)
 class ProductItemAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'product_id', 'get_category')
     list_select_related = ('product_id', )
     # list_display_links = ('product_id',)
     list_filter = ('product_id',)
+    inlines = [ProductImageInline, ]
 
     def get_category(self, obj):
         return obj.product_id.category
