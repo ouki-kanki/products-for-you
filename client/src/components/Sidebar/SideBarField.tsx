@@ -21,13 +21,16 @@ interface SidebarFieldProps {
 export const SideBarField = ({ title, icon, link }: SidebarFieldProps) => {
   const [isHovered, setIsHovered] = useState<string | null>(null)
   return (
-    <div 
+    <NavLink 
+      to={link}
       className={`${styles.linkContainer} ${isHovered && styles.hovered}`}
       onMouseEnter={() => setIsHovered('hovered')}
       onMouseLeave={() => setIsHovered(null)}
       >
       {icon}
-      <NavLink to={link}>{title}</NavLink>
-    </div>
+      <span>
+        {title}
+      </span>
+    </NavLink>
   )
 }

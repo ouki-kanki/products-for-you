@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 // redux
 
 export interface IServerError {
@@ -37,4 +38,10 @@ type _Range<T extends number, R extends unknown[]> = R['length'] extends T ? R[n
 export type ICredentials = {
   userId: number | string | null,
   token: string | null
+}
+
+// react - general
+
+export interface IChildren {
+  children: ReactNode
 }

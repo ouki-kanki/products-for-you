@@ -174,7 +174,8 @@ class Product(models.Model):
         is_same = compare_images_delete_prev_if_not_same(self, prev_obj, 'icon')
 
         # the case that user did not upload a new icon and just hit save
-        if is_same: 
+        if is_same:
+            super().save(*args, **kwargs)
             return
 
         if self.icon:
@@ -198,14 +199,12 @@ def product_pre_save(sender, instance, *args, **kwargs):
         slugify_unique(sender, instance, instance.name)
         # instance.slug = slugify(instance.name)
 
-
-def product_post_save(sender, instance, created, *args, **kwargs):
-    if created:
-        instance.save()
-
+# def product_post_save(sender, instance, created, *args, **kwargs):
+#     if created:
+#         instance.save()
 
 pre_save.connect(product_pre_save, Product)
-post_save.connect(product_post_save, Product)
+# post_save.connect(product_post_save, Product)
 
 
 # NOT IMPLEMENTED

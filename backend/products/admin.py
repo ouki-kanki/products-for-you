@@ -125,10 +125,11 @@ class ProductAdmin(admin.ModelAdmin):
         return render_icon(obj, 'icon')
     
     def save_model(self, request: Any, obj: Any, form: Any, change: Any) -> None:
-        super().save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change) 
 
         if not obj.product_variations.exists():
             self.message_user(request, self.message, level=messages.WARNING)
+        super().save_model(request, obj, form, change) 
 
     def delete_products(self, request, queryset):
         for obj in queryset:

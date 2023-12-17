@@ -290,8 +290,8 @@ class ProductsAndRelatedVariationsView(generics.ListAPIView):
                         'product_variations__variation_option',
                         'product_variations__product_image'
                     ).order_by('-created_at')
-    
     serializer_class = ProductSerializerV4
+    pagination_class = CustomPageNumberPagination
     
 products_and_related_variations_view = ProductsAndRelatedVariationsView.as_view()
 

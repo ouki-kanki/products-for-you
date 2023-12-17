@@ -23,29 +23,20 @@ import kdBl from '../../assets/variations/kd14var_bl_or.jpg';
 
 import { IProduct } from '../../api/productsApi'; 
 
-// interface Iproduct {
-//   title: string,
-//   price: string
-// }
 
 const formatPrice = (strNum: string) => {
   const num = Number(strNum).toLocaleString()
   return `${num} €`
-  // const formatedNumber = Number.isInteger(num)
-    // ? num.toString()
-    // : num.toFixed(2)
-
-  // return `${formatedNumber} $`
 }
 
 
-export const ProductV2 = ({ name: title, price, features }: IProduct) => {
+export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
   const { isHovered, activateHover, deactivateHover } = useHover()
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
 
 
   return (
-    <div>
+    <div key={id}>
       <Card
         onMouseEnter={activateHover}
         onMouseLeave={deactivateHover} 
@@ -109,8 +100,8 @@ export const ProductV2 = ({ name: title, price, features }: IProduct) => {
               <div className={styles.contentContainer}>
                 <h3>features</h3>
                 <ul>
-                  {features && features.map(feature => (
-                    <li>{feature}</li>
+                  {features && features.map((feature, id) => (
+                    <li key={id}>{feature}</li>
                   ))}
                 </ul>
               </div>

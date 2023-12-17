@@ -18,6 +18,8 @@ $btn_height: 40px;
 
 .app_container {
   display: flex;
+  position: relative;
+  height: 100%; // the container has to be srollable for position sticky to work on sidebar 
   // flex-direction: column;
 }
 

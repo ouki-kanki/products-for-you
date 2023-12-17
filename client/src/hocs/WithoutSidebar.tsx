@@ -1,12 +1,10 @@
-import { useEffect, ReactNode } from 'react'
+import { useEffect } from 'react'
 import { showSidebar, hideSidebar } from '../features/UiFeatures/UiFeaturesSlice'
 import { useDispatch } from 'react-redux'
+import type { IChildren } from '../types'
 
-interface IProps {
-  children: ReactNode
-}
 
-export const WithoutSidebar = ({ children }: IProps) => {
+export const WithoutSidebar = ({ children }: IChildren) => {
   const dispatch = useDispatch()
   
   useEffect(() => {
