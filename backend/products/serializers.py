@@ -394,7 +394,7 @@ class ProductSerializerV4(serializers.ModelSerializer):
         # TODO: check the time complexity here
         return [
             {
-                'url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
+                'product_url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
                 'thumb': variation.product_image.filter(is_featured=True).first().thumbnail.url if variation.product_image.filter(is_featured=True).exists() else None
             }
             for variation in variations

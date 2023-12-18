@@ -3,31 +3,8 @@ import { BASE_URL } from '../api/baseConfig';
 import type { RootState } from '../app/store';
 import { AuthEnum } from './enums';
 
-// export interface IImage {
-//   id: string;
-//   image: string;
-//   isFeatured: boolean
-// }
+import { convertSnakeToCamel } from '../utils/stringUtils';
 
-// export interface ICurrentVariation {
-//   variationName: string;
-//   value: string
-// }
-
-// export interface IProductItem {
-//   name: string;
-//   quantity: number;
-//   price: string;
-//   productImages: Array<IImage>
-//   currentVariation: Array<ICurrentVariation>;
-// }
-
-// interface ITestRes {
-//   count: number | null;
-//   next: number | null;
-//   previous: number | null;
-//   results: Record<string, unknown>
-// }
 
 interface IProductImage {
   id: number;
@@ -87,17 +64,18 @@ export const productsApi = createApi({
         }
         // TODO: if variation does not exist omit the product
         const flattened = results.map(result => {
-          const { selected_variation, ...resultNoSelectedVariation } = result
-          const { variation_details, ...selectedVariationNodetails } = selected_variation
-          const listofVariations = variation_details?.reduce((a, variation) => {
-            a[variation.variation_name] = variation.value
+          convertSnakeToCamel(result)
+          const { selectedVariation, ...resultNoSelectedVariation } = result
+          const { variationDetails, ...selectedVariationNodetails } = selectedVariation
+          const listOfVariations = variationDetails?.reduce((a, variation) => {
+            a[variation.variationName] = variation.value
             return a      
           }, {})
 
           return {
             ...resultNoSelectedVariation,
             ...selectedVariationNodetails,
-            listofVariations
+            listOfVariations
           }
         })
 

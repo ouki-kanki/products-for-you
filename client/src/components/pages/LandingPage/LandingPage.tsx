@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import { useGetLatestProductsQuery } from "../../../api/productsApi"
 import { ProductV2 } from "../../Product.tsx/ProductV2"
 
 import { Grid } from "../../../UI/Layout/Grid/Grid";
 
+import { FeaturedProducts } from './FeaturedProducts';
+import { LatestProducts } from './LatestProducts';
 // TODO : move from here
 interface IVariationItem {
   variationName: string;
@@ -33,15 +36,17 @@ interface IProduct  {
 
 
 export const LandingPage = () => {
-  const { data, isLoading } = useGetLatestProductsQuery('10')
+  const { data: latestProducts, isLoading } = useGetLatestProductsQuery('10')
+  const [ productView, setProductView ] = useState<string>('landing') 
 
-  if (data) {
-    console.log("the data", data[1])
-    // console.log(data[0].selected_variation.id)
+
+  const switchView = () => {
+    setProductView((prevView) => (
+      prevView === 'landing' ? 'products' : 'landing'
+    ))
   }
 
-  return (
-    <div>
+  const renderProducts = () => (
       <Grid>
         {data && data.map(({ name, features, id, price}) => (
           <ProductV2 
@@ -52,6 +57,14 @@ export const LandingPage = () => {
             key={id}/> 
         ))}
       </Grid>
+  )
+
+  return (
+    <div>
+      <button onClick={switchView}>switch</button>
+      {productView === 'products' && renderProducts()}
+      <LatestProducts data={latestProducts}/>
+      <FeaturedProducts/>
     </div>
   )
 }
