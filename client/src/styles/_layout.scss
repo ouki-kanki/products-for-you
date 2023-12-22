@@ -16,20 +16,6 @@ $sidebar-width: 250px;
 // up to 1200
 $btn_height: 40px;
 
-.app_container {
-  display: flex;
-  position: relative;
-  height: 100%; // the container has to be srollable for position sticky to work on sidebar 
-  // flex-direction: column;
-}
-
-.content__nav-container {
-  flex-grow: 1;
-  // width: calc(100% - $sidebar-width);
-  // left: $sidebar-width;
-  position: relative;
-}
-
 // ** images **
 .img__cover {
   width: 100%;

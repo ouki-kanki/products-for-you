@@ -20,7 +20,7 @@ interface IVariation {
   variationDetails: IVariationItem[]; 
 }
 
-interface IProduct  {
+export interface IProductV4 {
   name: string;
   description: string;
   features: string[];

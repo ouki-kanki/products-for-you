@@ -9,6 +9,7 @@ export const convertSnakeToCamel = (obj: Record<string, unknown>): void => {
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       convertSnakeToCamel(obj[key] as Record<string, unknown>) 
     }
+
     // if the key has an aray as value
     if (Array.isArray(obj[key])) {
       obj[key].forEach(item => {
@@ -21,6 +22,5 @@ export const convertSnakeToCamel = (obj: Record<string, unknown>): void => {
       obj[newKey] = obj[key]
       delete obj[key]
     }
-
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from './product.module.scss';
+import styles from './productV2.module.scss';
 
 import { useHover } from '../../hooks/useHover';
 
@@ -36,7 +36,7 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
 
 
   return (
-    <div key={id}>
+    // <div key={id}>
       <Card
         onMouseEnter={activateHover}
         onMouseLeave={deactivateHover} 
@@ -150,6 +150,6 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
           </div>
         </div>
       </Card>
-    </div>
+    // </div>
   )
 }

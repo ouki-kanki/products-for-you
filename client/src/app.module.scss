@@ -1,0 +1,13 @@
+.appContainer {
+  display: flex;
+  position: relative;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.contentNavContainer {
+  flex-grow: 1;
+  position: relative;
+  overflow-x: hidden; // CAUTION: for some reason if this is missing sidebar is srinking when the products do not fit inside the products container in landing and products page. why is that ??
+  // justify-content: center; 
+}

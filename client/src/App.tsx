@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
-import './index.scss';
+// import './index.scss';
+import styles from './app.module.scss'
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './hocs/ProtectedRoute';
 
@@ -85,9 +86,9 @@ function App() {
   }
 
   return (
-    <div className='app_container'>
+    <div className={styles.appContainer}>
       <Sidebar/>
-      <div className='content__nav-container'>
+      <div className={styles.contentNavContainer}>
         <div className='routes__container'>
           <Routes>
             <Route path='*' element={<ErrorPage/>}/>
