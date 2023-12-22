@@ -4,11 +4,16 @@ import styles from './app.module.scss'
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './hocs/ProtectedRoute';
 
+import type { IUiConfig } from './types';
+
+
 import { selectUsers } from './app/store'
 import { useAppDispatch, useAppSelector } from './hooks'
 import { fetchUsers } from './features/users/usersSlice'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
 import { setCredentials } from './features/auth/Login/loginSlice';
+import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
+
 
 import { Sidebar } from './components/Sidebar/Sidebar'
 import { Home, 
@@ -65,11 +70,23 @@ function App() {
   }, [dispatch])
 
 
+  const handleUiConfig = useCallback((config: IUiConfig) => {
+    const { isSidebarHidden } = config
+    console.log("the sidebar data from local" , isSidebarHidden)
+
+    if (JSON.parse(isSidebarHidden as string)) {
+      dispatch(hideSidebar())
+    }
+  }, [dispatch])
+
   const debouncedHandleSetToken = useCallback(() => {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('user_id');
+    const isSidebarHidden = localStorage.getItem('is_sidebar_hidden');
+
+    handleUiConfig({ isSidebarHidden })
     handleSetCredentials({ userId, token })
-  }, [handleSetCredentials])
+  }, [handleSetCredentials, handleUiConfig])
 
   useDebouncedEffect(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
 

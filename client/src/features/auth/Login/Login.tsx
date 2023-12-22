@@ -80,8 +80,6 @@ export const Login = () => {
       }
   }, [userId])
 
-  console.log("the user id", userId)
-
   // RTK
   const dispatch = useDispatch()
   const navigate = useNavigate()

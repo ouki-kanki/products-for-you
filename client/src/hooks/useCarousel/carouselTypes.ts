@@ -16,6 +16,11 @@ export interface ICarouselOptions {
   slidesPresented?: number;
 }
 
+export interface ICarouselContainerProps {
+  interval?: number;
+  slidesPresended?: number;
+}
+
 export type IConfig = {
   length?: number,
   interval?: number,

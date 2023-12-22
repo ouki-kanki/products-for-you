@@ -6,6 +6,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { useDispatch } from 'react-redux';
+import { hideSidebar, showSidebar } from '../../features/UiFeatures/UiFeaturesSlice';
 
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
@@ -23,17 +25,18 @@ export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const { pathname } = useLocation();
   const { token, logout } = useAuth()
-  // const profile = useSelector((state: RootState) => state.user.profile)
   const userId = useSelector((state: RootState) => state.auth.userId)
+  const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   // const { trigger, data, error } = useProfile()
 
   // TODO: THIS IS A NASTY FIX !!! have to fix later 
   const { data, isFetching, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
 
-  // TODO : transfrom the response inside the query to retrive only the image and the name 
-
+  // TODO : transfrom the response inside the query to retrieve only the image and the name 
   // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT 
 
   // console.log("the data", data)
@@ -100,6 +103,14 @@ export const NavBar = () => {
       }
   }
 
+  const handleSideBarVis = () => {
+    if (isSideBarHidden) {
+      dispatch(showSidebar())
+    } else {
+      dispatch(hideSidebar())
+    }
+  }
+
   return (
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       {/* LEFT SIDE */}
@@ -114,6 +125,7 @@ export const NavBar = () => {
               icon={faHandPointLeft}/>
           </Link>
         )}
+        <div onClick={handleSideBarVis}>close side</div>
       </div>
 
       {/* RIGHT SIDE */}

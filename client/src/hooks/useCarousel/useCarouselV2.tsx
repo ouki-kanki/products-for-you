@@ -1,8 +1,8 @@
-import { useState, useReducer, Reducer, useEffect } from "react";
+import { useState, useReducer, Reducer, useEffect } from 'react';
 import { useSwipeable, SwipeableHandlers } from 'react-swipeable';
 
-import { CarouselTypes } from "./useCarousel/carouselTypes";
-import type { ICarouselState, ICarouselAction, IConfig, ICarouselOptions } from "./useCarousel/carouselTypes";
+import { CarouselTypes } from './carouselTypes';
+import type {ICarouselState, ICarouselAction, IConfig, ICarouselOptions } from "./carouselTypes";
 
 import {
   DEFAULT_INTERVAL,
@@ -13,7 +13,8 @@ import {
   LIMIT,
   ELASTIC,
   SMOOTH
-} from './useCarousel/carouselData'
+} from './carouselData'
+
 
 const initialState: ICarouselState = {
   offset: 0,
@@ -62,6 +63,7 @@ const carouselReducer: Reducer<ICarouselState, ICarouselAction > = (state, actio
   }
 }
 
+// for touch devices
 function swiped(
   delta: number,
   dispatch: React.Dispatch<ICarouselAction>,
@@ -83,6 +85,7 @@ function swiped(
 }
 
 
+// ------- HOOK ----------
 export const useCarousel = (config: IConfig = {}): [number, (n: number) => void, SwipeableHandlers, React.CSSProperties] => {
   const [state, dispatch] = useReducer (carouselReducer, initialState)
   const [container, setContainer] = useState(undefined)
@@ -179,4 +182,3 @@ export const useCarousel = (config: IConfig = {}): [number, (n: number) => void,
   ]
 
 }
-

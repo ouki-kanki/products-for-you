@@ -20,16 +20,21 @@ export interface IPayload<T> {
 
 
 // Data from server
-
-export interface IProduct {
-  title: string;
+export interface Iproduct {
+  brand: string;
+  category: Array<string>;
   description: string;
-  price: number;
-  img: string;
-  rating: number;
-  amount: number;
-  color: string[];
+  features: Array<string>;
+  icon: string;
+  id: number;
+  listofVariations: Record<string, string | number>
+  name: string;
+  price: string;
+  productThumbnails: Array<IThumbnail>;
+  quantity: number
+  variations: Array<IVariation>
 }
+
 
 // ** NUMBER RANGE ** 
 export type Ran<T extends number> = number extends T ? number :_Range<T, []>;
@@ -44,4 +49,8 @@ export type ICredentials = {
 
 export interface IChildren {
   children: ReactNode
+}
+
+export interface IUiConfig {
+  isSidebarHidden: boolean | string | null
 }

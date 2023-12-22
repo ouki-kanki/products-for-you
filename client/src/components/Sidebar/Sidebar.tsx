@@ -6,12 +6,10 @@ import { useSelector } from 'react-redux';
 
 
 import { SideBarField } from './SideBarField';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 import { sideBarData } from './sidebarData';
-
 
 export const Sidebar = () => {
   const navigate = useNavigate()
@@ -32,6 +30,7 @@ export const Sidebar = () => {
         >
         <h2>Products for you</h2>
       </div>
+      <div>close</div>
       <nav className={styles.fieldsContainer}>
           {sideBarData.map(({ title, icon, link }) => (
             <SideBarField

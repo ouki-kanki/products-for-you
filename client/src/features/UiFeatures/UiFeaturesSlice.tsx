@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface UiState {
   isSidebarHidden: boolean
@@ -13,8 +12,14 @@ export const uiFeaturesSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    hideSidebar: state => {state.isSidebarHidden = true},
-    showSidebar: state => {state.isSidebarHidden = false}
+    hideSidebar: state => {
+      localStorage.setItem("is_sidebar_hidden", JSON.stringify(true))
+      state.isSidebarHidden = true
+    }, 
+    showSidebar: state => {
+      localStorage.setItem("is_sidebar_hidden", JSON.stringify(false))
+      state.isSidebarHidden = false
+    }
   }
 })
 
