@@ -5,7 +5,10 @@ import { ProductV2 } from '../../Product.tsx/ProductV2';
 import { Iproduct } from '../../../types';
 import { useCarousel } from '../../../hooks/useCarousel';
 import { ICarouselOptions, ICarouselContainerProps } from '../../../hooks/useCarousel/carouselTypes';
+
 import { CarouselRoulete } from '../../../hocs/CarouselRoulete';
+import { Carousel } from '../../Carousels/Carousel';
+import { CarouselV2 } from '../../Carousels/CarouselV2';
 
 interface IThumbnail {
   id: number;
@@ -30,7 +33,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
     }
 
     return (
-      <div className={styles.productsContainer}>
+      <div className={styles.containerWithSlide}>
         {
           data.slice(6)
               .filter(product => product.listOfVariations !== undefined)
@@ -56,6 +59,8 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
       <h2>Latest Products</h2>
       {/* {renderLatestWithSlide(data)} */}
       { data && data.length > 0 && (
+        // <Carousel/>
+        // <CarouselV2/>
         <CarouselRoulete/>
       )}
     </div>

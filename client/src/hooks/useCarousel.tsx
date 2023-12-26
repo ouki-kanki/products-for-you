@@ -1,62 +1,96 @@
-import { useState, useReducer, Reducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from 'react';
 import { useSwipeable, SwipeableHandlers } from 'react-swipeable';
 
-import { CarouselTypes } from "./useCarousel/carouselTypes";
-import type { ICarouselState, ICarouselAction, IConfig, ICarouselOptions } from "./useCarousel/carouselTypes";
+// defines the time for the animation between slides in milliseconds
+const transitionTime = 400;
+// defines the threshold when to accept a swipe
+const threshold = 0.3;
+// defines the limit for swiping (max. the next full and a bit)
+const limit = 1.2;
+// animation to be used when bouncing back
+const elastic = `transform ${transitionTime}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`;
+// animation to be used when automatically sliding
+const smooth = `transform ${transitionTime}ms ease`;
 
-import {
-  DEFAULT_INTERVAL,
-  DEFAULT_LENGTH,
-  DEFAULT_TRANSITION_TIME,
-  DEFAULT_OPTIONS,
-  THRESHOLD,
-  LIMIT,
-  ELASTIC,
-  SMOOTH
-} from './useCarousel/carouselData'
-
-const initialState: ICarouselState = {
-  offset: 0,
-  desired: 0, // the slide that the user wants
-  active: 0
+interface CarouselState {
+  offset: number;
+  desired: number;
+  active: number;
 }
+
+const initialCarouselState: CarouselState = {
+  offset: 0,
+  desired: 0,
+  active: 0,
+};
+
+interface CarouselNextAction {
+  type: 'next';
+  length: number;
+}
+
+interface CarouselPrevAction {
+  type: 'prev';
+  length: number;
+}
+
+interface CarouselJumpAction {
+  type: 'jump';
+  desired: number;
+}
+
+interface CarouselDoneAction {
+  type: 'done';
+}
+
+interface CarouselDragAction {
+  type: 'drag';
+  offset: number;
+}
+
+type CarouselAction =
+  | CarouselJumpAction
+  | CarouselNextAction
+  | CarouselPrevAction
+  | CarouselDragAction
+  | CarouselDoneAction;
 
 function previous(length: number, current: number) {
   return (current - 1 + length) % length;
 }
 
 function next(length: number, current: number) {
-  return (current + 1) % length
+  return (current + 1) % length;
 }
 
-const carouselReducer: Reducer<ICarouselState, ICarouselAction > = (state, action): ICarouselState => {
+function carouselReducer(state: CarouselState, action: CarouselAction): CarouselState {
   switch (action.type) {
-    case CarouselTypes.JUMP:
+    case 'jump':
       return {
         ...state,
-        desired: action.desired
+        desired: action.desired,
       };
-    case CarouselTypes.NEXT:
+    case 'next':
       return {
         ...state,
-        desired: next(action.length, state.active)
+        desired: next(action.length, state.active),
       };
-    case CarouselTypes.PREV:
+    case 'prev':
       return {
         ...state,
-        desired: previous(action.length, state.active)
-      }
-    case CarouselTypes.DONE:
+        desired: previous(action.length, state.active),
+      };
+    case 'done':
       return {
         ...state,
         offset: NaN,
-        active: state.desired
-      }
-    case CarouselTypes.DRAG:
+        active: state.desired,
+      };
+    case 'drag':
       return {
         ...state,
-        offset: action.offset
-      }
+        offset: action.offset,
+      };
     default:
       return state;
   }
@@ -64,58 +98,46 @@ const carouselReducer: Reducer<ICarouselState, ICarouselAction > = (state, actio
 
 function swiped(
   delta: number,
-  dispatch: React.Dispatch<ICarouselAction>,
+  dispatch: React.Dispatch<CarouselAction>,
   length: number,
   dir: 1 | -1,
   container: HTMLElement,
 ) {
-  const t = container.clientWidth * THRESHOLD;
+  const t = container.clientWidth * threshold;
   const d = dir * delta;
 
   if (d >= t) {
-    dispatch(dir > 0 ? { type: CarouselTypes.NEXT, length } : { type: CarouselTypes.PREV, length });
+    dispatch(dir > 0 ? { type: 'next', length } : { type: 'prev', length });
   } else {
     dispatch({
-      type: CarouselTypes.DRAG,
+      type: 'drag',
       offset: 0,
     });
   }
 }
 
+export interface CarouselOptions {
+  slidesPresented?: number;
+}
 
-export const useCarousel = (config: IConfig = {}): [number, (n: number) => void, SwipeableHandlers, React.CSSProperties] => {
-  const [state, dispatch] = useReducer (carouselReducer, initialState)
-  const [container, setContainer] = useState(undefined)
+export function useCarousel(
+  length: number,
+  interval: number,
+  options: CarouselOptions = {},
+): [number, (n: number) => void, SwipeableHandlers, React.CSSProperties] {
+  const { slidesPresented = 1 } = options;
+  const shadowSlides = 2 * slidesPresented;
+  const n = Math.max(1, Math.min(slidesPresented, length));
+  const totalWidth = 100 / n;
+  const [state, dispatch] = useReducer(carouselReducer, initialCarouselState);
+  const [container, setContainer] = useState(undefined);
   
-  const { length: customLength, 
-    interval: customInterval,
-    transitionTime: customTransitionTime,
-    options: customOptions
-  } = config
-  
-  const length = customLength || DEFAULT_LENGTH
-  const interval = customInterval || DEFAULT_INTERVAL
-  const transitionTime = customTransitionTime || DEFAULT_TRANSITION_TIME
-  
-  // TODO: FIX THE TYPES HERE 
-  const slidesPresented = customOptions && customOptions.slidesPresented !== undefined
-  ? customOptions.slidesPresented!
-  : DEFAULT_OPTIONS.slidesPresented!;
-
-  const shadowSlides = 2 * slidesPresented ;
-  // always bigger than 1 
-  const n = Math.max(1, Math.min(slidesPresented, length))
-  const totalWidth = 100 / n
-
-  // debugger;
-
-  // handle touchscreens
   const { ref, onMouseDown } = useSwipeable({
     onSwiping(e) {
       const sign = e.deltaX > 0 ? -1 : 1;
       dispatch({
-        type: CarouselTypes.DRAG,
-        offset: sign * Math.min(Math.abs(e.deltaX), LIMIT * container.clientWidth),
+        type: 'drag',
+        offset: sign * Math.min(Math.abs(e.deltaX), limit * container.clientWidth),
       });
     },
     onSwipedLeft(e) {
@@ -135,19 +157,15 @@ export const useCarousel = (config: IConfig = {}): [number, (n: number) => void,
     },
   };
 
-  // AUTO ROTATION
   useEffect(() => {
-    // Todo: INTERVAL & LENGTH
-    const id = setTimeout(() => dispatch({ type: CarouselTypes.NEXT,  length }), interval)
-
-    return () => clearTimeout(id)
-  }, [state.offset, state.active, length, interval])
+    const id = setTimeout(() => dispatch({ type: 'next', length }), interval);
+    return () => clearTimeout(id);
+  }, [state.offset, state.active]);
 
   useEffect(() => {
-    const id = setTimeout(() => dispatch({ type: CarouselTypes.DONE }), transitionTime)
-
-    return () => clearTimeout(id)
-  }, [state.desired, transitionTime])
+    const id = setTimeout(() => dispatch({ type: 'done' }), transitionTime);
+    return () => clearTimeout(id);
+  }, [state.desired]);
 
   const style: React.CSSProperties = {
     transform: 'translateX(0)',
@@ -156,27 +174,20 @@ export const useCarousel = (config: IConfig = {}): [number, (n: number) => void,
   };
 
   if (state.desired !== state.active) {
+    
     const dist = Math.abs(state.active - state.desired);
     const pref = Math.sign(state.offset || 0);
     const dir = (dist > length / 2 ? 1 : -1) * Math.sign(state.desired - state.active);
     const shift = (totalWidth * (pref || dir)) / (length + shadowSlides);
-    style.transition = SMOOTH;
+    style.transition = smooth;
     style.transform = `translateX(${shift}%)`;
   } else if (!isNaN(state.offset)) {
     if (state.offset !== 0) {
       style.transform = `translateX(${state.offset}px)`;
     } else {
-      style.transition = ELASTIC;
+      style.transition = elastic;
     }
   }
 
-
-  return [
-    state.active,
-    n => dispatch({ type: CarouselTypes.JUMP, desired: n  }),
-    handlers,
-    style
-  ]
-
+  return [state.active, n => dispatch({ type: 'jump', desired: n }), handlers, style];
 }
-

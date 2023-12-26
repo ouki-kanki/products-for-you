@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import styles from './landingPage.module.scss';
 import { useGetLatestProductsQuery } from "../../../api/productsApi"
 import { ProductV2 } from "../../Product.tsx/ProductV2"
+
 
 import { Grid } from "../../../UI/Layout/Grid/Grid";
 
@@ -60,10 +62,12 @@ export const LandingPage = () => {
   )
 
   return (
-    <div>
+    <div className={styles.container}>
       <button onClick={switchView}>switch</button>
       {productView === 'products' && renderProducts()}
-      <LatestProducts data={latestProducts}/>
+      <div className={styles.latestProductsContainer}>
+        <LatestProducts data={latestProducts}/>
+      </div>
       <FeaturedProducts/>
     </div>
   )

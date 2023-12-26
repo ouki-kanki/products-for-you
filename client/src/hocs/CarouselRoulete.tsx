@@ -2,13 +2,16 @@ import { useState, ReactNode } from 'react'
 import { ICarouselContainerProps } from '../hooks/useCarousel/carouselTypes'
 import styles from './carouselRoulete.module.scss';
 
-import { useCarousel } from '../hooks/useCarousel/useCarouselV2';
+import { useCarouselV2 } from '../hooks/useCarousel/useCarouselV2';
+import { useCarouselV3 } from '../hooks/useCarousel/useCarouselV3';
+
 import { dummyItems } from '../data/dummyItems';
 
 
 interface IRuleteProps extends ICarouselContainerProps {
-  children: ReactNode,
-  data: Array<Record<string, string>>
+  children: ReactNode;
+  data: Array<Record<string, string>>;
+  visibleSlides: number;
 }
 
 /**
@@ -41,46 +44,100 @@ const makePostIndices = (length: number, numberOfpostElements: number, activeInd
     numberOfpostElements -= 1
 
     return (activeIndex + temp) % length
-  }).reverse
+  }).reverse()
 }
 
 
 
-export const CarouselRoulete = ({ children, interval, slidesPresented, data }: IRuleteProps) => {
+export const CarouselRoulete = ({ children, interval, visibleSlides = 5, data }: IRuleteProps) => {
   let itemsLength;
   const length = dummyItems.length
   if (data) {
       itemsLength = data.length
   }
-
   const [activeIndex, setActiveIndex] = useState(3)
 
-  const [active, setActive, handlers, style] = useCarousel({
-    length,
-    interval: 5000,
-    options: {
-      slidesPresented 
-    }
-  })
+  // const [active, setActive, handlers, style] = useCarouselV2({
+  //   length,
+  //   interval: 5000,
+  //   options: {
+  //     slidesPresented: visibleSlides 
+  //   }
+  // })
+
+  
+  
+  const carouselContainerLength = 800;
+  const numberOfprevOrPostItems = 2;
+  
+  const numberOfVisibleItems = (numberOfprevOrPostItems * 2) + 1
+  const itemWidth = carouselContainerLength / numberOfVisibleItems
+  // console.log(itemWidth)
+  const totalNumberOfItems = numberOfprevOrPostItems + 2
+  
+  const { toNextItem, toPrevItem, active, offset } = useCarouselV3(length, 500, itemWidth, activeIndex)
+
+  const renderDummy = (item: { name: string, color: string }) => (
+    <div
+      className={styles.dummyItem} 
+      style={{ 
+        backgroundColor:  item.color,
+        width: `${itemWidth}px`
+        }}>
+      <h2>{item.name}</h2>
+    </div>
+  )
 
 
-  const prevIndeces = makePrevIndices(dummyItems.length, 2, activeIndex)
-  const postIndeces = makePostIndices(dummyItems.length, 2, activeIndex)
-
-  // console.log(prevIndeces)
-  // console.log(active)
+  // 1 more item to the left and to right hidden 
+  const prevIndeces = makePrevIndices(dummyItems.length, 3, active)
+  const postIndeces = makePostIndices(dummyItems.length, 3, active)
+  
 
   return (
-    <div className={`${styles.mainContainer} ${styles.left}`}>
-      <div className={styles.indicatorContainer}></div>
-      <div className={styles.contentContainer}>
-        {data && data.map((item, index) => (
+    <div 
+      className={`${styles.mainContainer}`}>
+      <div 
+        className={`${styles.indicatorContainer} ${styles.left}`}
+        // onClick={handlePrev}
+        onClick={toNextItem}
+        >{'<'}</div>
+      <div 
+        className={styles.carouselContainer}
+        style={{
+          width: `${carouselContainerLength}px`,
+          transform: `translateX(${offset}px)`,
+          // transform: `translateX(-${activeIndex * itemWidth}px)`,
+          transition: `transform 0.5s ease`
+        }}
+        >
+        {prevIndeces?.map(index => (
+          <div className={styles.carouselItem} style={{ width: `${itemWidth}px` }}>
+            {renderDummy(dummyItems[index])}
+          </div>
+        ))}
+        <div 
+          className={`${styles.carouselItem} ${styles.active}`}
+          style={{ width: `${itemWidth}px` }}
+          >
+          {renderDummy(dummyItems[active])}
+        </div>
+        {postIndeces?.map(index => (
           <div 
-            className={`${styles.carouselItem} `}
-          ></div>
+            className={styles.carouselItem}
+            style={{ width: `${itemWidth}px` }}
+            >
+            {renderDummy(dummyItems[index])}
+          </div>
         ))}
       </div>
-      <div className={`${styles.indicatorContainer} ${styles.right}`}></div>
+      <div 
+        className={`${styles.indicatorContainer} ${styles.right}`}
+        onClick={toPrevItem}
+        >{'>'}</div>
     </div>
   )
 }
+
+
+

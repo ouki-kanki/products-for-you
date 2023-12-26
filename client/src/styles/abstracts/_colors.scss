@@ -23,9 +23,19 @@ $grey_neutral: #525252;
 
 $search_color_primary: $grey_neutral; 
 
-// sidebar-colors
 
-
-
+// borders
 $border-red: 1px solid red; 
-$border-green: 1px solid green; 
+$border-green: 1px solid green;
+$border-yellow: 1px solid yellow;
+$border-pink: 1px solid hotpink;
+
+$border-red-bold: 2px solid red; 
+$border-green-bold: 2px solid green;
+$border-yellow-bold: 2px solid yellow;
+$border-pink-bold: 2px solid hotpink;
+
+$border-red-bolder: 3px solid red; 
+$border-green-bolder: 3px solid green;
+$border-yellow-bolder: 3px solid yellow;
+$border-pink-bolder: 3px solid hotpink;

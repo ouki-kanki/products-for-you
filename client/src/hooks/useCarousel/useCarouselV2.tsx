@@ -86,7 +86,7 @@ function swiped(
 
 
 // ------- HOOK ----------
-export const useCarousel = (config: IConfig = {}): [number, (n: number) => void, SwipeableHandlers, React.CSSProperties] => {
+export const useCarouselV2 = (config: IConfig = {}): [number, (n: number) => void, SwipeableHandlers, React.CSSProperties] => {
   const [state, dispatch] = useReducer (carouselReducer, initialState)
   const [container, setContainer] = useState(undefined)
   
@@ -110,7 +110,6 @@ export const useCarousel = (config: IConfig = {}): [number, (n: number) => void,
   const n = Math.max(1, Math.min(slidesPresented, length))
   const totalWidth = 100 / n
 
-  // debugger;
 
   // handle touchscreens
   const { ref, onMouseDown } = useSwipeable({
