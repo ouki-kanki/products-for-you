@@ -9,6 +9,7 @@ import { ICarouselOptions, ICarouselContainerProps } from '../../../hooks/useCar
 import { CarouselRoulete } from '../../../hocs/CarouselRoulete';
 import { Carousel } from '../../Carousels/Carousel';
 import { CarouselV2 } from '../../Carousels/CarouselV2';
+import { SwiperCarouselV1 } from '../../Carousels/SwiperCarouselV1';
 
 interface IThumbnail {
   id: number;
@@ -50,18 +51,21 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
     )
   }
 
-  if (data) {
-    // console.log(data)
-  }
-
   return (
     <div className={styles.container}>
       <h2>Latest Products</h2>
       {/* {renderLatestWithSlide(data)} */}
       { data && data.length > 0 && (
         // <Carousel/>
-        // <CarouselV2/>
-        <CarouselRoulete/>
+        <div>
+          {/* <CarouselV2/> */}
+          {/* <CarouselRoulete/> */}
+          <ProductV2
+            name={data[0].name}
+            price={data[0].price}
+          />
+          {/* <SwiperCarouselV1 data={data}/> */}
+        </div>
       )}
     </div>
   )

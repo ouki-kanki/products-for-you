@@ -2,12 +2,11 @@
   top: 0;
   left: 0;
   position: sticky;
-  // position: absolute;
-  // bottom: 0;
-  // position: fixed;
   height: 100vh;
-  // height: 100%;
   background-color: white;
+  // flex:0 0 $sidebar-width;
+  // white-space: nowrap;
+  flex-shrink: 0; // TODO: if i use basis if the elemement is hidden the right item does not fill the remaining space 
   width: $sidebar-width;
   display: flex;
   flex-direction: column;
@@ -15,12 +14,15 @@
 
 
   @media screen and (max-width: 1200px) {
+    // flex: 0 0 170px;
     width: 170px;
+    // flex-basis: 170px;
     font-size: small;
   }
 
 
   @media screen and (max-width: 768px) {
+    // flex: 0 1 50px;
     width: 50px;
     box-shadow: $box-shadow-btn;
   }

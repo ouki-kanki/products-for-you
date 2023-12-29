@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface IUseHover {
   isHovered: boolean,
+  isTempHovered: boolean
   activateHover: () => void
   deactivateHover: () => void
 }
@@ -13,15 +14,23 @@ interface IUseHover {
  * @param initValue 
  * @returns 
  */
-export const useHover = (initValue: boolean = false): IUseHover => {
+export const useHover = (initValue: boolean = false, durationOfTempHover: number = 500): IUseHover => {
   const [isHovered, setIsHovered] = useState<boolean>(initValue)
+  const [isTempHovered, setIsTempHovered] = useState<boolean>(false)
 
-  // const setHover = () => {
-  //   setIsHovered((prevState) => !prevState)
-  // }
+
+  useEffect(() => {
+    if (isTempHovered) {
+      setTimeout(() => {
+        setIsTempHovered(false)
+      }, durationOfTempHover)
+    }
+  }, [isTempHovered, durationOfTempHover])
+
 
   const activateHover = () => {
-    setIsHovered(true)
+      setIsHovered(true)
+      setIsTempHovered(true)
   }
 
   const deactivateHover = () => {
@@ -32,7 +41,8 @@ export const useHover = (initValue: boolean = false): IUseHover => {
   return {
     isHovered,
     activateHover,
-    deactivateHover
+    deactivateHover,
+    isTempHovered
   }
 }
 

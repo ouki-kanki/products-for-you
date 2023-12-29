@@ -1,31 +1,22 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import styles from './carousel.module.scss'
-import { dummyItems } from '../../data/dummyItems'
+import { dummyItems, IDummyItem } from '../../data/dummyItems'
 import { useCarouselV2 } from './useCarouselV2';
-
-interface IDummyItem {
-  id: number;
-  name: string;
-  color: string;
-}
 
 interface IDummyItemProps {
   item: IDummyItem;
   itemWidth: number;
   activeIndex: number,
   index: number;
-  isVisible: boolean
 }
 
-
-const DummyItem = ({ item, itemWidth, activeIndex, index, isVisible }: IDummyItemProps) => (
+const DummyItem = ({ item, itemWidth, activeIndex, index }: IDummyItemProps) => (
   <div
     className={
       `${styles.dummyItem} 
        ${index === activeIndex && `${styles.active}`}
-       ${!isVisible && `${styles.hidden}`}       
-      `
-    } 
+       `
+      } 
     style={{ 
       backgroundColor:  item.color,
       // width: `${itemWidth}px`
@@ -48,7 +39,7 @@ function makeIndices(start: number, delta: number, num: number) {
 
 // ** MAIN **
 export const CarouselV2 = () => {
-  const [products, setProducts] = useState(dummyItems) 
+  const [products, setProducts] = useState(dummyItems)
   const leftVisible = 2
   const rightVisible = 6
   const numberOfItems = dummyItems.length
@@ -56,6 +47,25 @@ export const CarouselV2 = () => {
   const itemWidth = containerWidth / numberOfItems  
   const { moveLeft, moveRight, active } = useCarouselV2(numberOfItems)
   const carouselContainerRef = useRef<HTMLDivElement>(null)
+
+
+  const handleTransitionEnd = () => {
+    if (carouselContainerRef.current) {
+      carouselContainerRef.current.style.transition = 'none'
+    }
+  }
+
+  useEffect(() => {
+    // TODO : have to use useCallback check dan abramov solution 
+    if (carouselContainerRef.current) {
+      carouselContainerRef.current.addEventListener('transitionend', handleTransitionEnd)
+    }
+
+    return () => {
+      carouselContainerRef.current?.removeEventListener('transitionend', handleTransitionEnd)
+    }
+  }, [])
+
 
   const handlePrev = () => {
     moveRight()
@@ -72,21 +82,20 @@ export const CarouselV2 = () => {
       return
     }
 
+    // TODO: THE LEFT ARROW triggers this !!
     if (direction === 'right') {
       carouselContainerRef.current.style.transition = 'transform .5s ease-in-out';
       carouselContainerRef.current.style.transform = `translateX(-${itemWidth}px)`
-      console.log("ototot")
 
-      
-      setTimeout(() => {
-        
+
+      setTimeout(() => {        
         setProducts((prevProducts) => {
           const newProducts = [ ...prevProducts ]
           newProducts.push(newProducts.shift() as IDummyItem)
           return newProducts 
         })
-      }, 499)
-            
+      }, 500)
+      
       setTimeout(() => {
         carouselContainerRef.current!.style.transition = 'none'
         carouselContainerRef.current!.style.transform = 'translateX(0)'
@@ -103,10 +112,10 @@ export const CarouselV2 = () => {
         carouselContainerRef.current!.style.transform = `translateX(-${itemWidth}px)`
       }, 500)
       
-      // setTimeout(() => {
-      //   carouselContainerRef.current!.style.transition = 'none'
-      //   carouselContainerRef.current!.style.transform = 'translateX(0)'
-      // }, 0)
+      setTimeout(() => {
+        carouselContainerRef.current!.style.transition = 'none'
+        carouselContainerRef.current!.style.transform = 'translateX(0)'
+      }, 0)
     }
   }
 
@@ -118,14 +127,17 @@ export const CarouselV2 = () => {
         className={`${styles.indicatorContainer} ${styles.left}`}
         onClick={handlePrev}
       >{'<'}</div>
-      <div className={styles.carouselContainer} ref={carouselContainerRef}>
+      <div 
+        className={styles.carouselContainer}
+        // ref={handleRefContainer} 
+        ref={carouselContainerRef}
+        >
         {products.map((item, index) => (
           <DummyItem
             item={item} 
             activeIndex={active}
             index={index}
             key={index}
-            isVisible={index >= leftVisible && index <= rightVisible ? true : false}
             />
         ))}
       </div>

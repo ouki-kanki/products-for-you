@@ -1,3 +1,9 @@
+export interface IDummyItem {
+  id: number;
+  name: string;
+  color: string;
+}
+
 export const dummyItems = [
   {
     id: 1,

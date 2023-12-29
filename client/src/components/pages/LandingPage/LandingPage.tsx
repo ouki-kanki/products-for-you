@@ -8,7 +8,8 @@ import { Grid } from "../../../UI/Layout/Grid/Grid";
 
 import { FeaturedProducts } from './FeaturedProducts';
 import { LatestProducts } from './LatestProducts';
-// TODO : move from here
+
+// TODO: move from here
 interface IVariationItem {
   variationName: string;
   value: string;

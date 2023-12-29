@@ -69,10 +69,11 @@ export const useCarouselV3 = (numOfItems: number, transitionTime: number, itemWi
   const toNextItem = () => {
     // change the offset asap
     dispatch({ type: CarouselTypes.ADD_OFFSET, offset: -(itemWidth) })
-    dispatch({ type: CarouselTypes.NEXT, numOfItems })
+    setTimeout(() => {
+      dispatch({ type: CarouselTypes.NEXT, numOfItems })
+    }, transitionTime)
 
     setTimeout(() => {
-      // this will change the active counter 
       dispatch({ type: CarouselTypes.DONE })
     }, transitionTime); 
   }

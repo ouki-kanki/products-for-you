@@ -10,7 +10,6 @@ from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 
-
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
 from services.imageServices import (
@@ -20,6 +19,8 @@ from services.imageServices import (
     compare_images_delete_prev_if_not_same,
     delete_image_from_filesystem
 )
+from user_control.models import CustomUser as User
+
 # NOTE: models.PROTECT it seems that does not allow null=True
 
 
@@ -375,3 +376,11 @@ class Discount(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.discount_value}%"
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorited_by')
+
+    def __str__(self):
+        return f"{self.user.email} - {self.product.product_id.name}"

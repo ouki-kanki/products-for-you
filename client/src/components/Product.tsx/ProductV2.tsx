@@ -31,7 +31,7 @@ const formatPrice = (strNum: string) => {
 
 
 export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
-  const { isHovered, activateHover, deactivateHover } = useHover()
+  const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
 
 
@@ -39,11 +39,11 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
     // <div key={id}>
       <Card
         onMouseEnter={activateHover}
-        onMouseLeave={deactivateHover} 
+        onMouseLeave={deactivateHover}
         width='medium'
         >
         <FontAwesomeIcon
-          className={styles.heartIcon} 
+          className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`} 
           icon={faHeart} 
           size='2x'/>
         <div 
@@ -83,6 +83,8 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
                   size='lg'/>
                 </div>
 
+                <div className={styles.available}>available</div>
+
               </div>
               <div className={styles.variationsContainer}>
                 <div className={styles.varImageContainer}>
@@ -107,15 +109,20 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
               </div>
 
             </div>
+
           </div>
 
-          {/* <div className={styles.bottomRegion}>
-            <ul>
-              <li>waterproof</li>
-              <li>flexible</li>
-              <li>awesome</li>
-            </ul>
-          </div> */}
+          <div className={styles.bottomRegion}>
+            <div onClick={() => setCurrentImage(kdeRight)}>
+              <img src={kdeRight} alt="right view of the product" />
+            </div>
+            <div onClick={() => setCurrentImage(kdeTop)}>
+              <img src={kdeTop} alt="top view of the product" />
+            </div>
+            <div onClick={() => setCurrentImage(kdeBack)}>
+              <img src={kdeBack} alt="back view of the product" />
+            </div>
+          </div>
           <div className={styles.actionContainer}>
             <Button>buy now</Button>
             <FontAwesomeIcon
@@ -131,7 +138,7 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
         </div>
 
         {/* view selectors */}
-        <div 
+        {/* <div 
           className={`${styles.productViewsContainer} ${isHovered && styles.productViewsContainer_stayBack}`}>
           <div
             onClick={() => setCurrentImage(kdeRight)}
@@ -148,7 +155,7 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
             >
             <img src={kdeBack} alt="back view of the product" />
           </div>
-        </div>
+        </div> */}
       </Card>
     // </div>
   )

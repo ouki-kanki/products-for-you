@@ -20,8 +20,6 @@ export const Sidebar = () => {
     ${isSideBarHidden ? styles.hidden : ''}
   `
 
-
-
   return (
     <div className={navContainerStyles}>
       <div
