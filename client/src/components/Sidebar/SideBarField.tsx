@@ -27,8 +27,10 @@ export const SideBarField = ({ title, icon, link }: SidebarFieldProps) => {
       onMouseEnter={() => setIsHovered('hovered')}
       onMouseLeave={() => setIsHovered(null)}
       >
-      {icon}
-      <span>
+      <span className={styles.iconContainer}>
+        {icon}
+      </span>
+      <span className={styles.title}>
         {title}
       </span>
     </NavLink>

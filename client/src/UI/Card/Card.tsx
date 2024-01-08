@@ -2,13 +2,11 @@ import { PropsWithChildren, HTMLProps } from 'react'
 import styles from './card.module.scss'
 
 
-type WidthType = 'medium' | 'wide' | 'fluid'
+export type WidthType = 'medium' | 'wide' | 'fluid'
 
 interface ICardProps extends HTMLProps<HTMLDivElement>  {
   width: WidthType
 }
-
-
 
 /**
  * 

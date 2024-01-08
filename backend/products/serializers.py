@@ -390,12 +390,15 @@ class ProductSerializerV4(serializers.ModelSerializer):
     variations = serializers.SerializerMethodField()
 
     def get_variations(self, obj):
+        request = self.context.get('request')
+        print("the request", request)
         variations = obj.product_variations.all()
         # TODO: check the time complexity here
         return [
             {
-                'product_url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
-                'thumb': variation.product_image.filter(is_featured=True).first().thumbnail.url if variation.product_image.filter(is_featured=True).exists() else None
+                'product_url': request.build_absolute_uri(reverse('products:product-preview', args=[variation.pk])),
+                # 'product_url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
+                'thumb': request.build_absolute_uri(variation.product_image.filter(is_featured=True).first().thumbnail.url) if variation.product_image.filter(is_featured=True).exists() else None
             }
             for variation in variations
         ]

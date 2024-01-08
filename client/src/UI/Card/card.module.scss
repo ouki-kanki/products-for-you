@@ -3,7 +3,7 @@
   background-color: #fff;
   // min-width: 400px;
   height: 28em;
-  width: 400px;
+  // width: 400px;
   // height: 100%;
   padding: 2rem 1.3rem;
   border-radius: 5% 3% 2em 3%;
@@ -16,12 +16,13 @@
 }
 
 .medium {
-  // width: 24em;
+  width: 24em;
 }
 
 .wide {
-  width: 25em;
+  width: 50em;
 }
+
 
 .cardContainer:hover {
   // transform: scale(1.03);

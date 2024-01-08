@@ -10,6 +10,7 @@ import { CarouselRoulete } from '../../../hocs/CarouselRoulete';
 import { Carousel } from '../../Carousels/Carousel';
 import { CarouselV2 } from '../../Carousels/CarouselV2';
 import { SwiperCarouselV1 } from '../../Carousels/SwiperCarouselV1';
+import { IProduct } from '../../../api/productsApi';
 
 interface IThumbnail {
   id: number;
@@ -51,21 +52,38 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
     )
   }
 
+  if (data) {
+    console.log("the data", data[3])
+  }
   return (
     <div className={styles.container}>
-      <h2>Latest Products</h2>
-      {/* {renderLatestWithSlide(data)} */}
+      {/* <h2>Latest Products</h2> */}
       { data && data.length > 0 && (
-        // <Carousel/>
-        <div>
-          {/* <CarouselV2/> */}
-          {/* <CarouselRoulete/> */}
-          <ProductV2
-            name={data[0].name}
-            price={data[0].price}
-          />
-          {/* <SwiperCarouselV1 data={data}/> */}
-        </div>
+        <>
+          <h2>Latest Products</h2>
+          <div className={styles.carouselContainer}>
+            <SwiperCarouselV1
+              data={data} 
+              renderProduct={
+                (product: IProduct) => (
+                  <ProductV2
+                    name={product.name}
+                    price={product.price}
+                    quantity={product.quantity}
+                    features={product.features}
+                    variations={product.variations}
+                  />
+                )
+              }>
+            </SwiperCarouselV1>
+          </div>
+
+          {/* <ProductV2
+            name={data[1].name}
+            price={data[1].price}
+            width='medium'
+          /> */}
+        </>
       )}
     </div>
   )

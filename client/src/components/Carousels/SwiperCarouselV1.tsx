@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, PropsWithChildren, ReactNode } from 'react'
 import styles from './swiperCarousel.module.scss'
 import { dummyItems, IDummyItem } from '../../data/dummyItems'
 import { useWindowSize } from '../../hooks/useWindowSize';
@@ -19,9 +19,10 @@ import { register } from 'swiper/element/bundle'
 
 interface IDummyItemProps {
   item: IDummyItem;
+
 }
 
-const DummyItem = ({ item }: IDummyItemProps) => (
+const DummyItem = ({ item }:  IDummyItemProps) => (
   <div
     className={styles.dummyItem} 
     style={{ backgroundColor: item.color}}>
@@ -30,19 +31,28 @@ const DummyItem = ({ item }: IDummyItemProps) => (
 )
 
 
-interface ISwipperCarouselV1Props {
-  data: Array<Iproduct>
+interface IItem {
+  [k: string]: unknown
 }
 
-export const SwiperCarouselV1 = ({ data }: ISwipperCarouselV1Props) => {
+interface ISwipperCarouselV1Props {
+  data: Array<Iproduct>;
+  renderProduct: (product: IItem) => ReactNode 
+}
+
+export const SwiperCarouselV1 = ({ data,  renderProduct}: ISwipperCarouselV1Props ) => {
   const [ windowWidth ] = useWindowSize()
   const [numberOfVisible, setNumberOfVisible] = useState(3)
   
   useEffect(() => {
-    if (windowWidth >= 1700) {
+    if (windowWidth >= 2200) {
       setNumberOfVisible(5)
-    } else if (windowWidth >= 650) {
+    } else if (windowWidth >= 1700) {
+      setNumberOfVisible(4)
+    } else if (windowWidth >= 1500) {
       setNumberOfVisible(3)
+    } else if (windowWidth >= 800) {
+      setNumberOfVisible(2)
     } else {
       setNumberOfVisible(1)
     }  
@@ -50,15 +60,14 @@ export const SwiperCarouselV1 = ({ data }: ISwipperCarouselV1Props) => {
 
 
   return (
-    <div>
-      <h2>Swiper Carousel V1</h2>
+    <div className={styles.container}>
       <Swiper
         navigation
         loop
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false
-        }}
+        // autoplay={{
+        //   delay: 3000,
+        //   disableOnInteraction: false
+        // }}
         pagination={{
           clickable: true
         }}
@@ -71,12 +80,17 @@ export const SwiperCarouselV1 = ({ data }: ISwipperCarouselV1Props) => {
         // onSwiper={(swiper) => console.log(swiper)}
       >
         {
+          data.map((product, index) => (
+            <SwiperSlide key={index}>{renderProduct(product)}</SwiperSlide>
+          ))
+        }
+        {/* {
           dummyItems.map(item => (
             <SwiperSlide>
               <DummyItem item={item} key={item.id}/>
             </SwiperSlide>
           ))
-        }
+        } */}
       </Swiper>
     </div>
   )

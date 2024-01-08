@@ -20,6 +20,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { RootState } from '../../app/store';
 import { useGetProfileQuery } from '../../api/userApi';
 
+import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
+import CartOutlined from '../../assets/svg_icons/cart_outlined.svg?react';
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
@@ -125,7 +127,9 @@ export const NavBar = () => {
               icon={faHandPointLeft}/>
           </Link>
         )}
-        <div onClick={handleSideBarVis}>close side</div>
+        <div onClick={handleSideBarVis}>
+          <BackIcon className={styles.backIcon}/>
+        </div>
       </div>
 
       {/* RIGHT SIDE */}
@@ -133,6 +137,10 @@ export const NavBar = () => {
         <div className={styles.searchContainer}>
           <SearchForm/>
         </div>
+
+        {/* <div className={styles.cartContainer}>
+          <CartOutlined className={styles.cart}/>
+        </div> */}
 
         <div className={styles.buttonsContainer}>
           <Link

@@ -1,5 +1,5 @@
 /**
- * accepts an object, converts keys from snakecase to camelcase
+ * accepts an object, converts keys from snakecase to camelcase recursively
  * @param obj 
  * @returns 
  */

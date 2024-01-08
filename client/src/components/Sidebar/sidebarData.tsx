@@ -31,7 +31,7 @@ export const sideBarData: IsidebarData[] = [
   },
   {
     title: 'Categories',
-    icon: <FontAwesomeIcon icon={faSquare}/>,
+    icon: <FontAwesomeIcon icon={faSquare} className={styles.icon}/>,
     link: '/categories'
   },
   {

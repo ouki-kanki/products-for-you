@@ -17,6 +17,11 @@ interface ICurrentVariation {
   value: string;
 }
 
+interface IVariation {
+  productUrl: string;
+  thumb: string;
+}
+
 export interface IProduct {
   name: string;
   quantity: number;
@@ -25,6 +30,8 @@ export interface IProduct {
   product_images: IProductImage[];
   current_variation: ICurrentVariation[];
   category: string[];
+  description: string;
+  variations: IVariation[];
 }
 
 interface IProductApiResponse {
@@ -57,6 +64,7 @@ export const productsApi = createApi({
       transformResponse: (response: IProductApiResponse, meta, arg): IProduct[] | undefined => {
         // TODO: grab the paginator from here 
         const results = response.results
+
         if (!results) {
           return {
             message: 'no products'

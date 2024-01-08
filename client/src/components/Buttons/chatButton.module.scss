@@ -28,12 +28,15 @@
 
 .chatButtonContainer:hover {
   // color: red;
-  box-shadow: $box-shadow-btn-d;
+  // box-shadow: $box-shadow-btn-d;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
 }
 
 .chatIcon {
   path {
     fill: $dark-gray;
+    fill: #E6C316;
   }
 }
 

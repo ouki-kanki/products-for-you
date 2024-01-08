@@ -8,6 +8,8 @@ import { Grid } from "../../../UI/Layout/Grid/Grid";
 
 import { FeaturedProducts } from './FeaturedProducts';
 import { LatestProducts } from './LatestProducts';
+import { FeaturedProduct } from './FeaturedProduct';
+
 
 // TODO: move from here
 interface IVariationItem {
@@ -64,12 +66,16 @@ export const LandingPage = () => {
 
   return (
     <div className={styles.container}>
-      <button onClick={switchView}>switch</button>
+      {/* <button onClick={switchView}>switch</button> */}
       {productView === 'products' && renderProducts()}
       <div className={styles.latestProductsContainer}>
         <LatestProducts data={latestProducts}/>
       </div>
-      <FeaturedProducts/>
+      {/* <FeaturedProducts/> */}
+      {/* TODO: remove this is for testing */}
+      {latestProducts && (
+        <FeaturedProduct data={latestProducts[1]}/>
+      )}
     </div>
   )
 }

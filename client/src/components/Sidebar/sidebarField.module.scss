@@ -5,7 +5,7 @@
   justify-content: flex-start;
 
   svg {
-    height: 20px;
+    height: 25px;
     width: 30px;
     margin-right: 1.3em;
 
@@ -15,7 +15,7 @@
   }
 
   @media screen and (max-width: 768px){
-    span {
+    .title {
       display: none;
     }
   }

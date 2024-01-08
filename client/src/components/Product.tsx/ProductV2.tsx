@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import styles from './productV2.module.scss';
 
+import type { WidthType } from '../../UI/Card/Card';
+
 import { useHover } from '../../hooks/useHover';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,20 +29,71 @@ import { IProduct } from '../../api/productsApi';
 const formatPrice = (strNum: string) => {
   const num = Number(strNum).toLocaleString()
   return `${num} €`
+  
+}
+
+interface IProductV2Props extends IProduct {
+  width?: WidthType
 }
 
 
-export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
+export const ProductV2 = ({ 
+  name: title, 
+  price, 
+  features, 
+  id, 
+  quantity, 
+  description,
+  variations, 
+  width = 'fluid' }: IProductV2Props) => {
   const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
 
+
+  const handleVariationChange = (index, productUrl) => {
+    console.log("the index and product url", index, productUrl)
+  }
+
+  // console.log(variations)
+
+
+  const renderVariations = () => {
+    console.log("the variations", variations)
+    if (variations && variations.length > 0) {
+      return (
+        <div className={styles.variationsContainer}>
+          {variations.map((variation, index) => (
+            <div 
+              className={styles.varImageContainer}
+              onClick={() => handleVariationChange(index, variation.productUrl)}>
+              <img src={variation.thumb} alt="variation image" />
+            </div>))}
+        </div>
+      )
+
+    } else {
+      return (
+        <div className={styles.variationsContainer}>
+          <div className={styles.varImageContainer}>
+            <img src={kdDeepBlue} alt="variation image" />
+          </div>
+          <div className={styles.varImageContainer}>
+            <img src={kdIce} alt="variation image" />
+          </div>
+          <div className={styles.varImageContainer}>
+            <img src={kdWhiteYellow} alt="variation image" />
+          </div>
+        </div>
+      )
+    }
+  }
 
   return (
     // <div key={id}>
       <Card
         onMouseEnter={activateHover}
         onMouseLeave={deactivateHover}
-        width='medium'
+        width={width}
         >
         <FontAwesomeIcon
           className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`} 
@@ -52,7 +105,7 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
           <div className={styles.topRegion}>
             <h2>{title}</h2>
           </div>
-          <div className={styles.medRegion}>
+          <div className={`${styles.medRegion} ${width === 'wide' && styles.wide}`}>
             
             <div className={styles.ml}>
               <div className={styles.imageContainer}>
@@ -62,6 +115,13 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
                   alt="shoe image" />
               </div>
             </div>
+            {width === 'wide' && (
+              <div className={styles.mm}>
+                <div>
+                  {description}
+                </div>
+              </div>
+            )}
 
             <div className={styles.mr}>
               <div className={styles.mrFirst}>
@@ -82,23 +142,17 @@ export const ProductV2 = ({ name: title, price, features, id }: IProduct) => {
                   icon={faStar} 
                   size='lg'/>
                 </div>
-
-                <div className={styles.available}>available</div>
-
-              </div>
-              <div className={styles.variationsContainer}>
-                <div className={styles.varImageContainer}>
-                  <img src={kdDeepBlue} alt="variation image" />
-                </div>
-                <div className={styles.varImageContainer}>
-                  <img src={kdIce} alt="variation image" />
-                </div>
-                <div className={styles.varImageContainer}>
-                  <img src={kdWhiteYellow} alt="variation image" />
-                </div>
+                {
+                  quantity ? 
+                    <div className={`${styles.label} ${styles.available}`}>available</div>
+                           :
+                    <div className={`${styles.label} ${styles.danger}`}>not available</div>
+                }
               </div>
 
-              
+              {/* VARIATIONS */}
+              {renderVariations()}
+
               <div className={styles.contentContainer}>
                 <h3>features</h3>
                 <ul>

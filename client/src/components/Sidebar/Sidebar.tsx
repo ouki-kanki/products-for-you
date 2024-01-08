@@ -28,7 +28,6 @@ export const Sidebar = () => {
         >
         <h2>Products for you</h2>
       </div>
-      <div>close</div>
       <nav className={styles.fieldsContainer}>
           {sideBarData.map(({ title, icon, link }) => (
             <SideBarField
