@@ -58,7 +58,7 @@ export const ProductV2 = ({
 
 
   const renderVariations = () => {
-    console.log("the variations", variations)
+    // console.log("the variations", variations)
     if (variations && variations.length > 0) {
       return (
         <div className={styles.variationsContainer}>
@@ -166,6 +166,7 @@ export const ProductV2 = ({
 
           </div>
 
+          {/* Product views */}
           <div className={styles.bottomRegion}>
             <div onClick={() => setCurrentImage(kdeRight)}>
               <img src={kdeRight} alt="right view of the product" />
@@ -185,31 +186,7 @@ export const ProductV2 = ({
               size='2x'
               />    
           </div>
-
-          {/* <div className={`${styles.productPreview} ${styles.hidden}`}>
-            <img src={currentImage} alt="product preview"/>
-          </div> */}
         </div>
-
-        {/* view selectors */}
-        {/* <div 
-          className={`${styles.productViewsContainer} ${isHovered && styles.productViewsContainer_stayBack}`}>
-          <div
-            onClick={() => setCurrentImage(kdeRight)}
-          >
-            <img src={kdeRight} alt="right view of the product" />
-          </div>
-          <div
-            onClick={() => setCurrentImage(kdeTop)}
-          >
-            <img src={kdeTop} alt="top view of the product" />
-          </div>
-          <div
-            onClick={() => setCurrentImage(kdeBack)}
-            >
-            <img src={kdeBack} alt="back view of the product" />
-          </div>
-        </div> */}
       </Card>
     // </div>
   )

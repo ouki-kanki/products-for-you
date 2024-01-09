@@ -282,6 +282,20 @@ class ProductThumbNailSerializerV3(serializers.ModelSerializer):
         model = ProductImage
         fields = ('id', 'thumbnail', 'is_featured')
 
+    def get_thumbnail(self, instance):
+        request = self.context.get('request')
+        if request:
+            return request.build_absolute_uri(instance.thumbnail)
+        else:
+            return None
+        
+    def to_representation(self, instance):
+        return {
+            'id': instance.id,
+            'thumbnail': self.get_thumbnail(instance),
+            'is_featured': instance.is_featured
+        }
+
 
 # --- USED TO GET LATEST PRODUCTS -- *** PRIME SER ** 
 class ProductVariationSerializerV3(serializers.ModelSerializer):
@@ -413,7 +427,8 @@ class ProductSerializerV4(serializers.ModelSerializer):
         variation = obj.product_variations.filter(is_featured=True).first()
         if not variation:
             variation = obj.product_variations.last()
-        return ProductItemSerializerV4(variation).data 
+        product_item_serializerV4 = ProductItemSerializerV4(variation, context=self.context)
+        return product_item_serializerV4.data 
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
