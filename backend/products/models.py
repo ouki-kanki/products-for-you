@@ -84,20 +84,14 @@ class Category(models.Model):
             if self.icon:
                 self.gen_thumb()
             super().save(*args, **kwargs)
-            return
+        else:
+            prev_category_obj = Category.objects.get(pk=self.pk)        
+            is_same = compare_images_delete_prev_if_not_same(self, prev_category_obj, 'icon')
 
-        prev_category_obj = Category.objects.get(pk=self.pk)        
-        is_same = compare_images_delete_prev_if_not_same(self, prev_category_obj, 'icon')
-
-        if is_same:
-            return
-
-        if self.icon:
-            self.gen_thumb()
+            if not is_same:
+                if self.icon:
+                    self.gen_thumb()
             super().save(*args, **kwargs)
-            return
-        
-        super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         if self.icon:
@@ -225,9 +219,11 @@ class ProductItem(models.Model):
     """
     # TODO: change product_id to product because it confusing
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    # TODO: make it unique True
     slug = models.SlugField(max_length=50, blank=True)
     sku = models.CharField(max_length=255)
     quantity = models.IntegerField()
+    detailed_description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_featured = models.BooleanField(default=False)
     variation_option = models.ManyToManyField('variations.VariationOptions') # to avoid circular imports

@@ -7,7 +7,7 @@ export const ChatButton = () => {
     <div className={styles.chatButtonContainer}>
         <ChatIcon 
           className={styles.chatIcon}/>
-      <div>Chat with us!</div>
+      <div>Chat with <span>us</span>!</div>
       </div>
   )
 }

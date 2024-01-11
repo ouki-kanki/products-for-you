@@ -1,8 +1,19 @@
-def get_list_of_parent_categories(category, list_of_categories):
+from collections import OrderedDict
+
+def get_list_of_parent_categories(category, init_list):
     '''
     returns list of categories in the form parent > parent > child
     '''
-    list_of_categories.append(category['name'])
-    if not category['parent_category']:
-        return list_of_categories[::-1]
-    return get_list_of_parent_categories(category['parent_category'], list_of_categories)
+
+    if isinstance(category, OrderedDict):
+        init_list.append(category['name'])
+        parent_category = category['parent_category']
+    else:
+        init_list.append(category.name)
+        parent_category = category.parent_category
+
+    if not parent_category:
+        return init_list[::-1]
+    return get_list_of_parent_categories(parent_category, init_list)
+
+

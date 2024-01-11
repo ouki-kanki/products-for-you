@@ -10,6 +10,7 @@ interface IFeaturedProductProps {
 } 
 
 export const FeaturedProduct = ({ data }: IFeaturedProductProps) => {
+  // console.log(data)
   return (
     <div className={styles.container}>
       <h2>Featured Product</h2>
@@ -19,7 +20,12 @@ export const FeaturedProduct = ({ data }: IFeaturedProductProps) => {
           name={data.name}
           price={data.price}
           features={data.features}
+          variations={data.variations}
           description={data.description}
+          productThumbnails={data.productThumbnails}
+          constructedUrl={data.constructedUrl}
+          id={data.id}
+          slug={data.slug}
         />
       </div>
     </div>

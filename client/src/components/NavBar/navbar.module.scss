@@ -9,7 +9,7 @@
   align-items: center;
   transition: .3s linear;
   
-  &_hidden {
+  &___hidden {
     position: fixed;
     top: -80px;
   }
@@ -22,6 +22,7 @@
 
 .leftContainer {
   margin-left: .3rem;
+  align-items: center;
 }
 
 .searchContainer {
@@ -145,5 +146,22 @@
       // stroke: #555;
       // fill: black;
     }
+  }
+}
+
+.back {
+  font-family: 'Lemon', serif;
+  width: 100px;
+  background-color: transparent;
+  box-shadow: none;
+  color: #444;
+  font-size: 12px;
+  padding: 5px;
+  transition: color .1s ease-in;
+  border-radius: 0 0 10px 0;
+
+  &:hover {
+    color: hotpink;
+    box-shadow: none;
   }
 }

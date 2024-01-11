@@ -25,3 +25,7 @@
   cursor: pointer; 
 }
 
+@mixin border_green() {
+  border: 1px solid green;
+}
+

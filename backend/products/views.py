@@ -296,10 +296,10 @@ class ProductsAndRelatedVariationsView(generics.ListAPIView):
 products_and_related_variations_view = ProductsAndRelatedVariationsView.as_view()
 
 
-class ProductDetailViewV4(generics.ListAPIView):
+class ProductDetailViewV4(generics.RetrieveAPIView):
     queryset = ProductItem.objects.all()
     serializer_class = ProductItemDetailSerializerV4
-    lookup_field = 'pk'
+    lookup_field = 'slug'
     # lookup_url_kwarg = '' # TODO: maybe have to use in order to use the slug but make the query using the primary key ?
 
 

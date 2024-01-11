@@ -53,7 +53,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
   }
 
   if (data) {
-    console.log("the data", data[3])
+    // console.log("the data", data[3])
   }
   return (
     <div className={styles.container}>
@@ -72,17 +72,12 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
                     quantity={product.quantity}
                     features={product.features}
                     variations={product.variations}
+                    productThumbnails={product.productThumbnails}
                   />
                 )
               }>
             </SwiperCarouselV1>
           </div>
-
-          {/* <ProductV2
-            name={data[1].name}
-            price={data[1].price}
-            width='medium'
-          /> */}
         </>
       )}
     </div>

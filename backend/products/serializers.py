@@ -1,4 +1,5 @@
 import decimal
+from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from user_control.models import CustomUser
@@ -95,6 +96,13 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
     # images = ProductImageSerializer(many=True, read_only=True)
 
+    def get_slug(self, obj):
+        # TODO: have to change product_id to product !! it brings confusion 
+        category_slug = slugify(obj.product_id.category.name)
+        product_slug = slugify(obj.slug)
+
+
+
 
     def get_discount_price(self, obj):
         items = obj.discount.all()
@@ -127,7 +135,8 @@ class ProductItemSerializer(serializers.ModelSerializer):
             'price',
             'variation_option',
             'discounts',
-            'discount_price'
+            'discount_price',
+            'slug'
         ]
 
     # def get_name(self, obj):
@@ -276,23 +285,45 @@ class ProductAndCategoriesSerializerV3(serializers.ModelSerializer):
 
         return ret
 
-
-class ProductThumbNailSerializerV3(serializers.ModelSerializer):
+class ProductImageSerializerV4(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('id', 'thumbnail', 'is_featured')
+        fields = ( 'id', 'url', 'is_featured')
 
-    def get_thumbnail(self, instance):
+    
+    def get_image(self, instance):
+        if not instance.image:
+            return None
         request = self.context.get('request')
         if request:
-            return request.build_absolute_uri(instance.thumbnail)
+            return request.build_absolute_uri(instance.image.url)
         else:
             return None
         
     def to_representation(self, instance):
         return {
-            'id': instance.id,
-            'thumbnail': self.get_thumbnail(instance),
+            'url': self.get_image(instance),
+            'is_featured': instance.is_featured
+        }
+
+
+class ProductThumbNailSerializerV3(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ('id', 'url', 'is_featured')
+
+    def get_thumbnail(self, instance):
+        if not instance.thumbnail:
+            return None
+        request = self.context.get('request')
+        if request:
+            return request.build_absolute_uri(instance.thumbnail.url)
+        else:
+            return None
+        
+    def to_representation(self, instance):
+        return {
+            'url': self.get_thumbnail(instance),
             'is_featured': instance.is_featured
         }
 
@@ -354,7 +385,15 @@ class ProductSerializerV3(serializers.ModelSerializer):
 
 class ProductItemSerializerV4(serializers.ModelSerializer):
     variation_details = serializers.SerializerMethodField()
+    constructed_url = serializers.SerializerMethodField()
     product_thumbnails = ProductThumbNailSerializerV3(many=True, read_only=True, source='product_image')
+
+    def get_constructed_url(self, obj):
+        category_slug = slugify(obj.product_id.category.name)
+        product_slug = slugify(obj.product_id.name)
+        # variation_slug = slugify(obj.slug)
+
+        return f"{category_slug}/{product_slug}/"
 
     def get_variation_details(self, obj):
         variations = obj.variation_option.all() 
@@ -363,12 +402,14 @@ class ProductItemSerializerV4(serializers.ModelSerializer):
     class Meta:
         model = ProductItem
         fields = (
-            'id',
+            # 'id',
             'quantity',
             'price',
             # 'variation_option',
             'product_thumbnails',
-            'variation_details'
+            'variation_details',
+            'slug',
+            'constructed_url'
         )
 
 
@@ -452,7 +493,44 @@ class ProductSerializerV4(serializers.ModelSerializer):
 
 
 class ProductItemDetailSerializerV4(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    icon = serializers.SerializerMethodField()
+    features = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
+    product_thumbnails = ProductThumbNailSerializerV3(many=True, read_only=True, source='product_image')
+    product_images = ProductImageSerializerV4(many=True, read_only=True, source='product_image')
+
+    def get_features(self, obj):
+        return obj.product_id.features
+
+    def get_categories(self, obj):
+        category = obj.product_id.category
+        list_of_categories = get_list_of_parent_categories(category, [])
+        return list_of_categories
+
+    def get_name(self, obj):
+        return obj.product_id.name
+    
+    def get_icon(self, obj):
+        product = obj.product_id
+        if product and product.icon:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(product.icon.url)
+        return None
     class Meta:
         model = ProductItem
-        exclude = ('created_at', 'modified_at',)
+        fields = (
+            'name',
+            'sku',
+            'quantity',
+            'price',
+            'detailed_description',
+            'features',
+            'icon',
+            'categories',
+            'product_thumbnails',
+            'product_images'
+        )
+        # exclude = ('id', 'created_at', 'modified_at',)
 

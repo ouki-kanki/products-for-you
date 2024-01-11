@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { hideSidebar, showSidebar } from '../../features/UiFeatures/UiFeaturesSlice';
+import { useSroll } from '../../hooks/useScroll';
 
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
@@ -28,6 +29,7 @@ export const NavBar = () => {
   const [lastScrollValue, setLastScrollValue] = useState(0)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  // const { isScrollingDown } = useSroll()
 
   const { pathname } = useLocation();
   const { token, logout } = useAuth()
@@ -38,6 +40,8 @@ export const NavBar = () => {
   // TODO: THIS IS A NASTY FIX !!! have to fix later 
   const { data, isFetching, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
 
+
+  // console.log(showNav)
   // TODO : transfrom the response inside the query to retrieve only the image and the name 
   // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT 
 
@@ -117,19 +121,20 @@ export const NavBar = () => {
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       {/* LEFT SIDE */}
       <div className={styles.leftContainer}>
+        <div onClick={handleSideBarVis}>
+          <BackIcon className={styles.backIcon}/>
+        </div>
         {pathname !== '/' && (
           <Link
             to='/'
             className={`${styles.icons} ${styles.back}`}
             > 
-            <FontAwesomeIcon
+            take me home
+            {/* <FontAwesomeIcon
               size='2x' 
-              icon={faHandPointLeft}/>
+              icon={faHandPointLeft}/> */}
           </Link>
         )}
-        <div onClick={handleSideBarVis}>
-          <BackIcon className={styles.backIcon}/>
-        </div>
       </div>
 
       {/* RIGHT SIDE */}

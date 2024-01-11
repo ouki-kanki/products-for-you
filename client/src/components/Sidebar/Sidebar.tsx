@@ -3,21 +3,26 @@ import type { RootState } from '../../app/store';
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 import { useSelector } from 'react-redux';
-
+import { useSroll } from '../../hooks/useScroll';
 
 import { SideBarField } from './SideBarField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+
 
 import { sideBarData } from './sidebarData';
 
 export const Sidebar = () => {
   const navigate = useNavigate()
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
+  const { isScrollingDown } = useSroll()
+
+  // console.log("is srolling down", isScrollingDown)
 
   const navContainerStyles = `
     ${styles.sidebarContainer} 
     ${isSideBarHidden ? styles.hidden : ''}
+    ${isScrollingDown ? styles.scrolledDown : ''}
   `
 
   return (

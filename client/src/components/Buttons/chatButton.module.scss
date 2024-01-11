@@ -1,39 +1,51 @@
 .chatButtonContainer {
   // @include btn_base();
-  background-color: #d9d9d9;
+  // background-color: #d9d9d9;
+  // background-color:  #e6c863;
+  font-family: 'Lemon', serif;
   border-radius: 15px;
   height: 50px;
   width: 200px;
   display: flex;
+  // align-items: first baseline;
   padding: 5px 20px;
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
-
+  transition: border .2s linear;
+  border: 1px solid transparent;
+  
   & :first-child {
     height: 60%;
     // flex-basis: 50px;
     position: relative;
-
+    
     & img {
       height: 100%;
       width: 100%;
     }
   }
-
+  
   & div {
     color: inherit;
-  }  
+  }
+
+  & span {
+    color: #E6C316;
+  }
 }
 
 .chatButtonContainer:hover {
+  border: 1px solid  #585753;
+  // border-width: 2px solid #585753;
   // color: red;
   // box-shadow: $box-shadow-btn-d;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  // box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
 }
 
 .chatIcon {
+  transform: translateY(-1px);
   path {
     fill: $dark-gray;
     fill: #E6C316;

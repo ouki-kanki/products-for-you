@@ -22,6 +22,12 @@ interface IVariation {
   thumb: string;
 }
 
+interface IProductThumbnail {
+  id: number;
+  isFeatured: boolean;
+  url: string
+}
+
 export interface IProduct {
   name: string;
   quantity: number;
@@ -32,6 +38,14 @@ export interface IProduct {
   category: string[];
   description: string;
   variations: IVariation[];
+  productThumbnails: IProductThumbnail[];
+  slug: string;
+  constructedUrl: string;
+  id: number;
+}
+
+export interface IproductDetail {
+
 }
 
 interface IProductApiResponse {
@@ -94,8 +108,13 @@ export const productsApi = createApi({
       query: (pageSize) => ({
         url: `featured-products${pageSize && `?${pageSize}`}`
       })
+    }),
+    getProductDetail: builder.query<IproductDetail, string | null>({
+      query: (slug) => ({
+        url: `product-items-detail-v4/${slug}`
+      })
     })
   })
 })
 
-export const { useGetLatestProductsQuery, useGetFeaturedProductsQuery } = productsApi
+export const { useGetLatestProductsQuery, useGetFeaturedProductsQuery, useGetProductDetailQuery } = productsApi

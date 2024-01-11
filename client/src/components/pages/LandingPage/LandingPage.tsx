@@ -63,6 +63,9 @@ export const LandingPage = () => {
         ))}
       </Grid>
   )
+  if (latestProducts) {
+    // console.log(latestProducts)
+  }
 
   return (
     <div className={styles.container}>
@@ -74,7 +77,7 @@ export const LandingPage = () => {
       {/* <FeaturedProducts/> */}
       {/* TODO: remove this is for testing */}
       {latestProducts && (
-        <FeaturedProduct data={latestProducts[1]}/>
+        <FeaturedProduct data={latestProducts[4]}/>
       )}
     </div>
   )

@@ -11,3 +11,4 @@ export { SignUp } from './SignUp/SignUp';
 export { Profile } from './Profile/Profile'
 export { ErrorPage } from './ErrorPage/ErrorPage';
 export { LandingPage } from './LandingPage/LandingPage';
+export { ProductDetail } from './ProductDetail/ProductDetail';

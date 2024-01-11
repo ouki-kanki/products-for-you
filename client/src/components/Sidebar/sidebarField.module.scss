@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: flex-start;
 
+  & span {
+    color: inherit;
+  }
+
   svg {
     height: 25px;
     width: 30px;
@@ -20,6 +24,8 @@
     }
   }
 }
+
+
 
 .hovered {
   svg {

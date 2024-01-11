@@ -28,7 +28,8 @@ import { Home,
          SignUp,
          Profile,
          ErrorPage,
-         LandingPage
+         LandingPage,
+         ProductDetail
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
@@ -72,7 +73,7 @@ function App() {
 
   const handleUiConfig = useCallback((config: IUiConfig) => {
     const { isSidebarHidden } = config
-    console.log("the sidebar data from local" , isSidebarHidden)
+    // console.log("the sidebar data from local" , isSidebarHidden)
 
     if (JSON.parse(isSidebarHidden as string)) {
       dispatch(hideSidebar())
@@ -106,7 +107,7 @@ function App() {
     <div className={styles.appContainer}>
       <Sidebar/>
       <div className={styles.contentNavContainer}>
-        <div className='routes__container'>
+        <div>
           <Routes>
             <Route path='*' element={<ErrorPage/>}/>
             <Route path='/' element={<Home/>}>
@@ -118,6 +119,7 @@ function App() {
               <Route path='/account' element={<Account/>}/>
               <Route path='/settings' element={<Settings/>}/>
               <Route path='/products' element={<ProductsPage/>}/>
+              <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
               <Route path='/search' element={<Search/>}/>
               <Route path='login' element={<LoginPage/>}/>
               <Route path='sign-up' element={<SignUp/>}/>

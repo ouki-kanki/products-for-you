@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import styles from './productV2.module.scss';
-
 import type { WidthType } from '../../UI/Card/Card';
 
 import { useHover } from '../../hooks/useHover';
+import { useNavigate } from 'react-router-dom';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faStar } from '@fortawesome/free-regular-svg-icons';
@@ -41,20 +42,30 @@ export const ProductV2 = ({
   name: title, 
   price, 
   features, 
-  id, 
+  id,
+  slug,
+  productThumbnails,
   quantity, 
   description,
-  variations, 
+  variations,
+  constructedUrl,
   width = 'fluid' }: IProductV2Props) => {
   const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
+  const navigate = useNavigate()
 
 
   const handleVariationChange = (index, productUrl) => {
     console.log("the index and product url", index, productUrl)
   }
 
+  const handleProductDetail = () => {
+    console.log(constructedUrl, id, slug)
+    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`)
+  }
+
   // console.log(variations)
+  // console.log(productThumbnails)
 
 
   const renderVariations = () => {
@@ -65,6 +76,7 @@ export const ProductV2 = ({
           {variations.map((variation, index) => (
             <div 
               className={styles.varImageContainer}
+              key={index}
               onClick={() => handleVariationChange(index, variation.productUrl)}>
               <img src={variation.thumb} alt="variation image" />
             </div>))}
@@ -101,6 +113,7 @@ export const ProductV2 = ({
           size='2x'/>
         <div 
           className={styles.productContainer}
+          onClick={handleProductDetail}
           >
           <div className={styles.topRegion}>
             <h2>{title}</h2>
@@ -111,7 +124,7 @@ export const ProductV2 = ({
               <div className={styles.imageContainer}>
                 <img 
                   src={currentImage}
-                  className={`${styles.imageMain} ${isHovered && styles.imageHovered}`} 
+                  className={`${styles.imageMain} ${isTempHovered && styles.imageHovered}`} 
                   alt="shoe image" />
               </div>
             </div>
@@ -168,15 +181,24 @@ export const ProductV2 = ({
 
           {/* Product views */}
           <div className={styles.bottomRegion}>
-            <div onClick={() => setCurrentImage(kdeRight)}>
-              <img src={kdeRight} alt="right view of the product" />
-            </div>
-            <div onClick={() => setCurrentImage(kdeTop)}>
-              <img src={kdeTop} alt="top view of the product" />
-            </div>
-            <div onClick={() => setCurrentImage(kdeBack)}>
-              <img src={kdeBack} alt="back view of the product" />
-            </div>
+            {productThumbnails && productThumbnails.length > 0 ? productThumbnails.map((thumb, index) => (
+              <div onClick={() => setCurrentImage(thumb.url)} key={index}> 
+                <img src={thumb.url} alt="top view of the product" />
+              </div>)) : (
+              <>
+              {/* TODO: for testing remove if production !!! */}
+                <div onClick={() => setCurrentImage(kdeRight)}>
+                  <img src={kdeRight} alt="right view of the product" />
+                </div>
+                <div onClick={() => setCurrentImage(kdeTop)}>
+                  <img src={kdeTop} alt="top view of the product" />
+                </div>
+                <div onClick={() => setCurrentImage(kdeBack)}>
+                  <img src={kdeBack} alt="back view of the product" />
+                </div>
+              </>
+              )
+            }
           </div>
           <div className={styles.actionContainer}>
             <Button>buy now</Button>
