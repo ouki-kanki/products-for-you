@@ -13,13 +13,15 @@ from .views import (
     get_brand_view,
     products_and_related_variations_view,
     product_detail_view_v4,
-    product_preview
+    product_preview,
+    product_search_view
 )
 
 app_name = 'products'
 urlpatterns = [
     # NOTE: testing (consumes product table along with related variations)
     path('', product_list_view),
+    path('search/', product_search_view, name='product-search'),
     path('latest-products-v4/', products_and_related_variations_view),
     path('featured-products', featured_products_view),
     path('latest-products', latest_featured_variations_with_page),

@@ -29,6 +29,20 @@
   cursor: pointer; 
 }
 
+@mixin btn_blue() {
+  border: none;
+  padding: 15px 30px;
+  width: 170px;
+  background-color: #a2d2ff;
+  text-align: center;
+  cursor: pointer;
+  transition: box-shadow .2s ease-out;
+
+  &:hover {
+    box-shadow: $box-shadow-transparent-black;
+  }
+}
+
 
 // borders
 // TODO: remove for production . have it on the dev branch

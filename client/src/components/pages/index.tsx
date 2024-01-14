@@ -1,6 +1,5 @@
 export {default as Home} from './Home';
 export {default as About} from './About'
-export {default as Cart} from './Cart'
 export {default as Categories} from './Categories/Categories'
 export {default as Contact} from './Contact'
 export {default as Account} from './Account'
@@ -12,3 +11,4 @@ export { Profile } from './Profile/Profile'
 export { ErrorPage } from './ErrorPage/ErrorPage';
 export { LandingPage } from './LandingPage/LandingPage';
 export { ProductDetail } from './ProductDetail/ProductDetail';
+export { Cart } from './Cart/Cart'

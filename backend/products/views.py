@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404 
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
+
+from rest_framework import filters
 
 from rest_framework import (
     generics, mixins, permissions, authentication, viewsets
@@ -18,7 +20,8 @@ from .serializers import (
     BrandSerializer,
     ProductSerializerV4,
     ProductItemSerializerV4,
-    ProductItemDetailSerializerV4
+    ProductItemDetailSerializerV4,
+    ProductItemSearchSerializerV4
 )
 
 class CategoryListView(generics.ListAPIView):
@@ -334,4 +337,19 @@ class ProductPreview(generics.RetrieveAPIView):
 
 
 product_preview = ProductPreview.as_view()
-    
+
+
+class ProductSearchView(generics.ListAPIView):
+    """
+    search products based on the name and the description
+    """
+    serializer_class = ProductItemSearchSerializerV4
+    queryset = ProductItem.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['product_id__name', 'detailed_description', 'product_id__description']
+
+    def get_queryset(self):
+        query = self.request.query_params.get('query', '')
+        return ProductItem.objects.filter(Q(product_id__name__icontains=query) | Q(detailed_description__icontains=query) | Q(product_id__description__icontains=query))
+
+product_search_view = ProductSearchView.as_view()

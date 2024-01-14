@@ -80,6 +80,7 @@ class UserProfileView(generics.GenericAPIView,
     queryset = UserDetail.objects.all()
 
     def get(self, request, *args, **kwargs):
+        print(request.session)
         return self.retrieve(request, args, kwargs)
 
 

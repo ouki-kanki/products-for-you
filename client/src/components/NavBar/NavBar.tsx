@@ -1,41 +1,38 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
 import { useAuth } from '../../hooks/useAuth';
-
+import { showModal } from '../../features/UiFeatures/UiFeaturesSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
 import { hideSidebar, showSidebar } from '../../features/UiFeatures/UiFeaturesSlice';
-import { useSroll } from '../../hooks/useScroll';
 
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
 import cartIcon from '../../assets/svg_icons/cart.svg';
 import bellIcon from '../../assets/svg_icons/bell.svg'
 
-import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSroll } from '../../hooks/useScroll';
 
 import type { RootState } from '../../app/store';
 import { useGetProfileQuery } from '../../api/userApi';
 
 import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
-import CartOutlined from '../../assets/svg_icons/cart_outlined.svg?react';
+
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // const { isScrollingDown } = useSroll()
-
   const { pathname } = useLocation();
   const { token, logout } = useAuth()
   const userId = useSelector((state: RootState) => state.auth.userId)
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
+  // const { isScrollingDown } = useSroll()
   // const { trigger, data, error } = useProfile()
+
 
   // TODO: THIS IS A NASTY FIX !!! have to fix later 
   const { data, isFetching, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
@@ -44,19 +41,6 @@ export const NavBar = () => {
   // console.log(showNav)
   // TODO : transfrom the response inside the query to retrieve only the image and the name 
   // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT 
-
-  // console.log("the data", data)
-  // console.log("isFetching", isFetching)
-  // console.log("is Loading", isLoading)
-
-  // useEffect(() => {
-  //   if (profile === null) {
-  //     console.log("inside the trigger")
-  //     trigger('1')
-  //   }
-  // }, [userId])
-
-
 
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
@@ -148,11 +132,12 @@ export const NavBar = () => {
         </div> */}
 
         <div className={styles.buttonsContainer}>
-          <Link
+          <div
             className={styles.icons}
-            to='/cart'>
+            onClick={() => dispatch(showModal())}
+            >
             <img src={cartIcon} alt="cart button" />
-          </Link>
+          </div>
 
           <Link
             className={styles.icons}

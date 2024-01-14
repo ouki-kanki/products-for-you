@@ -6,9 +6,8 @@ import { ProtectedRoute } from './hocs/ProtectedRoute';
 
 import type { IUiConfig } from './types';
 
-
 import { selectUsers } from './app/store'
-import { useAppDispatch, useAppSelector } from './hooks'
+import { useAppSelector } from './hooks'
 import { fetchUsers } from './features/users/usersSlice'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
 import { setCredentials } from './features/auth/Login/loginSlice';
@@ -94,8 +93,7 @@ function App() {
   // lazy use of rtk 
   const handleFetchProducts = () => {
     trigger()
-  }  
-
+  }
 
   if (isLoading) {
     return (
@@ -107,13 +105,14 @@ function App() {
     <div className={styles.appContainer}>
       <Sidebar/>
       <div className={styles.contentNavContainer}>
+        <Cart/>
         <div>
           <Routes>
             <Route path='*' element={<ErrorPage/>}/>
             <Route path='/' element={<Home/>}>
               <Route index element={<LandingPage/>}/>
               <Route path='/categories' element={<Categories/>}/>
-              <Route path='/cart' element={<Cart/>}/>
+              {/* <Route path='/cart' element={<Cart/>}/> */}
               <Route path='/about' element={<About/>}/>
               <Route path='/contact' element={<Contact/>}/>
               <Route path='/account' element={<Account/>}/>

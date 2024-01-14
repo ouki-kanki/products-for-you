@@ -535,3 +535,16 @@ class ProductItemDetailSerializerV4(serializers.ModelSerializer):
         )
         # exclude = ('id', 'created_at', 'modified_at',)
 
+
+class ProductItemSearchSerializerV4(serializers.ModelSerializer):
+    product_name = serializers.ReadOnlyField(source='product_id.name')
+    product_description = serializers.ReadOnlyField(source='product_id.description')
+
+    class Meta:
+        model = ProductItem
+        fields = (
+            'id',
+            'product_name',
+            'product_description',
+            'detailed_description'
+        )

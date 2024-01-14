@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface UiState {
-  isSidebarHidden: boolean
+  isSidebarHidden: boolean,
+  isModalOpen: boolean
 }
 
 const initialState: UiState = {
-  isSidebarHidden: false
+  isSidebarHidden: false,
+  isModalOpen: false
 }
 
 export const uiFeaturesSlice = createSlice({
@@ -19,10 +21,16 @@ export const uiFeaturesSlice = createSlice({
     showSidebar: state => {
       localStorage.setItem("is_sidebar_hidden", JSON.stringify(false))
       state.isSidebarHidden = false
+    },
+    hideModal: state => {
+      state.isModalOpen = false
+    },
+    showModal: state => {
+      state.isModalOpen = true
     }
   }
 })
 
 
-export const { hideSidebar, showSidebar } = uiFeaturesSlice.actions
+export const { hideSidebar, showSidebar, hideModal, showModal } = uiFeaturesSlice.actions
 export default uiFeaturesSlice.reducer

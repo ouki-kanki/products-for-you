@@ -6,6 +6,7 @@ import styles from './productDetail.module.scss'
 import ReturnIcon from '../../../assets/svg_icons/return_icon.svg?react'
 import TrackIcon from '../../../assets/svg_icons/track.svg?react'
 
+import { ModalCentered } from '../../Modal/ModalCentered/ModalCentered'
 
 export const ProductDetail = () => {
   const { slug } = useParams()
@@ -124,7 +125,7 @@ export const ProductDetail = () => {
                       <button onClick={handleIncrement}>+</button>
                     </div>
                   </div>
-                  <button className={styles.buyBtn}>buy now</button>
+                  <button className={styles.buyBtn}>Add to cart</button>
                 </div>
               </div>
 
