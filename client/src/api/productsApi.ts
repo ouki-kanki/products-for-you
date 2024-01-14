@@ -22,8 +22,7 @@ interface IVariation {
   thumb: string;
 }
 
-interface IProductThumbnail {
-  id: number;
+interface IProductThumbnailorImage {
   isFeatured: boolean;
   url: string
 }
@@ -38,14 +37,24 @@ export interface IProduct {
   category: string[];
   description: string;
   variations: IVariation[];
-  productThumbnails: IProductThumbnail[];
+  productThumbnails: IProductThumbnailorImage[];
   slug: string;
   constructedUrl: string;
   id: number;
 }
 
+// TODO: DRY THIS there are simiral properties
 export interface IproductDetail {
-
+  name: string;
+  variation_name: string
+  sku: string;
+  quantity: string;
+  detailedDescription: string;
+  features: string[];
+  icon: string;
+  categories: string[];
+  productThumbnails: IProductThumbnailorImage[];
+  productImages: IProductThumbnailorImage[]
 }
 
 interface IProductApiResponse {
@@ -112,6 +121,10 @@ export const productsApi = createApi({
     getProductDetail: builder.query<IproductDetail, string | null>({
       query: (slug) => ({
         url: `product-items-detail-v4/${slug}`
+      }),
+      transformResponse: ((response: IproductDetail, meta, arg) => {
+        convertSnakeToCamel(response)
+        return response
       })
     })
   })

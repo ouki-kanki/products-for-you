@@ -522,6 +522,7 @@ class ProductItemDetailSerializerV4(serializers.ModelSerializer):
         model = ProductItem
         fields = (
             'name',
+            'variation_name',
             'sku',
             'quantity',
             'price',

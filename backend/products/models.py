@@ -219,6 +219,7 @@ class ProductItem(models.Model):
     """
     # TODO: change product_id to product because it confusing
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    variation_name = models.CharField(max_length=255, blank=True)
     # TODO: make it unique True
     slug = models.SlugField(max_length=50, blank=True)
     sku = models.CharField(max_length=255)
@@ -248,10 +249,14 @@ class ProductItem(models.Model):
     
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
-
-
+        
 @receiver(pre_save, sender=ProductItem)
 def product_item_pre_save(sender, instance, *args, **kwargs):
+    if instance.variation_name is "" or instance.variation_name is None:
+        instance.variation_name = "yoyo"
+        qs = instance.variation_option.all().first()
+        instance.variation_name = f"{instance.product_id.name} {qs}"
+
     # if is flagged as featured remove the flag from the rest of the variations
     if instance.is_featured:
         other_featured_variations = ProductItem.objects.filter(product_id=instance.product_id, is_featured=True) \
@@ -261,14 +266,13 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
             other_featured_variations.update(is_featured=False)
 
     if instance.slug is "" or instance.slug is None:
-        # TODO: use something like (product-colorvalue) as slug
         slugify_unique(sender, instance, instance.sku)
-    
-        # instance.slug = slugify(instance.name)
-@receiver(post_save, sender=ProductItem)
-def product_item_post_save(sender, instance, created, *args, **kwargs):
-    if created:
-        instance.save()
+
+
+# @receiver(post_save, sender=ProductItem)
+# def product_item_post_save(sender, instance, created, *args, **kwargs):
+#     if created:
+#         instance.save()
 
     
 class Banner(models.Model):

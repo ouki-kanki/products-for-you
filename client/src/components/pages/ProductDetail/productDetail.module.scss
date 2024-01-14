@@ -1,0 +1,232 @@
+$breakpoint-small: 600px;
+$breakpoint-medium: 768px;
+$breakpoint-large: 1024px;
+
+
+.container {
+ overflow: hidden;
+
+}
+
+.sectionOne {
+  // @include border_green();
+  display: flex;
+  display: flex;
+
+  .leftContainer {
+    // @include border_lime();
+    flex: 1 1 60%;
+    max-width: 700px;
+    padding: 20px;
+  }
+
+  .featuredImage {
+    // @include border_lime__bold();
+    position: relative;
+    box-shadow: $box-shadow-transparent-black;
+
+    & img {
+      // @include border_orange__bold();
+      width: 100%;
+      height: 100%;
+      // TODO: the following is not working. check why 
+      object-fit: fill;
+      object-position: center center;
+    }
+  }
+
+  .secondaryImages {
+    display: grid;
+    margin-top: 10px;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    position: relative;
+
+    .imageContainer {
+      // border: 1px solid #888;
+      box-shadow: $box-shadow-transparent-black;
+      cursor: pointer;
+      @include transition-transform-quick();
+      // transition: transform .2s linear;
+      
+      &:hover {
+        // @include transition-transform-quick();
+        transform: scale(1.05);
+      }
+    }
+    
+    & img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .rightContainer {
+    @include border_orange__bold();
+    flex: 1 1 40%;
+    padding: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .description {
+      margin-top: 2rem;
+      max-width: 600px;
+    }
+
+    .bottom {
+      margin-bottom: 10px;
+    }
+
+    .trackContainer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: 'Lemon', serif;
+
+      & svg {
+        transform: translateY(-3px);
+      }
+
+      & > div {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.available {
+  margin-top: 5px;
+  font-family: 'Lemon', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: mediumspringgreen;
+}
+
+
+.action {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+
+  .quantityBtnContainer {
+    margin-right: 10px;
+    & input {
+      border: none;
+      border-bottom: 2px solid #a2d2ff;
+      outline: none;
+      color: #a2d2ff;
+      font-family: 'Lemon', serif;
+      font-size: 20px;
+    }
+
+    .plusMinusContainer {
+      margin-top: 5px;
+    }
+
+  }
+
+  .buyBtn {
+    border: none;
+    padding: 15px 30px;
+    width: 170px;
+    background-color: #a2d2ff;
+    cursor: pointer;
+    transition: box-shadow .2s ease-out;
+
+    &:hover {
+      box-shadow: $box-shadow-transparent-black;
+    }
+  }
+}
+
+.policyContainer {
+  margin-top: 2px;
+  font-family: 'Lemon', serif;
+  font-size: 13px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  // @include border_pink__bold();
+
+  & div {
+    // @include border_orange__bold();
+  }
+  // align-self: flex-end;
+}
+
+.iconContainer {
+  flex: 0 0 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.returnIcon {
+  // @include border_orange();
+  fill: #444;
+  width: 25px;
+  height: 25px;
+  transform: translateX(-3px);
+}
+
+.trackIcon {
+  // @include border_orange();
+  // flex: 0 0 40px;
+  width: 25px;
+  transform: translate(-5px, -4px);
+}
+
+
+
+.image-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px; 
+}
+
+@media screen and (max-width: $breakpoint-small) {
+  .image-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media screen and (min-width: $breakpoint-small) and (max-width: $breakpoint-medium) {
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
+  .image-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: $breakpoint-large) {
+  .image-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.flexContainer {
+  @include border_red__bold;
+
+  .child {
+    display: flex;
+
+    .img {
+      flex: 1;
+    }
+
+    .text {
+      flex: 2;
+      @include border_lime__bold();
+      text-align: left;
+    }
+  }
+}

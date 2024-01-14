@@ -3,7 +3,11 @@
 
 // transitions
 @mixin transition-transform-quick() {
-  transition: tranform .2sec linear;
+  transition: transform .1s linear;
+}
+
+@mixin transition-transform() {
+  transition: transform .7s linear;
 }
 
 @mixin transform-scale($value: 1.2) {
@@ -25,7 +29,65 @@
   cursor: pointer; 
 }
 
+
+// borders
+// TODO: remove for production . have it on the dev branch
 @mixin border_green() {
   border: 1px solid green;
 }
 
+@mixin border_green__bold() {
+  border: 2px solid green;
+}
+
+@mixin border_green__bolder() {
+  border: 3px solid green;
+}
+
+@mixin border_pink() {
+  border: 1px solid hotpink;
+}
+
+@mixin border_pink__bold() {
+  border: 2px solid hotpink;
+}
+
+@mixin border_pink__bolder() {
+  border: 3px solid hotpink;
+}
+
+@mixin border_lime() {
+  border: 1px solid lime;
+}
+
+@mixin border_lime__bold() {
+  border: 2px solid lime;
+}
+
+@mixin border_lime__bolder() {
+  border: 3px solid lime;
+}
+
+@mixin border_orange() {
+  border: 1px solid orange;
+}
+
+@mixin border_orange__bold() {
+  border: 2px solid orange;
+}
+
+@mixin border_orange__bolder() {
+  border: 3px solid orange;
+}
+
+@mixin border_red() {
+  border: 1px solid tomato;
+}
+
+@mixin border_red__bold() {
+  border: 2px solid tomato;
+}
+
+@mixin border_red__bolder() {
+  border: 3px solid tomato;
+}

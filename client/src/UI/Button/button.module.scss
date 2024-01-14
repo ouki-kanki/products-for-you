@@ -2,11 +2,12 @@
 .buttonContainer {
   padding: 10px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: $box-shadow-btn;
   text-transform: uppercase;
   font-weight: 700;
   cursor: pointer;
+  @include transition-transform-quick();
   
   &m {
     height: $btn_height;

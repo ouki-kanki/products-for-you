@@ -56,12 +56,17 @@ export const ProductV2 = ({
 
 
   const handleVariationChange = (index, productUrl) => {
-    console.log("the index and product url", index, productUrl)
+    // console.log("the index and product url", index, productUrl)
   }
 
   const handleProductDetail = () => {
     console.log(constructedUrl, id, slug)
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`)
+  }
+
+  const handleSetMainImage = (e: React.MouseEvent<HTMLDivElement>, url: string) => {
+    e.stopPropagation()
+    setCurrentImage(url)
   }
 
   // console.log(variations)
@@ -182,7 +187,7 @@ export const ProductV2 = ({
           {/* Product views */}
           <div className={styles.bottomRegion}>
             {productThumbnails && productThumbnails.length > 0 ? productThumbnails.map((thumb, index) => (
-              <div onClick={() => setCurrentImage(thumb.url)} key={index}> 
+              <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}> 
                 <img src={thumb.url} alt="top view of the product" />
               </div>)) : (
               <>

@@ -42,12 +42,13 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   // background: linear-gradient(133deg, rgba(49, 39, 65, 0.50) 6.04%, rgba(195, 180, 221, 0.50) 94.35%);
   // background: linear-gradient(133deg, rgba(216, 111, 183, 0.5 ) 66.04%, rgba(255, 215, 235, 0.5) 94%);
-  background: rgba(238, 215, 13, 0.867);
+  background: $yellow;
   border-radius: 5px;
   // border: 2px solid #8f8f8f44;
   display: flex;
   justify-content: center;
   align-items: center;
+  @include transition-transform-quick();
   
   & img {
     width: 60%;
