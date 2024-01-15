@@ -34,7 +34,8 @@ const formatPrice = (strNum: string) => {
 }
 
 interface IProductV2Props extends IProduct {
-  width?: WidthType
+  width?: WidthType,
+  shadow?: boolean
 }
 
 
@@ -49,6 +50,7 @@ export const ProductV2 = ({
   description,
   variations,
   constructedUrl,
+  shadow = true,
   width = 'fluid' }: IProductV2Props) => {
   const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
@@ -111,6 +113,7 @@ export const ProductV2 = ({
         onMouseEnter={activateHover}
         onMouseLeave={deactivateHover}
         width={width}
+        shadow={shadow}
         >
         <FontAwesomeIcon
           className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`} 

@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 // import './index.scss';
 import styles from './app.module.scss'
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './hocs/ProtectedRoute';
+
 
 import type { IUiConfig } from './types';
 
@@ -35,6 +36,8 @@ import { Search } from './components/pages/Search';
 import { useDebouncedEffect } from './hooks/useDebounced';
 
 import { useDispatch } from 'react-redux';
+import { initCart } from './features/cart/cartSlice';
+
 
 import type { ICredentials } from './types';
 
@@ -43,6 +46,12 @@ function App() {
   const [count, setCount] = useState(0)
   const dispatch = useDispatch()
   const users = useAppSelector(selectUsers)
+
+  useEffect(() => {
+    dispatch(initCart())
+  }, [dispatch])
+
+  console.log("app triggered")
 
   const [
     trigger,

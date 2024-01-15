@@ -31,7 +31,7 @@ class CartItem(models.Model):
     '''
         these are the items for each cart
     '''
-    card_id = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
+    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)

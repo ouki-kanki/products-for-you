@@ -23,6 +23,17 @@
   th, td {
     padding: 12px 15px;
   }
+  & tbody > tr  {
+    // background-color: red;
+    // box-shadow: $box-shadow-transparent-black;
+    // margin-bottom: 20px;
+  }
+
+  & tbody > tr > :nth-child(1) {
+    color: red;
+    min-width: 200px;
+  }
+
   & tbody > tr > :nth-child(3) {
     width: 100px;
     display: flex;

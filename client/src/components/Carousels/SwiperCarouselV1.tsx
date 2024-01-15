@@ -49,8 +49,8 @@ export const SwiperCarouselV1 = ({ data,  renderProduct}: ISwipperCarouselV1Prop
       setNumberOfVisible(5)
     } else if (windowWidth >= 1700) {
       setNumberOfVisible(4)
-    } else if (windowWidth >= 1500) {
-      setNumberOfVisible(3)
+    } else if (windowWidth >= 1000) {
+      setNumberOfVisible(2)
     } else if (windowWidth >= 800) {
       setNumberOfVisible(2)
     } else {
@@ -62,6 +62,7 @@ export const SwiperCarouselV1 = ({ data,  renderProduct}: ISwipperCarouselV1Prop
   return (
     <div className={styles.container}>
       <Swiper
+        className={styles.swiper}
         navigation
         loop
         // autoplay={{
@@ -72,7 +73,7 @@ export const SwiperCarouselV1 = ({ data,  renderProduct}: ISwipperCarouselV1Prop
           clickable: true
         }}
         modules={[EffectCards, Navigation, Pagination, Autoplay]}
-        centeredSlides={true}
+        centeredSlides={false}
         // effect='cards'
         spaceBetween={2}
         slidesPerView={numberOfVisible}

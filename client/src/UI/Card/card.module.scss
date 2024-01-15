@@ -16,6 +16,15 @@
   /* border: 3px solid #ff4d40; */
 }
 
+.noShadow {
+  box-shadow: none;
+}
+
+.cardContainer:hover,
+.cardContainer.noShadow:hover {
+  box-shadow: none;
+}
+
 .medium {
   width: 24em;
 }

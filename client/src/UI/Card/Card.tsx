@@ -6,6 +6,7 @@ export type WidthType = 'medium' | 'wide' | 'fluid'
 
 interface ICardProps extends HTMLProps<HTMLDivElement>  {
   width: WidthType
+  shadow?: boolean
 }
 
 /**
@@ -15,7 +16,7 @@ interface ICardProps extends HTMLProps<HTMLDivElement>  {
  * 
  * this have an embedded badding 2rem 1.3rem
  */
-export const Card = ({ children, width, ...rest }: PropsWithChildren<ICardProps> ) => {
+export const Card = ({ children, width, shadow=true, ...rest }: PropsWithChildren<ICardProps> ) => {
   const style = (width: WidthType): string => {
     const { medium, wide } = styles
     switch(width) {
@@ -30,7 +31,7 @@ export const Card = ({ children, width, ...rest }: PropsWithChildren<ICardProps>
   
   return (
     <div 
-      className={`${styles.cardContainer} ${style(width)}`}
+      className={`${styles.cardContainer} ${style(width)} ${!shadow && styles.noShadow}`}
       { ...rest }
       >
       {children}

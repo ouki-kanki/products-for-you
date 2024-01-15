@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import usersReducer from '../features/users/usersSlice';
 import uiReducer from '../features/UiFeatures/UiFeaturesSlice';
+import cartReducer from '../features/cart/cartSlice'
 
 import { productsSlice } from "../features/products/productsSlice";
 import authReducer from '../features/auth/Login/loginSlice';
@@ -12,6 +13,7 @@ export const store = configureStore({
   reducer: {
     users: usersReducer,
     ui: uiReducer,
+    cart: cartReducer,
     [productsSlice.reducerPath]: productsSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     auth: authReducer,

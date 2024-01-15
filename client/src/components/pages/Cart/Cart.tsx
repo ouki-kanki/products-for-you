@@ -39,6 +39,7 @@ export const Cart = () => {
                 </div>
               </td>
               <td>67$</td>
+              <td>remove</td>
             </tr>
             <tr>
               <td>jordan 36</td>
@@ -71,7 +72,7 @@ export const Cart = () => {
               <div className={styles.value}>0</div>
             </div>
             <div className={styles.buyBtnContainer}>
-              <div className={styles.buyBtn}>Buy now</div>
+              <div className={styles.buyBtn}>Checkout</div>
             </div>
           </div>
 

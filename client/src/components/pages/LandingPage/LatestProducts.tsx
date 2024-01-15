@@ -73,6 +73,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
                     features={product.features}
                     variations={product.variations}
                     productThumbnails={product.productThumbnails}
+                    shadow={false}
                   />
                 )
               }>

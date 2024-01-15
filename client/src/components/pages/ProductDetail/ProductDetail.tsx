@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useGetProductDetailQuery } from '../../../api/productsApi'
-import styles from './productDetail.module.scss'
 
+import { useDispatch } from 'react-redux'
+import { addItem, initCart, clearCart } from '../../../features/cart/cartSlice'
+import { useGetProductDetailQuery } from '../../../api/productsApi'
+
+import styles from './productDetail.module.scss'
 import ReturnIcon from '../../../assets/svg_icons/return_icon.svg?react'
 import TrackIcon from '../../../assets/svg_icons/track.svg?react'
 
-import { ModalCentered } from '../../Modal/ModalCentered/ModalCentered'
+import type { ICartItem } from '../../../features/cart/cartSlice' 
 
 export const ProductDetail = () => {
+  const dispatch = useDispatch()
   const { slug } = useParams()
   const { data, isLoading } = useGetProductDetailQuery(slug as string)
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
 
   // console.log(featuredImage)
-  console.log(data)
+  // console.log(data)
   
   const featuredImageUrl = data?.productImages?.filter(image => image.isFeatured)[0].url
 
@@ -72,6 +76,15 @@ export const ProductDetail = () => {
     }
   }
 
+  const handleAddToCart = () => {
+    // dispatch(initCart())
+    dispatch(addItem({
+      price: 9,
+      productId: '3',
+      quantity: desiredQuantity
+    }))
+  }
+
 
   if (isLoading) {
     return (
@@ -125,7 +138,11 @@ export const ProductDetail = () => {
                       <button onClick={handleIncrement}>+</button>
                     </div>
                   </div>
-                  <button className={styles.buyBtn}>Add to cart</button>
+                  <button
+                    className={styles.buyBtn}
+                    onClick={handleAddToCart}
+                    >Add to cart</button>
+                    <button onClick={() => dispatch(clearCart())}>clear</button>
                 </div>
               </div>
 
