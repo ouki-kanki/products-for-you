@@ -46,7 +46,7 @@ export const Sidebar = () => {
       <div className={styles.footer}>
         <FontAwesomeIcon icon={faFacebook} size='lg'/>  
         <FontAwesomeIcon icon={faInstagram} size='lg'/>
-        <Link to='/terms'>Terms of use</Link>
+        <Link to='/terms-of-use'>Terms of use</Link>
         <Link to='/privacy'>Pricacy Policy</Link>
         <Link to='/payment-return-policies'>Payment & return policies</Link>
       </div>

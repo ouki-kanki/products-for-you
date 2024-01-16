@@ -1,130 +1,163 @@
 .container {
-  padding: 20px;
-}
-
-.cartTable {
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 0.9em;
-  min-width: 600px;
-
-  .header tr {
-    background-color: #ffc8dd;
-    color: #fff;
-    text-align: left;
-    font-weight: bold;
-
-    th {
-      color: inherit;
-    }
-    // @include border_green();
-  }
-
-  th, td {
-    padding: 12px 15px;
-  }
-  & tbody > tr  {
-    // background-color: red;
-    // box-shadow: $box-shadow-transparent-black;
-    // margin-bottom: 20px;
-  }
-
-  & tbody > tr > :nth-child(1) {
-    color: red;
-    min-width: 200px;
-  }
-
-  & tbody > tr > :nth-child(3) {
-    width: 100px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-
-    & span {
-      font-family: 'Lemon', serif;
-      margin-right: 1em;
-    }
-  }
-
-  & tbody > tr > :last-child {
-    // color: red;
-    // display: flex;
-    font-weight: bold;
+  h2 {
+    font-family: 'Lemon', serif;
+    padding-bottom: 20px;
   }
 }
 
-.operators {
+.cartContainer {
+  // @include border_lime();
+  width: 80%;
+}
+
+.row {
   display: flex;
-  
-  & > :nth-child(1) {
-    transform: translateY(-1px);
-  }
-  
-  & div {
-    cursor: pointer;
-    padding: 2px;
-    font-weight: bold;
-    font-size: 1.7em;
-    // background-color: red;
-    display: flex;
-    align-items: center;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 
-    :hover {
-      // color: red;
-      // font-size: 1.8em;
-    }
+  & > div {
+    // @include border_green();
+    flex: 1;
+    text-align: center;
+    color: inherit;
+    text-align: start;
   }
+}
+
+.tableHeader {
+  font-weight: bold;
+  background-color: $blue_lightV2;
+  color: #ddd;
+}
+
+.iconContainer {
+  // width: 10px;
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // height: 15px;
+  position: relative;
+  box-shadow: $box-shadow-transparent-black;
+  
+  & > img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.total {
+  font-weight: bold;
 }
 
 .actionContainer {
+  // @include border_green__bold();
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 
-  .rightActionContainer {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .totalCalculatorContainer {
-    display: flex;
-    min-width: 200px;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 15px 20px 10px 0;
-    position: relative;
-    
-    & > :nth-child(1) {
-      font-weight: bold;
-      text-align: left;
-      color: #777;
-    }
-
-    .total {
-      color: #444;
-      font-size: 1.4em;
-      // background-color: red;
-    }
-  }
 }
 
-.totalContainer {
+.finalPriceContainer {
+  // @include border_orange__bold();
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+}
+
+
+.actionRow {
+  display: flex;
+  justify-content: space-between;
+  // align-items: first baseline;
+  padding: 10px 10px 10px 0;
+  position: relative;
+
   &::after {
     position: absolute;
     content: '';
+    background-color: #919191;
+    width: 60%;
+    height: 1px;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
+    right: 0;
+  }
+
+  & div:nth-child(2) {
+    // color: red;
+    text-align: left;
+    width: 30px;
+    transform: translateY(4px);
   }
 }
 
-.buyBtnContainer {
+.totalFinal {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
-  .buyBtn {
+  align-items: baseline;
+  padding: 10px 0 10px 10px;
+
+  div {
+    // color: red;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+
+  & > div:nth-child(1) {
+    // color: red;
+    color: #777;
+    margin-right: 10px;
+    font-weight: bold;
+    font-family: 'Lemon', serif;
+  }
+
+  & > div:nth-child(2) {
+
+    span {
+      font-weight: 500;
+      font-size: .7em;
+      padding-left: 3px;
+    }
+    // font-size: 1.2em;
+  }
+}
+
+.orderBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+
+  .orderBtn {
+    margin-top: 20px;
     @include btn_blue();
-    justify-self: end;
+  }
+}
+
+.removeContainer {
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    width: 32px;
+    height: 32px;
+    // transform: scale(1,2);
+  }
+
+}
+
+.removeIcon {
+  width: 100%;
+  height: 100%;
+  fill: $violet;
+  transform-origin: 50% 50%;
+  cursor: pointer;
+  transition: fill .2s ease-out;
+
+  &:active {
+    fill: rgb(221, 127, 33);
   }
 }

@@ -1,3 +1,36 @@
 from django.contrib import admin
+from .models import ShopOrder, ShopOrderitem, OrderStatus
 
-# Register your models here.
+
+class ShopOrderItemInline(admin.TabularInline):  # or admin.StackedInline for a different layout
+    model = ShopOrderitem
+    extra = 0
+    # fields = ('product_sku', 'quantity', 'price',)
+    readonly_fields = ('variation_name', 'product_sku', 'quantity', 'price')
+
+    def product_name(self, instance):
+        return instance.product_name
+    
+    def variation_name(self, instance):
+        return instance.variation_name
+
+    def product_sku(self, instance):
+        return instance.product_sku
+    
+
+@admin.register(OrderStatus)
+class OrderStatusAdmin(admin.ModelAdmin):
+    list_display = ('status',)
+
+@admin.register(ShopOrder)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user_email', 'order_date_formated', 'user_name',)
+    inlines = [ShopOrderItemInline]
+
+    def order_date_formated(self, obj):
+        return obj.order_date_formated
+
+    order_date_formated.short_description = 'order-date'
+
+
+admin.site.register(ShopOrderitem,)

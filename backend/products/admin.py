@@ -1,5 +1,3 @@
-import os
-import json
 from typing import Any
 from django.contrib import admin, messages
 from django.conf import settings

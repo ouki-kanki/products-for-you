@@ -64,6 +64,10 @@
   }
 }
 
+.activeCartBtn {
+  transform: scale(1.2) rotate(20deg);
+}
+
 .signUp {
   display: flex;
   justify-content: center;

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import { NavBar } from '../NavBar/NavBar'
 import { ChatButton } from '../Buttons/ChatButton'
 import styles from './home.module.scss'
@@ -13,10 +13,10 @@ const Home = () => {
         <Outlet/>
       </section>
       <div className={styles.footerContainer}>
-        <div className={styles.delivery}>
+        <Link to='/delivery-terms' className={styles.delivery}>
           <span>Free Delivery</span>
           <Trackicon className={styles.trackIcon}/>
-        </div>
+        </Link>
         <ChatButton/>        
       </div>
     </>

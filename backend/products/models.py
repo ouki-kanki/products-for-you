@@ -240,6 +240,14 @@ class ProductItem(models.Model):
         verbose_name = "Product Variation"
         db_table_comment = "Variation of Product"
 
+    @property
+    def variation_name(self):
+        qs = self.variation_option.all()
+        variation_values = '- '.join(option.value for option in qs)
+
+        return f'{self.product_id.name} {variation_values}'
+
+
     def __str__(self):
         qs = self.variation_option.all()
         # returns the variations joined in a string

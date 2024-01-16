@@ -1,6 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface ICartItem {
+  variationName: string;
+  productIcon: string;
   productId: string;
   quantity: number;
   price: number;
@@ -9,13 +11,15 @@ export interface ICartItem {
 export interface ICart {
   items: ICartItem[];
   total: number;
-  numberOfItems: number
+  numberOfItems: number;
+  isUpdating: boolean;
 }
 
 const initialState: ICart = {
   items: [],
   total: 0,
-  numberOfItems: 0
+  numberOfItems: 0,
+  isUpdating: false
 }
 
 
@@ -26,6 +30,7 @@ export const cartSlice = createSlice({
     addItem: (state, action: PayloadAction<ICartItem>) => {
       // TODO: type for the action
       const item = action.payload
+      console.log("item inside add to cart", item)
       const itemsFromState = state.items
       const itemIndex = state.items.findIndex(product => product.productId === item.productId)
       if (itemIndex !== -1) {
@@ -53,6 +58,12 @@ export const cartSlice = createSlice({
       localStorage.setItem('cart', JSON.stringify(newItems))
       state.items = newItems
     },
+    activateCartUpdate: (state) => {
+      state.isUpdating = true
+    },
+    deactivateCartUpdate: (state) => {
+      state.isUpdating = false
+    },
     clearCart: (state) => {
       localStorage.setItem('cart', '')
       return {
@@ -65,7 +76,8 @@ export const cartSlice = createSlice({
       const cart: ICart = {
         items: [],
         total: 0,
-        numberOfItems: 0
+        numberOfItems: 0,
+        isUpdating: false
       }
 
       try {
@@ -82,9 +94,9 @@ export const cartSlice = createSlice({
       }
 
       return cart
-    }      
+    },
   }
 })
 
-export const { addItem, removeItem, clearCart, initCart } = cartSlice.actions
+export const { addItem, removeItem, clearCart, initCart, activateCartUpdate, deactivateCartUpdate } = cartSlice.actions
 export default cartSlice.reducer

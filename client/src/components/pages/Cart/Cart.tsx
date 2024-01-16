@@ -1,83 +1,75 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { ModalCentered } from '../../Modal/ModalCentered/ModalCentered'
-import { RootState } from '../../../app/store'
-import { hideModal } from '../../../features/UiFeatures/UiFeaturesSlice' 
-import styles from './cart.module.scss'
+import styles from './cart.module.scss';
+import type { RootState } from '../../../app/store';
+import { removeItem, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice';
+
+import RemoveIcon from '../../../assets/svg_icons/remove.svg?react'
 
 export const Cart = () => {
   const dispatch = useDispatch()
-  const isModalOpen = useSelector((state: RootState) => state.ui.isModalOpen)
+  const cart = useSelector((state: RootState) => state.cart)
 
-  const handleCloseModal = () => {
-    dispatch(hideModal())
-  }
-
-
+  console.log(cart)
+  const total = cart.total
   return (
-    <ModalCentered onClose={handleCloseModal} isOpen={isModalOpen}>
-      <div className={styles.container}>
-        <h2>Your Items</h2>
-        <table className={styles.cartTable}>
-          <thead className={styles.header}>
-            <tr>
-              <th>Item</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>jordan 36</td>
-              <td>35$</td>
-              <td>
-                <span>3</span>
-                <div className={styles.operators}>
-                  <div>-</div>
-                  <div>+</div>
-                </div>
-              </td>
-              <td>67$</td>
-              <td>remove</td>
-            </tr>
-            <tr>
-              <td>jordan 36</td>
-              <td>35$</td>
-              <td>3</td>
-              <td>67$</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className={styles.actionContainer}>
-          <div className={styles.leftActionContainer}></div>
-          <div className={styles.rightActionContainer}>
-            {/* TODO: map these */}
-            <div className={styles.totalCalculatorContainer}>
-              <div className={styles.label}>Subtotal</div>
-              <div className={styles.value}>$ 234</div>
+    <div className={styles.container}>
+      <h2>Your Items</h2>
+      <div className={styles.cartContainer}>
+        <div className={`${styles.row} ${styles.tableHeader}`}>
+          <div>icon</div>
+          <div>title</div>
+          <div>price</div>
+          <div>quantity</div>
+          <div>Total</div>
+          <div></div>
+        </div>
+        {cart && cart.items.map(({ productIcon, price, quantity, variationName, productId }) => (
+          <div className={styles.row}>
+            <div>
+              <div className={styles.iconContainer}>
+                <img src={productIcon} alt='procuct icon' />
+              </div>
             </div>
-
-            <div className={styles.totalCalculatorContainer}>
-              <div className={styles.label}>Tax</div>
-              <div className={styles.value}>24 %</div>
-            </div>
-
-            <div className={styles.totalCalculatorContainer}>
-              <div className={styles.label}>Discount</div>
-              <div className={styles.value}>0</div>
-            </div>
-            <div className={`${styles.totalCalculatorContainer} ${styles.totalContainer}`}>
-              <div className={`${styles.total}`}>Total</div>
-              <div className={styles.value}>0</div>
-            </div>
-            <div className={styles.buyBtnContainer}>
-              <div className={styles.buyBtn}>Checkout</div>
+            <div>{variationName}</div>
+            <div>{price}</div>
+            <div>{quantity}</div>
+            <div className={styles.total}>{price * quantity}</div>
+            <div 
+              className={styles.removeContainer}
+              onClick={() => dispatch(removeItem(productId))}
+              >
+              <RemoveIcon className={styles.removeIcon}/>
             </div>
           </div>
+        ))}
 
+        <div className={styles.actionContainer}>
+          <div className={styles.finalPriceContainer}>
+            <div className={styles.actionRow}>
+              <div>SubTotal</div>
+              <div>{total}</div>
+            </div>
+            <div className={styles.actionRow}>
+              <div>Tax</div>
+              <div>24%</div>
+            </div>
+            <div className={styles.actionRow}>
+              <div>Discount</div>
+              <div>0</div>
+            </div>
+            <div className={styles.totalFinal}>
+              <div>Total</div>
+              <div>{cart.total}<span>€</span></div>
+            </div>
+            <div className={styles.orderBtnContainer}>
+              <Link to='/checkout' className={styles.orderBtn}>Go to order</Link>
+            </div>
+          </div>
         </div>
       </div>
-    </ModalCentered>
-    )
+
+    </div>
+  )
 }

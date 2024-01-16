@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user_control.apps.UserControlConfig',
     'products.apps.ProductsConfig',
     'shopping_cart.apps.ShoppingCartConfig',
+    'order.apps.OrderConfig',
     'variations.apps.VariationsConfig',
 ]
 

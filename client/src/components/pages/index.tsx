@@ -11,4 +11,8 @@ export { Profile } from './Profile/Profile'
 export { ErrorPage } from './ErrorPage/ErrorPage';
 export { LandingPage } from './LandingPage/LandingPage';
 export { ProductDetail } from './ProductDetail/ProductDetail';
+export { CartModal } from './Cart/CartModal'
 export { Cart } from './Cart/Cart'
+export { DeliveryTerms } from './DeliveryTerms/DeliveryTerms'
+export { TermsOfUse } from './TermsOfUse/TermsOfUse'
+export { Checkout } from './Checkout/Checkout';

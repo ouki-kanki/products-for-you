@@ -17,8 +17,9 @@ import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice'
 
 import { Sidebar } from './components/Sidebar/Sidebar'
 import { Home, 
-         About, 
+         About,
          Cart, 
+         CartModal, 
          Account, 
          Categories, 
          Contact,
@@ -29,7 +30,10 @@ import { Home,
          Profile,
          ErrorPage,
          LandingPage,
-         ProductDetail
+         ProductDetail,
+         DeliveryTerms,
+         TermsOfUse,
+         Checkout
         } from './components/pages'
 
 import { Search } from './components/pages/Search';
@@ -48,6 +52,7 @@ function App() {
   const users = useAppSelector(selectUsers)
 
   useEffect(() => {
+    console.log("__INIT__CART__")
     dispatch(initCart())
   }, [dispatch])
 
@@ -114,7 +119,7 @@ function App() {
     <div className={styles.appContainer}>
       <Sidebar/>
       <div className={styles.contentNavContainer}>
-        <Cart/>
+        <CartModal/>
         <div>
           <Routes>
             <Route path='*' element={<ErrorPage/>}/>
@@ -125,12 +130,16 @@ function App() {
               <Route path='/about' element={<About/>}/>
               <Route path='/contact' element={<Contact/>}/>
               <Route path='/account' element={<Account/>}/>
+              <Route path='/cart' element={<Cart/>}/>
+              <Route path='/checkout' element={<Checkout/>}/>
               <Route path='/settings' element={<Settings/>}/>
               <Route path='/products' element={<ProductsPage/>}/>
               <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
               <Route path='/search' element={<Search/>}/>
               <Route path='login' element={<LoginPage/>}/>
               <Route path='sign-up' element={<SignUp/>}/>
+              <Route path='/delivery-terms' element={<DeliveryTerms/>}/>
+              <Route path='/terms-of-use' element={<TermsOfUse/>}/>
               <Route element={<ProtectedRoute/>}>
                 <Route path='profile' element={<Profile/>}/>
               </Route>

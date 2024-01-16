@@ -521,6 +521,7 @@ class ProductItemDetailSerializerV4(serializers.ModelSerializer):
     class Meta:
         model = ProductItem
         fields = (
+            'id',
             'name',
             'variation_name',
             'sku',

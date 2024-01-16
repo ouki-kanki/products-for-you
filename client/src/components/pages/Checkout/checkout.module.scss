@@ -1,0 +1,93 @@
+.container {
+  // @include border_green;
+  width: 90%;
+  margin: 0 auto;
+
+  & > div {
+    // @include border_green;
+    width: 80%;
+    margin: 0 auto;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+
+    h1 {
+      align-self: flex-start;
+    }
+  }
+
+
+}
+
+.form {
+  // @include border_orange__bold;
+  display: flex;
+  // justify-content: space-between;
+
+  // justify-content: center;
+  // align-items: center;
+}
+
+.section {
+  // @include border_lime__bold;
+  flex-grow: 1;
+  margin-right: 40px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  label {
+    margin-right: 20px;
+    min-width: 100px;
+  }
+
+  & > div {
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 10px 0;
+  }
+}
+
+.left {
+  & > div {
+    // display: flex;
+    
+  }
+}
+
+.right {
+
+}
+
+
+//TODO: put to mixin
+.input {
+  // @include border_green__bold;
+  height: $btn_height;
+  width: 100%;
+  max-width: 350px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid  #dcdcdc;
+  font-size: medium;
+  font-weight: bold;
+  transition: border .1s ease-out;
+
+  &:hover {
+    border: 3px solid #a7a7a7;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $search_color_primary;
+    font-size: medium;
+    font-weight: bold;
+  }
+}

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useDispatch } from 'react-redux'
-import { addItem, initCart, clearCart } from '../../../features/cart/cartSlice'
+import { addItem, initCart, clearCart, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice'
 import { useGetProductDetailQuery } from '../../../api/productsApi'
 
 import styles from './productDetail.module.scss'
@@ -77,12 +78,20 @@ export const ProductDetail = () => {
   }
 
   const handleAddToCart = () => {
-    // dispatch(initCart())
-    dispatch(addItem({
-      price: 9,
-      productId: '3',
-      quantity: desiredQuantity
-    }))
+    if (data) {
+      dispatch(addItem({
+        variationName: data.variationName,
+        productIcon: data.productThumbnails[0].url,
+        price: 9,
+        productId: data.id,
+        quantity: desiredQuantity
+      }))
+
+      dispatch(activateCartUpdate())
+      setTimeout(() => {
+        dispatch(deactivateCartUpdate())
+      }, 700)
+    }
   }
 
 
@@ -114,9 +123,13 @@ export const ProductDetail = () => {
             </div>
             <div className={styles.rightContainer}>
               <div className={styles.upper}>
-                <h2>{data.name}</h2>
+                <h2>{data.variationName}</h2>
                 <div className={styles.description}>
                   {data.detailedDescription}
+                </div>
+                <div className={styles.priceContainer}>
+                  <div>Price</div>
+                  <div>${data.price}</div>
                 </div>
                 <div className={styles.available}>
                   {Number(data?.quantity) > 0 ? 'Available' : 'Not Available'}
@@ -157,7 +170,7 @@ export const ProductDetail = () => {
                   <div className={styles.iconContainer}>
                     <TrackIcon className={styles.trackIcon}/>
                   </div>
-                  <div>Free delivery</div>
+                  <Link to='/delivery-terms'>Free delivery</Link>
                 </div>
               </div>
             </div>

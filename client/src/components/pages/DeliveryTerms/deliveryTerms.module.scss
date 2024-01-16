@@ -1,0 +1,15 @@
+.container {
+  margin: 0 auto;
+  max-width: 60%;
+  p {
+    padding-top: 10px;
+  }
+
+  @media screen and (max-width: 1200px ){
+    max-width: 80%;
+  }
+}
+
+.section {
+  margin-top: 40px;
+}

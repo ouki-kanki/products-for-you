@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
 import { useAuth } from '../../hooks/useAuth';
-import { showModal } from '../../features/UiFeatures/UiFeaturesSlice';
+import { showCartModal } from '../../features/UiFeatures/UiFeaturesSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -29,6 +29,7 @@ export const NavBar = () => {
   const { pathname } = useLocation();
   const { token, logout } = useAuth()
   const userId = useSelector((state: RootState) => state.auth.userId)
+  const isCartUpdating = useSelector((state: RootState) => state.cart.isUpdating)
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   // const { isScrollingDown } = useSroll()
   // const { trigger, data, error } = useProfile()
@@ -133,8 +134,8 @@ export const NavBar = () => {
 
         <div className={styles.buttonsContainer}>
           <div
-            className={styles.icons}
-            onClick={() => dispatch(showModal())}
+            className={`${styles.icons} ${isCartUpdating && styles.activeCartBtn}`}
+            onClick={() => dispatch(showCartModal())}
             >
             <img src={cartIcon} alt="cart button" />
           </div>

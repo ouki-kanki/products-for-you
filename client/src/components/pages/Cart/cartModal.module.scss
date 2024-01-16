@@ -1,0 +1,130 @@
+.container {
+  padding: 20px;
+}
+
+.cartTable {
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.9em;
+  min-width: 600px;
+
+  .header tr {
+    background-color: #ffc8dd;
+    color: #fff;
+    text-align: left;
+    font-weight: bold;
+
+    th {
+      color: inherit;
+    }
+    // @include border_green();
+  }
+
+  th, td {
+    padding: 12px 15px;
+  }
+  & tbody > tr  {
+    // background-color: red;
+    // box-shadow: $box-shadow-transparent-black;
+    // margin-bottom: 20px;
+  }
+
+  & tbody > tr > :nth-child(1) {
+    color: red;
+    min-width: 200px;
+  }
+
+  & tbody > tr > :nth-child(3) {
+    width: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    & span {
+      font-family: 'Lemon', serif;
+      margin-right: 1em;
+    }
+  }
+
+  & tbody > tr > :last-child {
+    // color: red;
+    // display: flex;
+    font-weight: bold;
+  }
+}
+
+.operators {
+  display: flex;
+  
+  & > :nth-child(1) {
+    transform: translateY(-1px);
+  }
+  
+  & div {
+    cursor: pointer;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 1.7em;
+    // background-color: red;
+    display: flex;
+    align-items: center;
+
+    :hover {
+      // color: red;
+      // font-size: 1.8em;
+    }
+  }
+}
+
+.actionContainer {
+  display: flex;
+  justify-content: space-between;
+
+  .rightActionContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .totalCalculatorContainer {
+    display: flex;
+    min-width: 200px;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 15px 20px 10px 0;
+    position: relative;
+    
+    & > :nth-child(1) {
+      font-weight: bold;
+      text-align: left;
+      color: #777;
+    }
+
+    .total {
+      color: #444;
+      font-size: 1.4em;
+      // background-color: red;
+    }
+  }
+}
+
+.totalContainer {
+  &::after {
+    position: absolute;
+    content: '';
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+  }
+}
+
+.buyBtnContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  .buyBtn {
+    @include btn_blue();
+    justify-self: end;
+  }
+}

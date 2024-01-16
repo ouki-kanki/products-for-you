@@ -45,9 +45,11 @@ export interface IProduct {
 
 // TODO: DRY THIS there are simiral properties
 export interface IproductDetail {
+  id: number;
   name: string;
-  variation_name: string
+  variationName: string
   sku: string;
+  price: number;
   quantity: string;
   detailedDescription: string;
   features: string[];
