@@ -6,7 +6,7 @@ import cartReducer from '../features/cart/cartSlice'
 import { productsSlice } from "../features/products/productsSlice";
 import authReducer from '../features/auth/Login/loginSlice';
 import userReducer from '../features/users/userSliceV2';
-import { authApi, userApi, productsApi } from "../api";
+import { authApi, userApi, productsApi, orderApi } from "../api";
 
 // TODO: getDefaultMiddleware is deprecated
 export const store = configureStore({
@@ -19,14 +19,16 @@ export const store = configureStore({
     auth: authReducer,
     [userApi.reducerPath]: userApi.reducer,
     user: userReducer,
-    [productsApi.reducerPath]: productsApi.reducer
+    [productsApi.reducerPath]: productsApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer
   },
   middleware: (getDefaultMiddleware) => (
     getDefaultMiddleware().concat([
       productsSlice.middleware,
       authApi.middleware,
       userApi.middleware,
-      productsApi.middleware
+      productsApi.middleware,
+      orderApi.middleware
     ])
   )
 })

@@ -1,78 +1,167 @@
-import React from 'react'
+import { useReducer, ChangeEvent, FormEvent } from 'react'
 import styles from './checkout.module.scss';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../app/store';
+import { leftData, rightData } from '../../../data/checkoutFields';
+import { useCreateOrderMutation } from '../../../api/orderApi';
 
-const leftData = [
-  {
-    label: 'First Name',
-    id: 'first-name'
-  },
-  {
-    label: 'Last Name',
-    id: 'last-name'
-  },
-  {
-    label: 'Shipping Address',
-    id: 'shipping-address'
-  },
-  {
-    label: 'Billing Address',
-    id: 'billing-address'
-  },
-]
 
-const rightData = [
+interface ICheckoutState {
+  firstName: string;
+  lastName: string;
+  shippingAddress: string;
+  billingAddress: string;
+  phoneNumber: string;
+  userEmail: string;
+  city: string;
+  zipCode: string;
+  [key: string]: string
+}
 
-]
+const initialState: ICheckoutState = {
+  firstName: '',
+  lastName: '',
+  shippingAddress: '',
+  billingAddress: '',
+  phoneNumber: '',
+  userEmail: '',
+  city: '',
+  zipCode: ''
+}
+
+type CheckoutAction = { type: 'CHANGE'; name: string; value: string };
+
+const checkoutReducer = (state: ICheckoutState, action: CheckoutAction) => {
+  switch(action.type) {
+    case 'CHANGE':
+      return {
+        ...state,
+        [action.name]: action.value 
+      }
+    default:
+      return state
+  }
+}
+
 
 export const Checkout = () => {
+  const cart = useSelector((state: RootState) => state.cart)
+  const [state, dispatch] = useReducer(checkoutReducer, initialState)
+
+  const [ createOrder, { isLoading } ] = useCreateOrderMutation()
+  
+  // console.log(cart)
+  // console.log(state)
+
+  const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'CHANGE', name, value })
+  }
+
+  const handleCheckout = async (e: FormEvent) => {
+    e.preventDefault();
+
+    // TODO: have to validate inputs . only then proceed!!!! 
+    if (cart && Object.keys(cart).length > 0) {
+      const total = cart.total
+      const items = cart.items
+      // console.log(items)
+
+      const productsWithSnakeKeys = items.map(item => {
+        return Object.keys(item).reduce((acc, key) => {
+          const snake = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
+          if (snake === 'product_id') {
+            // server for produt_id needs the key 'product_item
+            acc['product_item'] = item[key]
+          } else if (snake === 'variation_name' || snake === 'product_icon') {
+            return acc
+          } else {
+            acc[snake] = item[key]
+          }
+          return acc
+        }, {})
+      })
+
+      const payload =  {
+          user_id: '',
+          ref_code: "not_provided",
+          phoneNumber: state.phoneNumber,
+          shipping_address: state.shippingAddress,
+          billing_address: state.billingAddress,
+          order_total: total,
+          refund_status: "NOT_REQUESTED",
+          order_item: productsWithSnakeKeys
+        }
+
+        // console.log(payload)
+
+        try {
+          const data = await createOrder(payload).unwrap()
+          if (data) {
+            console.log("data from sserver from created orde", data)
+          }
+        } catch (error) {
+          console.log("the error on order", error)
+        }
+    }
+  }
+ 
   // TODO: useValidation
   return (
     <div className={styles.container}>
       <div>
         <h1>Checkout</h1>
         <div>products_placeholder  __load_the_cart__</div>
-        <form className={styles.form}>
-          <div className={`${styles.left} ${styles.section}`}>
-            <h2>Sheeping Details</h2>
-            <div>
-              <label htmlFor="first-name">First Name</label>
-              <input className={styles.input} type="text" id='first-name' required/>
+        <div className={styles.productsContainer}>
+          yoyoyo
+        </div>
+        <form className={styles.form} onSubmit={handleCheckout}>
+          <div className={styles.innerContainer}>
+            <div className={`${styles.left} ${styles.section}`}>
+              <h2>Sheeping Details</h2>
+              {leftData.map((field, id) => (
+                <div key={id}>
+                  <label htmlFor={field.id}>{field.label}</label>
+                  <input 
+                    className={styles.input} 
+                    type={field.type} 
+                    id={field.id}
+                    name={field.name}
+                    onChange={handleChange}
+                    value={state[field.name]}
+                    // required
+                    />
+                </div>
+              ))}
             </div>
-            <div>
-              <label htmlFor="last-name">Last Name</label>
-              <input className={styles.input} type="text" id='first-name' required/>
-            </div>
-            <div>
-              <label htmlFor="shipping-address">Shipping Address</label>
-              <input className={styles.input} type="text" id='shipping-address' required/>
-            </div>
-            <div>
-              <label htmlFor="billing-address">Billing Address</label>
-              <input className={styles.input} type="text" id='billing-address' required/>
-            </div>
-          </div>
 
-          <div className={`${styles.right} ${styles.section}`}>
-            <h2>yoyo</h2>
-            <div>
-              <label htmlFor="phone-number">Phonenumber</label>
-              <input className={styles.input} type="text" id='phone-number' required/>
-            </div>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input className={styles.input} type="text" id='email' required/>
-            </div>
-            <div>
-              <label htmlFor="city">City</label>
-              <input className={styles.input} type="text" id='city' required/>
-            </div>
-            <div>
-              <label htmlFor="zip-code">Zip Code</label>
-              <input className={styles.input} type="text" id='zip-code' required/>
-            </div>          
-          </div>                
-        </form>
-      </div>
+            <div className={`${styles.right} ${styles.section}`}>
+              <h2>yoyo</h2>
+              {rightData.map((field, id) => (
+                <div key={id}>
+                  <label htmlFor={field.id}>{field.label}</label>
+                  <input 
+                    className={styles.input} 
+                    type={field.type} 
+                    id={field.id}
+                    name={field.name}
+                    onChange={handleChange}
+                    value={state[field.name]}
+                    // required
+                    />
+                </div>
+              ))}
+              
+            </div>                
+
+          </div>
+          <div className={styles.action}>
+            <button 
+              className={styles.checkoutBtn}
+              type='submit'
+              >Place Order</button>
+        </div>
+      </form>
     </div>
+  </div>
   )
 }

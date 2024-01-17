@@ -1,5 +1,7 @@
 import React from 'react'
 import styles from './categories.module.scss'
+import { useGetCategoriesQuery } from '../../../api/productsApi';
+
 
 import { Card } from '../../../UI/Card'
 
@@ -8,7 +10,7 @@ import demin from '../.././../assets/clothing/demin.png'
 
 import { Category } from './Category/Category';
 
-
+// TODO: press F to pay respect
 // TODO: reference these images to pay respect 
 // https://unsplash.com/photos/womens-four-assorted-apparel-hanged-on-clothes-rack-WF0LSThlRmw?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
 
@@ -44,8 +46,11 @@ const categoriesArray = [
 ]
 
 
-
 const Categories = () => {
+  const { data, isLoading } = useGetCategoriesQuery()
+  console.log(data)
+
+
 
   return (
     <div className={styles.gridContainer}>

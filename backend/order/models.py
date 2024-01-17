@@ -56,11 +56,17 @@ class ShopOrder(models.Model):
     )
 
     def user_email(self):
-        return self.user_id.email
+        if self.user_id:
+            email = self.user_id.email
+            return email if email else 'not provided'
+        return 'no user provided'
 
     def user_name(self):
-        user_name = self.user_id.username 
-        return user_name if user_name else 'Not provided'
+        if self.user_id:
+            user_name = self.user_id.username 
+            return user_name if user_name else 'Not provided'
+
+        return 'not provided'
     
     @property
     def order_date_formated(self):

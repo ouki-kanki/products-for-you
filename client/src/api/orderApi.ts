@@ -1,0 +1,40 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BASE_URL } from './baseConfig';
+
+
+export interface ICartProduct {
+  product_item: string;
+  price: number;
+  quantity: number;
+}
+
+export interface IOrder {
+  user_id: string;
+  ref_code: string;
+  phoneNumber: string;
+  shipping_address: string;
+  billing_address: string;
+  order_total: number;
+  refund_status: string,
+  order_item: ICartProduct[]  
+}
+
+export const orderApi = createApi({
+  reducerPath: 'orderApi',
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL}),
+  endpoints: (builder) => ({
+    createOrder: builder.mutation<Record | void, IOrder>({
+      query: (payload) => ({
+        url: '/orders/create',
+        method: 'POST',
+        body: payload,
+        headers: {}
+      }),
+      transformResponse: (res) => {
+        console.log("create order res from api",res)
+      }
+    })
+  })
+})
+
+export const { useCreateOrderMutation } = orderApi

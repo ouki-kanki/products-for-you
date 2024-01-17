@@ -22,12 +22,17 @@
 
 .form {
   // @include border_orange__bold;
-  display: flex;
+  // display: flex;
   // justify-content: space-between;
 
   // justify-content: center;
   // align-items: center;
 }
+
+.innerContainer {
+  display: flex;
+}
+
 
 .section {
   // @include border_lime__bold;
@@ -90,4 +95,16 @@
     font-size: medium;
     font-weight: bold;
   }
+}
+
+
+.action {
+  margin-top: 20px;
+  // @include border_green;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.checkoutBtn {
+  @include btn_blue();
 }

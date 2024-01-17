@@ -95,3 +95,4 @@ class ShopOrderSerializer(serializers.ModelSerializer):
             ShopOrderitem.objects.create(order=order, **order_item_data)
 
         return order
+        # return 'Order has been placed'

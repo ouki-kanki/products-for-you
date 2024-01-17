@@ -5,7 +5,6 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin
 )
-
 from datetime import timezone
 
 from .managers import CustomUserManager, SoftDeleteManager
@@ -102,6 +101,7 @@ class UserDetail(models.Model):
         return self.user.email
 
     def get_image(self):
+        # TODO: implement and test dynamic url 
         if self.image:
              return 'http://127.0.0.1:8000' + self.image.url
         return 'there is no image'

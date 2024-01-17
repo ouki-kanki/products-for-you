@@ -66,6 +66,11 @@ interface IProductApiResponse {
   results: IProduct[];
 }
 
+interface ICategory {
+  name: string;
+  icon: string;
+  children: ICategory[]
+}
 
 
 export const productsApi = createApi({
@@ -90,7 +95,7 @@ export const productsApi = createApi({
         // TODO: grab the paginator from here 
         const results = response.results
 
-        if (!results) {
+        if (!results) { 
           return {
             message: 'no products'
           }
@@ -125,11 +130,22 @@ export const productsApi = createApi({
         url: `product-items-detail-v4/${slug}`
       }),
       transformResponse: ((response: IproductDetail, meta, arg) => {
+        // TODO: propably this is ok but check if causes issues because it mutates the response
         convertSnakeToCamel(response)
         return response
+      })
+    }),
+    getCategories: builder.query<ICategory[], void>({
+      query: () => ({
+        url: `categories`
       })
     })
   })
 })
 
-export const { useGetLatestProductsQuery, useGetFeaturedProductsQuery, useGetProductDetailQuery } = productsApi
+export const { 
+  useGetLatestProductsQuery, 
+  useGetFeaturedProductsQuery, 
+  useGetProductDetailQuery,
+  useGetCategoriesQuery
+} = productsApi
