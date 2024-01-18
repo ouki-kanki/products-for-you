@@ -28,6 +28,9 @@ class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+    def get_queryset(self):
+        return Category.objects.all().order_by('position', 'id')
+
 category_list_view = CategoryListView.as_view()
 
 
@@ -285,16 +288,25 @@ get_brand_view = BrandListApiView.as_view()
 # V4 
 class ProductsAndRelatedVariationsView(generics.ListAPIView):
     """
-    endpoint: products-v4
+    endpoint: latest_products-v4
     """
-    queryset = Product.objects.select_related('brand', 'category') \
-                    .prefetch_related(
-                        'product_variations',
-                        'product_variations__variation_option',
-                        'product_variations__product_image'
-                    ).order_by('-created_at')
     serializer_class = ProductSerializerV4
     pagination_class = CustomPageNumberPagination
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category_id')
+        queryset = Product.objects.select_related('brand', 'category') \
+                        .prefetch_related(
+                            'product_variations',
+                            'product_variations__variation_option',
+                            'product_variations__product_image'
+                        ).order_by('-created_at')
+        
+        if category:
+            queryset = queryset.filter(category=category)
+
+        return queryset
+
     
 products_and_related_variations_view = ProductsAndRelatedVariationsView.as_view()
 
@@ -353,3 +365,31 @@ class ProductSearchView(generics.ListAPIView):
         return ProductItem.objects.filter(Q(product_id__name__icontains=query) | Q(detailed_description__icontains=query) | Q(product_id__description__icontains=query))
 
 product_search_view = ProductSearchView.as_view()
+
+
+
+class ProductListByCategoryView(generics.ListAPIView):
+    """
+    filter products based on the category
+    """
+    serializer_class = ProductSerializerV4
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        category = get_object_or_404(Category, id=category_id)
+
+        queryset = Product.objects.filter(category=category).prefetch_related(
+            'product_variations',
+            'product_variations__product_image'
+        )
+
+        return queryset
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        
+        return Response(serializer.data)
+    
+products_list_by_category_view = ProductListByCategoryView.as_view()

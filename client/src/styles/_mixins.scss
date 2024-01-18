@@ -44,6 +44,21 @@
 }
 
 
+@mixin btn_secondary() {
+  border: none;
+  padding: 15px 30px;
+  width: 170px;
+  background-color: #a7b0b8;
+  text-align: center;
+  cursor: pointer;
+  transition: box-shadow .2s ease-out;
+
+  &:hover {
+    box-shadow: $box-shadow-transparent-black;
+  }
+}
+
+
 // borders
 // TODO: remove for production . have it on the dev branch
 @mixin border_green() {

@@ -1,4 +1,5 @@
 import { useReducer, ChangeEvent, FormEvent } from 'react'
+import { Link } from 'react-router-dom';
 import styles from './checkout.module.scss';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../app/store';
@@ -50,7 +51,7 @@ export const Checkout = () => {
 
   const [ createOrder, { isLoading } ] = useCreateOrderMutation()
   
-  // console.log(cart)
+  console.log(cart)
   // console.log(state)
 
   const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +113,25 @@ export const Checkout = () => {
         <h1>Checkout</h1>
         <div>products_placeholder  __load_the_cart__</div>
         <div className={styles.productsContainer}>
-          yoyoyo
+          <div className={`${styles.productRow} ${styles.productsHeader}`}>
+            <div>icon</div>
+            <div>name</div>
+            <div>quantity</div>
+            <div>price</div>
+          </div>
+          {/* TODO: dry this .the logic is the same products inside the cart */}
+          {cart.items.map(product => (
+            <div className={`${styles.productRow} ${styles.itemRow}`}>
+              <div>
+                <div className={styles.icon}>
+                  <img src={product.productIcon} alt="product-icon"/>
+                </div>
+              </div>
+              <div>{product.variationName}</div>
+              <div>{product.quantity}</div>
+              <div>${product.price}</div>
+            </div>
+          ))}
         </div>
         <form className={styles.form} onSubmit={handleCheckout}>
           <div className={styles.innerContainer}>
@@ -155,6 +174,7 @@ export const Checkout = () => {
 
           </div>
           <div className={styles.action}>
+            <Link to='/cart' className={styles.btnBack}>back</Link>
             <button 
               className={styles.checkoutBtn}
               type='submit'

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from .models import ShopOrder, ShopOrderitem, OrderStatus
 
 
@@ -24,13 +25,28 @@ class OrderStatusAdmin(admin.ModelAdmin):
 
 @admin.register(ShopOrder)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user_email', 'order_date_formated', 'user_name',)
+    list_display = ('user_email', 'order_date_formated', 'order_status_colored', 'user_name',)
     inlines = [ShopOrderItemInline]
 
     def order_date_formated(self, obj):
         return obj.order_date_formated
 
     order_date_formated.short_description = 'order-date'
+
+    def order_status_colored(self, obj):
+
+        order_status_lower = str(obj.order_status).lower()
+        color_map = {
+            'prossesing': 'yellow',
+            'completed': 'green'
+        }
+        # 
+        color = color_map.get(order_status_lower, 'white')
+
+        return mark_safe(f'<span style="color: {color};">{obj.order_status}</span>')
+
+    
+    order_status_colored.short_description = 'order status'
 
 
 admin.site.register(ShopOrderitem,)

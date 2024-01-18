@@ -67,9 +67,28 @@ interface IProductApiResponse {
 }
 
 interface ICategory {
+  id: number;
   name: string;
   icon: string;
   children: ICategory[]
+}
+
+const flatAndConvertToCamel = (products) => {
+    return products.map((product: IProduct) => {
+    convertSnakeToCamel(product)
+    const { selectedVariation, ...resultNoSelectedVariation } = product
+    const { variationDetails, ...selectedVariationNodetails } = selectedVariation
+    const listOfVariations = variationDetails?.reduce((a, variation) => {
+      a[variation.variationName] = variation.value
+      return a      
+    }, {})
+
+    return {
+      ...resultNoSelectedVariation,
+      ...selectedVariationNodetails,
+      listOfVariations
+    }
+  })
 }
 
 
@@ -139,6 +158,15 @@ export const productsApi = createApi({
       query: () => ({
         url: `categories`
       })
+    }),
+    filterByCategory: builder.query<IProductApiResponse, number>({
+      query: (id) => ({
+        url: `by-category/${id}`
+      }),
+      transformResponse: (response) => {
+        // console.log(response)
+        return response
+      } 
     })
   })
 })
@@ -147,5 +175,6 @@ export const {
   useGetLatestProductsQuery, 
   useGetFeaturedProductsQuery, 
   useGetProductDetailQuery,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
+  useLazyFilterByCategoryQuery
 } = productsApi

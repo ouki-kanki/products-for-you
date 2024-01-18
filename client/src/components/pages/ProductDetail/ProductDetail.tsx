@@ -155,7 +155,6 @@ export const ProductDetail = () => {
                     className={styles.buyBtn}
                     onClick={handleAddToCart}
                     >Add to cart</button>
-                    <button onClick={() => dispatch(clearCart())}>clear</button>
                 </div>
               </div>
 

@@ -31,7 +31,6 @@ export const Product = ({ title }: Iproduct) => {
   const { isHovered, activateHover, deactivateHover } = useHover()
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
 
-  console.log(currentImage)
 
   return (
     <div>

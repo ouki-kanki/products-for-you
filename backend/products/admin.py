@@ -35,10 +35,12 @@ class CategoryAdminForm(forms.ModelForm):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug', 'created_at')
+    list_display = ('name', 'product_icon', 'slug', 'parent_category', 'created_at')
     readonly_fields = ('product_icon',)
     actions = ('delete_categories',)
     form = CategoryAdminForm
+    ordering = ['position']
+    # sortable_by = ['position', ]
 
     formfield_overrides = {
         models.ImageField: { 'widget': CustomAdminFileWidget }

@@ -3,16 +3,15 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import styles from './cart.module.scss';
 import type { RootState } from '../../../app/store';
-import { removeItem, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice';
+import { removeItem, activateCartUpdate, deactivateCartUpdate, clearCart } from '../../../features/cart/cartSlice';
 
 import RemoveIcon from '../../../assets/svg_icons/remove.svg?react'
 
 export const Cart = () => {
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart)
-
-  console.log(cart)
   const total = cart.total
+
   return (
     <div className={styles.container}>
       <h2>Your Items</h2>
@@ -26,7 +25,7 @@ export const Cart = () => {
           <div></div>
         </div>
         {cart && cart.items.map(({ productIcon, price, quantity, variationName, productId }) => (
-          <div className={styles.row}>
+          <div className={styles.row} key={productId}>
             <div>
               <div className={styles.iconContainer}>
                 <img src={productIcon} alt='procuct icon' />
@@ -63,6 +62,7 @@ export const Cart = () => {
               <div>Total</div>
               <div>{cart.total}<span>€</span></div>
             </div>
+            <button onClick={() => dispatch(clearCart())}>clear</button>
             <div className={styles.orderBtnContainer}>
               <Link to='/checkout' className={styles.orderBtn}>Go to order</Link>
             </div>

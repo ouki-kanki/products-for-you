@@ -14,7 +14,8 @@ from .views import (
     products_and_related_variations_view,
     product_detail_view_v4,
     product_preview,
-    product_search_view
+    product_search_view,
+    products_list_by_category_view
 )
 
 app_name = 'products'
@@ -38,5 +39,6 @@ urlpatterns = [
     path('<slug:slug>-<int:pk>', product_detail_related_variations_view, name='product_detail'),
     path('product-items/', product_item_list_view, name='product-items-list'), # lists the variations
     # path('product-items/<slug:slug>/', product_item_detail_view, name='product_item-detail'), # lists the variations
-    path('categories/<slug:slug>/', category_detail_related_products_view)
+    path('categories/<slug:slug>/', category_detail_related_products_view),
+    path('by-category/<int:category_id>', products_list_by_category_view, name='product_list_by_category')
 ]

@@ -20,6 +20,60 @@
 
 }
 
+.productsContainer {
+  margin-bottom: 30px;
+}
+
+.productRow {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.productsHeader {
+  background-color: $blue_lightV2;
+  padding: 10px 10px 10px 0;
+  color: #ddd;
+  font-weight: bold;
+
+  div {
+    // @include border_green;
+    flex: 1;
+  }
+}
+
+// TODO: find a better name for the selectors
+.itemRow {
+  padding: 3px 3px 2px;
+  padding-left: 0;
+  align-items: center;
+  // align-items: baseline;
+  box-shadow: $box-shadow-transparent-black;
+  
+  div {
+    // @include border_green;
+    flex: 1;
+    // @include border_green__bolder;
+  }
+}
+
+.icon {
+  height: 40px;
+  width: 40px;
+  // overflow: hidden;
+  // @include border_orange;
+  display: flex;
+  align-items: baseline;
+  position: relative;
+
+
+   img {
+    // @include border_greenl();
+    max-width: 100%;
+    object-fit: contain;
+   }
+} 
+
 .form {
   // @include border_orange__bold;
   // display: flex;
@@ -76,7 +130,7 @@
   width: 100%;
   max-width: 350px;
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid  #dcdcdc;
   font-size: medium;
   font-weight: bold;
@@ -103,6 +157,14 @@
   // @include border_green;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+
+.btnBack {
+  @include btn_secondary();
+  margin-right: 15px;
+  padding: 13px;
+  // padding: 0;
 }
 
 .checkoutBtn {

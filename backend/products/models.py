@@ -44,6 +44,8 @@ def upload_product_item_image(instance, filename):
         filename)
 
 
+
+
 # uploads to media/product_item/thumbnail/
 def upload_product_thumb(instance, filename):
     variation_name = str(instance.product_item)
@@ -64,25 +66,32 @@ class Category(models.Model):
     icon = models.ImageField(upload_to='categories/', blank=True, default='icons/placeholder.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    position = models.IntegerField(blank=True, default=100,)
     # TODO: maybe this field is usefull
     # is_parent = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ['position']
     
     def __str__(self):
         return self.name
     
     def gen_thumb(self):
-        icon = generate_thumbnailV2(self, 'icon', self.name)
-        self.icon = icon
-        if isinstance(icon, IOBase):
-            icon.close()
+        pass
+        # icon = generate_thumbnailV2(self, 'icon', self.name)
+        # self.icon = icon
+        # if isinstance(icon, IOBase):
+            # icon.close()
     
     def save(self, *args, **kwargs):
         if not self.pk:
-            if self.icon:
-                self.gen_thumb()
+            max_position = Category.objects.aggregate(models.Max('position'))['position__max'] or 1
+            self.position = max_position + 1
+            # TODO: make a field for the icon and a field for the image . right now there is thumb
+            # if self.icon:
+                # 
+                # self.gen_thumb()
             super().save(*args, **kwargs)
         else:
             prev_category_obj = Category.objects.get(pk=self.pk)        
@@ -90,7 +99,21 @@ class Category(models.Model):
 
             if not is_same:
                 if self.icon:
-                    self.gen_thumb()
+                    pass
+                    # self.gen_thumb()
+
+            # swap the position with the category that has the new position if it exist
+            old_position = Category.objects.get(pk=self.pk).position
+            if old_position != self.position:
+                # find the item with the new_position that user provided
+                category_with_new_position_exists = Category.objects.filter(position=self.position).exists()
+
+                # otherwise it will attribute error if there isn't instance
+                if category_with_new_position_exists:
+                    Category.objects.filter(position=self.position).update(position=old_position)
+                    
+
+                
             super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

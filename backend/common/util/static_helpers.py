@@ -17,6 +17,10 @@ def sanitize_file_name(item_name):
 
     return cleaned_value
 
+def upload_category_image():
+    media_root = settings.MEDIA_ROOT
+
+
 # used inside the model to upload the image to certain folder
 def upload_icon(root_folder_name: str, parent_folder_name: str, variation_name: str, images_folder_name: str, instance, name_of_field: str, filename=''):
     '''
@@ -36,12 +40,9 @@ def upload_icon(root_folder_name: str, parent_folder_name: str, variation_name: 
     '''
     media_root = settings.MEDIA_ROOT
 
-    # only if there is image or thumb 
-    # if getattr(instance, name_of_field):
-        # remove invalid chars if any
+    # remove invalid chars if any
     parent_folder_name, variation_name = map(lambda x: sanitize_file_name(x), [parent_folder_name, variation_name]) 
 
-    path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name)
     # out_path = os.path.join(media_root, path, filename)
     out_path = os.path.join(root_folder_name, parent_folder_name, variation_name, images_folder_name, filename)
     test_path = os.path.join(media_root, root_folder_name, 'test', f'{filename}.png')

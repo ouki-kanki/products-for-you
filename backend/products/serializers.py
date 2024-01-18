@@ -27,7 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
     # sub_categories = SubCategorySerializer(many=True)
     class Meta:
         model = Category
-        fields = ('name', 'icon', 'children')
+        fields = ('id', 'name', 'icon', 'children')
 
 # TODO: show the related products for the category
 class CategoryRelatedProducts(serializers.ModelSerializer):

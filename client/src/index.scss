@@ -90,7 +90,7 @@ body {
 }
 
 h1 {
-  font-size: var(--fs-xl);
+  font-size: $h1_font_size;
   line-height: 1;
   text-transform: uppercase;
 }
