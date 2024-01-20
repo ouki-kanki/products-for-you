@@ -62,18 +62,17 @@ export const ProductV2 = ({
   }
 
   const handleProductDetail = () => {
-    console.log(constructedUrl, id, slug)
-    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`)
+    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`, {
+      // need to use to pass the url to the cart
+      // the cart will create a link if the customer clicks the image of the icon in the cart to navigate the user to product detail
+      state: constructedUrl
+    })
   }
 
   const handleSetMainImage = (e: React.MouseEvent<HTMLDivElement>, url: string) => {
     e.stopPropagation()
     setCurrentImage(url)
   }
-
-  // console.log(variations)
-  // console.log(productThumbnails)
-
 
   const renderVariations = () => {
     // console.log("the variations", variations)

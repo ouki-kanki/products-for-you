@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import styles from './cart.module.scss';
 import type { RootState } from '../../../app/store';
@@ -11,6 +10,17 @@ export const Cart = () => {
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart)
   const total = cart.total
+  const navigate = useNavigate()
+
+
+  const handleNavigateToProduct = (constructedUrl: string, slug: string) => {
+  // http://localhost:5173/cart/products/shoes%2Fair-jordan%2F/jordan36-blue
+
+    // TODO: dry this is the same in the ProductV2
+    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`)
+  }
+
+  console.log(cart)
 
   return (
     <div className={styles.container}>
@@ -24,10 +34,10 @@ export const Cart = () => {
           <div>Total</div>
           <div></div>
         </div>
-        {cart && cart.items.map(({ productIcon, price, quantity, variationName, productId }) => (
+        {cart && cart.items.map(({ productIcon, price, quantity, variationName, productId, constructedUrl, slug }) => (
           <div className={styles.row} key={productId}>
             <div>
-              <div className={styles.iconContainer}>
+              <div className={styles.iconContainer} onClick={() => handleNavigateToProduct(constructedUrl, slug)}>
                 <img src={productIcon} alt='procuct icon' />
               </div>
             </div>

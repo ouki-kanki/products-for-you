@@ -2,6 +2,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface ICartItem {
   variationName: string;
+  slug: string;
+  constructedUrl: string;
   productIcon: string;
   productId: string;
   quantity: number;
@@ -30,7 +32,7 @@ export const cartSlice = createSlice({
     addItem: (state, action: PayloadAction<ICartItem>) => {
       // TODO: type for the action
       const item = action.payload
-      console.log("item inside add to cart", item)
+      // console.log("item inside add to cart", item)
       const itemsFromState = state.items
       const itemIndex = state.items.findIndex(product => product.productId === item.productId)
       if (itemIndex !== -1) {

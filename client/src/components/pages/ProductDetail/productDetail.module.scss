@@ -23,14 +23,19 @@ $breakpoint-large: 1024px;
   .featuredImage {
     // @include border_lime__bold();
     position: relative;
+    overflow: hidden;
     box-shadow: $box-shadow-transparent-black;
+    padding-top: calc(100% / 1.2);
 
     & img {
       // @include border_orange__bold();
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
       // TODO: the following is not working. check why 
-      object-fit: fill;
+      object-fit: cover;
       object-position: center center;
     }
   }

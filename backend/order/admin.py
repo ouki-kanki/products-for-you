@@ -34,7 +34,6 @@ class OrderAdmin(admin.ModelAdmin):
     order_date_formated.short_description = 'order-date'
 
     def order_status_colored(self, obj):
-
         order_status_lower = str(obj.order_status).lower()
         color_map = {
             'prossesing': 'yellow',

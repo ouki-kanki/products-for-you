@@ -5,6 +5,8 @@ from django.db import models
 from django import forms
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
+from django.utils.safestring import mark_safe
+from django.utils.html import strip_tags
 
 from services.imageServices import delete_image_from_filesystem
 
@@ -179,11 +181,27 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(ProductItem)
 class ProductItemAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'product_id', 'get_category')
+    list_display = ('__str__', 'id', 'product_id', 'quantity_formated', 'get_category')
     list_select_related = ('product_id', )
     # list_display_links = ('product_id',)
-    list_filter = ('product_id',)
+    list_filter = ('product_id', 'quantity')
     inlines = [ProductImageInline, ]
+
+    @staticmethod
+    def format_qnt(quantity, color):
+        return mark_safe(f'<span style="color: {color};">{quantity}</span>')
+
+    @admin.display(description="yoyo", ordering='quantity')
+    def quantity_formated(self, obj):
+        quantity = obj.quantity
+        if quantity == 0:
+            return self.format_qnt(quantity, 'red')
+        if quantity < 3:
+            return self.format_qnt(quantity, 'yellow')
+        else:
+            return quantity
+        
+    quantity_formated.short_description = 'Quantity'
 
     def get_category(self, obj):
         return obj.product_id.category

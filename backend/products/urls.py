@@ -23,6 +23,8 @@ urlpatterns = [
     # NOTE: testing (consumes product table along with related variations)
     path('', product_list_view),
     path('search/', product_search_view, name='product-search'),
+    
+    # in_use
     path('latest-products-v4/', products_and_related_variations_view),
     path('featured-products', featured_products_view),
     path('latest-products', latest_featured_variations_with_page),
@@ -33,6 +35,8 @@ urlpatterns = [
     path('categories', category_list_view),
     path('brands', get_brand_view),
     path('last_variations-v3', product_and_last_created_variations_view_V3),
+    
+    # in_use
     path('product-items-detail-v4/<slug:slug>/', product_detail_view_v4, name='product-item-detail'),
 
     path('product-item-preview-v4/<int:pk>/', product_preview, name='product-preview'),

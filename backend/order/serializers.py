@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
@@ -61,7 +62,9 @@ class OrderStatusSerializer(serializers.ModelSerializer):
         fields = ('status',)
 
 
+# NOTE this by default will hydrate the jsjon product_item field with the instance of the product item. if i want the id i can use the PrimaryKeyRelatedField 
 class ShopOrderItemSerializer(serializers.ModelSerializer):
+    # product_item = serializers.PrimaryKeyRelatedField()
     class Meta:
         model = ShopOrderitem
         fields = ('quantity', 'price', 'product_item')
@@ -80,6 +83,14 @@ class ShopOrderSerializer(serializers.ModelSerializer):
         model = ShopOrder
         fields = ('user_id', 'order_date', 'modified', 'phoneNumber', 'shipping_address', 'billing_address', 'order_total', 'order_item')
 
+    @staticmethod
+    def get_item_instance_and_quantity(order_item_data):
+        product_item_instance = order_item_data.get('product_item')
+        quantity_from_cart = order_item_data.get('quantity')
+
+        return product_item_instance, quantity_from_cart 
+    
+
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_item', [])
 
@@ -88,11 +99,24 @@ class ShopOrderSerializer(serializers.ModelSerializer):
         validated_data['order_status'] = order_status_value
         validated_data['order_total'] = order_total
 
-
-        order = ShopOrder.objects.create(**validated_data)
-
         for order_item_data in order_items_data:
-            ShopOrderitem.objects.create(order=order, **order_item_data)
+            product_item_instance, quantity_from_cart = self.get_item_instance_and_quantity(order_item_data)
 
-        return order
-        # return 'Order has been placed'
+            if product_item_instance.quantity < quantity_from_cart:
+                raise serializers.ValidationError({
+                    'product_item': f'{product_item_instance.variation_name} is sold'
+                })
+            
+        with transaction.atomic():
+            order = ShopOrder.objects.create(**validated_data)
+
+            for order_item_data in order_items_data:
+                # json gives the id but django hydrates the result with the instance of the related product_item
+                product_item_instance, quantity_from_cart = self.get_item_instance_and_quantity(order_item_data)
+
+                product_item_instance.quantity -= quantity_from_cart
+                product_item_instance.save()
+
+                ShopOrderitem.objects.create(order=order, **order_item_data)
+
+            return order

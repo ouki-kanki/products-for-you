@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { useParams, useLocation, Link } from 'react-router-dom'
 
 import { useDispatch } from 'react-redux'
-import { addItem, initCart, clearCart, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice'
+import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice'
 import { useGetProductDetailQuery } from '../../../api/productsApi'
 
 import styles from './productDetail.module.scss'
@@ -18,6 +17,7 @@ export const ProductDetail = () => {
   const { data, isLoading } = useGetProductDetailQuery(slug as string)
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
+  const location = useLocation()
 
   // console.log(featuredImage)
   // console.log(data)
@@ -77,11 +77,18 @@ export const ProductDetail = () => {
     }
   }
 
+
   const handleAddToCart = () => {
+    // console.log("the data for cart", data)
+
+
     if (data) {
+      // TODO: the payload is of type any. fix that it will lead to pugs 
       dispatch(addItem({
         variationName: data.variationName,
         productIcon: data.productThumbnails[0].url,
+        slug: data.slug,
+        constructedUrl: location?.state ? location.state : 'not_provided',
         price: 9,
         productId: data.id,
         quantity: desiredQuantity
@@ -92,6 +99,13 @@ export const ProductDetail = () => {
         dispatch(deactivateCartUpdate())
       }, 700)
     }
+  }
+
+  const handleNavigateToImage = () => {
+    // TODO: have to find a better way to handle this
+    window.location.href = featuredImage;
+    // TODO: this does not behave as expected. why ?
+    // navigate(featuredImage, { replace: true })
   }
 
 
@@ -106,7 +120,7 @@ export const ProductDetail = () => {
       {data && (
           <div className={styles.sectionOne}>
             <div className={styles.leftContainer}>
-              <div className={styles.featuredImage}>
+              <div className={styles.featuredImage} onClick={handleNavigateToImage}>
                 <img src={featuredImage} alt="main product image" />
               </div>
               <div className={styles.secondaryImages}>
