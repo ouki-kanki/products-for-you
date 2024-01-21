@@ -1,4 +1,4 @@
-import type { RootState } from '../../app/store';
+import type { RootState } from '../../app/store/store';
 
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Sidebar.module.scss";

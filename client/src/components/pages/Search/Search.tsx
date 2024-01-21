@@ -5,12 +5,6 @@ import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@f
 
 import { ButtonGroup } from '../../../UI/ButtonGroup/ButtonGroup';
 
-const oldbuttons = [
-  '1',
-  '2',
-  '3'
-]
-
 const buttons = [
   <FontAwesomeIcon icon={faTableList}/>,
   <FontAwesomeIcon icon={faTableCellsLarge}/>,

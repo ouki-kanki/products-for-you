@@ -1,5 +1,5 @@
 import { AuthEnum } from './enums';
-import type { RootState } from '../app/store';
+import type { RootState } from '../app/store/store';
 // import type { Headers } from '@reduxjs/toolkit/query/react'
 
 // TODO: how to fix the type error for getState .typescript needs stop complaining

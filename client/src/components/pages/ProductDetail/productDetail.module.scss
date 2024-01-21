@@ -144,6 +144,50 @@ $breakpoint-large: 1024px;
 
     .plusMinusContainer {
       margin-top: 5px;
+      display: flex;
+    }
+
+    .qIcon {
+      height: 2em;
+      width: 2em;
+      cursor: pointer;
+      border: none;
+      
+      :hover {
+        height: 2.1em;
+        width: 2.1em;
+      }
+
+      :active {
+        height: 2em;
+        width: 2em;
+        svg: {
+          color: red;
+          filter: $drop-shadow-l;
+          // box-shadow: 2px 2px 2px rgba(0, 0, .4);
+          fill: orange;
+        }
+      }
+
+      svg {
+        fill: #666;
+        // fill: orange;
+        transition: fill .1s ease-out;
+        // TODO: not working, find a solution 
+        transform-origin: center;
+
+        path {
+          transition: stroke .1s ease-out;
+        }
+      }
+
+      &:active > svg {
+        fill: orange;
+
+        path{
+          stroke: orange;
+        }
+      }
     }
 
   }

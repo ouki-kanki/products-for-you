@@ -1,10 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import styles from './cart.module.scss';
-import type { RootState } from '../../../app/store';
-import { removeItem, activateCartUpdate, deactivateCartUpdate, clearCart } from '../../../features/cart/cartSlice';
+import type { RootState } from '../../../app/store/store';
+import { removeItem, addQuantity, subtractQuantity, clearCart } from '../../../features/cart/cartSlice';
 
 import RemoveIcon from '../../../assets/svg_icons/remove.svg?react'
+import AddIcon from '../../../assets/svg_icons/add_filled.svg?react'
+import SubtractIcon from '../../../assets/svg_icons/subtract_filled.svg?react'
+
 
 export const Cart = () => {
   const dispatch = useDispatch()
@@ -12,15 +15,18 @@ export const Cart = () => {
   const total = cart.total
   const navigate = useNavigate()
 
-
   const handleNavigateToProduct = (constructedUrl: string, slug: string) => {
-  // http://localhost:5173/cart/products/shoes%2Fair-jordan%2F/jordan36-blue
-
     // TODO: dry this is the same in the ProductV2
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`)
   }
 
-  console.log(cart)
+  const handleAddQty = (id: number) => {
+    dispatch(addQuantity({ productId: id }))
+  }
+  
+  const handleSubtractQty = (id: number) => {
+    dispatch(subtractQuantity({ productId: id }))
+  }
 
   return (
     <div className={styles.container}>
@@ -43,7 +49,20 @@ export const Cart = () => {
             </div>
             <div>{variationName}</div>
             <div>{price}</div>
-            <div>{quantity}</div>
+            <div className={styles.quantityContainer}>
+              <div>
+                {quantity}
+              </div>
+              <div 
+                className={styles.quantityIconContainer} 
+                onClick={() => handleAddQty(productId)}>
+                <AddIcon className={styles.quantityIcon}/>
+              </div>
+              <div 
+                className={styles.quantityIconContainer} onClick={() => handleSubtractQty(productId)}>
+                <SubtractIcon className={styles.quantityIcon}/>
+              </div>
+            </div>
             <div className={styles.total}>{price * quantity}</div>
             <div 
               className={styles.removeContainer}

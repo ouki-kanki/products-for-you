@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ModalCentered } from '../../Modal/ModalCentered/ModalCentered'
-import { RootState } from '../../../app/store'
+import { RootState } from '../../../app/store/store'
 import { hideCartModal } from '../../../features/UiFeatures/UiFeaturesSlice' 
 import styles from './cartModal.module.scss'
 

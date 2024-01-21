@@ -1,4 +1,4 @@
-import { RootState } from './../../../app/store';
+import { RootState } from '../../../app/store/store';
 import { useGetProfileQuery, useLazyGetProfileQuery } from "../../../api/userApi";
 import type { IUserProfile } from "../../../api/userApi";
 import { useSelector } from "react-redux";

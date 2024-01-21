@@ -2,7 +2,7 @@ import { useReducer, ChangeEvent, FormEvent } from 'react'
 import { Link } from 'react-router-dom';
 import styles from './checkout.module.scss';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../../app/store';
+import type { RootState } from '../../../app/store/store';
 import { leftData, rightData } from '../../../data/checkoutFields';
 import { useCreateOrderMutation } from '../../../api/orderApi';
 

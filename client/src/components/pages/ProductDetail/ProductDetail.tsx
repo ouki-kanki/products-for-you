@@ -8,6 +8,8 @@ import { useGetProductDetailQuery } from '../../../api/productsApi'
 import styles from './productDetail.module.scss'
 import ReturnIcon from '../../../assets/svg_icons/return_icon.svg?react'
 import TrackIcon from '../../../assets/svg_icons/track.svg?react'
+import AddIcon from '../../../assets/svg_icons/add_filled.svg?react'
+import SubtractIcon from '../../../assets/svg_icons/subtract_filled.svg?react'
 
 import type { ICartItem } from '../../../features/cart/cartSlice' 
 
@@ -89,7 +91,7 @@ export const ProductDetail = () => {
         productIcon: data.productThumbnails[0].url,
         slug: data.slug,
         constructedUrl: location?.state ? location.state : 'not_provided',
-        price: 9,
+        price: data.price,
         productId: data.id,
         quantity: desiredQuantity
       }))
@@ -161,8 +163,12 @@ export const ProductDetail = () => {
                       onBlur={handleBlur}
                       />
                     <div className={styles.plusMinusContainer}>
-                      <button onClick={handleDecrement}>-</button>
-                      <button onClick={handleIncrement}>+</button>
+                      <button className={styles.qIcon} onClick={handleIncrement}>
+                        <AddIcon/>
+                      </button>
+                      <button className={styles.qIcon} onClick={handleDecrement}>
+                        <SubtractIcon/>
+                      </button>
                     </div>
                   </div>
                   <button

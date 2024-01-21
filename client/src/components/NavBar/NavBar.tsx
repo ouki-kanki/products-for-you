@@ -15,7 +15,7 @@ import bellIcon from '../../assets/svg_icons/bell.svg'
 
 import { useSroll } from '../../hooks/useScroll';
 
-import type { RootState } from '../../app/store';
+import type { RootState } from '../../app/store/store';
 import { useGetProfileQuery } from '../../api/userApi';
 
 import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
@@ -31,6 +31,7 @@ export const NavBar = () => {
   const userId = useSelector((state: RootState) => state.auth.userId)
   const isCartUpdating = useSelector((state: RootState) => state.cart.isUpdating)
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
+  const numberOfproductInCart = useSelector((state: RootState) => state.cart.numberOfItems)
   // const { isScrollingDown } = useSroll()
   // const { trigger, data, error } = useProfile()
 
@@ -112,12 +113,8 @@ export const NavBar = () => {
         {pathname !== '/' && (
           <Link
             to='/'
-            className={`${styles.icons} ${styles.back}`}
-            > 
+            className={`${styles.icons} ${styles.back}`}> 
             take me home
-            {/* <FontAwesomeIcon
-              size='2x' 
-              icon={faHandPointLeft}/> */}
           </Link>
         )}
       </div>
@@ -128,16 +125,16 @@ export const NavBar = () => {
           <SearchForm/>
         </div>
 
-        {/* <div className={styles.cartContainer}>
-          <CartOutlined className={styles.cart}/>
-        </div> */}
-
         <div className={styles.buttonsContainer}>
           <div
-            className={`${styles.icons} ${isCartUpdating && styles.activeCartBtn}`}
-            onClick={() => dispatch(showCartModal())}
-            >
-            <img src={cartIcon} alt="cart button" />
+            className={`${styles.icons} ${styles.cartIconContainer} ${isCartUpdating && styles.activeCartBtn}`}
+            onClick={() => dispatch(showCartModal())}>
+              <img src={cartIcon} alt="cart button" />
+              {numberOfproductInCart > 0 && (
+                <div className={styles.cartNotification}>
+                  <span>{numberOfproductInCart}</span>
+                </div>
+              )}
           </div>
 
           <Link

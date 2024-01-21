@@ -1,12 +1,14 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import usersReducer from '../features/users/usersSlice';
-import uiReducer from '../features/UiFeatures/UiFeaturesSlice';
-import cartReducer from '../features/cart/cartSlice'
+import usersReducer from '../../features/users/usersSlice';
+import uiReducer from '../../features/UiFeatures/UiFeaturesSlice';
+import cartReducer from '../../features/cart/cartSlice'
 
-import { productsSlice } from "../features/products/productsSlice";
-import authReducer from '../features/auth/Login/loginSlice';
-import userReducer from '../features/users/userSliceV2';
-import { authApi, userApi, productsApi, orderApi } from "../api";
+import { productsSlice } from "../../features/products/productsSlice";
+import authReducer from '../../features/auth/Login/loginSlice';
+import userReducer from '../../features/users/userSliceV2';
+import { authApi, userApi, productsApi, orderApi } from "../../api";
+
+import { cartMiddleware, cartListenerMiddleware } from "./middleware/cartMiddleware";
 
 // TODO: getDefaultMiddleware is deprecated
 export const store = configureStore({
@@ -23,12 +25,16 @@ export const store = configureStore({
     [orderApi.reducerPath]: orderApi.reducer
   },
   middleware: (getDefaultMiddleware) => (
-    getDefaultMiddleware().concat([
+    getDefaultMiddleware().prepend(
+      cartListenerMiddleware.middleware
+    )
+    .concat([
       productsSlice.middleware,
       authApi.middleware,
       userApi.middleware,
       productsApi.middleware,
-      orderApi.middleware
+      orderApi.middleware,
+      cartMiddleware
     ])
   )
 })

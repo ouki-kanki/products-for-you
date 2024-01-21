@@ -18,7 +18,7 @@ interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
 } 
 
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../../app/store';
+import type { RootState } from '../../../app/store/store';
 // AUTH IMPORTS
 import { useNavigate } from 'react-router-dom';
 import { setCredentials } from './loginSlice';

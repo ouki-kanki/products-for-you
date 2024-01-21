@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../api/baseConfig';
-import type { RootState } from '../app/store';
+import type { RootState } from '../app/store/store';
 import { AuthEnum } from './enums';
 import { prepareHeaders } from './common';
 

@@ -7,7 +7,7 @@ import { ProtectedRoute } from './hocs/ProtectedRoute';
 
 import type { IUiConfig } from './types';
 
-import { selectUsers } from './app/store'
+import { selectUsers } from './app/store/store'
 import { useAppSelector } from './hooks'
 import { fetchUsers } from './features/users/usersSlice'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
@@ -53,7 +53,26 @@ function App() {
 
   useEffect(() => {
     console.log("__INIT__CART__")
-    dispatch(initCart())
+    
+    // TODO: move this to the middleware
+    try {
+      const strCartFromStorage = localStorage.getItem('cart')
+      const cartFromStorage = JSON.parse(strCartFromStorage as string)
+      const items = cartFromStorage.items
+      const total = cartFromStorage.items.reduce((a, item: ICartItem) => a += (item.price * item.quantity), 0)
+      const numberOfItems = cartFromStorage.items.length
+
+      dispatch(initCart({
+        items,
+        total,
+        numberOfItems
+      }))
+    } catch (error) {
+      // TODO: inform the server ?
+      console.log(error)
+    }
+
+ 
   }, [dispatch])
 
   console.log("app triggered")
