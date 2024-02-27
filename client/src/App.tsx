@@ -136,7 +136,7 @@ function App() {
 
   return (
     <div className={styles.appContainer}>
-      <Sidebar/>
+        <Sidebar/>
       <div className={styles.contentNavContainer}>
         <CartModal/>
         <div>
@@ -152,9 +152,11 @@ function App() {
               <Route path='/cart' element={<Cart/>}/>
               <Route path='/checkout' element={<Checkout/>}/>
               <Route path='/settings' element={<Settings/>}/>
-              <Route path='/products' element={<ProductsPage/>}/>
+              <Route path='/products/' element={<ProductsPage/>}/>
+              <Route path='/products/:slug' element={<ProductsPage/>}/>
+              <Route path='/testproducts/' element={<ProductsPage/>}/>
               <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
-              <Route path='/search' element={<Search/>}/>
+              <Route path='/search/:slug' element={<Search/>}/>
               <Route path='login' element={<LoginPage/>}/>
               <Route path='sign-up' element={<SignUp/>}/>
               <Route path='/delivery-terms' element={<DeliveryTerms/>}/>

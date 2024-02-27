@@ -7,7 +7,7 @@ export interface ICartItem {
   productIcon: string;
   productId: number;
   quantity: number;
-  price: number;
+  price: string;
 }
 
 export interface ICart {
@@ -40,7 +40,7 @@ export const cartSlice = createSlice({
         itemsFromState.push(item)
       }
       
-      const total = state.total += (item.price * item.quantity)
+      const total = state.total += (parseFloat(item.price) * item.quantity)
       const numberOfItems = state.items.length
 
       state.items = itemsFromState
@@ -50,20 +50,10 @@ export const cartSlice = createSlice({
     removeItem: (state, action: PayloadAction<number>) => {
       const { items, total, numberOfItems } = state
       const productId = action.payload
-      for (let item of items) {
-        console.log(item.productId)
-      }
 
       const itemIndex = items.findIndex(product => product.productId === productId)
       const item = items[itemIndex]
-
-      const newItems = items.filter(item => {
-        console.log(item.productId)
-        console.log(productId)
-        return item.productId !== productId
-      })
-      console.log("the items", newItems)
-
+      const newItems = items.filter(item => item.productId !== productId)
 
       state.total = total - (item.price * item.quantity)
       state.items = newItems
@@ -78,7 +68,7 @@ export const cartSlice = createSlice({
       if (itemIndex !== -1) {
         items[itemIndex].quantity += quantity
         const price = items[itemIndex].price
-        state.total = total + (price * quantity)
+        state.total = total + (parseFloat(price) * quantity)
       }
     },
     subtractQuantity: (state, action: PayloadAction<{ productId: number, quantity?: number }>) => {
@@ -89,7 +79,7 @@ export const cartSlice = createSlice({
       if (itemIndex !== -1) {
         items[itemIndex].quantity -= quantity
         const { price } = items[itemIndex]
-        state.total = total - (price * quantity)
+        state.total = total - (parseFloat(price) * quantity)
       }
     },
     activateCartUpdate: (state) => {

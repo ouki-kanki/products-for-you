@@ -1,0 +1,17 @@
+.mainContainer {
+  width: 100%;
+}
+
+.productsContainer {
+  width: 90%;
+  margin: 0 auto;
+  // border: 1px solid red;
+  padding: 50px 30px;
+  display: flex;
+  // justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.productContainer {
+  margin: 0 100px 50px 0;

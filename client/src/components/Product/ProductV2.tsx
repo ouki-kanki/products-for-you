@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './productV2.module.scss';
 import type { WidthType } from '../../UI/Card/Card';
 
@@ -26,6 +26,8 @@ import kdBl from '../../assets/variations/kd14var_bl_or.jpg';
 
 import { IProduct } from '../../api/productsApi'; 
 
+import { useLazyGetProductVariationPreviewQuery } from '../../api/productsApi';
+
 
 const formatPrice = (strNum: string) => {
   const num = Number(strNum).toLocaleString()
@@ -43,7 +45,6 @@ export const ProductV2 = ({
   name: title, 
   price, 
   features, 
-  id,
   slug,
   productThumbnails,
   quantity, 
@@ -55,16 +56,43 @@ export const ProductV2 = ({
   const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
   const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
   const navigate = useNavigate()
+  const [newQuantity, setNewQuantity] = useState<number | null>(null)
+  const [variationPrice, setVariationPrice] = useState<string | null>(null)
+  const [variationProductThumbnails, setVariationProductsThumbnails] = useState({}) 
+  const [variationSlug, setVariationSlug] = useState<string>('')
+  const [ trigger, result, lastPromiseInfo ] = useLazyGetProductVariationPreviewQuery()
 
+  const strProductThumbnails = JSON.stringify(productThumbnails)
+  const strVariationResult = result.data && JSON.stringify(result.data)
 
-  const handleVariationChange = (index, productUrl) => {
-    // console.log("the index and product url", index, productUrl)
+  useEffect(() => {
+    if (strVariationResult) {
+      const selectedVariation = JSON.parse(strVariationResult)
+      setNewQuantity(selectedVariation.quantity)
+      setVariationPrice(selectedVariation.price)
+      setVariationProductsThumbnails(selectedVariation.productThumbnails)
+      setVariationSlug(selectedVariation.slug)
+    }
+  }, [strVariationResult])
+
+  useEffect(() => {
+    setNewQuantity(quantity)
+    setVariationPrice(price)
+
+    // TODO: this is bad practice, have to find a more elegant solution
+    setVariationProductsThumbnails(JSON.parse(strProductThumbnails))
+    setVariationSlug(slug)
+  }, [quantity, price, strProductThumbnails, slug])
+
+  const handleVariationChange = (e: React.MouseEvent<HTMLDivElement>, slug: string) => {
+    e.stopPropagation();
+
+    // console.log("the index and product url", slug) 
+    trigger(slug)
   }
 
   const handleProductDetail = () => {
-    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`, {
-      // need to use to pass the url to the cart
-      // the cart will create a link if the customer clicks the image of the icon in the cart to navigate the user to product detail
+    navigate(`/products/${encodeURIComponent(constructedUrl)}/${variationSlug}`, {
       state: constructedUrl
     })
   }
@@ -75,7 +103,6 @@ export const ProductV2 = ({
   }
 
   const renderVariations = () => {
-    // console.log("the variations", variations)
     if (variations && variations.length > 0) {
       return (
         <div className={styles.variationsContainer}>
@@ -83,7 +110,7 @@ export const ProductV2 = ({
             <div 
               className={styles.varImageContainer}
               key={index}
-              onClick={() => handleVariationChange(index, variation.productUrl)}>
+              onClick={(e) => handleVariationChange(e, variation.slug)}>
               <img src={variation.thumb} alt="variation image" />
             </div>))}
         </div>
@@ -105,6 +132,19 @@ export const ProductV2 = ({
       )
     }
   }
+
+  const renderQuantity = (quantity) => {
+    // console.log("the qunati", quantity)
+    switch(true) {
+      case quantity === 0:
+        return <div className={`${styles.label} ${styles.danger}`}>not available</div>
+      case quantity < 4:
+        return <div className={`${styles.label} ${styles.caution}`}>limited number of items left</div>
+      case quantity >= 4:
+        return <div className={`${styles.label} ${styles.available}`}>available</div>
+        
+    }
+  } 
 
   return (
     // <div key={id}>
@@ -145,7 +185,7 @@ export const ProductV2 = ({
 
             <div className={styles.mr}>
               <div className={styles.mrFirst}>
-                <h3 className={styles.priceContainer}>price: {formatPrice(price)}</h3>
+                <h3 className={styles.priceContainer}>price: {formatPrice(variationPrice as string)}</h3>
 
                 {/* TODO: move it to a seperate component */}
                 <div className={styles.ratingsContainer}>
@@ -162,12 +202,7 @@ export const ProductV2 = ({
                   icon={faStar} 
                   size='lg'/>
                 </div>
-                {
-                  quantity ? 
-                    <div className={`${styles.label} ${styles.available}`}>available</div>
-                           :
-                    <div className={`${styles.label} ${styles.danger}`}>not available</div>
-                }
+                { renderQuantity(newQuantity) }
               </div>
 
               {/* VARIATIONS */}
@@ -188,7 +223,7 @@ export const ProductV2 = ({
 
           {/* Product views */}
           <div className={styles.bottomRegion}>
-            {productThumbnails && productThumbnails.length > 0 ? productThumbnails.map((thumb, index) => (
+            {variationProductThumbnails && variationProductThumbnails.length > 0 ? variationProductThumbnails.map((thumb, index) => (
               <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}> 
                 <img src={thumb.url} alt="top view of the product" />
               </div>)) : (

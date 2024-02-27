@@ -19,20 +19,15 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
     setSearchValue(value)
   }
 
+  // TODO: fix the typescript bug about the event type 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("form submited")
-    // handle the return data with redux & after that navigate
-    setSearchValue('')
-    navigate('/search')
+    
+    if (searchValue !== '') {
+      setSearchValue('')
+      navigate(`/search/${ searchValue }`)
+    }
   }
-
-  // TOOD: refactor to use the same method. there is problem with the form event, have to find a solution to dry the code
-  const handleSubmit = () => {
-    setSearchValue('')
-    navigate('/search')
-  }
-
 
   return (
       <form 
@@ -46,7 +41,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
           onChange={handleChange}
           type="text" />
         <FontAwesomeIcon
-          onClick={handleSubmit}
+          onClick={handleFormSubmit}
           className={styles.searchIcon} 
           icon={faSearch} 
           size='1x'/>

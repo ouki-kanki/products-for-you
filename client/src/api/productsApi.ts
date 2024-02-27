@@ -18,6 +18,7 @@ interface ICurrentVariation {
 }
 
 interface IVariation {
+  slug: string;
   productUrl: string;
   thumb: string;
 }
@@ -41,6 +42,15 @@ export interface IProduct {
   slug: string;
   constructedUrl: string;
   id: number;
+}
+
+export interface IproductVariationPreview {
+  quantity: number;
+  price: string;
+  productThumbnails: IProductThumbnailorImage[];
+  variationDetails: ICurrentVariation[];
+  slug: string;
+  constructedUrl: string;
 }
 
 // TODO: DRY THIS there are simiral properties
@@ -155,6 +165,15 @@ export const productsApi = createApi({
         return response
       })
     }),
+    getProductVariationPreview: builder.query<IproductVariationPreview, string | null>({
+       query: (slug) => ({
+        url: `product-item-preview-v4/${slug}`
+       }),
+       transformResponse: ((response: IproductVariationPreview, meta, arg) => {
+        convertSnakeToCamel(response)
+        return response
+       })     
+    }),
     getCategories: builder.query<ICategory[], void>({
       query: () => ({
         url: `categories`
@@ -165,7 +184,6 @@ export const productsApi = createApi({
         url: `by-category/${id}`
       }),
       transformResponse: (response) => {
-        // console.log(response)
         return response
       } 
     })
@@ -177,5 +195,7 @@ export const {
   useGetFeaturedProductsQuery, 
   useGetProductDetailQuery,
   useGetCategoriesQuery,
-  useLazyFilterByCategoryQuery
+  useLazyFilterByCategoryQuery,
+  useLazyGetProductVariationPreviewQuery,
+  useFilterByCategoryQuery
 } = productsApi

@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './latestProducts.module.scss';
 
-import { ProductV2 } from '../../Product.tsx/ProductV2';
+import { ProductV2 } from '../../Product/ProductV2';
 import { Iproduct } from '../../../types';
 import { useCarousel } from '../../../hooks/useCarousel';
 import { ICarouselOptions, ICarouselContainerProps } from '../../../hooks/useCarousel/carouselTypes';

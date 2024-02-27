@@ -9,6 +9,8 @@ from django.core.validators import MaxValueValidator
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.exceptions import SuspiciousFileOperation
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
@@ -241,7 +243,7 @@ class ProductItem(models.Model):
     RPODUCT - VARIANT
     """
     # TODO: change product_id to product because it confusing
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations') 
     variation_name = models.CharField(max_length=255, blank=True)
     # TODO: make it unique True
     slug = models.SlugField(max_length=50, blank=True)
@@ -328,31 +330,38 @@ class ProductImage(models.Model):
     def __str__(self):
         return self.product_item.product_name
     
-    def save(self, *args, **kwargs):
-        # super().save(*args, **kwargs)
-        # if not self.pk:
-        #     super().save(*args, **kwargs)
-        #     return
-        # self.refresh_from_db()
+    @staticmethod
+    def delete_image_and_thumb_from_filesystem(instance, field_name: str):
+        image_ref = getattr(instance, field_name)
+        img_path = image_ref.path
 
-        # check if there is record in the database to make the check
-        is_same = False
+        # TODO: handle the exceptions
+        try:
+            default_storage.delete(img_path)
+        except SuspiciousFileOperation:
+            print("not found")
+        except Exception as e:
+            print("there was an error", e)
+    
+    def save(self, *args, **kwargs):
         if self.pk:
             prev_obj = ProductImage.objects.get(pk=self.pk)
-            is_same = compare_images_delete_prev_if_not_same(self, prev_obj, 'image')
 
-        # TODO if the user saves without uploading after save the app deletes the thumb and keeps only the or
-        if self.has_thumbnail:
-            # self.refresh_from_db()
-            if self.pk:
-                # TODO: this is a nasty fix. for some reason the prev obj is always the same .have to check why 
-                compare_images_delete_prev_if_not_same(self, prev_obj, 'thumbnail', force_delete=True)
-                if is_same:
-                    return
-            thumb = generate_thumbnailV2(self, 'image', self.product_item)
-            self.thumbnail = thumb
+            if self.image and self.image != prev_obj.image:
+
+                if prev_obj.image:
+                    self.delete_image_and_thumb_from_filesystem(prev_obj, 'image')
+                if prev_obj.thumbnail:
+                    self.delete_image_and_thumb_from_filesystem(prev_obj, 'thumbnail')
+                
+                # NOTE: this will save the thumb only if the user uploads a new file
+                # TODO: compare the old bool value with the current and if is dif gen the thum .if the prev was ticked and now the user unticked the value then delete the thumb from the filesystem and also from the database 
+                if self.has_thumbnail:
+                    thumb = generate_thumbnailV2(self, 'image', self.product_item)
+                    self.thumbnail = thumb
+
         super().save(*args, **kwargs)
-
+        
     def delete(self, *args, **kwargs):
         if self.image:
             delete_image_from_filesystem(self, 'image')
@@ -397,7 +406,7 @@ class Discount(models.Model):
             MaxValueValidator(100, message="max value is 100")
     ])
     discount_type = models.CharField(max_length=255)
-    times_used = models.PositiveIntegerField()
+    times_used = models .PositiveIntegerField()
     is_active = models.BooleanField(default=False)
     max_times = models.PositiveIntegerField(default=3)
     start_date = models.DateTimeField()
@@ -414,4 +423,4 @@ class Favorite(models.Model):
     product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorited_by')
 
     def __str__(self):
-        return f"{self.user.email} - {self.product.product_id.name}"
+        return f"{self.user.email} - {self.product.product_id.name}" 

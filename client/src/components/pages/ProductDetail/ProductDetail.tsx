@@ -4,6 +4,8 @@ import { useParams, useLocation, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice'
 import { useGetProductDetailQuery } from '../../../api/productsApi'
+import { Notification } from '../../Notifications/Notification'
+
 
 import styles from './productDetail.module.scss'
 import ReturnIcon from '../../../assets/svg_icons/return_icon.svg?react'
@@ -20,9 +22,9 @@ export const ProductDetail = () => {
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
+  const [showNotification, setShowNotification] = useState(false)
 
-  // console.log(featuredImage)
-  // console.log(data)
+  console.log(data)
   
   const featuredImageUrl = data?.productImages?.filter(image => image.isFeatured)[0].url
 
@@ -81,9 +83,6 @@ export const ProductDetail = () => {
 
 
   const handleAddToCart = () => {
-    // console.log("the data for cart", data)
-
-
     if (data) {
       // TODO: the payload is of type any. fix that it will lead to pugs 
       dispatch(addItem({
@@ -117,8 +116,16 @@ export const ProductDetail = () => {
     )
   }
 
+  const handleTestNontification = () => {
+    setShowNotification(true)
+
+    setTimeout(() => setShowNotification(false), 1000)
+  }
+
   return (
     <div className={styles.container}>
+      <div onClick={handleTestNontification}>yoyoyo</div>
+      {showNotification && <Notification message='this si nice' duration={1000}/>}
       {data && (
           <div className={styles.sectionOne}>
             <div className={styles.leftContainer}>

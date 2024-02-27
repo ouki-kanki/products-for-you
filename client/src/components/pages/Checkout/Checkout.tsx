@@ -51,7 +51,7 @@ export const Checkout = () => {
 
   const [ createOrder, { isLoading } ] = useCreateOrderMutation()
   
-  console.log(cart)
+  // console.log(cart)
   // console.log(state)
 
   const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
@@ -120,8 +120,8 @@ export const Checkout = () => {
             <div>price</div>
           </div>
           {/* TODO: dry this .the logic is the same products inside the cart */}
-          {cart.items.map(product => (
-            <div className={`${styles.productRow} ${styles.itemRow}`}>
+          {cart.items.map((product, index) => (
+            <div className={`${styles.productRow} ${styles.itemRow}`} key={index}>
               <div>
                 <div className={styles.icon}>
                   <img src={product.productIcon} alt="product-icon"/>

@@ -79,6 +79,7 @@ def remove_background(input_image_field, output_path, col_low=(0, 0, 100), col_u
     cv2.imwrite(output_path, result)
 
 
+# OBSOLETE FOR REMOVE 
 def compare_images_delete_prev_if_not_same(instance, old_instance, name_of_image_field: str, **kwargs) -> bool:
     """
     compares the prev and currenct instance on the provided field and if they are not the same it deletes the image from disk

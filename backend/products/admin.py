@@ -1,4 +1,5 @@
 from typing import Any
+from django import forms
 from django.contrib import admin, messages
 from django.conf import settings
 from django.db import models
@@ -6,7 +7,8 @@ from django import forms
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.utils.safestring import mark_safe
-from django.utils.html import strip_tags
+from django.utils.html import strip_tags, format_html
+from django.urls import reverse
 
 from services.imageServices import delete_image_from_filesystem
 
@@ -37,7 +39,7 @@ class CategoryAdminForm(forms.ModelForm):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug', 'parent_category', 'created_at')
+    list_display = ('name', 'product_icon', 'slug', 'parent_category', 'has_related_products', 'created_at')
     readonly_fields = ('product_icon',)
     actions = ('delete_categories',)
     form = CategoryAdminForm
@@ -47,6 +49,9 @@ class CategoryAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.ImageField: { 'widget': CustomAdminFileWidget }
     }
+
+    def has_related_products(self, obj):
+        return 'Yes' if obj.products.exists() else mark_safe('<span style=\'color:tomato;\'>No</span>')
     
     def product_icon(self, obj):
         return render_icon(obj, 'icon')
@@ -80,8 +85,19 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ProductItemInline(admin.TabularInline):
     model = ProductItem
+    readonly_fields = ['variation_link']
     # extra 0 will remove the ability to add variations inside tha product admin panel
-    extra = 1    
+    extra = 1
+
+    def variation_link(self, obj):
+        if obj.pk:
+            url = reverse('admin:products_productitem_change', args=[obj.pk])
+            return format_html('<a href="{}">{}</a>', url, obj.variation_name)
+        
+    def get_fields(self, request, obj=None):
+        fields = ['variation_link'] + list(super().get_fields(request, obj=obj))
+        return fields
+
 
 
 class ProductForm(forms.ModelForm):
@@ -143,6 +159,10 @@ class ProductAdmin(admin.ModelAdmin):
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('code', 'discount_value', 'discount_type', 'is_active', 'created_at', )
 
+class ProductImageForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProductImageForm, self).__init__(*args, **kwargs)
+        self.fields['is_featured'].help_text = "it will used to show the thumbnail of the variation in product preview and also the main image for the product"
   
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
@@ -151,6 +171,7 @@ class ProductImageAdmin(admin.ModelAdmin):
     exclude = ('thumbnail', )
     ordering = ('product_item',)
     actions = ('delete_record_and_images',)
+    form = ProductImageForm
 
     
     formfield_overrides = {
@@ -159,7 +180,7 @@ class ProductImageAdmin(admin.ModelAdmin):
 
     def product_image(self, obj):
         return render_icon(obj, 'image')
-        
+            
     def delete_record_and_images(self, request, queryset):
         """
         remove the images from disk and then delete the record
@@ -173,10 +194,14 @@ class ProductImageAdmin(admin.ModelAdmin):
         queryset.delete()
 
 
+
+
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     exclude = ['thumbnail',]
-    extra = 1  
+    extra = 1
+    form = ProductImageForm  
 
 
 @admin.register(ProductItem)

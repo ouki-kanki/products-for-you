@@ -111,42 +111,37 @@
 
 .variationsContainer {
   display: flex;
-  // border: 1px solid gold;
   flex-wrap: wrap;
   padding: 50px 0;
+  align-items: center;
 }
 
 .varImageContainer {
   position: relative;
   border-radius: 50%;
   overflow: hidden;
-  // border: 1px solid red;
-  margin: 0 5px 0px 0px;
+  border: 1px solid #c9c9c9;
+  margin: 0 10px 0px 0px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
   height: 40px;
   transition: width .4s ease-in;
+  background-color: white;
 
   &:hover {
-    // transition: width .4s ease-in;
     transform: scale(1.3);
     width: 50px;
     height: 45px;
-    // border: 1px solid orange;
     // box-shadow: 2px 2px 4px #444;
+    // transform: translateX(-30px);
   }
 
   img {
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      transform: translateX(-30px);
-    }
-
-
+    object-fit: cover;
   }
 }
 
@@ -269,4 +264,8 @@
 
 .danger {
   color: tomato;
+}
+
+.caution {
+  color: khaki;
 }

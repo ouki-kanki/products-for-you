@@ -255,7 +255,8 @@ latest_featured_variations_with_page = LastestFeaturedVariationsListApiView.as_v
 #  --- CORE ---- 
 class FeaturedProductsListView(generics.ListAPIView):
     """
-    returns the products that are flagged with "is_featured"
+    returns the products that are flagged with "is_featured_product" & also have a variation that
+    has is_featured = true
     """
     queryset = ProductItem.objects.select_related('product_id__category', 'product_id') \
             .filter(is_featured=True, product_id__is_featured_product=True) \
@@ -345,7 +346,7 @@ class ProductPreview(generics.RetrieveAPIView):
     """
     queryset = ProductItem.objects.all()
     serializer_class = ProductItemSerializerV4
-    lookup_field = 'pk'
+    lookup_field = 'slug'
 
 
 product_preview = ProductPreview.as_view()

@@ -1,6 +1,8 @@
 import styles from './categories.module.scss'
 import { useGetCategoriesQuery } from '../../../api/productsApi';
 import { useLazyFilterByCategoryQuery } from '../../../api/productsApi';
+import { useNavigate } from 'react-router-dom';
+
 
 import { Card } from '../../../UI/Card'
 
@@ -14,20 +16,23 @@ import { Category } from './Category/Category';
 // https://unsplash.com/photos/womens-four-assorted-apparel-hanged-on-clothes-rack-WF0LSThlRmw?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash
 
 // Photo by <a href="https://unsplash.com/@alexagorn?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Alexandra Gorn</a> on <a href="https://unsplash.com/photos/womens-four-assorted-apparel-hanged-on-clothes-rack-WF0LSThlRmw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-  
+
+
+export type IcategoryRouterState = {
+  categoryId: number
+}
 
 const Categories = () => {
   const { data: categories , isLoading } = useGetCategoriesQuery()
-  const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
-  // console.log(categories)
-  // console.log(result, lastPromiseInfo)
-  console.log(result.data)
+  const [trigger, result, lastPromiseInfo] = 
+  useLazyFilterByCategoryQuery()
+  const navigate = useNavigate()
 
-
-  const fetchRelatedProducts = (id: number) => {
-    // console.log(id)
-    trigger(id)
+  const fetchRelatedProducts = (slug: string, id: number) => {
+    navigate(`/products/${slug}`, { state: { categoryId:id }})    
   }
+
+  // console.log(categories)
 
 
   return (
@@ -39,7 +44,7 @@ const Categories = () => {
             key={index}
             title={category.name}
             image={category.icon}
-            handleCategoryClick={fetchRelatedProducts}
+            handleCategoryClick={() => fetchRelatedProducts(category.slug, category.id)}
             alt={`${category.name}-image`}
             />
         ))}

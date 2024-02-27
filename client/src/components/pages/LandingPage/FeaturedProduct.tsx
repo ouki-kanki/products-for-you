@@ -3,14 +3,14 @@ import styles from './featuredProduct.module.scss'
 
 import { IProduct } from '../../../api/productsApi'
 
-import { ProductV2 } from '../../Product.tsx/ProductV2'
+import { ProductV2 } from '../../Product/ProductV2'
 
 interface IFeaturedProductProps {
   data: IProduct
 } 
 
 export const FeaturedProduct = ({ data }: IFeaturedProductProps) => {
-  // console.log(data)
+  console.log(data)
   return (
     <div className={styles.container}>
       <h2>Featured Product</h2>
@@ -19,6 +19,7 @@ export const FeaturedProduct = ({ data }: IFeaturedProductProps) => {
           width='wide'
           name={data.name}
           price={data.price}
+          quantity={data.quantity}
           features={data.features}
           variations={data.variations}
           description={data.description}

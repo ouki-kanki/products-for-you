@@ -27,7 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
     # sub_categories = SubCategorySerializer(many=True)
     class Meta:
         model = Category
-        fields = ('id', 'name', 'icon', 'children')
+        fields = ('id', 'name', 'slug', 'icon', 'children')
 
 # TODO: show the related products for the category
 class CategoryRelatedProducts(serializers.ModelSerializer):
@@ -446,12 +446,13 @@ class ProductSerializerV4(serializers.ModelSerializer):
 
     def get_variations(self, obj):
         request = self.context.get('request')
-        print("the request", request)
+        # print("the request", request)
         variations = obj.product_variations.all()
         # TODO: check the time complexity here
         return [
             {
-                'product_url': request.build_absolute_uri(reverse('products:product-preview', args=[variation.pk])),
+                'slug': variation.slug,
+                'product_url': request.build_absolute_uri(reverse('products:product-preview', args=[variation.slug])),
                 # 'product_url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
                 'thumb': request.build_absolute_uri(variation.product_image.filter(is_featured=True).first().thumbnail.url) if variation.product_image.filter(is_featured=True).exists() else None
             }

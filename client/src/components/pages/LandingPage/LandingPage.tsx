@@ -1,15 +1,11 @@
 import { useState } from 'react'
 import styles from './landingPage.module.scss';
 import { useGetLatestProductsQuery } from "../../../api/productsApi"
-import { ProductV2 } from "../../Product.tsx/ProductV2"
+import { FeaturedProduct } from './FeaturedProduct';
+import { ProductV2 } from "../../Product/ProductV2"
 
 
 import { Grid } from "../../../UI/Layout/Grid/Grid";
-
-import { FeaturedProducts } from './FeaturedProducts';
-import { LatestProducts } from './LatestProducts';
-import { FeaturedProduct } from './FeaturedProduct';
-
 
 // TODO: move from here
 interface IVariationItem {
@@ -72,7 +68,7 @@ export const LandingPage = () => {
       {/* <button onClick={switchView}>switch</button> */}
       {productView === 'products' && renderProducts()}
       <div className={styles.latestProductsContainer}>
-        <LatestProducts data={latestProducts}/>
+        {/* <LatestProducts data={latestProducts}/> */}
       </div>
       {/* <FeaturedProducts/> */}
       {/* TODO: remove this is for testing */}
