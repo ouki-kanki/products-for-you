@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams, useParams } from 'react-router-dom';
 import styles from './search.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
@@ -15,12 +16,15 @@ const buttons = [
 
 export const Search = () => {
   const [layout, setLayout] = useState('')
-
+  const { slug } = useParams()  
+  // console.log("the searchParams", searchParams.entries())
+  console.log(slug)
 
   const handleChangeLayout = (num: number) => {
       switch(num) {
         case 1:
-          setLayout('')
+    console.log("the seach value", searchValue)
+    setLayout('')
           break
         case 2:
           setLayout('twoColLayout')

@@ -4,7 +4,7 @@ import { useParams, useLocation, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../../features/cart/cartSlice'
 import { useGetProductDetailQuery } from '../../../api/productsApi'
-import { Notification } from '../../Notifications/Notification'
+import { Notification, showNotification } from '../../Notifications/Notification'
 
 
 import styles from './productDetail.module.scss'
@@ -22,18 +22,14 @@ export const ProductDetail = () => {
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
-  const [showNotification, setShowNotification] = useState(false)
-
-  console.log(data)
-  
   const featuredImageUrl = data?.productImages?.filter(image => image.isFeatured)[0].url
-
+  
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)
   }, [featuredImageUrl])
-
-  // console.log(featuredImage)
-
+  
+  // console.log(data)
+  
   const handleSetMainImage = (url) => {
     setFeaturedImage(url)
   }
@@ -117,15 +113,18 @@ export const ProductDetail = () => {
   }
 
   const handleTestNontification = () => {
-    setShowNotification(true)
-
-    setTimeout(() => setShowNotification(false), 1000)
+    // setShowNotification(true)
+    showNotification({
+      message: 'yoyoy',
+      duration: 3000,
+      position: 'top-right',
+      appearFrom: 'from-right'
+    })
   }
 
   return (
     <div className={styles.container}>
-      <div onClick={handleTestNontification}>yoyoyo</div>
-      {showNotification && <Notification message='this si nice' duration={1000}/>}
+      <div onClick={handleTestNontification} style={{ cursor: 'pointer' }}>test notif</div>
       {data && (
           <div className={styles.sectionOne}>
             <div className={styles.leftContainer}>

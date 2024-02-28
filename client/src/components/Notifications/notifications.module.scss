@@ -6,6 +6,7 @@
   border: 1px solid #f5c6cb;
   border-radius: 4px;
   opacity: 1;
+  padding: 10px 20px;
   transition: opacity 0.3s ease-in-out;
 }
 
@@ -17,6 +18,7 @@
 .notification.top-right {
   top: 10px;
   right: 10px;
+  // animation: fromTop .5s ease-out forwards;
 }
 
 .notification.bottom-left {
@@ -27,6 +29,83 @@
 .notification.bottom-right {
   bottom: 10px;
   right: 10px;
+  // transform: translateY(150%);
+  // animation: fromBottom .5s ease-out forwards;
+}
+
+.notification.from-top {
+  // transform: translateY();
+  animation: fromTop .5s ease-out forwards;
+}
+
+.notification.from-left {
+  animation: fromLeft .5s ease-out forwards;
+}
+
+.notification.from-right {
+  animation: fromRight .5s ease-out forwards;
+  
+}
+
+.notification.from-bottom {
+  animation: fromBottom .5s ease-out forwards;
+
+}
+
+@keyframes fromTop {
+  0% {
+    transform: translateY(-150%);
+  }
+
+  50% {
+    transform: translateY(20%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fromRight {
+  0% {
+    transform: translateX(150%);
+  }
+
+  50% {
+    transform: translateX(-20%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fromLeft {
+  0% {
+    transform: translateX(-150%);
+  }
+
+  50% {
+    transform: translateX(20%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fromBottom {
+  0% {
+    transform: translateY(150%);
+  }
+
+  50% {
+    transform: translateY(-20%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .success {
