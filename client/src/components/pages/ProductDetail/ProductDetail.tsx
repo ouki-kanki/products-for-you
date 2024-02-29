@@ -116,9 +116,11 @@ export const ProductDetail = () => {
     // setShowNotification(true)
     showNotification({
       message: 'yoyoy',
-      duration: 3000,
+      duration: 2000,
       position: 'top-right',
-      appearFrom: 'from-right'
+      appearFrom: 'from-right',
+      overrideDefaultHideDirection: true,
+      hideDirection: 'to-top'
     })
   }
 
