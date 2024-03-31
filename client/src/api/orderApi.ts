@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from './baseConfig';
-
+import { showNotification } from '../components/Notifications/Notification';
 
 export interface ICartProduct {
   product_item: string;
@@ -32,6 +32,9 @@ export const orderApi = createApi({
       }),
       transformResponse: (res) => {
         console.log("create order res from api",res)
+        showNotification({
+          message: 'order created'
+        })
       }
     })
   })

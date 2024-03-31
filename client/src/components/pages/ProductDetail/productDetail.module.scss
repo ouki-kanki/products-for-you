@@ -26,6 +26,7 @@ $breakpoint-large: 1024px;
     overflow: hidden;
     box-shadow: $box-shadow-transparent-black;
     padding-top: calc(100% / 1.2);
+    cursor: pointer;
 
     & img {
       // @include border_orange__bold();

@@ -15,6 +15,7 @@ from .views import (
     product_detail_view_v4,
     product_preview,
     product_search_view,
+    product_faceted_search_view,
     products_list_by_category_view
 )
 
@@ -23,6 +24,7 @@ urlpatterns = [
     # NOTE: testing (consumes product table along with related variations)
     path('', product_list_view),
     path('search/', product_search_view, name='product-search'),
+    path('search_faceted/', product_faceted_search_view, name='product-faceted-search'),
     
     # in_use
     path('latest-products-v4/', products_and_related_variations_view),

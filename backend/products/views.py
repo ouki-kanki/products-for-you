@@ -359,13 +359,45 @@ class ProductSearchView(generics.ListAPIView):
     serializer_class = ProductItemSearchSerializerV4
     queryset = ProductItem.objects.all()
     filter_backends = [filters.SearchFilter]
-    search_fields = ['product_id__name', 'detailed_description', 'product_id__description']
+    # search_fields = ['product_id__name', 'detailed_description', 'product_id__description',]
+    search_fields = ['detailed_description',]
 
     def get_queryset(self):
-        query = self.request.query_params.get('query', '')
-        return ProductItem.objects.filter(Q(product_id__name__icontains=query) | Q(detailed_description__icontains=query) | Q(product_id__description__icontains=query))
+        query = self.request.query_params.get('search', '')
+        print(query)
+        return ProductItem.objects.filter(
+            # Q(product_id__name__icontains=query) |
+            # Q(product_id__category__icontains=query) |
+            # Q(product_id__description__icontains=query) |
+            Q(detailed_description__icontains=query)
+          )
 
 product_search_view = ProductSearchView.as_view()
+
+
+class ProductItemFacetedSearch(generics.ListAPIView):
+    """
+    filter using variation name and values
+    """
+    serializer_class = ProductItemSerializerV4
+    # queryset = ProductItem.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['variation_option__variation_id__name', 'variation_option__value']
+
+    def get_queryset(self):
+        variation_name = self.request.query_params.get('variation_name', None)
+        variation_value = self.request.query_params.get('variation_value', None)
+
+        print("yoyo", variation_name, variation_value)
+
+        queryset = ProductItem.objects.filter(
+            Q(variation_option__variation_id__name=variation_name) &
+            Q(variation_option__value=variation_value)
+        )
+
+        return queryset
+    
+product_faceted_search_view = ProductItemFacetedSearch.as_view()
 
 
 

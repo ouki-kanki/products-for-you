@@ -16,13 +16,10 @@ const Notification = ({ duration, position, appearFrom, hideDirection, type, mes
   const [hideNotification, setHideNotification] = useState(false)
   
   if (!overrideDefaultHideDirection) {
+    // create the class name for hiding the notification
     hideDirection = appearFrom.replace('from', 'to')
   }
-  
-  // create the class name for hiding the notification
-  
-  console.log("the hidedirection", hideDirection)
-  
+    
   useEffect(() => {
     const id = setTimeout(() => {
       setHideNotification(true)
@@ -52,7 +49,7 @@ const Notification = ({ duration, position, appearFrom, hideDirection, type, mes
  * @param param0 
  * @returns 
  */
-export const showNotification = ({ message, position = 'bottom-right', type = 'success', duration = 1000, appearFrom = 'from-bottom', hideDirection = 'to-bottom', overrideDefaultHideDirection = false }: INotificationProps) => {
+export const showNotification = ({ message, position = 'bottom-right', type = 'success', duration = 2000, appearFrom = 'from-bottom', hideDirection = 'to-bottom', overrideDefaultHideDirection = false }: INotificationProps) => {
   const container = document.createElement('div')
   document.body.appendChild(container)
 

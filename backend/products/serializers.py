@@ -542,6 +542,14 @@ class ProductItemDetailSerializerV4(serializers.ModelSerializer):
 class ProductItemSearchSerializerV4(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product_id.name')
     product_description = serializers.ReadOnlyField(source='product_id.description')
+    # product_category = serializers.ReadOnlyField(source='product_id.category'
+    # )
+    categories = serializers.SerializerMethodField()
+
+    def get_categories(self, obj):
+        category = obj.product_id.category
+        list_of_cateogories = get_list_of_parent_categories(category, [])
+        return list_of_cateogories
 
     class Meta:
         model = ProductItem
@@ -549,5 +557,7 @@ class ProductItemSearchSerializerV4(serializers.ModelSerializer):
             'id',
             'product_name',
             'product_description',
-            'detailed_description'
+            'detailed_description',
+            'categories'
+            # 'product_category'
         )
