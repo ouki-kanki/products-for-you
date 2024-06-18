@@ -167,3 +167,1230 @@ WARNING: Using incubator modules: jdk.incubator.vector
 2024-04-01 18:13:43.499 - send collected statistics
 2024-04-01 18:13:43.500 - Open [https://stats.dbeaver.com/send-statistics?session=668f0012-71ce-460f-88f3-058f51f5a1ad&time=1711984347]
 2024-04-01 18:13:43.708 - Statistics sent (OK)
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.141.202403042157]
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.22.202403042157]
+2024-04-01 18:16:52.254 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.0.0.202403042157]
+2024-04-01 18:16:52.282 - DBeaver 24.0.0.202403042157 is starting
+2024-04-01 18:16:52.283 - OS: Linux 6.8.2-arch2-1 (amd64)
+2024-04-01 18:16:52.283 - Java version: 22 by N/A (64bit)
+2024-04-01 18:16:52.283 - Install path: '/usr/lib/dbeaver'
+2024-04-01 18:16:52.283 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-04-01 18:16:52.283 - Memory available 65Mb/1024Mb
+2024-04-01 18:16:52.290 - Create display
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:16:52.294: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:16:52.296: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-04-01 18:16:52.346 - Initialize desktop platform...
+2024-04-01 18:16:52.447 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.200.v20231102-0934]
+> Start Core Resource Management [org.eclipse.core.resources 3.20.0.v20231102-0934]
+> Start Team Support Core [org.eclipse.team.core 3.10.200.v20231106-1240]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.126.202403042157]
+2024-04-01 18:16:52.565 - Initialize base platform...
+2024-04-01 18:16:52.579 - Platform initialized (233ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.126.202403042157]
+2024-04-01 18:16:52.593 - Starting instance server at http://localhost:40199
+2024-04-01 18:16:52.597 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.200.v20231030-2045]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.200.v20231103-2012]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.200.v20231030-2045]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.200.v20231030-2045]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.200.v20231030-2045]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.200.v20231108-1058]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.36.0.v20231002-1156]
+The disableGPU setting is set to undefined
+Not disabling GPU
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.200.v20230913-1724]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.200.v20231106-1600]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.200.v20231030-2045]
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1711984612934 main info "Booting Postman 10.23.9, linux-6.8.2-arch2-1 on x64"
+1711984612937 main info "EventBus~initialize - Success"
+1711984612941 main info "Proxy configuration has not been setup"
+1711984612942 main info "CloudProxyManager~init - Success"
+1711984612973 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1711984612982 main info "UpdateHandler~init - Success"
+1711984612985 main info "LeaderSelection: Initialized successfully"
+1711984612986 main info "VersionDependencyService: Initialized successfully"
+1711984612994 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1711984613015 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1711984613044 main info "shellController~init: Success"
+1711984613050 main info "shellMeta~init: Success"
+1711984613051 main info "partitionMigrationService: State of V7 partition:"
+1711984613051 main info "partitionMigrationService: V7 partitions",[]
+1711984613052 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1711984613052 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1711984613053 main info "partitionMigrationService~init: Success"
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.100.v20231103-2012]
+1711984613071 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1711984613077 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ",null
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711984613094 main info "userPartitionService~init: Success"
+1711984613114 main info "userPartitionService: State of v8 partition system:"
+1711984613118 main info "shell~init~getPartitionToLoad: loading scratchpad partition"
+1711984613121 main info "userPartitionService: List of partitions:",[{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1711984613121 main info "userPartitionService: users global meta:",{}
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.200.v20231025-0632]
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:16:53.547: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:16:53.565: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-04-01 18:16:53.664 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.116.202403042157]
+2024-04-01 18:16:53.771 - Total database drivers: 111 (111)
+> Start Help System Core [org.eclipse.help 3.10.200.v20231106-1240]
+2024-04-01 18:16:53.829 - Create actions
+2024-04-01 18:16:53.835 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-04-01 18:16:53.835 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-04-01 18:16:53.836 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+> Start jna [com.sun.jna 5.13.0.v20230812-1000]
+2024-04-01 18:16:54.112 - Initialize workbench window
+2024-04-01 18:16:54.117 - Finish initialization
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.100.v20231106-1600]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.200.v20231106-1600]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.126.202403042157]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.126.202403042157]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.102.202403042157]
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:54.447: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+> Start Core Compare Support [org.eclipse.compare.core 3.8.300.v20231106-1240]
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:54.613: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:54.621: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:54.627: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:16:54.721: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.200.v20231106-1240]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.200.v20231106-1240]
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.163.202403042157]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.132.202403042157]
+1711984615000 main info "RuntimeIPCAgent~started: Success"
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.14.100.202311222042]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.16.0.202311222042]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.86.202403042157]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.86.202403042157]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.117.202403042157]
+> Start Console [org.eclipse.ui.console 3.13.100.v20230914-0751]
+1711984615172 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711984615175 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711984615176 main info "Main~scratchpadThemeAction:: action: set, value: light"
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.181: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+1711984615195 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+> Start Debug Core [org.eclipse.debug.core 3.21.200.v20231021-1513]
+1711984615203 main info "windowManager: First requester booted successfully."
+1711984615203 main info "windowManager~restoreWindows: Restoring requester windows"
+1711984615204 main info "Main~AppEvents - Received booted event for process requester.Version undefined UI Version: undefined Desktop Platform Version: 10.23.9"
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.235: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.239: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.247: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.256: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.260: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.278: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.282: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.284: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.289: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+2024-04-01 18:16:55.347 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.19.202403042157]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.199.202403042157]
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.150.202403042157]
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.371: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.371: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.371: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.372: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.372: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.372: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.372: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.372: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.373: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-WARNING **: 18:16:55.373: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.380: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.386: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+2024-04-01 18:16:55.392 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-04-01 18:16:55.394 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+2024-04-01 18:16:55.513 - Execution context opened (products_for_you; Metadata <products_for_you>; 1)
+2024-04-01 18:16:55.513 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Metadata <products_for_you>
+2024-04-01 18:16:55.563 - Connected (postgres-jdbc-18e963ee16d-48ffade892fe9348, PostgreSQL JDBC Driver [42.7.2])
+2024-04-01 18:16:55.576 - Execution context opened (products_for_you; SQLEditor <Script.sql>; 2)
+2024-04-01 18:16:55.576 - Initiate connection to PostgreSQL database [products_for_you@localhost] for SQLEditor <Script.sql>
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.623: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gtk-CRITICAL **: 18:16:55.651: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:16:58.038: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.104.202403042157]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.102.202403042157]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.104.202403042157]
+1711984625732 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}}
+1711984625732 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}
+1711984625769 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984625732.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711984625732.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711984625732.tar.gz'"},{"packageName":"Postman","eID":"Postman-1711984625732","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984625732.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1711984625770 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984625732.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711984625732.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711984625732.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1711984625732","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984625732.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+1711984725953 main info "WindowManager~closeHandler - Closed Window (id: 1 )"
+1711984725965 main info "Quitting app"
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:18:56.549: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-04-01 18:18:57.935 - Execution context closed (products_for_you, 2)
+
+(DBeaver:25527): Gdk-CRITICAL **: 18:18:58.000: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-04-01 18:18:58.123 - DBeaver is stopping
+2024-04-01 18:18:58.123 - Stop instance server
+2024-04-01 18:18:59.124 - Instance server has been stopped
+2024-04-01 18:18:59.125 - DBeaver shutdown completed
+2024-04-01 18:18:59.140 - Shutdown desktop platform...
+2024-04-01 18:18:59.151 - Execution context closed (products_for_you, 0)
+2024-04-01 18:18:59.162 - Execution context closed (products_for_you, 1)
+2024-04-01 18:18:59.162 - Disconnected (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+2024-04-01 18:18:59.229 - Platform shutdown completed (89ms)
+2024-04-01 18:18:59.231 - send collected statistics
+2024-04-01 18:18:59.232 - Open [https://stats.dbeaver.com/send-statistics?session=90fb33d4-e855-4c21-8ea7-7b77d1cc8834&time=1711984617]
+2024-04-01 18:18:59.561 - Statistics sent (OK)
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.141.202403042157]
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.22.202403042157]
+2024-04-01 18:19:21.740 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.0.0.202403042157]
+The disableGPU setting is set to undefined
+Not disabling GPU
+2024-04-01 18:19:21.771 - DBeaver 24.0.0.202403042157 is starting
+2024-04-01 18:19:21.773 - OS: Linux 6.8.2-arch2-1 (amd64)
+2024-04-01 18:19:21.773 - Java version: 22 by N/A (64bit)
+2024-04-01 18:19:21.773 - Install path: '/usr/lib/dbeaver'
+2024-04-01 18:19:21.774 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-04-01 18:19:21.774 - Memory available 65Mb/1024Mb
+2024-04-01 18:19:21.782 - Create display
+
+(DBeaver:26605): Gdk-CRITICAL **: 18:19:21.787: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:26605): Gdk-CRITICAL **: 18:19:21.789: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+Main: Starting cleanup of stale files
+2024-04-01 18:19:21.868 - Initialize desktop platform...
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1711984761921 main info "Booting Postman 10.23.9, linux-6.8.2-arch2-1 on x64"
+1711984761923 main info "EventBus~initialize - Success"
+1711984761925 main info "Proxy configuration has not been setup"
+1711984761926 main info "CloudProxyManager~init - Success"
+1711984761958 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1711984761969 main info "UpdateHandler~init - Success"
+1711984761972 main info "LeaderSelection: Initialized successfully"
+1711984761973 main info "VersionDependencyService: Initialized successfully"
+1711984761981 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1711984762006 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1711984762044 main info "shellController~init: Success"
+2024-04-01 18:19:22.048 - BounceCastle bundle found. Use JCE provider BC
+1711984762069 main info "shellMeta~init: Success"
+1711984762070 main info "partitionMigrationService: State of V7 partition:"
+1711984762072 main info "partitionMigrationService: V7 partitions",[]
+1711984762072 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1711984762073 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1711984762073 main info "partitionMigrationService~init: Success"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711984762081 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711984762098 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ",null
+1711984762115 main info "userPartitionService~init: Success"
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.200.v20231102-0934]
+1711984762155 main info "userPartitionService: State of v8 partition system:"
+1711984762161 main info "shell~init~getPartitionToLoad: loading scratchpad partition"
+1711984762164 main info "userPartitionService: List of partitions:",[{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1711984762164 main info "userPartitionService: users global meta:",{}
+> Start Core Resource Management [org.eclipse.core.resources 3.20.0.v20231102-0934]
+> Start Team Support Core [org.eclipse.team.core 3.10.200.v20231106-1240]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.126.202403042157]
+2024-04-01 18:19:22.232 - Initialize base platform...
+2024-04-01 18:19:22.255 - Platform initialized (387ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.126.202403042157]
+2024-04-01 18:19:22.276 - Starting instance server at http://localhost:38313
+2024-04-01 18:19:22.283 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.200.v20231030-2045]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.200.v20231103-2012]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.200.v20231030-2045]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.200.v20231030-2045]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.200.v20231030-2045]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.200.v20231108-1058]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.36.0.v20231002-1156]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.200.v20230913-1724]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.200.v20231106-1600]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.200.v20231030-2045]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.100.v20231103-2012]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.200.v20231025-0632]
+
+(DBeaver:26605): Gdk-CRITICAL **: 18:19:23.442: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:26605): Gdk-CRITICAL **: 18:19:23.460: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-04-01 18:19:23.550 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.116.202403042157]
+2024-04-01 18:19:23.635 - Total database drivers: 111 (111)
+> Start Help System Core [org.eclipse.help 3.10.200.v20231106-1240]
+2024-04-01 18:19:23.683 - Create actions
+2024-04-01 18:19:23.687 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-04-01 18:19:23.688 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-04-01 18:19:23.688 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+> Start jna [com.sun.jna 5.13.0.v20230812-1000]
+2024-04-01 18:19:23.920 - Initialize workbench window
+2024-04-01 18:19:23.924 - Finish initialization
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.100.v20231106-1600]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.200.v20231106-1600]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.126.202403042157]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.126.202403042157]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.102.202403042157]
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:24.244: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+> Start Core Compare Support [org.eclipse.compare.core 3.8.300.v20231106-1240]
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:24.413: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:24.426: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:24.433: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gdk-CRITICAL **: 18:19:24.525: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.200.v20231106-1240]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.200.v20231106-1240]
+1711984764605 main info "RuntimeIPCAgent~started: Success"
+1711984764822 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711984764828 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711984764828 main info "Main~scratchpadThemeAction:: action: set, value: light"
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.163.202403042157]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.132.202403042157]
+1711984764857 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+1711984764866 main info "windowManager: First requester booted successfully."
+1711984764867 main info "windowManager~restoreWindows: Restoring requester windows"
+1711984764867 main info "Main~AppEvents - Received booted event for process requester.Version undefined UI Version: undefined Desktop Platform Version: 10.23.9"
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.14.100.202311222042]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.16.0.202311222042]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.86.202403042157]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.86.202403042157]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.117.202403042157]
+> Start Console [org.eclipse.ui.console 3.13.100.v20230914-0751]
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.078: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+> Start Debug Core [org.eclipse.debug.core 3.21.200.v20231021-1513]
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.128: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.133: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.140: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.148: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.153: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.168: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.173: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.174: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.179: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+2024-04-01 18:19:25.230 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.19.202403042157]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.199.202403042157]
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.150.202403042157]
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.264: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.264: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.264: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.264: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.265: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.265: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.265: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.266: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.266: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 18:19:25.266: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.272: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+2024-04-01 18:19:25.278 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-04-01 18:19:25.280 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.302: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+2024-04-01 18:19:25.411 - Execution context opened (products_for_you; Metadata <products_for_you>; 1)
+2024-04-01 18:19:25.411 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Metadata <products_for_you>
+2024-04-01 18:19:25.467 - Connected (postgres-jdbc-18e963ee16d-48ffade892fe9348, PostgreSQL JDBC Driver [42.7.2])
+2024-04-01 18:19:25.471 - Execution context opened (products_for_you; SQLEditor <Script.sql>; 2)
+2024-04-01 18:19:25.471 - Initiate connection to PostgreSQL database [products_for_you@localhost] for SQLEditor <Script.sql>
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.525: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 18:19:25.537: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gdk-CRITICAL **: 18:19:27.894: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+1711984775377 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}}
+1711984775378 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}
+1711984775434 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984775378.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711984775378.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711984775378.tar.gz'"},{"packageName":"Postman","eID":"Postman-1711984775378","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984775378.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1711984775435 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984775378.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711984775378.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711984775378.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1711984775378","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711984775378.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:22:27.321 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:28520): Gdk-CRITICAL **: 18:22:27.329: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:28520): Gdk-CRITICAL **: 18:22:27.330: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:28520): Gdk-CRITICAL **: 18:22:27.356: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:28520): Gdk-CRITICAL **: 18:22:27.362: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+Could not get the lock, quitting
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.104.202403042157]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.102.202403042157]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.104.202403042157]
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:24:41.508 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:29315): Gdk-CRITICAL **: 18:24:41.518: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:29315): Gdk-CRITICAL **: 18:24:41.520: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:29315): Gdk-CRITICAL **: 18:24:41.544: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:29315): Gdk-CRITICAL **: 18:24:41.552: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+Could not get the lock, quitting
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:35:41.207 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:31765): Gdk-CRITICAL **: 18:35:41.217: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:31765): Gdk-CRITICAL **: 18:35:41.219: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:31765): Gdk-CRITICAL **: 18:35:41.245: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:31765): Gdk-CRITICAL **: 18:35:41.251: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+Could not get the lock, quitting
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:37:12.824 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:32922): Gdk-CRITICAL **: 18:37:12.832: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:32922): Gdk-CRITICAL **: 18:37:12.833: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:32922): Gdk-CRITICAL **: 18:37:12.859: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:32922): Gdk-CRITICAL **: 18:37:12.868: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+[32974:32974:0401/183713.048920:ERROR:policy_logger.cc(157)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(161) Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+Opening in existing browser session.
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+Could not get the lock, quitting
+Fontconfig error: Cannot load default config file: No such file: (null)
+[32974:32974:0401/183713.518917:ERROR:interface_endpoint_client.cc(707)] Message 0 rejected by interface blink.mojom.WidgetHost
+1711985867406 main info "WindowManager~closeHandler - Closed Window (id: 1 )"
+1711985867499 main info "Quitting app"
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:38:11.184 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:33846): Gdk-CRITICAL **: 18:38:11.196: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:33846): Gdk-CRITICAL **: 18:38:11.199: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:33846): Gdk-CRITICAL **: 18:38:11.236: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:33846): Gdk-CRITICAL **: 18:38:11.244: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+[33898:33898:0401/183811.406029:ERROR:policy_logger.cc(157)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(161) Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+Opening in existing browser session.
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1711985891791 main info "Booting Postman 10.23.9, linux-6.8.2-arch2-1 on x64"
+1711985891792 main info "EventBus~initialize - Success"
+1711985891794 main info "Proxy configuration has not been setup"
+1711985891795 main info "CloudProxyManager~init - Success"
+1711985891814 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1711985891823 main info "UpdateHandler~init - Success"
+1711985891826 main info "LeaderSelection: Initialized successfully"
+1711985891827 main info "VersionDependencyService: Initialized successfully"
+1711985891836 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+Fontconfig error: Cannot load default config file: No such file: (null)
+1711985891859 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1711985891899 main info "shellController~init: Success"
+1711985891909 main info "shellMeta~init: Success"
+1711985891910 main info "partitionMigrationService: State of V7 partition:"
+1711985891910 main info "partitionMigrationService: V7 partitions",[]
+1711985891911 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1711985891912 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1711985891912 main info "partitionMigrationService~init: Success"
+1711985891926 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1711985891939 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ",null
+1711985891950 main info "userPartitionService~init: Success"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711985891975 main info "userPartitionService: State of v8 partition system:"
+1711985891980 main info "shell~init~getPartitionToLoad: loading scratchpad partition"
+1711985891982 main info "userPartitionService: List of partitions:",[{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1711985891982 main info "userPartitionService: users global meta:",{}
+1711985893671 main info "RuntimeIPCAgent~started: Success"
+1711985893813 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711985893816 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711985893817 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711985893836 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+1711985893843 main info "windowManager: First requester booted successfully."
+1711985893843 main info "windowManager~restoreWindows: Restoring requester windows"
+1711985893843 main info "Main~AppEvents - Received booted event for process requester.Version undefined UI Version: undefined Desktop Platform Version: 10.23.9"
+1711985904151 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}}
+1711985904152 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}
+1711985904212 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711985904153.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711985904153.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711985904153.tar.gz'"},{"packageName":"Postman","eID":"Postman-1711985904153","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711985904153.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1711985904213 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711985904153.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711985904153.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711985904153.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1711985904153","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711985904153.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:38:31.010 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:34841): Gdk-CRITICAL **: 18:38:31.022: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:34841): Gdk-CRITICAL **: 18:38:31.024: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:34841): Gdk-CRITICAL **: 18:38:31.063: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:34841): Gdk-CRITICAL **: 18:38:31.072: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+[34890:34890:0401/183831.192011:ERROR:policy_logger.cc(157)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(161) Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+Opening in existing browser session.
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+Could not get the lock, quitting
+Fontconfig error: Cannot load default config file: No such file: (null)
+[34890:34890:0401/183831.736617:ERROR:interface_endpoint_client.cc(707)] Message 3 rejected by interface blink.mojom.Widget
+[34890:34890:0401/183831.737325:ERROR:interface_endpoint_client.cc(707)] Message 0 rejected by interface blink.mojom.WidgetHost
+1711985928257 main info "WindowManager~closeHandler - Closed Window (id: 1 )"
+1711985928264 main info "Quitting app"
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:39:23.176 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:35800): Gdk-CRITICAL **: 18:39:23.185: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:35800): Gdk-CRITICAL **: 18:39:23.186: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:35800): Gdk-CRITICAL **: 18:39:23.209: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:35800): Gdk-CRITICAL **: 18:39:23.215: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+[35851:35851:0401/183923.371620:ERROR:policy_logger.cc(157)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(161) Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Fontconfig error: Cannot load default config file: No such file: (null)
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1711985963786 main info "Booting Postman 10.23.9, linux-6.8.2-arch2-1 on x64"
+1711985963788 main info "EventBus~initialize - Success"
+1711985963790 main info "Proxy configuration has not been setup"
+1711985963791 main info "CloudProxyManager~init - Success"
+1711985963817 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1711985963826 main info "UpdateHandler~init - Success"
+1711985963828 main info "LeaderSelection: Initialized successfully"
+1711985963829 main info "VersionDependencyService: Initialized successfully"
+1711985963836 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1711985963858 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1711985963883 main info "shellController~init: Success"
+1711985963887 main info "shellMeta~init: Success"
+1711985963887 main info "partitionMigrationService: State of V7 partition:"
+1711985963887 main info "partitionMigrationService: V7 partitions",[]
+1711985963888 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1711985963888 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1711985963888 main info "partitionMigrationService~init: Success"
+1711985963894 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1711985963907 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ",null
+1711985963918 main info "userPartitionService~init: Success"
+1711985963936 main info "userPartitionService: State of v8 partition system:"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711985963939 main info "shell~init~getPartitionToLoad: loading scratchpad partition"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711985963941 main info "userPartitionService: List of partitions:",[{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1711985963941 main info "userPartitionService: users global meta:",{}
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+Opening in existing browser session.
+1711985965650 main info "RuntimeIPCAgent~started: Success"
+1711985965785 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711985965787 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711985965788 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711985965807 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+1711985965813 main info "windowManager: First requester booted successfully."
+1711985965814 main info "windowManager~restoreWindows: Restoring requester windows"
+1711985965814 main info "Main~AppEvents - Received booted event for process requester.Version undefined UI Version: undefined Desktop Platform Version: 10.23.9"
+1711985973804 main info "WindowManager~closeHandler - Closed Window (id: 1 )"
+1711985973829 main info "Quitting app"
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:44:34.255 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:37767): Gdk-CRITICAL **: 18:44:34.265: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:37767): Gdk-CRITICAL **: 18:44:34.267: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:37767): Gdk-CRITICAL **: 18:44:34.299: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:37767): Gdk-CRITICAL **: 18:44:34.308: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+[37833:37833:0401/184434.372657:ERROR:policy_logger.cc(157)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(161) Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Fontconfig error: Cannot load default config file: No such file: (null)
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1711986274866 main info "Booting Postman 10.23.9, linux-6.8.2-arch2-1 on x64"
+[37833:37833:0401/184434.868084:ERROR:interface_endpoint_client.cc(707)] Message 0 rejected by interface blink.mojom.WidgetHost
+1711986274868 main info "EventBus~initialize - Success"
+1711986274871 main info "Proxy configuration has not been setup"
+1711986274872 main info "CloudProxyManager~init - Success"
+1711986274899 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1711986274909 main info "UpdateHandler~init - Success"
+1711986274912 main info "LeaderSelection: Initialized successfully"
+1711986274913 main info "VersionDependencyService: Initialized successfully"
+1711986274922 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1711986274946 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1711986274970 main info "shellController~init: Success"
+1711986274975 main info "shellMeta~init: Success"
+1711986274975 main info "partitionMigrationService: State of V7 partition:"
+1711986274976 main info "partitionMigrationService: V7 partitions",[]
+1711986274976 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1711986274976 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1711986274976 main info "partitionMigrationService~init: Success"
+1711986274987 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1711986274992 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ",null
+1711986275001 main info "userPartitionService~init: Success"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1711986275019 main info "userPartitionService: State of v8 partition system:"
+1711986275022 main info "shell~init~getPartitionToLoad: loading scratchpad partition"
+1711986275024 main info "userPartitionService: List of partitions:",[{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1711986275024 main info "userPartitionService: users global meta:",{}
+Opening in existing browser session.
+1711986276722 main info "RuntimeIPCAgent~started: Success"
+1711986276862 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711986276864 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711986276865 main info "Main~scratchpadThemeAction:: action: set, value: light"
+1711986276884 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+1711986276891 main info "windowManager: First requester booted successfully."
+1711986276891 main info "windowManager~restoreWindows: Restoring requester windows"
+1711986276892 main info "Main~AppEvents - Received booted event for process requester.Version undefined UI Version: undefined Desktop Platform Version: 10.23.9"
+[37833:37833:0401/184443.418695:ERROR:atom_cache.cc(229)] Add WM_CHANGE_STATE to kAtomsToCache
+1711986287490 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}}
+1711986287491 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=0&syncEnabled=false&teamPlan=&teamId=0","userId":"0"}
+1711986287563 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711986287493.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711986287493.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711986287493.tar.gz'"},{"packageName":"Postman","eID":"Postman-1711986287493","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711986287493.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1711986287563 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711986287493.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1711986287493.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1711986287493.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1711986287493","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1711986287493.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:47:47.460 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:38955): Gdk-CRITICAL **: 18:47:47.468: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:38955): Gdk-CRITICAL **: 18:47:47.469: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:38955): Gdk-CRITICAL **: 18:47:47.495: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:38955): Gdk-CRITICAL **: 18:47:47.501: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+Opening in existing browser session.
+[39014:39014:0100/000000.520152:ERROR:zygote_linux.cc(672)] write: Broken pipe (32)
+Could not get the lock, quitting
+Opening in existing browser session.
+[37833:37833:0401/184748.564064:ERROR:interface_endpoint_client.cc(707)] Message 6 rejected by interface blink.mojom.WidgetHost
+[37833:37833:0401/184748.564120:ERROR:interface_endpoint_client.cc(707)] Message 7 rejected by interface blink.mojom.WidgetHost
+[37833:37833:0401/184748.564151:ERROR:interface_endpoint_client.cc(707)] Message 3 rejected by interface blink.mojom.Widget
+WARNING: Using incubator modules: jdk.incubator.vector
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.100.v20230930-1207]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.100.v20231012-1825]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.0.0.202403042157]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.200.v20231030-2045]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.0.v20231102-1012]
+2024-04-01 18:58:45.088 - Create display
+> Start Expression Language [org.eclipse.core.expressions 3.9.200.v20230921-0857]
+
+(DBeaver:44185): Gdk-CRITICAL **: 18:58:45.097: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:44185): Gdk-CRITICAL **: 18:58:45.098: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:44185): Gdk-CRITICAL **: 18:58:45.127: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:44185): Gdk-CRITICAL **: 18:58:45.135: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+Opening in existing browser session.
+[44259:44259:0100/000000.141692:ERROR:zygote_linux.cc(672)] write: Broken pipe (32)
+Could not get the lock, quitting
+Opening in existing browser session.
+
+(DBeaver:26605): Gdk-WARNING **: 21:53:37.936: Tried to map a popup with a non-top most parent
+
+(DBeaver:26605): Gdk-CRITICAL **: 21:53:42.910: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:42.935: Negative content height -3 (allocation 7, extents 5x5) while allocating gadget (node scrollbar, owner GtkScrollbar)
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:42.935: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.361: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.390: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.410: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.414: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.421: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.428: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.432: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.444: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.445: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.503: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.504: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.505: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.511: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.548: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.548: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.549: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.549: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.549: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.549: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.549: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.549: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.550: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:26605): Gtk-WARNING **: 21:53:47.550: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+2024-04-01 21:53:47.554 - Execution context opened (products_for_you; SQLEditor <Script-1.sql>; 3)
+2024-04-01 21:53:47.554 - Initiate connection to PostgreSQL database [products_for_you@localhost] for SQLEditor <Script-1.sql>
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.568: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.607: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.633: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+
+(DBeaver:26605): Gtk-CRITICAL **: 21:53:47.645: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+2024-04-01 21:53:52.169 - Delete empty SQL script '/General/Scripts/Script.sql'
+2024-04-01 21:53:52.176 - Execution context closed (products_for_you, 2)
+1712001589503 main info "VersionDependencyService: Resetting UI version as user logged out/switched account"
+1712001589504 main info "Main - model-events~user - (users, add) received"
+1712001589946 main warn "AuthHandler~open: Current app is not default protocol client - Falling back to polling mechanism."
+(electron) The new-window event is deprecated and will be removed. Please use contents.setWindowOpenHandler() instead.
+(electron) The new-window event is deprecated and will be removed. Please use contents.setWindowOpenHandler() instead.
+1712002189650 main info "Shell~init~loginUser: associating the user ","33994519"," with transit partition"
+1712002189651 main info "userPartitionService~getNewPartitionId: creating a partition with userId and teamId as 0"
+1712002189677 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1712002189694 main info "userPartitionService: State of v8 partition system:"
+1712002189698 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-04-01T20:09:49.676Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1712002189698 main info "userPartitionService: users global meta:",{}
+1712002193430 main info "Main~getRemoteInitPath:: "
+1712002193646 main info "Main - model-events~user - (user, update) received"
+1712002193647 main info "Main~reload: https://desktop.postman.com/?desktopVersion=10.23.9&userId=33994519&teamId=0"
+1712002193955 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+INTERCEPTOR CONNECTIVITY: Connecting to Interceptor Bridge
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1712002193967 main info "windowManager: First requester booted successfully."
+1712002193967 main info "windowManager~restoreWindows: Restoring requester windows"
+1712002193968 main info "Main~AppEvents - Received booted event for process requester.Version 10.23.12 UI Version: 10.23.12-ui-240308-0814 Desktop Platform Version: 10.23.9"
+1712002194068 main info "Main~getRemoteInitPath:: "
+1712002194230 main info "Main~getPlatformLaunchPerfMetrics"
+1712002196042 main info "Main~getRemoteInitPath:: "
+1712002196408 main info "Main - model-events~user - (user, update) received"
+1712002196679 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1712002196686 main info "Main~AppEvents - Received booted event for process requester.Version 10.23.12 UI Version: 10.23.12-ui-240308-0814 Desktop Platform Version: 10.23.9"
+1712002196751 main info "Main~getRemoteInitPath:: "
+1712002197123 main info "INTERCEPTOR CONNECTIVITY: Attempting to start websocket server on port 15611"
+1712002197335 main info "Main~getPlatformLaunchPerfMetrics"
+1712002197357 main info "Main - model-events~user - (user, bootstrapUser) received"
+1712002197357 main info "model-events~user - bootstrapUser received"
+1712002197358 main info "Main - model-events~user - (user, bootstrapUser) received"
+1712002197358 main info "model-events~user - bootstrapUser received"
+1712002197388 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1712002197390 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1712002197418 main info "userPartitionService: State of v8 partition system:"
+1712002197424 main info "userPartitionService: State of v8 partition system:"
+1712002197428 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-04-01T20:09:57.390Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1712002197428 main info "userPartitionService: users global meta:",{}
+1712002197430 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-04-01T20:09:57.390Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1712002197430 main info "userPartitionService: users global meta:",{}
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+1712002207279 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=33994519&syncEnabled=true&teamPlan=&teamId=0","userId":"33994519"}}
+1712002207280 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.23.9","downloadVersion":"10.24.3","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.23.9 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=33994519&syncEnabled=true&teamPlan=&teamId=0","userId":"33994519"}
+1712002207333 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1712002207280.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1712002207280.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1712002207280.tar.gz'"},{"packageName":"Postman","eID":"Postman-1712002207280","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1712002207280.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1712002207334 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1712002207280.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1712002207280.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1712002207280.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1712002207280","downloadURL":"https://dl.pstmn.io/download/version/10.24.3/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1712002207280.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+1712003377888 main info "WindowManager~closeHandler - Closed Window (id: 3 )"
+IPCClient ~ WindowHandler: New event is received { type: 'window-closed', windowId: 3 }
+TypeError: Cannot read properties of undefined (reading 'send')
+    at Object.sendMessageToInterceptor (/opt/postman/app/resources/app/services/websocketServer.js:144:10)
+    at Object.requesterWindowHandler (/opt/postman/app/resources/app/services/websocketServer.js:389:14)
+    at EventEmitter.emit (node:events:539:35)
+    at EventEmitter.emit (node:domain:475:12)
+    at _dispatch (/opt/postman/app/resources/app/common/_event-bus.js:256:14)
+    at EventBus._publish (/opt/postman/app/resources/app/common/_event-bus.js:207:9)
+    at Object.closedHandler (/opt/postman/app/resources/app/services/windowManager.js:1078:18)
+    at BrowserWindow.emit (node:events:527:28)
+    at BrowserWindow.emit (node:domain:475:12)
+1712003377900 main error "Main~handleUncaughtError - Uncaught errors",{"name":"TypeError","message":"Cannot read properties of undefined (reading 'send')","stack":"TypeError: Cannot read properties of undefined (reading 'send')\n    at Object.sendMessageToInterceptor (/opt/postman/app/resources/app/services/websocketServer.js:144:10)\n    at Object.requesterWindowHandler (/opt/postman/app/resources/app/services/websocketServer.js:389:14)\n    at EventEmitter.emit (node:events:539:35)\n    at EventEmitter.emit (node:domain:475:12)\n    at _dispatch (/opt/postman/app/resources/app/common/_event-bus.js:256:14)\n    at EventBus._publish (/opt/postman/app/resources/app/common/_event-bus.js:207:9)\n    at Object.closedHandler (/opt/postman/app/resources/app/services/windowManager.js:1078:18)\n    at BrowserWindow.emit (node:events:527:28)\n    at BrowserWindow.emit (node:domain:475:12)"}
+Main~handleUncaughtError - Uncaught errors TypeError: Cannot read properties of undefined (reading 'send')
+    at Object.sendMessageToInterceptor (/opt/postman/app/resources/app/services/websocketServer.js:144:10)
+    at Object.requesterWindowHandler (/opt/postman/app/resources/app/services/websocketServer.js:389:14)
+    at EventEmitter.emit (node:events:539:35)
+    at EventEmitter.emit (node:domain:475:12)
+    at _dispatch (/opt/postman/app/resources/app/common/_event-bus.js:256:14)
+    at EventBus._publish (/opt/postman/app/resources/app/common/_event-bus.js:207:9)
+    at Object.closedHandler (/opt/postman/app/resources/app/services/windowManager.js:1078:18)
+    at BrowserWindow.emit (node:events:527:28)
+    at BrowserWindow.emit (node:domain:475:12)
+2024-04-02 02:59:43.309 - Execution context closed (products_for_you, 0)
+2024-04-02 02:59:43.321 - Execution context closed (products_for_you, 1)
+2024-04-02 02:59:43.332 - Execution context closed (products_for_you, 3)
+2024-04-02 02:59:43.332 - Disconnected (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+
+(DBeaver:26605): Gdk-CRITICAL **: 02:59:43.562: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:26605): Gtk-CRITICAL **: 03:23:41.574: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkScrollbar
+Fontconfig error: Cannot load default config file: No such file: (null)
+Opening in existing browser session.
+WARNING: Using incubator modules: jdk.incubator.vector
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1718735674384 main info "Booting Postman 10.24.16, linux-6.9.4-arch1-1 on x64"
+1718735674386 main info "EventBus~initialize - Success"
+1718735674389 main info "Proxy configuration has not been setup"
+1718735674390 main info "CloudProxyManager~init - Success"
+1718735674418 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1718735674429 main info "UpdateHandler~init - Success"
+1718735674432 main info "LeaderSelection: Initialized successfully"
+1718735674433 main info "VersionDependencyService: Initialized successfully"
+1718735674447 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1718735674479 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1718735674508 main info "shellController~init: Success"
+1718735674530 main info "shellMeta~init: Success"
+1718735674530 main info "partitionMigrationService: State of V7 partition:"
+1718735674531 main info "partitionMigrationService: V7 partitions",[]
+1718735674531 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1718735674531 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1718735674532 main info "partitionMigrationService~init: Success"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1718735674554 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1718735674560 main info "userPartitionService~getRecentV8UserPartition: recent v8 user context partition ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1718735674560 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1718735674572 main info "userPartitionService~init: Success"
+1718735674596 main info "userPartitionService: State of v8 partition system:"
+1718735674599 main info "shell~init~getPartitionToLoad: loading active partition"
+1718735674604 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-04-06T15:22:00.203Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1718735674604 main info "userPartitionService: users global meta:",{}
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.300.v20240418-0734]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.300.v20240419-2334]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.1.0.202406031236]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.400.v20240416-0658]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.200.v20240424-0956]
+> Start jna [com.sun.jna 5.14.0.v20231211-1200]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.147.202406031236]
+> Start Expression Language [org.eclipse.core.expressions 3.9.400.v20240413-1529]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.28.202406031236]
+2024-06-18 21:34:36.001 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.1.0.202406031236]
+2024-06-18 21:34:36.036 - DBeaver 24.1.0.202406031236 is starting
+2024-06-18 21:34:36.037 - OS: Linux 6.9.4-arch1-1 (amd64)
+2024-06-18 21:34:36.037 - Java version: 22 by N/A (64bit)
+2024-06-18 21:34:36.037 - Install path: '/usr/lib/dbeaver'
+2024-06-18 21:34:36.037 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-06-18 21:34:36.039 - Memory available 150Mb/1024Mb
+2024-06-18 21:34:36.040 - Create display
+
+(DBeaver:8521): Gdk-CRITICAL **: 21:34:36.045: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:8521): Gdk-CRITICAL **: 21:34:36.048: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-18 21:34:36.131 - Initialize desktop platform...
+1718735676162 main info "RuntimeIPCAgent~started: Success"
+2024-06-18 21:34:36.277 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.400.v20240426-1040]
+> Start Core Resource Management [org.eclipse.core.resources 3.20.200.v20240426-1040]
+> Start Team Support Core [org.eclipse.team.core 3.10.400.v20240413-1529]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.132.202406031236]
+2024-06-18 21:34:36.437 - Initialize base platform...
+2024-06-18 21:34:36.454 - Platform initialized (323ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.132.202406031236]
+2024-06-18 21:34:36.481 - Starting instance server at http://localhost:43475
+2024-06-18 21:34:36.485 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.400.v20240425-0840]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.400.v20240413-1529]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.300.v20231201-1637]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.400.v20240424-0956]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.400.v20240321-1245]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.400.v20240424-0444]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.37.0.v20231208-1346]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.400.v20240424-0956]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.400.v20240416-0658]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.400.v20240418-1547]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.400.v20240321-1245]
+> Start Eclipse SDK Themes [org.eclipse.ui.themes 1.2.2400.v20240213-1133]
+
+(DBeaver:8521): Gdk-CRITICAL **: 21:34:37.477: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:8521): Gdk-CRITICAL **: 21:34:37.497: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-18 21:34:37.606 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.122.202406031236]
+2024-06-18 21:34:37.732 - Total database drivers: 117 (117)
+> Start Help System Core [org.eclipse.help 3.10.400.v20240415-0528]
+1718735677783 main info "Main~getRemoteInitPath:: "
+2024-06-18 21:34:37.790 - Create actions
+2024-06-18 21:34:37.797 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-06-18 21:34:37.798 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-06-18 21:34:37.798 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+2024-06-18 21:34:37.798 - Create workbench actions
+1718735678049 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+1718735678051 main info "@postman/app-updater: version Updated","10.24.3","10.24.16"
+1718735678051 main info "UpdateHandler~app-update-events - Received event",{"name":"electronVersionUpdated","namespace":"appUpdate","data":{"lastKnownVersion":"10.24.3","currentVersion":"10.24.16"}}
+2024-06-18 21:34:38.053 - Initialize workbench window
+INTERCEPTOR CONNECTIVITY: Connecting to Interceptor Bridge
+2024-06-18 21:34:38.057 - Finish initialization
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1718735678066 main info "windowManager: First requester booted successfully."
+1718735678066 main info "windowManager~restoreWindows: Restoring requester windows"
+1718735678067 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.17 UI Version: 10.24.17-ui-240405-0438 Desktop Platform Version: 10.24.16"
+1718735678200 main info "Main~getRemoteInitPath:: "
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.300.v20240416-0658]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.400.v20240424-0941]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.132.202406031236]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.132.202406031236]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.108.202406031236]
+1718735678433 main info "Main~getPlatformLaunchPerfMetrics"
+> Start Core Compare Support [org.eclipse.compare.core 3.8.500.v20240415-1311]
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:38.571: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gdk-CRITICAL **: 21:34:38.690: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.400.v20240413-1529]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.400.v20240413-1529]
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+1718735678986 main info "INTERCEPTOR CONNECTIVITY: Attempting to start websocket server on port 15611"
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.169.202406031236]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.138.202406031236]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.16.0.202405011806]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.18.0.202405011806]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.92.202406031236]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.92.202406031236]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.129.202406031236]
+> Start DBeaver Dashboards Model [org.jkiss.dbeaver.model.dashboard 1.0.5.202406031236]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.123.202406031236]
+> Start Console [org.eclipse.ui.console 3.14.100.v20240413-1529]
+> Start Debug Core [org.eclipse.debug.core 3.21.400.v20240415-0528]
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.362: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.366: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.372: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.380: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.384: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+1718735679395 main info "Main - model-events~user - (user, bootstrapUser) received"
+1718735679395 main info "model-events~user - bootstrapUser received"
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.404: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.110.202406031236]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.108.202406031236]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.110.202406031236]
+2024-06-18 21:34:39.480 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.25.202406031236]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.205.202406031236]
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.488: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.488: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.488: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.488: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.489: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.489: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.489: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.489: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.489: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8521): Gtk-WARNING **: 21:34:39.489: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.156.202406031236]
+2024-06-18 21:34:39.519 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-06-18 21:34:39.521 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+2024-06-18 21:34:39.649 - Execution context opened (products_for_you; Metadata <products_for_you>; 1)
+2024-06-18 21:34:39.649 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Metadata <products_for_you>
+2024-06-18 21:34:39.703 - Connected (postgres-jdbc-18e963ee16d-48ffade892fe9348, PostgreSQL JDBC Driver [42.7.2])
+2024-06-18 21:34:39.719 - Execution context opened (products_for_you; SQLEditor <Script-1.sql>; 2)
+2024-06-18 21:34:39.719 - Initiate connection to PostgreSQL database [products_for_you@localhost] for SQLEditor <Script-1.sql>
+2024-06-18 21:34:41.761 - Open [https://dbeaver.io/product/version.xml]
+
+(DBeaver:8521): Gdk-CRITICAL **: 21:34:42.082: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+1718735688607 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.24.16","downloadVersion":"11.2.0","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.24.16 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=33994519&syncEnabled=true&teamPlan=&teamId=0","userId":"33994519"}}
+1718735688607 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.24.16","downloadVersion":"11.2.0","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.24.16 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=33994519&syncEnabled=true&teamPlan=&teamId=0","userId":"33994519"}
+1718735688729 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735688608.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1718735688608.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1718735688608.tar.gz'"},{"packageName":"Postman","eID":"Postman-1718735688608","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735688608.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1718735688730 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735688608.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1718735688608.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1718735688608.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1718735688608","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735688608.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+1718735693226 main info "Main - model-events~user - (authentication, reauthenticate) received"
+1718735693631 main warn "AuthHandler~open: Current app is not default protocol client - Falling back to polling mechanism."
+(electron) The new-window event is deprecated and will be removed. Please use contents.setWindowOpenHandler() instead.
+1718735715501 main info "Shell~init~loginUser: Updating existing user details"
+1718735715502 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1718735715522 main info "userPartitionService: State of v8 partition system:"
+1718735715530 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-18T18:35:15.501Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1718735715530 main info "userPartitionService: users global meta:",{}
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+1718735718018 main info "Main~getRemoteInitPath:: "
+1718735718214 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1718735718229 main info "windowManager: First requester booted successfully."
+1718735718229 main info "windowManager~restoreWindows: Restoring requester windows"
+1718735718229 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.17 UI Version: 10.24.17-ui-240405-0438 Desktop Platform Version: 10.24.16"
+1718735718345 main info "Main~getRemoteInitPath:: "
+1718735718543 main info "Main~getPlatformLaunchPerfMetrics"
+1718735718941 main info "Main - model-events~user - (user, update) received"
+1718735718942 main info "Main~reload: https://desktop.postman.com/?desktopVersion=10.24.16&webVersion=10.24.17-ui-240405-0438&userId=33994519&teamId=0"
+1718735720300 main info "Main~getRemoteInitPath:: "
+1718735720536 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1718735720546 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.17 UI Version: 10.24.17-ui-240405-0438 Desktop Platform Version: 10.24.16"
+1718735720604 main info "Main~getRemoteInitPath:: "
+1718735721671 main info "Main - model-events~user - (user, update) received"
+1718735721812 main info "Main~getPlatformLaunchPerfMetrics"
+1718735723229 main info "Main - model-events~user - (user, bootstrapUser) received"
+1718735723229 main info "model-events~user - bootstrapUser received"
+1718735723243 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1718735723263 main info "userPartitionService: State of v8 partition system:"
+1718735723267 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-18T18:35:23.243Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1718735723267 main info "userPartitionService: users global meta:",{}
+1718735723273 main info "Main - model-events~user - (user, bootstrapUser) received"
+1718735723273 main info "model-events~user - bootstrapUser received"
+1718735723287 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1718735723304 main info "userPartitionService: State of v8 partition system:"
+1718735723308 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-18T18:35:23.287Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1718735723309 main info "userPartitionService: users global meta:",{}
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 3 }
+1718735730835 main info "UpdateHandler~app-update-events - Received event",{"name":"updateElectron","namespace":"appUpdate","data":{"channel":"stable","version":"10.24.16","downloadVersion":"11.2.0","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.24.16 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=33994519&syncEnabled=true&teamPlan=&teamId=0","userId":"33994519"}}
+1718735730835 main info "LinuxUpdater~downloadUpdate - UpdateInfo received",{"channel":"stable","version":"10.24.16","downloadVersion":"11.2.0","appId":"5be42d89-7f6a-40c5-a098-19647251d2ef","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Postman/10.24.16 Electron/20.3.11 Safari/537.36","platform":"LINUX","arch":"64","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","updateServerDomain":"https://dl.pstmn.io/","additionalParamsString":"installationId=5be42d89-7f6a-40c5-a098-19647251d2ef&userId=33994519&syncEnabled=true&teamPlan=&teamId=0","userId":"33994519"}
+1718735730953 main info "@postman/app-updater: error",{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735730836.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1718735730836.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1718735730836.tar.gz'"},{"packageName":"Postman","eID":"Postman-1718735730836","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735730836.tar.gz"},"downloadDirectory":"/opt/postman"}}
+1718735730955 main info "UpdateHandler~app-update-events - Received event",{"name":"electronAppUpdateError","namespace":"appUpdate","data":{"error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735730836.tar.gz","name":"Error","message":"EACCES: permission denied, open '/opt/postman/Postman-1718735730836.tar.gz'","stack":"Error: EACCES: permission denied, open '/opt/postman/Postman-1718735730836.tar.gz'"},"updateData":{"packageName":"Postman","eID":"Postman-1718735730836","downloadURL":"https://dl.pstmn.io/download/version/11.2.0/linux_64","downloadDirectory":"/opt/postman","downloadInfo":{"status":"DOWNLOAD_ERROR","error":{"errno":-13,"code":"EACCES","syscall":"open","path":"/opt/postman/Postman-1718735730836.tar.gz"},"downloadDirectory":"/opt/postman"}}}}
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 3 }

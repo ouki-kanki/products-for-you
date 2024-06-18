@@ -2,16 +2,13 @@
 env='myenv'
 container_name='products_for_you'
 
-# open guake on the current dir and activate venv
-guake --execute-command='source myenv/bin/activate' .
-
 # start docker deamon
 if ! systemctl is-active -q "docker.service" ; then
   echo "Starting docker service"
   # TODO: inform if the service cannot be started
   sudo systemctl start docker.service && echo "docker daemon started"
 else
-  echo "docker service is  active"  
+  echo "docker service is  active"
 fi
 
 # start venv
@@ -27,19 +24,31 @@ else
   echo "container $container_name is running"
 fi
 
+
+# TODO: not working
+# open guake on the current dir  activate venv run django server
+cd ../../
+# TODO: have to open a useless tab cause the second statement does not seem to open the terminal in current dir.need to find a fix for that
+guake .
+guake --execute-command='source myenv/bin/activate && cd ./backend && python manage.py runserver' .
+
 # run code with server
-cd ../
 codium .
 
-cd ../client
+cd ./client
 codium .
 
 sleep 1 && nohup dbeaver &
 sleep 1 && nohup postman &
 
+nohup chromium http://localhost:5173 &
+sleep 1
+nohup chromium http://localhost:8000/admin &
+
 # start react server
 yarn run dev
 
-# cd ../
+cd ..
+
 
 

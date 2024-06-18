@@ -19,20 +19,26 @@ class TokenSerializer(serializers.ModelSerializer):
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
+    username = serializers.CharField(required=False, default='')
+    role = serializers.CharField(required=False, default='visitor')
 
     class Meta:
         model = User
         # TODO remove the role and set default role 
         # ROLE MUST BE SET FROM SUPERUSER ONLY!!
-        fields = ('email', 'password', 'password2', 'role')
+        fields = ('email', 'username', 'password', 'password2', 'role')
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
     def save(self):
-        user = User(email=self.validated_data['email'],)
+        user = User(email=self.validated_data['email'], role=self.validated_data['role'], username=self.validated_data['username'])
         password = self.validated_data['password']
         password2 = self.validated_data["password2"]
+        # username = self.validated_data["username"]
+
+        # if username:
+            # user['username'] = username
 
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords are not the same.'})
