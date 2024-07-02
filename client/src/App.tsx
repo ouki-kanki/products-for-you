@@ -17,7 +17,6 @@ import { Sidebar } from './components/Sidebar/Sidebar'
 import { CartModal } from './components/pages'
 
 
-import { Search } from './components/pages/Search';
 import { useDebouncedEffect } from './hooks/useDebounced';
 
 import { useDispatch } from 'react-redux';

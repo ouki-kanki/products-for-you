@@ -4,7 +4,7 @@ import type { RootState } from '../app/store/store';
 import { AuthEnum } from './enums';
 
 import { convertSnakeToCamel } from '../utils/stringUtils';
-
+import { ICategory } from '../types';
 
 interface IProductImage {
   id: number;
@@ -77,13 +77,7 @@ interface IProductApiResponse {
   results: IProduct[];
 }
 
-interface ICategory {
-  id: number;
-  name: string;
-  icon: string;
-  children: ICategory[],
-  my_parent_category: string | null
-}
+
 
 const flatAndConvertToCamel = (products) => {
     return products.map((product: IProduct) => {

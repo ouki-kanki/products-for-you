@@ -36,7 +36,7 @@ export interface Iproduct {
 }
 
 
-// ** NUMBER RANGE ** 
+// ** NUMBER RANGE **
 export type Ran<T extends number> = number extends T ? number :_Range<T, []>;
 type _Range<T extends number, R extends unknown[]> = R['length'] extends T ? R[number] : _Range<T, [R['length'], ...R]>;
 
@@ -53,4 +53,12 @@ export interface IChildren {
 
 export interface IUiConfig {
   isSidebarHidden: boolean | string | null
+}
+
+export interface ICategory {
+  id: number;
+  name: string;
+  icon: string;
+  children: ICategory[],
+  my_parent_category: string | null
 }

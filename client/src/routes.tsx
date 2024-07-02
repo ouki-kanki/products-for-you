@@ -27,7 +27,7 @@ export const EcommerceRoutes = () => (
   <Route path='/' element={<Home/>}>
     <Route index element={<LandingPage/>}/>
     <Route path='/categories' element={<Categories/>}/>
-    <Route path='/categories/:slug' element={<Categories/>}/>
+    <Route path='/categories/:slug/*' element={<Categories/>}/>
     {/* <Route path='/cart' element={<Cart/>}/> */}
     <Route path='/about' element={<About/>}/>
     <Route path='/contact' element={<Contact/>}/>

@@ -17,7 +17,7 @@ const Home = () => {
           <span>Free Delivery</span>
           <Trackicon className={styles.trackIcon}/>
         </Link>
-        <ChatButton/>        
+        <ChatButton/>
       </div>
     </>
   )

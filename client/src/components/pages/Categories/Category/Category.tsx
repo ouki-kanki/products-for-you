@@ -3,16 +3,20 @@ import { Card } from '../../../../UI/Card';
 
 import { useHover } from '../../../../hooks/useHover';
 
-interface ICategory {
+
+
+export interface CategoryCard {
   id: number
   title: string,
   image: string,
   alt: string
-  handleCategoryClick: (id: number) => void 
+  handleCategoryClick: (id: number) => void
 }
 
 
-export const Category = ({ id, title, image, alt, handleCategoryClick }: ICategory) => {
+
+
+export const Category = ({ id, title, image, alt, handleCategoryClick }: CategoryCard) => {
   const { activateHover, deactivateHover, isHovered } = useHover()
 
 
@@ -22,7 +26,7 @@ export const Category = ({ id, title, image, alt, handleCategoryClick }: ICatego
       onMouseEnter={activateHover}
       onMouseLeave={deactivateHover}
       width='fluid'>
-      <div 
+      <div
         className={styles.categoryContainer}
       >
         <div className={`${styles.imageContainer} ${isHovered && styles.isHovered}`}>
