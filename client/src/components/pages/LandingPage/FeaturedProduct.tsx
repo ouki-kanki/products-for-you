@@ -7,10 +7,10 @@ import { ProductV2 } from '../../Product/ProductV2'
 
 interface IFeaturedProductProps {
   data: IProduct
-} 
+}
 
 export const FeaturedProduct = ({ data }: IFeaturedProductProps) => {
-  console.log(data)
+  // console.log(data)
   return (
     <div className={styles.container}>
       <h2>Featured Product</h2>

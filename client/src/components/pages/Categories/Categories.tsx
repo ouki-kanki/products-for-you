@@ -53,7 +53,6 @@ const Categories = () => {
   useEffect(() => {
     if (slug) {
       const category = findParentCategory(categories, slug)
-      console.log("the category", category)
       setCurrentCategories(category ? category.children : [])
     } else {
       setCurrentCategories(filterCategoriesWithNoParent(categories))
