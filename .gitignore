@@ -108,6 +108,9 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# va files, markup, flowcharts etc
+*.drawio
+
 # Environments
 .env
 .venv

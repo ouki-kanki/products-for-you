@@ -15,7 +15,7 @@ from django.core.exceptions import SuspiciousFileOperation
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
 from services.imageServices import (
-    generate_thumbnail, 
+    generate_thumbnail,
     generate_thumbnailV2,
     remove_background,
     compare_images_delete_prev_if_not_same,
@@ -28,21 +28,21 @@ from user_control.models import CustomUser as User
 
 # HELPERS
 
-# TODO: need to dry this 
+# TODO: need to dry this
 def upload_category_icon(instance, filename):
     # NOTE: this will save to /images/categoryname/filename
     return upload_icon('category', instance, filename, 'icon', 'name')
 
 # need to provide the folder name in this case use the slug from the parent
 def upload_product_item_image(instance, filename):
-    variation_name = str(instance.product_item)    
+    variation_name = str(instance.product_item)
     return upload_icon(
-        'products', 
+        'products',
         instance.product_item.product_id.name,
-        variation_name, 
-        'images', 
-        instance, 
-        'image', 
+        variation_name,
+        'images',
+        instance,
+        'image',
         filename)
 
 
@@ -54,9 +54,9 @@ def upload_product_thumb(instance, filename):
     return upload_icon(
         'products',
         instance.product_item.product_id.name,
-        variation_name, 
-        'thumbnails', 
-        instance, 
+        variation_name,
+        'thumbnails',
+        instance,
         'thumbnail',
         filename)
 
@@ -75,28 +75,28 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
         ordering = ['position']
-    
+
     def __str__(self):
         return self.name
-    
+
     def gen_thumb(self):
         pass
         # icon = generate_thumbnailV2(self, 'icon', self.name)
         # self.icon = icon
         # if isinstance(icon, IOBase):
             # icon.close()
-    
+
     def save(self, *args, **kwargs):
         if not self.pk:
             max_position = Category.objects.aggregate(models.Max('position'))['position__max'] or 1
             self.position = max_position + 1
             # TODO: make a field for the icon and a field for the image . right now there is thumb
             # if self.icon:
-                # 
+                #
                 # self.gen_thumb()
             super().save(*args, **kwargs)
         else:
-            prev_category_obj = Category.objects.get(pk=self.pk)        
+            prev_category_obj = Category.objects.get(pk=self.pk)
             is_same = compare_images_delete_prev_if_not_same(self, prev_category_obj, 'icon')
 
             if not is_same:
@@ -113,9 +113,7 @@ class Category(models.Model):
                 # otherwise it will attribute error if there isn't instance
                 if category_with_new_position_exists:
                     Category.objects.filter(position=self.position).update(position=old_position)
-                    
 
-                
             super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -133,9 +131,9 @@ def category_pre_save(sender, instance, *args, **kwargs):
 
 
 # def category_post_save(sender, instance, created, *args, **kwargs):
-#     if created: 
+#     if created:
 #         instance.save()
-    
+
 
 pre_save.connect(category_pre_save, sender=Category)
 # post_save.connect(category_post_save, sender=Category)
@@ -170,15 +168,15 @@ class Product(models.Model):
     @property
     def get_absolute_url_v1(self):
         return reverse("products:product_detail", kwargs={"slug": self.slug})
-    
+
     @property
     def get_absolute_url(self):
         # TODO: have to do this recursivelly because the parent category may have parent category also
         return f'/{self.category.slug}/{self.slug}/'
-    
+
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         # this will trigger if this is first created instance so we do not need to clear the filesystem
         if not self.pk:
@@ -205,9 +203,9 @@ class Product(models.Model):
                 icon.close()
             super().save(*args, **kwargs)
             return
-        
+
         super().save(*args, **kwargs)
-    
+
     def delete(self, *args, **kwargs):
         if self.icon:
             delete_image_from_filesystem(self, 'icon')
@@ -232,8 +230,8 @@ pre_save.connect(product_pre_save, Product)
 class VariationManager(models.Manager):
     def all(self):
         # There is no field named "active" this is just for showing the functionality
-        return super(VariationManager, self).filter(active=True) 
-    
+        return super(VariationManager, self).filter(active=True)
+
     def sizes(self):
         return super(VariationManager, self).filter(variation_option='size')
 
@@ -243,7 +241,7 @@ class ProductItem(models.Model):
     RPODUCT - VARIANT
     """
     # TODO: change product_id to product because it confusing
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations') 
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     variation_name = models.CharField(max_length=255, blank=True)
     # TODO: make it unique True
     slug = models.SlugField(max_length=50, blank=True)
@@ -279,10 +277,10 @@ class ProductItem(models.Model):
         variation_values = ', '.join(option.value for option in qs)
         # return self.product_name
         return f'{self.product_name}, {self.sku}-{variation_values}'
-    
+
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
-        
+
 @receiver(pre_save, sender=ProductItem)
 def product_item_pre_save(sender, instance, *args, **kwargs):
     if instance.variation_name is "" or instance.variation_name is None:
@@ -307,14 +305,14 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
 #     if created:
 #         instance.save()
 
-    
+
 class Banner(models.Model):
     '''
     BANNERS FOR THE LANDING PAGE
     '''
     image = models.CharField(max_length=255)
     alt_text = models.CharField(max_length=255)
-        
+
 
 class ProductImage(models.Model):
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='product_image')
@@ -329,7 +327,7 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.product_item.product_name
-    
+
     @staticmethod
     def delete_image_and_thumb_from_filesystem(instance, field_name: str):
         image_ref = getattr(instance, field_name)
@@ -342,7 +340,7 @@ class ProductImage(models.Model):
             print("not found")
         except Exception as e:
             print("there was an error", e)
-    
+
     def save(self, *args, **kwargs):
         if self.pk:
             prev_obj = ProductImage.objects.get(pk=self.pk)
@@ -353,19 +351,19 @@ class ProductImage(models.Model):
                     self.delete_image_and_thumb_from_filesystem(prev_obj, 'image')
                 if prev_obj.thumbnail:
                     self.delete_image_and_thumb_from_filesystem(prev_obj, 'thumbnail')
-                
+
                 # NOTE: this will save the thumb only if the user uploads a new file
-                # TODO: compare the old bool value with the current and if is dif gen the thum .if the prev was ticked and now the user unticked the value then delete the thumb from the filesystem and also from the database 
+                # TODO: compare the old bool value with the current and if is dif gen the thum .if the prev was ticked and now the user unticked the value then delete the thumb from the filesystem and also from the database
                 if self.has_thumbnail:
                     thumb = generate_thumbnailV2(self, 'image', self.product_item)
                     self.thumbnail = thumb
 
         super().save(*args, **kwargs)
-        
+
     def delete(self, *args, **kwargs):
         if self.image:
             delete_image_from_filesystem(self, 'image')
-        
+
         if self.thumbnail:
             delete_image_from_filesystem(self, 'thumbnail')
 
@@ -382,7 +380,7 @@ def product_image_pre_save(sender, instance, *args, **kwargs):
         other_featured_images = ProductImage.objects.filter(product_item=instance.product_item, is_featured=True).exclude(pk=instance.pk)
 
         if other_featured_images:
-            other_featured_images.update(is_featured=False) 
+            other_featured_images.update(is_featured=False)
 
 
 @receiver(post_save, sender=ProductImage)
@@ -401,7 +399,7 @@ class Discount(models.Model):
     # TODO: change the field with sanitized version of a jsonfield
     description = models.TextField(blank=True)
     # discount_value = models.DecimalField(max_digits=2, decimal_places=2)
-    discount_value = models.PositiveBigIntegerField(verbose_name='discount percentage', 
+    discount_value = models.PositiveBigIntegerField(verbose_name='discount percentage',
         validators=[
             MaxValueValidator(100, message="max value is 100")
     ])
@@ -423,4 +421,4 @@ class Favorite(models.Model):
     product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorited_by')
 
     def __str__(self):
-        return f"{self.user.email} - {self.product.product_id.name}" 
+        return f"{self.user.email} - {self.product.product_id.name}"

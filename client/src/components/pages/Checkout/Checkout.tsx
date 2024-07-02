@@ -37,7 +37,7 @@ const checkoutReducer = (state: ICheckoutState, action: CheckoutAction) => {
     case 'CHANGE':
       return {
         ...state,
-        [action.name]: action.value 
+        [action.name]: action.value
       }
     default:
       return state
@@ -50,7 +50,7 @@ export const Checkout = () => {
   const [state, dispatch] = useReducer(checkoutReducer, initialState)
 
   const [ createOrder, { isLoading } ] = useCreateOrderMutation()
-  
+
   // console.log(cart)
   // console.log(state)
 
@@ -61,12 +61,13 @@ export const Checkout = () => {
   const handleCheckout = async (e: FormEvent) => {
     e.preventDefault();
 
-    // TODO: have to validate inputs . only then proceed!!!! 
+    // TODO: have to validate inputs . only then proceed!!!!
     if (cart && Object.keys(cart).length > 0) {
       const total = cart.total
       const items = cart.items
       // console.log(items)
 
+      // TODO: move to util
       const productsWithSnakeKeys = items.map(item => {
         return Object.keys(item).reduce((acc, key) => {
           const snake = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
@@ -105,7 +106,7 @@ export const Checkout = () => {
         }
     }
   }
- 
+
   // TODO: useValidation
   return (
     <div className={styles.container}>
@@ -140,9 +141,9 @@ export const Checkout = () => {
               {leftData.map((field, id) => (
                 <div key={id}>
                   <label htmlFor={field.id}>{field.label}</label>
-                  <input 
-                    className={styles.input} 
-                    type={field.type} 
+                  <input
+                    className={styles.input}
+                    type={field.type}
                     id={field.id}
                     name={field.name}
                     onChange={handleChange}
@@ -158,9 +159,9 @@ export const Checkout = () => {
               {rightData.map((field, id) => (
                 <div key={id}>
                   <label htmlFor={field.id}>{field.label}</label>
-                  <input 
-                    className={styles.input} 
-                    type={field.type} 
+                  <input
+                    className={styles.input}
+                    type={field.type}
                     id={field.id}
                     name={field.name}
                     onChange={handleChange}
@@ -169,13 +170,13 @@ export const Checkout = () => {
                     />
                 </div>
               ))}
-              
-            </div>                
+
+            </div>
 
           </div>
           <div className={styles.action}>
             <Link to='/cart' className={styles.btnBack}>back</Link>
-            <button 
+            <button
               className={styles.checkoutBtn}
               type='submit'
               >Place Order</button>

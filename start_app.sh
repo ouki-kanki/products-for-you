@@ -40,6 +40,8 @@ codium .
 
 sleep 1 && nohup dbeaver &
 sleep 1 && nohup postman &
+sleep 1 && nohup drawio &
+
 
 nohup chromium http://localhost:5173 &
 sleep 1

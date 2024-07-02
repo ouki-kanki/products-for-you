@@ -14,7 +14,7 @@ from .utils import get_list_of_parent_categories
 # TODO: maybe this will be needed to other places also. change the name and move it to another folder
 class CategoryChildrenSerializer(serializers.Serializer):
     '''
-    finds the subcategories recursively 
+    finds the subcategories recursively
     '''
     def to_representation(self, instance):
         serializer = self.parent.parent.__class__(instance, context=self.context)
@@ -23,11 +23,19 @@ class CategoryChildrenSerializer(serializers.Serializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     children = CategoryChildrenSerializer(many=True)
-    # parent_category = serializers.PrimaryKeyRelatedField(read_only=True)
+    my_parent_category = serializers.SerializerMethodField()
+    # my_parent_category = serializers.CharField(read_only=True, source='parent_category.name')
     # sub_categories = SubCategorySerializer(many=True)
+
+    def get_my_parent_category(self, obj):
+        parent_category = obj.parent_category
+        if parent_category:
+            return parent_category.name
+        return None
+
     class Meta:
         model = Category
-        fields = ('id', 'name', 'slug', 'icon', 'children')
+        fields = ('id', 'name', 'slug', 'icon', 'children', 'my_parent_category')
 
 # TODO: show the related products for the category
 class CategoryRelatedProducts(serializers.ModelSerializer):
@@ -39,7 +47,7 @@ class CategoryRelatedProducts(serializers.ModelSerializer):
     def get_related_products(self, obj):
         if obj.products.all():
             items = obj.products.all()
-            return ProductSerializer(items, many=True).data    
+            return ProductSerializer(items, many=True).data
         return "no related products"
 
     class Meta:
@@ -55,7 +63,7 @@ class BrandSerializer(serializers.ModelSerializer):
     '''
     brands
     endpoint: products/brands
-    ''' 
+    '''
     class Meta:
         model = Brand
         fields = '__all__'
@@ -97,7 +105,7 @@ class ProductItemSerializer(serializers.ModelSerializer):
     # images = ProductImageSerializer(many=True, read_only=True)
 
     def get_slug(self, obj):
-        # TODO: have to change product_id to product !! it brings confusion 
+        # TODO: have to change product_id to product !! it brings confusion
         category_slug = slugify(obj.product_id.category.name)
         product_slug = slugify(obj.slug)
 
@@ -117,7 +125,7 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
     def get_discounts(self, obj):
         items = obj.discount.all()
-        
+
 
         if items:
             return DiscountSerializer(items, many=True).data
@@ -142,7 +150,7 @@ class ProductItemSerializer(serializers.ModelSerializer):
     # def get_name(self, obj):
     #     return obj.product_id.name
 
-# v1 -- fetch product items . if the product has isFeatured - True fetch it otherwise fetch the last created . () 
+# v1 -- fetch product items . if the product has isFeatured - True fetch it otherwise fetch the last created . ()
 # TODO: i want functionality where only one product can have featured = True
 class FeaturedVariationSerializerV1(serializers.ModelSerializer):
     class Meta:
@@ -152,7 +160,7 @@ class FeaturedVariationSerializerV1(serializers.ModelSerializer):
 
 
 # V2
-# gives the product with the related variations and the images for each variation 
+# gives the product with the related variations and the images for each variation
 class ProductAndFeaturedVariationSerializer(serializers.ModelSerializer):
     variations = ProductItemSerializer(many=True, read_only=True)
     # images = ProductImageSerializerV3(many=True, read_only=True)
@@ -201,23 +209,23 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.product_variations.all():
             item = obj.product_variations.first()
             return ProductItemSerializer(item).data
-        
+
         return "no related variation"
 
 
-    
+
 
 class ProductAndRelatedVariationsSerializer(serializers.ModelSerializer):
     '''
     endpoint: /products/<slug>
     '''
     related_variations = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Product
-        fields = ('name', 
-                  'category', 
-                  'brand', 
+        fields = ('name',
+                  'category',
+                  'brand',
                   'related_variations',)
 
 
@@ -226,7 +234,7 @@ class ProductAndRelatedVariationsSerializer(serializers.ModelSerializer):
             items = obj.product_variations.all()
 
             return ProductItemSerializer(items, many=True).data
-        
+
         return "no related variations"
 
 
@@ -251,7 +259,7 @@ class ProductAndLastCreatedVariationSerializerV3(serializers.ModelSerializer):
         last_variation = obj.product_variations.order_by('-created_at').first()
         if last_variation:
             return ProductVariationSerializerV3(last_variation).data
-        else: 
+        else:
             return 'no variations for the product'
 
 
@@ -290,7 +298,7 @@ class ProductImageSerializerV4(serializers.ModelSerializer):
         model = ProductImage
         fields = ( 'id', 'url', 'is_featured')
 
-    
+
     def get_image(self, instance):
         if not instance.image:
             return None
@@ -299,7 +307,7 @@ class ProductImageSerializerV4(serializers.ModelSerializer):
             return request.build_absolute_uri(instance.image.url)
         else:
             return None
-        
+
     def to_representation(self, instance):
         return {
             'url': self.get_image(instance),
@@ -320,7 +328,7 @@ class ProductThumbNailSerializerV3(serializers.ModelSerializer):
             return request.build_absolute_uri(instance.thumbnail.url)
         else:
             return None
-        
+
     def to_representation(self, instance):
         return {
             'url': self.get_thumbnail(instance),
@@ -328,7 +336,7 @@ class ProductThumbNailSerializerV3(serializers.ModelSerializer):
         }
 
 
-# --- USED TO GET LATEST PRODUCTS -- *** PRIME SER ** 
+# --- USED TO GET LATEST PRODUCTS -- *** PRIME SER **
 class ProductVariationSerializerV3(serializers.ModelSerializer):
     product_images = ProductThumbNailSerializerV3(many=True, read_only=True, source='product_image')
     current_variation = serializers.SerializerMethodField()
@@ -341,17 +349,17 @@ class ProductVariationSerializerV3(serializers.ModelSerializer):
 
     def get_name(self, obj):
         return obj.product_id.name
-    
+
     def get_description(self, obj):
         return obj.product_id.description
-    
+
     def get_features(self, obj):
         return obj.product_id.features
 
     def get_current_variation(self, obj):
-        variations = obj.variation_option.all() 
+        variations = obj.variation_option.all()
         return VariationOptionsSerializer(variations, many=True).data
-    
+
     def to_representation(self, instance):
         ret  = super().to_representation(instance)
         obj_of_categories = ret['category']
@@ -359,18 +367,18 @@ class ProductVariationSerializerV3(serializers.ModelSerializer):
         ret['category'] = list_of_categories
 
         return ret
- 
+
 
     class Meta:
         model = ProductItem
         fields = (
             'name',
             'description',
-            'quantity', 
+            'quantity',
             'price',
             'features',
-            'product_images', 
-            'current_variation', 
+            'product_images',
+            'current_variation',
             'category')
 
 
@@ -396,7 +404,7 @@ class ProductItemSerializerV4(serializers.ModelSerializer):
         return f"{category_slug}/{product_slug}/"
 
     def get_variation_details(self, obj):
-        variations = obj.variation_option.all() 
+        variations = obj.variation_option.all()
         return VariationOptionsSerializer(variations, many=True).data
 
     class Meta:
@@ -413,7 +421,7 @@ class ProductItemSerializerV4(serializers.ModelSerializer):
         )
 
 
-#  -- OBSOLETE -- 
+#  -- OBSOLETE --
 class ReverseUrlAndThumbsVariationSerializer(serializers.ModelSerializer):
     """
     the related variations reverse urls and the featured thumbs
@@ -470,7 +478,7 @@ class ProductSerializerV4(serializers.ModelSerializer):
         if not variation:
             variation = obj.product_variations.last()
         product_item_serializerV4 = ProductItemSerializerV4(variation, context=self.context)
-        return product_item_serializerV4.data 
+        return product_item_serializerV4.data
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -486,7 +494,7 @@ class ProductSerializerV4(serializers.ModelSerializer):
             'description',
             'features',
             'category', # implement this check above
-            'brand', 
+            'brand',
             'icon',
             'selected_variation',
             'variations'
@@ -511,7 +519,7 @@ class ProductItemDetailSerializerV4(serializers.ModelSerializer):
 
     def get_name(self, obj):
         return obj.product_id.name
-    
+
     def get_icon(self, obj):
         product = obj.product_id
         if product and product.icon:

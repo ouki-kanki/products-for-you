@@ -81,7 +81,8 @@ interface ICategory {
   id: number;
   name: string;
   icon: string;
-  children: ICategory[]
+  children: ICategory[],
+  my_parent_category: string | null
 }
 
 const flatAndConvertToCamel = (products) => {
@@ -91,7 +92,7 @@ const flatAndConvertToCamel = (products) => {
     const { variationDetails, ...selectedVariationNodetails } = selectedVariation
     const listOfVariations = variationDetails?.reduce((a, variation) => {
       a[variation.variationName] = variation.value
-      return a      
+      return a
     }, {})
 
     return {
@@ -102,6 +103,8 @@ const flatAndConvertToCamel = (products) => {
   })
 }
 
+// TODO: categories falls under /products/categories
+// have to create a different api for categories and change the url to just /categories/
 
 export const productsApi = createApi({
   reducerPath: 'productApi',
@@ -120,12 +123,12 @@ export const productsApi = createApi({
       query: (pageSize = '10') => ({
         url: `latest-products-v4${pageSize && `?${pageSize}`}`
       }),
-      // TODO: fis the typsecript errors , have to change the types 
+      // TODO: fis the typsecript errors , have to change the types
       transformResponse: (response: IProductApiResponse, meta, arg): IProduct[] | undefined => {
-        // TODO: grab the paginator from here 
+        // TODO: grab the paginator from here
         const results = response.results
 
-        if (!results) { 
+        if (!results) {
           return {
             message: 'no products'
           }
@@ -137,7 +140,7 @@ export const productsApi = createApi({
           const { variationDetails, ...selectedVariationNodetails } = selectedVariation
           const listOfVariations = variationDetails?.reduce((a, variation) => {
             a[variation.variationName] = variation.value
-            return a      
+            return a
           }, {})
 
           return {
@@ -148,7 +151,7 @@ export const productsApi = createApi({
         })
 
         return flattened
-      } 
+      }
     }),
     getFeaturedProducts: builder.query<IProductApiResponse, string>({
       query: (pageSize) => ({
@@ -172,7 +175,7 @@ export const productsApi = createApi({
        transformResponse: ((response: IproductVariationPreview, meta, arg) => {
         convertSnakeToCamel(response)
         return response
-       })     
+       })
     }),
     getCategories: builder.query<ICategory[], void>({
       query: () => ({
@@ -185,14 +188,14 @@ export const productsApi = createApi({
       }),
       transformResponse: (response) => {
         return response
-      } 
+      }
     })
   })
 })
 
-export const { 
-  useGetLatestProductsQuery, 
-  useGetFeaturedProductsQuery, 
+export const {
+  useGetLatestProductsQuery,
+  useGetFeaturedProductsQuery,
   useGetProductDetailQuery,
   useGetCategoriesQuery,
   useLazyFilterByCategoryQuery,

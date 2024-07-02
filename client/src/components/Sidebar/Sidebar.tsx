@@ -17,10 +17,9 @@ export const Sidebar = () => {
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const { isScrollingDown } = useSroll()
 
-  // console.log("is srolling down", isScrollingDown)
 
   const navContainerStyles = `
-    ${styles.sidebarContainer} 
+    ${styles.sidebarContainer}
     ${isSideBarHidden ? styles.hidden : ''}
     ${isScrollingDown ? styles.scrolledDown : ''}
   `
@@ -28,7 +27,7 @@ export const Sidebar = () => {
   return (
     <div className={navContainerStyles}>
       <div
-        onClick={() => navigate('/')} 
+        onClick={() => navigate('/')}
         className={styles.logoContainer}
         >
         <h2>Products for you</h2>
@@ -44,7 +43,7 @@ export const Sidebar = () => {
           ))}
       </nav>
       <div className={styles.footer}>
-        <FontAwesomeIcon icon={faFacebook} size='lg'/>  
+        <FontAwesomeIcon icon={faFacebook} size='lg'/>
         <FontAwesomeIcon icon={faInstagram} size='lg'/>
         <Link to='/terms-of-use'>Terms of use</Link>
         <Link to='/privacy'>Pricacy Policy</Link>

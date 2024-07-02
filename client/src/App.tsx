@@ -1,9 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 // import './index.scss';
 import styles from './app.module.scss'
-import { Routes, Route } from 'react-router-dom'
-import { ProtectedRoute } from './hocs/ProtectedRoute';
-
 
 import type { IUiConfig } from './types';
 
@@ -15,26 +12,10 @@ import { setCredentials } from './features/auth/Login/loginSlice';
 import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 
 
+import { EcommerceRoutes } from './routes';
 import { Sidebar } from './components/Sidebar/Sidebar'
-import { Home, 
-         About,
-         Cart, 
-         CartModal, 
-         Account, 
-         Categories, 
-         Contact,
-         Settings,
-         ProductsPage,
-         LoginPage,
-         SignUp,
-         Profile,
-         ErrorPage,
-         LandingPage,
-         ProductDetail,
-         DeliveryTerms,
-         TermsOfUse,
-         Checkout
-        } from './components/pages'
+import { CartModal } from './components/pages'
+
 
 import { Search } from './components/pages/Search';
 import { useDebouncedEffect } from './hooks/useDebounced';
@@ -53,7 +34,7 @@ function App() {
 
   useEffect(() => {
     console.log("__INIT__CART__")
-    
+
     // TODO: move this to the middleware
     try {
       const strCartFromStorage = localStorage.getItem('cart')
@@ -72,7 +53,7 @@ function App() {
       console.log(error)
     }
 
- 
+
   }, [dispatch])
 
   console.log("app triggered")
@@ -123,7 +104,7 @@ function App() {
 
   useDebouncedEffect(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
 
-  // lazy use of rtk 
+  // lazy use of rtk
   const handleFetchProducts = () => {
     trigger()
   }
@@ -140,32 +121,7 @@ function App() {
       <div className={styles.contentNavContainer}>
         <CartModal/>
         <div>
-          <Routes>
-            <Route path='*' element={<ErrorPage/>}/>
-            <Route path='/' element={<Home/>}>
-              <Route index element={<LandingPage/>}/>
-              <Route path='/categories' element={<Categories/>}/>
-              {/* <Route path='/cart' element={<Cart/>}/> */}
-              <Route path='/about' element={<About/>}/>
-              <Route path='/contact' element={<Contact/>}/>
-              <Route path='/account' element={<Account/>}/>
-              <Route path='/cart' element={<Cart/>}/>
-              <Route path='/checkout' element={<Checkout/>}/>
-              <Route path='/settings' element={<Settings/>}/>
-              <Route path='/products/' element={<ProductsPage/>}/>
-              <Route path='/products/:slug' element={<ProductsPage/>}/>
-              <Route path='/testproducts/' element={<ProductsPage/>}/>
-              <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
-              <Route path='/search/:slug' element={<Search/>}/>
-              <Route path='login' element={<LoginPage/>}/>
-              <Route path='sign-up' element={<SignUp/>}/>
-              <Route path='/delivery-terms' element={<DeliveryTerms/>}/>
-              <Route path='/terms-of-use' element={<TermsOfUse/>}/>
-              <Route element={<ProtectedRoute/>}>
-                <Route path='profile' element={<Profile/>}/>
-              </Route>
-            </Route>
-          </Routes>
+          <EcommerceRoutes/>
         </div>
       </div>
     </div>

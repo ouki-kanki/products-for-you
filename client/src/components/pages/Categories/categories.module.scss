@@ -1,7 +1,7 @@
 .gridContainer {
   // TODO: value behaves in a weird manner. check why is that
   @include basic_auto_grid(18rem);
-  // TODO: this has to be the same on all pages 
+  // TODO: this has to be the same on all pages
   padding: 20px 50px;
 
   > div {
@@ -11,4 +11,8 @@
 }
 
 .categoryCard {
+}
+
+.categoryField {
+  cursor: pointer;
 }

@@ -1877,3 +1877,1229 @@ IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
 [8610:0629/034434.688791:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
 [8610:0629/034434.689456:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
 [8610:0629/034434.689478:FATAL:gpu_data_manager_impl_private.cc(451)] GPU process isn't usable. Goodbye.
+Fontconfig error: Cannot load default config file: No such file: (null)
+Opening in existing browser session.
+WARNING: Using incubator modules: jdk.incubator.vector
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1719673054731 main info "Booting Postman 10.24.16, linux-6.9.6-arch1-1 on x64"
+1719673054732 main info "EventBus~initialize - Success"
+1719673054737 main info "Proxy configuration has not been setup"
+1719673054738 main info "CloudProxyManager~init - Success"
+1719673054769 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1719673054778 main info "UpdateHandler~init - Success"
+1719673054781 main info "LeaderSelection: Initialized successfully"
+1719673054782 main info "VersionDependencyService: Initialized successfully"
+1719673054790 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1719673054821 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1719673054857 main info "shellController~init: Success"
+1719673054877 main info "shellMeta~init: Success"
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:130: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1719673054877 main info "partitionMigrationService: State of V7 partition:"
+1719673054881 main info "partitionMigrationService: V7 partitions",[]
+1719673054881 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1719673054882 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1719673054882 main info "partitionMigrationService~init: Success"
+1719673054905 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1719673054912 main info "userPartitionService~getRecentV8UserPartition: recent v8 user context partition ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719673054912 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719673054929 main info "userPartitionService~init: Success"
+1719673054953 main info "userPartitionService: State of v8 partition system:"
+1719673054957 main info "shell~init~getPartitionToLoad: loading active partition"
+1719673054961 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-28T18:41:55.857Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719673054962 main info "userPartitionService: users global meta:",{}
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.300.v20240418-0734]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.300.v20240419-2334]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.1.0.202406031236]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.400.v20240416-0658]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.200.v20240424-0956]
+> Start jna [com.sun.jna 5.14.0.v20231211-1200]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.147.202406031236]
+> Start Expression Language [org.eclipse.core.expressions 3.9.400.v20240413-1529]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.28.202406031236]
+2024-06-29 17:57:35.698 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.1.0.202406031236]
+2024-06-29 17:57:35.786 - DBeaver 24.1.0.202406031236 is starting
+2024-06-29 17:57:35.788 - OS: Linux 6.9.6-arch1-1 (amd64)
+2024-06-29 17:57:35.788 - Java version: 22 by N/A (64bit)
+2024-06-29 17:57:35.788 - Install path: '/usr/lib/dbeaver'
+2024-06-29 17:57:35.788 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-06-29 17:57:35.791 - Memory available 65Mb/1024Mb
+2024-06-29 17:57:35.813 - Create display
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:35.821: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:35.825: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-29 17:57:35.950 - Initialize desktop platform...
+2024-06-29 17:57:36.346 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.400.v20240426-1040]
+> Start Core Resource Management [org.eclipse.core.resources 3.20.200.v20240426-1040]
+> Start Team Support Core [org.eclipse.team.core 3.10.400.v20240413-1529]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.132.202406031236]
+2024-06-29 17:57:36.704 - Initialize base platform...
+2024-06-29 17:57:36.750 - Platform initialized (800ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.132.202406031236]
+2024-06-29 17:57:36.802 - Starting instance server at http://localhost:46615
+2024-06-29 17:57:36.816 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.400.v20240425-0840]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.400.v20240413-1529]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.300.v20231201-1637]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.400.v20240424-0956]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.400.v20240321-1245]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.400.v20240424-0444]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.37.0.v20231208-1346]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.400.v20240424-0956]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.400.v20240416-0658]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.400.v20240418-1547]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+1719673057997 main info "RuntimeIPCAgent~started: Success"
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.400.v20240321-1245]
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:38.793: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:38.833: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-29 17:57:38.992 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.122.202406031236]
+2024-06-29 17:57:39.163 - Total database drivers: 117 (117)
+> Start Help System Core [org.eclipse.help 3.10.400.v20240415-0528]
+2024-06-29 17:57:39.261 - Create actions
+2024-06-29 17:57:39.269 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-06-29 17:57:39.270 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-06-29 17:57:39.270 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+2024-06-29 17:57:39.271 - Create workbench actions
+2024-06-29 17:57:39.689 - Initialize workbench window
+2024-06-29 17:57:39.694 - Finish initialization
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.300.v20240416-0658]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.400.v20240424-0941]
+
+(DBeaver:4895): Gtk-WARNING **: 17:57:39.985: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:40.082: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+1719673060137 main info "Main~getRemoteInitPath:: "
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.400.v20240413-1529]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.400.v20240413-1529]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.132.202406031236]
+1719673060426 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+INTERCEPTOR CONNECTIVITY: Connecting to Interceptor Bridge
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1719673060443 main info "windowManager: First requester booted successfully."
+1719673060444 main info "windowManager~restoreWindows: Restoring requester windows"
+1719673060444 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.25 UI Version: 10.24.25-ui-240508-1535 Desktop Platform Version: 10.24.16"
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.132.202406031236]
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.169.202406031236]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.138.202406031236]
+1719673060606 main info "Main~getRemoteInitPath:: "
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.16.0.202405011806]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.18.0.202405011806]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.92.202406031236]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.92.202406031236]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.129.202406031236]
+> Start DBeaver Dashboards Model [org.jkiss.dbeaver.model.dashboard 1.0.5.202406031236]
+2024-06-29 17:57:40.704 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.25.202406031236]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.205.202406031236]
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.156.202406031236]
+2024-06-29 17:57:40.777 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-06-29 17:57:40.780 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+1719673060837 main info "Main~getPlatformLaunchPerfMetrics"
+2024-06-29 17:57:40.954 - Execution context opened (products_for_you; Metadata <products_for_you>; 1)
+2024-06-29 17:57:40.954 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Metadata <products_for_you>
+2024-06-29 17:57:41.004 - Connected (postgres-jdbc-18e963ee16d-48ffade892fe9348, PostgreSQL JDBC Driver [42.7.2])
+1719673061610 main info "INTERCEPTOR CONNECTIVITY: Attempting to start websocket server on port 15611"
+1719673062064 main info "Main - model-events~user - (user, bootstrapUser) received"
+1719673062064 main info "model-events~user - bootstrapUser received"
+1719673062082 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1719673062108 main info "userPartitionService: State of v8 partition system:"
+1719673062116 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-29T14:57:42.082Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719673062117 main info "userPartitionService: users global meta:",{}
+2024-06-29 17:57:43.226 - Open [https://dbeaver.io/product/version.xml]
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:43.516: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4895): Gdk-CRITICAL **: 17:57:43.946: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+[4480:4480:0629/232924.674832:ERROR:wayland_data_drag_controller.cc(151)] Invalid state when trying to start drag. source=kMouse
+[4480:4480:0629/232925.652775:ERROR:wayland_data_drag_controller.cc(151)] Invalid state when trying to start drag. source=kMouse
+[4480:4480:0629/232929.088943:ERROR:wayland_data_drag_controller.cc(151)] Invalid state when trying to start drag. source=kMouse
+2024-06-29 23:47:47.083 - Execution context closed (products_for_you, 0)
+2024-06-29 23:47:47.095 - Execution context closed (products_for_you, 1)
+2024-06-29 23:47:47.096 - Disconnected (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+
+(DBeaver:4895): Gdk-CRITICAL **: 23:47:47.324: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+[4480:4480:0630/012004.405812:ERROR:zygote_communication_linux.cc(292)] Failed to send GetTerminationStatus message to zygote
+1719699604509 main info "Quitting app"
+[4828:0630/012004.532809:ERROR:network_service_instance_impl.cc(461)] Network service crashed, restarting service.
+Error: Render frame was disposed before WebFrameMain could be accessed
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)
+    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)
+    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)
+    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)
+    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)
+    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)
+    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)
+    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)
+    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)
+    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23
+    at Array.forEach (<anonymous>)
+1719699604573 main error "Main~handleUncaughtError - Uncaught errors",{"name":"Error","message":"Render frame was disposed before WebFrameMain could be accessed","stack":"Error: Render frame was disposed before WebFrameMain could be accessed\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)\n    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)\n    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)\n    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)\n    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)\n    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)\n    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)\n    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)\n    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)\n    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23\n    at Array.forEach (<anonymous>)"}
+Main~handleUncaughtError - Uncaught errors Error: Render frame was disposed before WebFrameMain could be accessed
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)
+    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)
+    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)
+    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)
+    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)
+    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)
+    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)
+    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)
+    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)
+    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23
+    at Array.forEach (<anonymous>)
+[4828:0630/012004.661874:ERROR:command_buffer_proxy_impl.cc(325)] GPU state invalid after WaitForGetOffsetInRange.
+[4828:0630/012004.663329:ERROR:zygote_communication_linux.cc(275)] Failed to send GetTerminationStatus message to zygote
+[4828:0630/012004.665340:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.666148:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.666764:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.667400:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.667939:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.668498:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.669139:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.669732:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.670256:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4828:0630/012004.670273:FATAL:gpu_data_manager_impl_private.cc(451)] GPU process isn't usable. Goodbye.
+Fontconfig error: Cannot load default config file: No such file: (null)
+Opening in existing browser session.
+[13249:13249:0100/000000.962097:ERROR:zygote_linux.cc(673)] write: Broken pipe (32)
+WARNING: Using incubator modules: jdk.incubator.vector
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1719704395597 main info "Booting Postman 10.24.16, linux-6.9.7-arch1-1 on x64"
+1719704395600 main info "EventBus~initialize - Success"
+1719704395603 main info "Proxy configuration has not been setup"
+1719704395604 main info "CloudProxyManager~init - Success"
+1719704395643 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1719704395662 main info "UpdateHandler~init - Success"
+1719704395665 main info "LeaderSelection: Initialized successfully"
+1719704395666 main info "VersionDependencyService: Initialized successfully"
+1719704395688 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1719704395730 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1719704395801 main info "shellController~init: Success"
+1719704395820 main info "shellMeta~init: Success"
+1719704395821 main info "partitionMigrationService: State of V7 partition:"
+1719704395826 main info "partitionMigrationService: V7 partitions",[]
+1719704395829 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1719704395830 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1719704395832 main info "partitionMigrationService~init: Success"
+1719704395875 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1719704395888 main info "userPartitionService~getRecentV8UserPartition: recent v8 user context partition ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719704395889 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1719704395934 main info "userPartitionService~init: Success"
+1719704395973 main info "userPartitionService: State of v8 partition system:"
+1719704395981 main info "shell~init~getPartitionToLoad: loading active partition"
+1719704395987 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-29T14:57:42.082Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719704395987 main info "userPartitionService: users global meta:",{}
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.300.v20240418-0734]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.300.v20240419-2334]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.1.1.202406292011]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.400.v20240416-0658]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.200.v20240524-2010]
+> Start jna [com.sun.jna 5.14.0.v20231211-1200]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.148.202406292011]
+> Start Expression Language [org.eclipse.core.expressions 3.9.400.v20240413-1529]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.29.202406292011]
+2024-06-30 02:39:59.833 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.1.1.202406292011]
+1719704399910 main info "RuntimeIPCAgent~started: Success"
+2024-06-30 02:39:59.933 - DBeaver 24.1.1.202406292011 is starting
+2024-06-30 02:39:59.935 - OS: Linux 6.9.7-arch1-1 (amd64)
+2024-06-30 02:39:59.935 - Java version: 22 by N/A (64bit)
+2024-06-30 02:39:59.935 - Install path: '/usr/lib/dbeaver'
+2024-06-30 02:39:59.935 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-06-30 02:39:59.938 - Memory available 148Mb/1024Mb
+2024-06-30 02:39:59.941 - Create display
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:39:59.956: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:39:59.960: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-30 02:40:00.113 - Initialize desktop platform...
+2024-06-30 02:40:00.425 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.400.v20240426-1040]
+> Start Core Resource Management [org.eclipse.core.resources 3.20.200.v20240513-1323]
+> Start Team Support Core [org.eclipse.team.core 3.10.400.v20240413-1529]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.133.202406292011]
+2024-06-30 02:40:00.726 - Initialize base platform...
+2024-06-30 02:40:00.767 - Platform initialized (654ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.133.202406292011]
+2024-06-30 02:40:01.070 - Error accessing instance server: java.net.ConnectException
+2024-06-30 02:40:01.089 - Starting instance server at http://localhost:34175
+2024-06-30 02:40:01.097 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.400.v20240425-0840]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.400.v20240413-1529]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.300.v20231201-1637]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.400.v20240424-0956]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.400.v20240321-1245]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.400.v20240424-0444]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.37.0.v20231208-1346]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.400.v20240424-0956]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.400.v20240416-0658]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.400.v20240418-1547]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.400.v20240321-1245]
+1719704402123 main info "Main~getRemoteInitPath:: "
+> Start Eclipse SDK Themes [org.eclipse.ui.themes 1.2.2400.v20240213-1133]
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:02.331: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:02.351: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-30 02:40:02.518 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.123.202406292011]
+1719704402554 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+INTERCEPTOR CONNECTIVITY: Connecting to Interceptor Bridge
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1719704402581 main info "windowManager: First requester booted successfully."
+1719704402583 main info "windowManager~restoreWindows: Restoring requester windows"
+1719704402583 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.25 UI Version: 10.24.25-ui-240508-1535 Desktop Platform Version: 10.24.16"
+2024-06-30 02:40:02.670 - Total database drivers: 117 (117)
+> Start Help System Core [org.eclipse.help 3.10.400.v20240415-0528]
+2024-06-30 02:40:02.742 - Create actions
+2024-06-30 02:40:02.752 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-06-30 02:40:02.753 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-06-30 02:40:02.753 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+2024-06-30 02:40:02.753 - Create workbench actions
+1719704402770 main info "Main~getRemoteInitPath:: "
+2024-06-30 02:40:02.875 - Open [https://stats.dbeaver.com/send-statistics?session=d26aa329-682a-4c73-a10d-187753366a46&time=1719673060]
+2024-06-30 02:40:03.180 - Initialize workbench window
+2024-06-30 02:40:03.185 - Finish initialization
+2024-06-30 02:40:03.322 - Statistics sent (OK)
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.300.v20240524-2010]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.400.v20240524-2010]
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:03.503: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+1719704403580 main info "INTERCEPTOR CONNECTIVITY: Attempting to start websocket server on port 15611"
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:03.641: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.400.v20240413-1529]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.400.v20240413-1529]
+1719704403918 main info "Main~getPlatformLaunchPerfMetrics"
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.133.202406292011]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.133.202406292011]
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.170.202406292011]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.139.202406292011]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.16.0.202405290843]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.18.0.202405290843]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.93.202406292011]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.93.202406292011]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.130.202406292011]
+> Start DBeaver Dashboards Model [org.jkiss.dbeaver.model.dashboard 1.0.6.202406292011]
+2024-06-30 02:40:04.282 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.26.202406292011]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.206.202406292011]
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.157.202406292011]
+2024-06-30 02:40:04.350 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-06-30 02:40:04.353 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:04.424: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+1719704405385 main info "Main - model-events~user - (user, bootstrapUser) received"
+1719704405385 main info "model-events~user - bootstrapUser received"
+1719704405397 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1719704405416 main info "userPartitionService: State of v8 partition system:"
+1719704405419 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-29T23:40:05.397Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719704405420 main info "userPartitionService: users global meta:",{}
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.109.202406292011]
+> Start Core Compare Support [org.eclipse.compare.core 3.8.500.v20240524-2010]
+> Start Console [org.eclipse.ui.console 3.14.100.v20240429-1358]
+> Start Debug Core [org.eclipse.debug.core 3.21.400.v20240415-0528]
+2024-06-30 02:40:06.845 - Open [https://dbeaver.io/product/version.xml]
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:06.889: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:06.894: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:06.905: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:06.915: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:06.919: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:06.946: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.124.202406292011]
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.086: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.086: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.087: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.087: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.087: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.087: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.088: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.088: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.088: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:13311): Gtk-WARNING **: 02:40:07.088: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.111.202406292011]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.109.202406292011]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.111.202406292011]
+2024-06-30 02:40:07.141 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+2024-06-30 02:40:07.142 - Execution context opened (products_for_you; Main <products_for_you>; 1)
+2024-06-30 02:40:07.142 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:07.166: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-30 02:40:07.432 - The connection attempt failed.
+org.jkiss.dbeaver.model.exec.DBCConnectException: The connection attempt failed.
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.openConnection(JDBCDataSource.java:266)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.openConnection(PostgreDataSource.java:554)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:106)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDatabase.checkInstanceConnection(PostgreDatabase.java:235)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDatabase.<init>(PostgreDatabase.java:122)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.createDatabaseImpl(PostgreDataSource.java:274)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.initializeRemoteInstance(PostgreDataSource.java:169)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.<init>(JDBCDataSource.java:104)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.<init>(JDBCDataSource.java:95)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.<init>(PostgreDataSource.java:104)
+	at org.jkiss.dbeaver.ext.postgresql.PostgreDataSourceProvider.openDataSource(PostgreDataSourceProvider.java:115)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1386)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect0(DataSourceDescriptor.java:1250)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1040)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:78)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:117)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: org.postgresql.util.PSQLException: The connection attempt failed.
+	at org.postgresql.Driver$ConnectThread.getResult(Driver.java:397)
+	at org.postgresql.Driver.connect(Driver.java:305)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCConnectionOpener.run(JDBCConnectionOpener.java:109)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCConnectionOpener.run(JDBCConnectionOpener.java:83)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.openConnection(JDBCDataSource.java:222)
+	... 17 more
+Caused by: java.io.EOFException
+	at org.postgresql.core.PGStream.receiveChar(PGStream.java:469)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.enableSSL(ConnectionFactoryImpl.java:594)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:195)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.access$100(Driver.java:63)
+	at org.postgresql.Driver$ConnectThread.run(Driver.java:355)
+	at java.base/java.lang.Thread.run(Unknown Source)
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:07.435: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-30 02:40:20.893 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+2024-06-30 02:40:20.894 - Execution context opened (products_for_you; Main <products_for_you>; 2)
+2024-06-30 02:40:20.894 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+2024-06-30 02:40:20.896 - The connection attempt failed.
+org.jkiss.dbeaver.model.exec.DBCConnectException: The connection attempt failed.
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.openConnection(JDBCDataSource.java:266)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.openConnection(PostgreDataSource.java:554)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:106)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDatabase.checkInstanceConnection(PostgreDatabase.java:235)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDatabase.<init>(PostgreDatabase.java:122)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.createDatabaseImpl(PostgreDataSource.java:274)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.initializeRemoteInstance(PostgreDataSource.java:169)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.<init>(JDBCDataSource.java:104)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.<init>(JDBCDataSource.java:95)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreDataSource.<init>(PostgreDataSource.java:104)
+	at org.jkiss.dbeaver.ext.postgresql.PostgreDataSourceProvider.openDataSource(PostgreDataSourceProvider.java:115)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1386)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect0(DataSourceDescriptor.java:1250)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1040)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:78)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.runSync(ConnectJob.java:109)
+	at org.jkiss.dbeaver.ui.actions.datasource.DataSourceHandler.connectToDataSource(DataSourceHandler.java:113)
+	at org.jkiss.dbeaver.ui.actions.datasource.UIServiceConnectionsImpl.initConnection(UIServiceConnectionsImpl.java:87)
+	at org.jkiss.dbeaver.model.DBUtils.initDataSource(DBUtils.java:2506)
+	at org.jkiss.dbeaver.model.navigator.DBNDataSource.initializeNode(DBNDataSource.java:158)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:226)
+	at org.jkiss.dbeaver.model.navigator.DBNDatabaseNode.getChildren(DBNDatabaseNode.java:1)
+	at org.jkiss.dbeaver.model.navigator.DBNUtils.getNodeChildrenFiltered(DBNUtils.java:91)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:49)
+	at org.jkiss.dbeaver.ui.navigator.database.load.TreeLoadService.evaluate(TreeLoadService.java:1)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:94)
+	at org.jkiss.dbeaver.ui.LoadingJob.run(LoadingJob.java:78)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:117)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: org.postgresql.util.PSQLException: The connection attempt failed.
+	at org.postgresql.Driver$ConnectThread.getResult(Driver.java:397)
+	at org.postgresql.Driver.connect(Driver.java:305)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCConnectionOpener.run(JDBCConnectionOpener.java:109)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCConnectionOpener.run(JDBCConnectionOpener.java:83)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.openConnection(JDBCDataSource.java:222)
+	... 29 more
+Caused by: java.io.EOFException
+	at org.postgresql.core.PGStream.receiveChar(PGStream.java:469)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.enableSSL(ConnectionFactoryImpl.java:594)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:195)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:262)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:54)
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:273)
+	at org.postgresql.Driver.makeConnection(Driver.java:446)
+	at org.postgresql.Driver.access$100(Driver.java:63)
+	at org.postgresql.Driver$ConnectThread.run(Driver.java:355)
+	at java.base/java.lang.Thread.run(Unknown Source)
+
+(DBeaver:13311): Gdk-CRITICAL **: 02:40:20.921: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+
+(DBeaver:13311): Gdk-CRITICAL **: 04:33:53.449: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:13311): Gdk-CRITICAL **: 04:33:57.825: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-06-30 04:33:58.047 - DBeaver is stopping
+2024-06-30 04:33:58.048 - Stop instance server
+2024-06-30 04:33:59.049 - Instance server has been stopped
+2024-06-30 04:33:59.049 - DBeaver shutdown completed
+2024-06-30 04:33:59.066 - Shutdown desktop platform...
+2024-06-30 04:33:59.097 - Platform shutdown completed (30ms)
+2024-06-30 04:33:59.097 - send collected statistics
+2024-06-30 04:33:59.100 - Open [https://stats.dbeaver.com/send-statistics?session=10e62629-8799-445c-9016-b0c77f3d7dc5&time=1719704404]
+2024-06-30 04:33:59.318 - Statistics sent (OK)
+1719711248190 main info "Quitting app"
+[13226:0630/043408.200369:ERROR:zygote_communication_linux.cc(275)] Failed to send GetTerminationStatus message to zygote
+[13226:0630/043408.203091:ERROR:network_service_instance_impl.cc(461)] Network service crashed, restarting service.
+[13226:0630/043408.207694:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.209586:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.210740:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+Error: Render frame was disposed before WebFrameMain could be accessed
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)
+    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)
+    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)
+    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)
+    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)
+    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)
+    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)
+    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)
+    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)
+    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23
+    at Array.forEach (<anonymous>)
+1719711248218 main error "Main~handleUncaughtError - Uncaught errors",{"name":"Error","message":"Render frame was disposed before WebFrameMain could be accessed","stack":"Error: Render frame was disposed before WebFrameMain could be accessed\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)\n    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)\n    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)\n    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)\n    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)\n    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)\n    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)\n    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)\n    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)\n    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23\n    at Array.forEach (<anonymous>)"}
+Main~handleUncaughtError - Uncaught errors Error: Render frame was disposed before WebFrameMain could be accessed
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)
+    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)
+    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)
+    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)
+    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)
+    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)
+    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)
+    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)
+    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)
+    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23
+    at Array.forEach (<anonymous>)
+[13226:0630/043408.221229:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.222376:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.223547:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.224272:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.228630:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.229580:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[13226:0630/043408.229597:FATAL:gpu_data_manager_impl_private.cc(451)] GPU process isn't usable. Goodbye.
+Fontconfig error: Cannot load default config file: No such file: (null)
+Opening in existing browser session.
+WARNING: Using incubator modules: jdk.incubator.vector
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1719842357639 main info "Booting Postman 10.24.16, linux-6.9.7-arch1-1 on x64"
+1719842357643 main info "EventBus~initialize - Success"
+1719842357647 main info "Proxy configuration has not been setup"
+1719842357650 main info "CloudProxyManager~init - Success"
+1719842357688 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1719842357700 main info "UpdateHandler~init - Success"
+1719842357707 main info "LeaderSelection: Initialized successfully"
+1719842357708 main info "VersionDependencyService: Initialized successfully"
+1719842357725 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1719842357761 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1719842357813 main info "shellController~init: Success"
+1719842357822 main info "shellMeta~init: Success"
+1719842357823 main info "partitionMigrationService: State of V7 partition:"
+1719842357823 main info "partitionMigrationService: V7 partitions",[]
+1719842357823 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1719842357823 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1719842357824 main info "partitionMigrationService~init: Success"
+1719842357852 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1719842357864 main info "userPartitionService~getRecentV8UserPartition: recent v8 user context partition ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719842357864 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719842357886 main info "userPartitionService~init: Success"
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+1719842357921 main info "userPartitionService: State of v8 partition system:"
+1719842357928 main info "shell~init~getPartitionToLoad: loading active partition"
+1719842357932 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-06-29T23:40:05.397Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719842357932 main info "userPartitionService: users global meta:",{}
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.300.v20240418-0734]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.300.v20240419-2334]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.1.1.202406292011]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.400.v20240416-0658]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.200.v20240524-2010]
+> Start jna [com.sun.jna 5.14.0.v20231211-1200]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.148.202406292011]
+> Start Expression Language [org.eclipse.core.expressions 3.9.400.v20240413-1529]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.29.202406292011]
+2024-07-01 16:59:18.563 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.1.1.202406292011]
+2024-07-01 16:59:18.634 - DBeaver 24.1.1.202406292011 is starting
+2024-07-01 16:59:18.635 - OS: Linux 6.9.7-arch1-1 (amd64)
+2024-07-01 16:59:18.635 - Java version: 22 by N/A (64bit)
+2024-07-01 16:59:18.635 - Install path: '/usr/lib/dbeaver'
+2024-07-01 16:59:18.636 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-07-01 16:59:18.640 - Memory available 65Mb/1024Mb
+2024-07-01 16:59:18.652 - Create display
+
+(DBeaver:4428): Gdk-CRITICAL **: 16:59:18.665: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4428): Gdk-CRITICAL **: 16:59:18.670: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-07-01 16:59:18.832 - Initialize desktop platform...
+2024-07-01 16:59:19.075 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.400.v20240426-1040]
+> Start Core Resource Management [org.eclipse.core.resources 3.20.200.v20240513-1323]
+> Start Team Support Core [org.eclipse.team.core 3.10.400.v20240413-1529]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.133.202406292011]
+2024-07-01 16:59:19.484 - Initialize base platform...
+2024-07-01 16:59:19.522 - Platform initialized (690ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.133.202406292011]
+2024-07-01 16:59:19.578 - Starting instance server at http://localhost:45755
+2024-07-01 16:59:19.589 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.400.v20240425-0840]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.400.v20240413-1529]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.300.v20231201-1637]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.400.v20240424-0956]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.400.v20240321-1245]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.400.v20240424-0444]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.37.0.v20231208-1346]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.400.v20240424-0956]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.400.v20240416-0658]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.400.v20240418-1547]
+1719842360929 main info "RuntimeIPCAgent~started: Success"
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.400.v20240321-1245]
+
+(DBeaver:4428): Gdk-CRITICAL **: 16:59:21.863: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4428): Gdk-CRITICAL **: 16:59:21.897: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-07-01 16:59:22.061 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.123.202406292011]
+2024-07-01 16:59:22.249 - Total database drivers: 117 (117)
+> Start Help System Core [org.eclipse.help 3.10.400.v20240415-0528]
+2024-07-01 16:59:22.324 - Create actions
+2024-07-01 16:59:22.332 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-07-01 16:59:22.333 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-07-01 16:59:22.333 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+2024-07-01 16:59:22.333 - Create workbench actions
+2024-07-01 16:59:22.725 - Initialize workbench window
+2024-07-01 16:59:22.731 - Finish initialization
+1719842362852 main info "Main~getRemoteInitPath:: "
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.300.v20240524-2010]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.400.v20240524-2010]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.133.202406292011]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.133.202406292011]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.109.202406292011]
+1719842363160 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+INTERCEPTOR CONNECTIVITY: Connecting to Interceptor Bridge
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1719842363182 main info "windowManager: First requester booted successfully."
+1719842363182 main info "windowManager~restoreWindows: Restoring requester windows"
+1719842363182 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.25 UI Version: 10.24.25-ui-240508-1535 Desktop Platform Version: 10.24.16"
+1719842363345 main info "Main~getRemoteInitPath:: "
+> Start Core Compare Support [org.eclipse.compare.core 3.8.500.v20240524-2010]
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:23.433: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+1719842363608 main info "Main~getPlatformLaunchPerfMetrics"
+
+(DBeaver:4428): Gdk-CRITICAL **: 16:59:23.608: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.400.v20240413-1529]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.400.v20240413-1529]
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+1719842363959 main info "INTERCEPTOR CONNECTIVITY: Attempting to start websocket server on port 15611"
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.170.202406292011]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.139.202406292011]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.16.0.202405290843]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.18.0.202405290843]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.93.202406292011]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.93.202406292011]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.130.202406292011]
+> Start DBeaver Dashboards Model [org.jkiss.dbeaver.model.dashboard 1.0.6.202406292011]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.124.202406292011]
+> Start Console [org.eclipse.ui.console 3.14.100.v20240429-1358]
+> Start Debug Core [org.eclipse.debug.core 3.21.400.v20240415-0528]
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.496: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.502: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.510: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.522: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.528: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.551: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.111.202406292011]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.109.202406292011]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.111.202406292011]
+2024-07-01 16:59:24.628 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.26.202406292011]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.206.202406292011]
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.637: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.638: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.638: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.638: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.638: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.638: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.639: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.639: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.639: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:4428): Gtk-WARNING **: 16:59:24.639: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.157.202406292011]
+2024-07-01 16:59:24.681 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-07-01 16:59:24.683 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+2024-07-01 16:59:24.848 - Execution context opened (products_for_you; Metadata <products_for_you>; 1)
+2024-07-01 16:59:24.848 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Metadata <products_for_you>
+2024-07-01 16:59:24.918 - Connected (postgres-jdbc-18e963ee16d-48ffade892fe9348, PostgreSQL JDBC Driver [42.7.2])
+2024-07-01 16:59:24.932 - Execution context opened (products_for_you; SQLEditor <Script-1.sql>; 2)
+2024-07-01 16:59:24.933 - Initiate connection to PostgreSQL database [products_for_you@localhost] for SQLEditor <Script-1.sql>
+1719842365940 main info "Main - model-events~user - (user, bootstrapUser) received"
+1719842365940 main info "model-events~user - bootstrapUser received"
+1719842365956 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1719842365974 main info "userPartitionService: State of v8 partition system:"
+1719842365978 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-07-01T13:59:25.956Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719842365979 main info "userPartitionService: users global meta:",{}
+2024-07-01 16:59:26.862 - Open [https://dbeaver.io/product/version.xml]
+
+(DBeaver:4428): Gdk-CRITICAL **: 16:59:27.120: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+IPCClient ~ WindowHandler: New event is received { type: 'focus', windowId: 1 }
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+2024-07-02 00:13:09.409 - Execution context closed (products_for_you, 0)
+2024-07-02 00:13:09.420 - Execution context closed (products_for_you, 1)
+2024-07-02 00:13:09.431 - Execution context closed (products_for_you, 2)
+2024-07-02 00:13:09.432 - Disconnected (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+
+(DBeaver:4428): Gdk-CRITICAL **: 00:13:09.635: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4428): Gdk-CRITICAL **: 04:14:52.315: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:4428): Gdk-CRITICAL **: 04:15:03.969: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-07-02 04:15:04.217 - DBeaver is stopping
+2024-07-02 04:15:04.218 - Stop instance server
+2024-07-02 04:15:05.226 - Instance server has been stopped
+2024-07-02 04:15:05.226 - DBeaver shutdown completed
+2024-07-02 04:15:05.256 - Shutdown desktop platform...
+2024-07-02 04:15:05.284 - Platform shutdown completed (26ms)
+2024-07-02 04:15:05.284 - send collected statistics
+2024-07-02 04:15:05.287 - Open [https://stats.dbeaver.com/send-statistics?session=b98b4b42-5173-4123-a91e-d4dffef415a1&time=1719842363]
+2024-07-02 04:15:05.545 - Statistics sent (OK)
+1719882906601 main info "Quitting app"
+[4344:0702/041506.626785:ERROR:network_service_instance_impl.cc(461)] Network service crashed, restarting service.
+Error: Render frame was disposed before WebFrameMain could be accessed
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)
+    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)
+    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)
+    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)
+    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)
+    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)
+    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)
+    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)
+    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)
+    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23
+    at Array.forEach (<anonymous>)
+1719882906664 main error "Main~handleUncaughtError - Uncaught errors",{"name":"Error","message":"Render frame was disposed before WebFrameMain could be accessed","stack":"Error: Render frame was disposed before WebFrameMain could be accessed\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)\n    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)\n    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)\n    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)\n    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)\n    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)\n    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)\n    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)\n    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)\n    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)\n    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)\n    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23\n    at Array.forEach (<anonymous>)"}
+Main~handleUncaughtError - Uncaught errors Error: Render frame was disposed before WebFrameMain could be accessed
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:19)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:94:9)
+    at decirc (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:100:9)
+    at stringify (/opt/postman/app/resources/app/node_modules/fast-safe-stringify/index.js:25:3)
+    at Format.transform (/opt/postman/app/resources/app/node_modules/logform/json.js:24:19)
+    at DerivedLogger._transform (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:235:29)
+    at DerivedLogger.Transform._read (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:184:10)
+    at DerivedLogger.Transform._write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_transform.js:172:83)
+    at doWrite (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:428:64)
+    at writeOrBuffer (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:417:5)
+    at DerivedLogger.Writable.write (/opt/postman/app/resources/app/node_modules/readable-stream/lib/_stream_writable.js:334:11)
+    at DerivedLogger.log (/opt/postman/app/resources/app/node_modules/winston/lib/winston/logger.js:164:14)
+    at /opt/postman/app/resources/app/node_modules/@postman/app-logger/lib/collectors/AbstractCollector.js:33:23
+    at Array.forEach (<anonymous>)
+[4344:0702/041506.670818:ERROR:zygote_communication_linux.cc(275)] Failed to send GetTerminationStatus message to zygote
+[4344:0702/041506.675725:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.677313:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.678038:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.692752:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.697589:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.699659:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.700691:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.701659:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.702712:ERROR:gpu_process_host.cc(960)] GPU process launch failed: error_code=1002
+[4344:0702/041506.702749:FATAL:gpu_data_manager_impl_private.cc(451)] GPU process isn't usable. Goodbye.
+[0702/041506.717511:ERROR:elf_dynamic_array_reader.h(64)] tag not found
+[0702/041506.717753:ERROR:elf_dynamic_array_reader.h(64)] tag not found
+[0702/041506.717813:ERROR:elf_dynamic_array_reader.h(64)] tag not found
+[0702/041506.718359:ERROR:elf_dynamic_array_reader.h(64)] tag not found
+[0702/041506.727390:ERROR:directory_reader_posix.cc(42)] opendir /home/ouki/.config/Postman/Crashpad/attachments/f8b04e64-14eb-4c6f-8d4d-e4477013fd54: No such file or directory (2)
+Fontconfig error: Cannot load default config file: No such file: (null)
+Opening in existing browser session.
+WARNING: Using incubator modules: jdk.incubator.vector
+The disableGPU setting is set to undefined
+Not disabling GPU
+Main: Starting cleanup of stale files
+Main: Cleanup of stale files completed
+Main~createDefaultWorkingDir - Default working dir creation already attempted
+1719920420125 main info "Booting Postman 10.24.16, linux-6.9.7-arch1-1 on x64"
+1719920420126 main info "EventBus~initialize - Success"
+1719920420130 main info "Proxy configuration has not been setup"
+1719920420131 main info "CloudProxyManager~init - Success"
+1719920420166 main info "performShellDataMigration: Migration has already been done. Bailing out"
+1719920420178 main info "UpdateHandler~init - Success"
+1719920420181 main info "LeaderSelection: Initialized successfully"
+1719920420182 main info "VersionDependencyService: Initialized successfully"
+1719920420192 main info "LinuxAutoUpdater~Cleanup - Initial cleanup successful"
+1719920420216 main info "GPU detected VID 4318 DID 8710 ACTIVE true"
+1719920420248 main info "shellController~init: Success"
+1719920420263 main info "shellMeta~init: Success"
+1719920420264 main info "partitionMigrationService: State of V7 partition:"
+1719920420264 main info "partitionMigrationService: V7 partitions",[]
+1719920420265 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no partition with scratchpad namespace"
+1719920420265 main info "partitionMigrationService~rectifyNamespaceOfScratchPadPartition: There is no transit partition which could have been used for scratchpad"
+1719920420265 main info "partitionMigrationService~init: Success"
+1719920420290 main info "partitionMigrationService~runV8PartitionsIntegrity: Two way migration~ removing the following partitions from v8",[]
+1719920420307 main info "userPartitionService~getRecentV8UserPartition: recent v8 user context partition ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719920420307 main info "userPartitionService~_rectifyTheActivePartitionOfApplication: Setting the active partition to ","9725f9b3-8d91-4f8c-9d41-c45dccc32b20"
+1719920420322 main info "userPartitionService~init: Success"
+1719920420350 main info "userPartitionService: State of v8 partition system:"
+1719920420362 main info "shell~init~getPartitionToLoad: loading active partition"
+1719920420366 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-07-01T13:59:25.956Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719920420367 main info "userPartitionService: users global meta:",{}
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+src/gbm_drv_common.c:131: GBM-DRV error (get_bytes_per_component): Unknown or not supported format: 808530000
+
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.300.v20240418-0734]
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.300.v20240419-2334]
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 24.1.1.202406292011]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.5.400.v20240416-0658]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.22.200.v20240524-2010]
+> Start jna [com.sun.jna 5.14.0.v20231211-1200]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.148.202406292011]
+> Start Expression Language [org.eclipse.core.expressions 3.9.400.v20240413-1529]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.29.202406292011]
+2024-07-02 14:40:21.005 - send collected statistics
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 24.1.1.202406292011]
+2024-07-02 14:40:21.078 - DBeaver 24.1.1.202406292011 is starting
+2024-07-02 14:40:21.078 - OS: Linux 6.9.7-arch1-1 (amd64)
+2024-07-02 14:40:21.079 - Java version: 22 by N/A (64bit)
+2024-07-02 14:40:21.079 - Install path: '/usr/lib/dbeaver'
+2024-07-02 14:40:21.080 - Instance path: 'file:/home/ouki/.local/share/DBeaverData/workspace6/'
+2024-07-02 14:40:21.082 - Memory available 65Mb/1024Mb
+2024-07-02 14:40:21.094 - Create display
+
+(DBeaver:6033): Gdk-CRITICAL **: 14:40:21.107: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:6033): Gdk-CRITICAL **: 14:40:21.113: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-07-02 14:40:21.254 - Initialize desktop platform...
+2024-07-02 14:40:21.567 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.10.400.v20240426-1040]
+> Start Core Resource Management [org.eclipse.core.resources 3.20.200.v20240513-1323]
+> Start Team Support Core [org.eclipse.team.core 3.10.400.v20240413-1529]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.133.202406292011]
+2024-07-02 14:40:21.885 - Initialize base platform...
+2024-07-02 14:40:21.934 - Platform initialized (680ms)
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.133.202406292011]
+2024-07-02 14:40:21.995 - Starting instance server at http://localhost:39777
+2024-07-02 14:40:22.015 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.17.400.v20240425-0840]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.4.400.v20240413-1529]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.300.v20231201-1637]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.4.400.v20240424-0956]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.14.400.v20240321-1245]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.400.v20240424-0444]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.37.0.v20231208-1346]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.14.400.v20240424-0956]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.5.400.v20240416-0658]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.16.400.v20240418-1547]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+1719920423676 main info "RuntimeIPCAgent~started: Success"
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.15.400.v20240321-1245]
+
+(DBeaver:6033): Gdk-CRITICAL **: 14:40:25.021: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+
+(DBeaver:6033): Gdk-CRITICAL **: 14:40:25.052: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+2024-07-02 14:40:25.313 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.123.202406292011]
+2024-07-02 14:40:25.627 - Total database drivers: 117 (117)
+> Start Help System Core [org.eclipse.help 3.10.400.v20240415-0528]
+2024-07-02 14:40:25.771 - Create actions
+2024-07-02 14:40:25.782 - Disable Eclipse action set 'org.eclipse.ui.edit.text.actionSet.annotationNavigation'
+2024-07-02 14:40:25.783 - Disable Eclipse action set 'org.eclipse.ui.WorkingSetActionSet'
+2024-07-02 14:40:25.783 - Disable Eclipse action set 'org.eclipse.ui.actionSet.openFiles'
+2024-07-02 14:40:25.783 - Create workbench actions
+2024-07-02 14:40:26.417 - Initialize workbench window
+2024-07-02 14:40:26.426 - Finish initialization
+1719920426455 main info "Main~getRemoteInitPath:: "
+> Start Default Text Editor [org.eclipse.ui.editors 3.17.300.v20240524-2010]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.17.400.v20240524-2010]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.133.202406292011]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.133.202406292011]
+1719920426847 main info "UpdateHandler~app-update-events - Received event",{"name":"checkForElectronVersionUpdated","namespace":"appUpdate"}
+INTERCEPTOR CONNECTIVITY: Connecting to Interceptor Bridge
+IPCClient ~ WindowHandler: New event is received { type: 'window-opened' }
+1719920426872 main info "windowManager: First requester booted successfully."
+1719920426873 main info "windowManager~restoreWindows: Restoring requester windows"
+1719920426873 main info "Main~AppEvents - Received booted event for process requester.Version 10.24.25 UI Version: 10.24.25-ui-240508-1535 Desktop Platform Version: 10.24.16"
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.109.202406292011]
+1719920427043 main info "Main~getRemoteInitPath:: "
+> Start Core Compare Support [org.eclipse.compare.core 3.8.500.v20240524-2010]
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:27.304: Negative content width -5 (allocation 1, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+1719920427356 main info "Main~getPlatformLaunchPerfMetrics"
+
+(DBeaver:6033): Gdk-CRITICAL **: 14:40:27.501: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.5.400.v20240413-1529]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.400.v20240413-1529]
+IPCClient ~ WindowHandler: New event is received { type: 'blur', windowId: 1 }
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ext.sample.database 1.0.170.202406292011]
+> Start DBeaver Tip of the day [org.jkiss.dbeaver.ext.ui.tipoftheday 1.0.139.202406292011]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.16.0.202405290843]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.18.0.202405290843]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.erd.ui 3.0.93.202406292011]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.erd.model 1.0.93.202406292011]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.130.202406292011]
+> Start DBeaver Dashboards Model [org.jkiss.dbeaver.model.dashboard 1.0.6.202406292011]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.124.202406292011]
+1719920428285 main info "INTERCEPTOR CONNECTIVITY: Attempting to start websocket server on port 15611"
+> Start Console [org.eclipse.ui.console 3.14.100.v20240429-1358]
+> Start Debug Core [org.eclipse.debug.core 3.21.400.v20240415-0528]
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.440: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.445: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.457: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.471: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.477: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.500: Negative content width -1 (allocation 1, extents 1x1) while allocating gadget (node scrolledwindow, owner GtkScrolledWindow)
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.111.202406292011]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.109.202406292011]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.111.202406292011]
+2024-07-02 14:40:28.580 - Connect with 'products_for_you' (postgres-jdbc-18e963ee16d-48ffade892fe9348)
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.26.202406292011]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.206.202406292011]
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.590: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.590: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.590: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.590: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.591: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.591: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.591: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.591: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.591: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:6033): Gtk-WARNING **: 14:40:28.591: Negative content width -1 (allocation 5, extents 3x3) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.157.202406292011]
+2024-07-02 14:40:28.633 - Execution context opened (products_for_you; Main <products_for_you>; 0)
+2024-07-02 14:40:28.635 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Main <products_for_you>
+2024-07-02 14:40:28.778 - Execution context opened (products_for_you; Metadata <products_for_you>; 1)
+2024-07-02 14:40:28.778 - Initiate connection to PostgreSQL database [products_for_you@localhost] for Metadata <products_for_you>
+2024-07-02 14:40:28.855 - Connected (postgres-jdbc-18e963ee16d-48ffade892fe9348, PostgreSQL JDBC Driver [42.7.2])
+2024-07-02 14:40:28.875 - Execution context opened (products_for_you; SQLEditor <Script-1.sql>; 2)
+2024-07-02 14:40:28.875 - Initiate connection to PostgreSQL database [products_for_you@localhost] for SQLEditor <Script-1.sql>
+1719920429542 main info "Main - model-events~user - (user, bootstrapUser) received"
+1719920429543 main info "model-events~user - bootstrapUser received"
+1719920429558 main info "userPartitionService~associateTransitPartition: ",{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","context":{"namespace":"users","userId":"33994519","teamId":"0"}}
+1719920429587 main info "userPartitionService: State of v8 partition system:"
+1719920429591 main info "userPartitionService: List of partitions:",[{"partitionId":"9725f9b3-8d91-4f8c-9d41-c45dccc32b20","namespace":"users","userId":"33994519","teamId":"0","lastUpdated":"2024-07-02T11:40:29.558Z"},{"partitionId":"0009b317-1635-4e67-8e8a-35373442af92","namespace":"scratchPad","userId":0,"teamId":0,"isDirty":false}]
+1719920429591 main info "userPartitionService: users global meta:",{}
+2024-07-02 14:40:30.717 - Open [https://dbeaver.io/product/version.xml]
+
+(DBeaver:6033): Gdk-CRITICAL **: 14:40:31.045: gdk_wayland_window_set_dbus_properties_libgtk_only: assertion 'GDK_IS_WAYLAND_WINDOW (window)' failed
+The NVIDIA driver was unable to open 'libnvidia-glvkspirv.so.555.58'.  This library is required at run time.
+
+Warning: terminator_CreateInstance: Failed to CreateInstance in ICD 0.  Skipping ICD.
+Warning: terminator_CreateInstance: Found no drivers!
+Warning: vkCreateInstance failed with VK_ERROR_INCOMPATIBLE_DRIVER
+    at CheckVkSuccessImpl (../../third_party/dawn/src/dawn/native/vulkan/VulkanError.cpp:101)
+    at CreateVkInstance (../../third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp:493)
+    at Initialize (../../third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp:379)
+    at Create (../../third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp:301)
+    at operator() (../../third_party/dawn/src/dawn/native/vulkan/BackendVk.cpp:556)
+
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile

@@ -19,10 +19,9 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
     setSearchValue(value)
   }
 
-  // TODO: fix the typescript bug about the event type 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (searchValue !== '') {
       setSearchValue('')
       navigate(`/search/${ searchValue }`)
@@ -30,7 +29,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
   }
 
   return (
-      <form 
+      <form
         onSubmit={handleFormSubmit}
         className={styles.inputContainer}
         >
@@ -42,8 +41,8 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
           type="text" />
         <FontAwesomeIcon
           onClick={handleFormSubmit}
-          className={styles.searchIcon} 
-          icon={faSearch} 
+          className={styles.searchIcon}
+          icon={faSearch}
           size='1x'/>
       </form>
   )
