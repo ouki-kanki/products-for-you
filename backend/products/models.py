@@ -11,6 +11,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.exceptions import SuspiciousFileOperation
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from common.util.static_helpers import upload_icon
 from common.util.slugify_helper import slugify_unique
@@ -373,9 +374,9 @@ class ProductImage(models.Model):
 
 @receiver(pre_save, sender=ProductImage)
 def product_image_pre_save(sender, instance, *args, **kwargs):
-    '''
+    """
     TODO: the same is used in product item. have to DRY it.
-    '''
+    """
     if instance.is_featured:
         other_featured_images = ProductImage.objects.filter(product_item=instance.product_item, is_featured=True).exclude(pk=instance.pk)
 
@@ -392,9 +393,9 @@ def product_image_post_save(sender, instance, *args, **kwargs):
 
 
 class Discount(models.Model):
-    '''
+    """
     many to many relation with the variant of products
-    '''
+    """
     code = models.CharField(max_length=255)
     # TODO: change the field with sanitized version of a jsonfield
     description = models.TextField(blank=True)
@@ -422,3 +423,15 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.product.product_id.name}"
+
+
+class ProductReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_ratings')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_ratings')
+    description = models.TextField(blank=True, default='')
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    
+    def __str__(self):
+        return f"{self.user.email} - {self.product.name} - {self.rating}"

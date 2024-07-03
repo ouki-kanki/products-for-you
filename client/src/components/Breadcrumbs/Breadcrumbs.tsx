@@ -18,8 +18,6 @@ export const Breadcrumbs = () => {
       )
     })
 
-  console.log(currentPath)
-  console.log(crumbs)
 
   return (
     <div className={styles.crumbContainer}>

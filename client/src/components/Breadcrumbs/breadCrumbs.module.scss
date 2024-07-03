@@ -23,12 +23,8 @@
 .crumbContainer .crumb:after {
   position: absolute;
   right: - 10px;
-  // top: 1px;
-  // top: -5px;
-  // right: - 25px;
   content: '/';
   font-size: 1rem;
-  // margin-right: 1.4rem;
 }
 
 .crumbContainer .crumb:last-child:after {

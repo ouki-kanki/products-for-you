@@ -111,6 +111,12 @@ celerybeat.pid
 # va files, markup, flowcharts etc
 *.drawio
 
+
+# log files
+*.out
+**/*.out
+client/*.out
+
 # Environments
 .env
 .venv
@@ -150,3 +156,7 @@ sandbox.py
 
 # config
 config.xml
+
+
+# idea
+.idea/
