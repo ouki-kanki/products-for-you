@@ -15,8 +15,11 @@ fi
 # NOTE: have to source the script in order to create the env in the shell that the script is envoked
 . $env/bin/activate
 
+
+cd ~/dev/products_for_you/backend/db
+
 # spin the db
-cd ./backend/db
+# cd ./backend/db
 if ! docker ps | grep -q -c $container_name; then
   docker-compose up -d
   docker ps
@@ -33,7 +36,9 @@ guake .
 guake --execute-command='source myenv/bin/activate && cd ./backend && python manage.py runserver' .
 
 # run code with server
-codium .
+# codium .
+
+
 
 cd ./client
 codium .
@@ -50,7 +55,11 @@ nohup chromium http://localhost:8000/admin &
 # start react server
 yarn run dev
 
-cd ..
+# cd ..
+
+# open pycharm
+cd ~/Desktop
+# ./pycharm-professional
 
 
 

@@ -34,6 +34,7 @@ def upload_category_icon(instance, filename):
     # NOTE: this will save to /images/categoryname/filename
     return upload_icon('category', instance, filename, 'icon', 'name')
 
+
 # need to provide the folder name in this case use the slug from the parent
 def upload_product_item_image(instance, filename):
     variation_name = str(instance.product_item)
@@ -45,8 +46,6 @@ def upload_product_item_image(instance, filename):
         instance,
         'image',
         filename)
-
-
 
 
 # uploads to media/product_item/thumbnail/
@@ -121,7 +120,6 @@ class Category(models.Model):
         if self.icon:
             delete_image_from_filesystem(self, 'icon')
         super().delete(*args, **kwargs)
-
 
 
 # NOTE: sender is the class
@@ -265,7 +263,7 @@ class ProductItem(models.Model):
         db_table_comment = "Variation of Product"
 
     @property
-    def variation_name(self):
+    def variation_name(self): # TODO: find what is this and change it
         qs = self.variation_option.all()
         variation_values = '- '.join(option.value for option in qs)
 
@@ -308,9 +306,9 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
 
 
 class Banner(models.Model):
-    '''
+    """
     BANNERS FOR THE LANDING PAGE
-    '''
+    """
     image = models.CharField(max_length=255)
     alt_text = models.CharField(max_length=255)
 
@@ -419,7 +417,7 @@ class Discount(models.Model):
 
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorited_by')
+    product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorite_by')
 
     def __str__(self):
         return f"{self.user.email} - {self.product.product_id.name}"
@@ -432,6 +430,14 @@ class ProductReview(models.Model):
     rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
+    # NOTE: these validators are not a db constrain.
     
     def __str__(self):
         return f"{self.user.email} - {self.product.name} - {self.rating}"
+
+
+# NOT IMPLEMENTED
+class Stock(models.Model):
+    product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='stock')
+    stock = models.PositiveSmallIntegerField()
+    items_sold = models.PositiveSmallIntegerField()

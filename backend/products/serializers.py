@@ -37,6 +37,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('id', 'name', 'slug', 'icon', 'children', 'my_parent_category')
 
+
 # TODO: show the related products for the category
 class CategoryRelatedProducts(serializers.ModelSerializer):
     '''
@@ -461,8 +462,8 @@ class ProductSerializerV4(serializers.ModelSerializer):
             {
                 'slug': variation.slug,
                 'product_url': request.build_absolute_uri(reverse('products:product-preview', args=[variation.slug])),
-                # 'product_url': reverse('products:product-preview', args=[variation.pk], request=self.context.get('request')),
-                'thumb': request.build_absolute_uri(variation.product_image.filter(is_featured=True).first().thumbnail.url) if variation.product_image.filter(is_featured=True).exists() else None
+                'thumb': request.build_absolute_uri(variation.product_image.filter(is_featured=True) \
+                                                    .first().thumbnail.url) if variation.product_image.filter(is_featured=True).exists() else None
             }
             for variation in variations
         ]
@@ -568,4 +569,14 @@ class ProductItemSearchSerializerV4(serializers.ModelSerializer):
             'detailed_description',
             'categories'
             # 'product_category'
+        )
+
+
+# SERIALIZERS V2
+class ProductItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductItem
+        fields = (
+
         )

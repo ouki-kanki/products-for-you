@@ -15,10 +15,31 @@ services:
     networks:
       - products_for_you_net
     restart: unless-stopped
-
+  e_search:
+    container_name: product_for_you_elastic
+    image: elasticsearch:8.14.3
+    environment:
+      - cluster.name=elastic-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      #      - xpack.monitoring.enabled=false
+      - ELASTIC_USERNAME=test_elastic
+      - ELASTIC_PASSWORD=elastic1234
+      - "ES_JAVA_OPTS=-Xms4G -Xmx4G"
+#      - network.bind_host=0.0.0.0
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+    depends_on:
+      - products_for_you
 networks:
   products_for_you_net:
     driver: bridge
 
 volumes:
   products_for_you:
+  elasticsearch-data:
+    driver: local
