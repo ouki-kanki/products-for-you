@@ -7,7 +7,7 @@ from .models import (
 )
 from rest_framework.reverse import reverse
 
-from .utils import get_list_of_parent_categories
+from .utils import get_list_of_parent_categories, representation_categories_to_list
 
 
 class CategoryAndParentCategoriesSerializer(serializers.Serializer):  # noqa
@@ -60,16 +60,14 @@ class ProductSerializer(serializers.ModelSerializer):
         variation = obj.product_variations.filter(is_default=True).first()
         if not variation:
             variation = obj.product_variations.last()
-        product_item_serializer = ProductItemSerializerV4(variation, context=self.context)
+        product_item_serializer = ProductItemSerializer(variation, context=self.context)
         return product_item_serializer.data
 
     def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        category = ret['category']
-        list_of_categories = get_list_of_parent_categories(category, [])
-        ret['category'] = list_of_categories
+        repr_data = super().to_representation(instance)
+        category = representation_categories_to_list(repr_data)
+        return category
 
-        return ret
     class Meta:
         model = Product
         fields = (

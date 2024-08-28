@@ -24,6 +24,8 @@ from services.imageServices import (
 )
 from user_control.models import CustomUser as User
 
+from .utils import get_list_of_parent_categories
+
 # NOTE: models.PROTECT it seems that does not allow null=True
 
 
@@ -40,7 +42,7 @@ def upload_product_item_image(instance, filename):
     variation_name = str(instance.product_item)
     return upload_icon(
         'products',
-        instance.product_item.product_id.name,
+        instance.product_item.product.name,
         variation_name,
         'images',
         instance,
@@ -53,7 +55,7 @@ def upload_product_thumb(instance, filename):
     variation_name = str(instance.product_item)
     return upload_icon(
         'products',
-        instance.product_item.product_id.name,
+        instance.product_item.product.name,
         variation_name,
         'thumbnails',
         instance,
@@ -254,6 +256,11 @@ class ProductItem(models.Model):
     def product_name(self):
         return self.product.name
 
+    @property
+    def categories(self):
+        list_of_categories = get_list_of_parent_categories(self.product.category, [])
+        return list_of_categories
+
     class Meta:
         verbose_name = "Product Variation"
         db_table_comment = "Variation of Product"
@@ -278,10 +285,11 @@ class ProductItem(models.Model):
 
 @receiver(pre_save, sender=ProductItem)
 def product_item_pre_save(sender, instance, *args, **kwargs):
-    if instance.variation_name == "" or instance.variation_name is None:
-        instance.variation_name = "yoyo"
-        qs = instance.variation_option.all().first()
-        instance.variation_name = f"{instance.product_id.name} {qs}"
+    # TODO: this has to trigger after save for the variation to exist
+    # if instance.variation_name == "" or instance.variation_name is None:
+    #     instance.variation_name = "yoyo"
+    #     qs = instance.variation_option.all().first()
+    #     instance.variation_name = f"{instance.product_id.name} {qs}"
 
     # if is flagged as default remove the flag from the rest of the variations
     if instance.is_default:

@@ -36,6 +36,19 @@ class ProductsAndRelatedVariationsView(generics.ListAPIView):
         return queryset
 
 
+class GetDefaultVariationsView(generics.ListAPIView):
+    """
+    endpoint: /api/products/default
+    description: get productItems filter by default
+    """
+    queryset = ProductItem.objects.select_related('product__category', 'product') \
+        .filter(is_default=True) \
+        .order_by('-created_at')
+
+    serializer_class = ProductVariationSerializer
+    pagination_class = CustomPageNumberPagination
+
+
 class FeaturedProductsListView(generics.ListAPIView):
     """
     endpoint: /api/products/featured
