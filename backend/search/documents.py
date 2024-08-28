@@ -6,7 +6,7 @@ from products.models import ProductItem
 @registry.register_document
 class ProductItemDocument(Document):
 
-    product_id = fields.ObjectField(
+    product = fields.ObjectField(
         properties={
             "name": fields.TextField(),
             "description": fields.TextField()
@@ -23,5 +23,8 @@ class ProductItemDocument(Document):
             'id',
             'sku',
             'slug',
-            'detailed_description'
+            'detailed_description',
+            'is_default',
+            'quantity',
+            'price'
         ]

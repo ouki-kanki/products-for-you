@@ -27,9 +27,11 @@ services:
       - ELASTIC_USERNAME=test_elastic
       - ELASTIC_PASSWORD=elastic1234
       - "ES_JAVA_OPTS=-Xms4G -Xmx4G"
-#      - network.bind_host=0.0.0.0
+      - network.bind_host=0.0.0.0
     ports:
       - "9200:9200"
+    networks:
+      - products_for_you_net
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     restart: unless-stopped

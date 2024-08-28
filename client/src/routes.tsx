@@ -17,8 +17,8 @@ import { Home,
   DeliveryTerms,
   TermsOfUse,
   Checkout
- } from './components/pages'
-import { Search } from './components/pages/Search';
+ } from './pages'
+import { Search } from './pages/Search';
 
 
 export const EcommerceRoutes = () => (

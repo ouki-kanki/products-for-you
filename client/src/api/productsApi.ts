@@ -24,7 +24,7 @@ interface IVariation {
 }
 
 interface IProductThumbnailorImage {
-  isFeatured: boolean;
+  isDefault: boolean;
   url: string
 }
 
@@ -103,7 +103,7 @@ const flatAndConvertToCamel = (products) => {
 export const productsApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}products/`,
+    baseUrl: `${BASE_URL}`,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token
       if (token) {
@@ -115,7 +115,7 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getLatestProducts: builder.query<IProduct[] | undefined, string>({
       query: (pageSize = '10') => ({
-        url: `latest-products-v4${pageSize && `?${pageSize}`}`
+        url: `products/latest${pageSize && `?${pageSize}`}`
       }),
       // TODO: fis the typsecript errors , have to change the types
       transformResponse: (response: IProductApiResponse, meta, arg): IProduct[] | undefined => {
@@ -149,22 +149,21 @@ export const productsApi = createApi({
     }),
     getFeaturedProducts: builder.query<IProductApiResponse, string>({
       query: (pageSize) => ({
-        url: `featured-products${pageSize && `?${pageSize}`}`
+        url: `products/featured${pageSize && `?${pageSize}`}`
       })
     }),
     getProductDetail: builder.query<IproductDetail, string | null>({
       query: (slug) => ({
-        url: `product-items-detail-v4/${slug}`
+        url: `products/product-detail/${slug}`
       }),
       transformResponse: ((response: IproductDetail, meta, arg) => {
-        // TODO: propably this is ok but check if causes issues because it mutates the response
         convertSnakeToCamel(response)
         return response
       })
     }),
     getProductVariationPreview: builder.query<IproductVariationPreview, string | null>({
        query: (slug) => ({
-        url: `product-item-preview-v4/${slug}`
+        url: `products/product-preview/${slug}`
        }),
        transformResponse: ((response: IproductVariationPreview, meta, arg) => {
         convertSnakeToCamel(response)
@@ -173,12 +172,12 @@ export const productsApi = createApi({
     }),
     getCategories: builder.query<ICategory[], void>({
       query: () => ({
-        url: `categories`
+        url: `categories/`
       })
     }),
     filterByCategory: builder.query<IProductApiResponse, number>({
       query: (id) => ({
-        url: `by-category/${id}`
+        url: `products/category/${id}`
       }),
       transformResponse: (response) => {
         return response

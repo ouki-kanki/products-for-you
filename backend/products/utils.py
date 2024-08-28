@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 def get_list_of_parent_categories(category, init_list):
     '''
-    returns list of categories in the form parent > parent > child
+    returns list of categories in the form ['grand_parent', 'parent', 'child']
     '''
 
     if isinstance(category, OrderedDict):

@@ -18,9 +18,9 @@ django-silk==5.0.4
 djangorestframework==3.14.0
 drf-spectacular==0.26.3
 drf-spectacular-sidecar==2023.6.1
-elastic-transport==8.15.0
-elasticsearch==8.15.0
-elasticsearch-dsl==8.15.1
+elastic-transport==8.13.1
+elasticsearch==8.14.0
+elasticsearch-dsl==8.14.0
 exceptiongroup==1.2.0
 factory-boy==3.3.0
 Faker==20.1.0

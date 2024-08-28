@@ -14,7 +14,7 @@ import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice'
 
 import { EcommerceRoutes } from './routes';
 import { Sidebar } from './components/Sidebar/Sidebar'
-import { CartModal } from './components/pages'
+import { CartModal } from './pages'
 
 
 import { useDebouncedEffect } from './hooks/useDebounced';

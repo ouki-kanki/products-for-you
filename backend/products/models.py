@@ -69,7 +69,6 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     position = models.IntegerField(blank=True, default=100,)
-    # TODO: maybe this field is usefull
     # is_parent = models.BooleanField(default=False)
 
     class Meta:
@@ -157,7 +156,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    is_featured_product=models.BooleanField(default=False, verbose_name='Featured Product')
+    is_featured = models.BooleanField(default=False, verbose_name='Featured Product')
     icon = models.ImageField(upload_to='products/icons/', blank=True, default='icons/placeholder.jpg')
 
     class Meta:
@@ -221,7 +220,6 @@ def product_pre_save(sender, instance, *args, **kwargs):
 #         instance.save()
 
 pre_save.connect(product_pre_save, Product)
-# post_save.connect(product_post_save, Product)
 
 
 # NOT IMPLEMENTED
@@ -239,16 +237,14 @@ class ProductItem(models.Model):
     """
     RPODUCT - VARIANT
     """
-    # TODO: change product_id to product because it confusing
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     variation_name = models.CharField(max_length=255, blank=True)
-    # TODO: make it unique True
-    slug = models.SlugField(max_length=50, blank=True)
+    slug = models.SlugField(max_length=50, blank=True, unique=True)
     sku = models.CharField(max_length=255)
     quantity = models.IntegerField()
     detailed_description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    is_featured = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False)
     variation_option = models.ManyToManyField('variations.VariationOptions') # to avoid circular imports
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -256,7 +252,7 @@ class ProductItem(models.Model):
 
     @property
     def product_name(self):
-        return self.product_id.name
+        return self.product.name
 
     class Meta:
         verbose_name = "Product Variation"
@@ -267,8 +263,7 @@ class ProductItem(models.Model):
         qs = self.variation_option.all()
         variation_values = '- '.join(option.value for option in qs)
 
-        return f'{self.product_id.name} {variation_values}'
-
+        return f'{self.product.name} {variation_values}'
 
     def __str__(self):
         qs = self.variation_option.all()
@@ -280,43 +275,30 @@ class ProductItem(models.Model):
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
 
+
 @receiver(pre_save, sender=ProductItem)
 def product_item_pre_save(sender, instance, *args, **kwargs):
-    if instance.variation_name is "" or instance.variation_name is None:
+    if instance.variation_name == "" or instance.variation_name is None:
         instance.variation_name = "yoyo"
         qs = instance.variation_option.all().first()
         instance.variation_name = f"{instance.product_id.name} {qs}"
 
-    # if is flagged as featured remove the flag from the rest of the variations
-    if instance.is_featured:
-        other_featured_variations = ProductItem.objects.filter(product_id=instance.product_id, is_featured=True) \
+    # if is flagged as default remove the flag from the rest of the variations
+    if instance.is_default:
+        other_default_variations = ProductItem.objects.filter(product=instance.product, is_default=True) \
             .exclude(pk=instance.pk)
 
-        if other_featured_variations:
-            other_featured_variations.update(is_featured=False)
+        if other_default_variations:
+            other_default_variations.update(is_default=False)
 
     if instance.slug is "" or instance.slug is None:
         slugify_unique(sender, instance, instance.sku)
 
 
-# @receiver(post_save, sender=ProductItem)
-# def product_item_post_save(sender, instance, created, *args, **kwargs):
-#     if created:
-#         instance.save()
-
-
-class Banner(models.Model):
-    """
-    BANNERS FOR THE LANDING PAGE
-    """
-    image = models.CharField(max_length=255)
-    alt_text = models.CharField(max_length=255)
-
-
 class ProductImage(models.Model):
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='product_image')
     image = models.ImageField(upload_to=upload_product_item_image)
-    is_featured = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False)
     has_thumbnail = models.BooleanField(default=False)
     remove_background = models.BooleanField(default=False, help_text="experimental, works with white background")
     thumbnail = models.ImageField(upload_to=upload_product_thumb, blank=True)
@@ -369,17 +351,16 @@ class ProductImage(models.Model):
         super().delete(*args, **kwargs)
 
 
-
 @receiver(pre_save, sender=ProductImage)
 def product_image_pre_save(sender, instance, *args, **kwargs):
     """
     TODO: the same is used in product item. have to DRY it.
     """
-    if instance.is_featured:
-        other_featured_images = ProductImage.objects.filter(product_item=instance.product_item, is_featured=True).exclude(pk=instance.pk)
+    if instance.is_default:
+        other_default_images = ProductImage.objects.filter(product_item=instance.product_item, is_default=True).exclude(pk=instance.pk)
 
-        if other_featured_images:
-            other_featured_images.update(is_featured=False)
+        if other_default_images:
+            other_default_images.update(is_default=False)
 
 
 @receiver(post_save, sender=ProductImage)
@@ -441,3 +422,11 @@ class Stock(models.Model):
     product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='stock')
     stock = models.PositiveSmallIntegerField()
     items_sold = models.PositiveSmallIntegerField()
+
+
+class Banner(models.Model):
+    """
+    BANNERS FOR THE LANDING PAGE
+    """
+    image = models.CharField(max_length=255)
+    alt_text = models.CharField(max_length=255)

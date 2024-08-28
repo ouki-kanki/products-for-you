@@ -195,15 +195,14 @@ REST_FRAMEWORK = {
         'user': '1000/day'
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
 }
 
-# ELASTIC SEARCH
+# ---- ELASTIC SEARCH ----
 ELASTIC_USERNAME = config('ELASTIC_USERNAME')
 ELASTIC_PASSWORD = urlquote(config('ELASTIC_PASSWORD'))
 HOST_IP = '127.0.0.1'
 HOST_PORT = '9200'
-
-print("yo", ELASTIC_PASSWORD, ELASTIC_USERNAME)
 
 elastic_url = f"elasticsearch://{ELASTIC_USERNAME}:{ELASTIC_PASSWORD}@{HOST_IP}:{HOST_PORT}"
 

@@ -37,6 +37,7 @@ class CategoryAdminForm(forms.ModelForm):
         model = Category
         fields = '__all__'
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'product_icon', 'slug', 'parent_category', 'has_related_products', 'created_at')
@@ -52,10 +53,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
     def has_related_products(self, obj):
         return 'Yes' if obj.products.exists() else mark_safe('<span style=\'color:tomato;\'>No</span>')
-    
+
     def product_icon(self, obj):
         return render_icon(obj, 'icon')
-    
+
+    @staticmethod
     def delete_categories(self, request, queryset):
         """
         remove the records and the images from disk
@@ -83,6 +85,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Register your models here.
 
+
 class ProductItemInline(admin.TabularInline):
     model = ProductItem
     readonly_fields = ['variation_link']
@@ -97,7 +100,6 @@ class ProductItemInline(admin.TabularInline):
     def get_fields(self, request, obj=None):
         fields = ['variation_link'] + list(super().get_fields(request, obj=obj))
         return fields
-
 
 
 class ProductForm(forms.ModelForm):
@@ -115,22 +117,19 @@ class ProductForm(forms.ModelForm):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured_product', 'created_at',)
-    list_filter = ('is_featured_product', )
+    list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured', 'created_at',)
+    list_filter = ('is_featured', )
     inlines = [ProductItemInline]
     actions = ('delete_products', )
     form = ProductForm
     message = "Warning.There are no variations for this product.please provide at least one variation"
     no_featured_warning = "Warning. please provide a featured variation"
 
-    formfield_overrides = {
-    models.ImageField: { 'widget': CustomAdminFileWidget },
-    # ArrayField: { 'widget': FeaturesField }
-    }
-    
+    formfield_overrides = {models.ImageField: {'widget': CustomAdminFileWidget},}
+
     def changeform_view(self, request: HttpRequest, object_id: str | None = ..., form_url: str = ..., extra_context: dict[str, bool] | None = ...) -> Any:
-        product_items = ProductItem.objects.filter(product_id=object_id)
-        isFeaturedExists = product_items.filter(is_featured=True)
+        product_items = ProductItem.objects.filter(product=object_id)
+        isFeaturedExists = product_items.filter(is_default=True)
         if not isFeaturedExists:
             self.message_user(request, self.no_featured_warning, level=messages.WARNING)
 
@@ -149,33 +148,37 @@ class ProductAdmin(admin.ModelAdmin):
             self.message_user(request, self.message, level=messages.WARNING)
         super().save_model(request, obj, form, change) 
 
+    @staticmethod
     def delete_products(self, request, queryset):
         for obj in queryset:
             if obj.icon:
                 delete_image_from_filesystem(obj, 'icon')
         queryset.delete()
-    
+
+
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('code', 'discount_value', 'discount_type', 'is_active', 'created_at', )
 
+
 class ProductImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductImageForm, self).__init__(*args, **kwargs)
-        self.fields['is_featured'].help_text = "it will used to show the thumbnail of the variation in product preview and also the main image for the product"
-  
+        self.fields['is_default'].help_text = "it will used to show the thumbnail of the variation " \
+                                              "in product preview and the main image for the product"
+
+
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('product_item', 'product_image', 'is_featured', 'has_thumbnail')
+    list_display = ('product_item', 'product_image', 'is_default', 'has_thumbnail')
     list_filter = ('product_item', )
     exclude = ('thumbnail', )
     ordering = ('product_item',)
     actions = ('delete_record_and_images',)
     form = ProductImageForm
 
-    
     formfield_overrides = {
-        models.ImageField: { 'widget': CustomAdminFileWidget }
+        models.ImageField: {'widget': CustomAdminFileWidget}
     }
 
     def product_image(self, obj):
@@ -194,9 +197,6 @@ class ProductImageAdmin(admin.ModelAdmin):
         queryset.delete()
 
 
-
-
-
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     exclude = ['thumbnail',]
@@ -206,10 +206,9 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(ProductItem)
 class ProductItemAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'id', 'product_id', 'quantity_formated', 'get_category')
-    list_select_related = ('product_id', )
-    # list_display_links = ('product_id',)
-    list_filter = ('product_id', 'quantity')
+    list_display = ('__str__', 'slug', 'id', 'get_default_image', 'product', 'quantity_formated', 'get_category')
+    list_select_related = ('product', )
+    list_filter = ('product', 'quantity')
     inlines = [ProductImageInline, ]
 
     @staticmethod
@@ -229,9 +228,17 @@ class ProductItemAdmin(admin.ModelAdmin):
     quantity_formated.short_description = 'Quantity'
 
     def get_category(self, obj):
-        return obj.product_id.category
-    
+        return obj.product.category
+
     get_category.short_description = 'Category'
+
+    def get_default_image(self, obj):
+        image = obj.product_image.filter(is_default=True).get().image.url
+        image_obj = obj.product_image.filter(is_default=True).get()
+
+        return render_icon(image_obj, 'image')
+
+    get_default_image.short_description = 'Image'
 
 
 admin.site.register((Brand),)
