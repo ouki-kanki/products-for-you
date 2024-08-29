@@ -16,8 +16,8 @@ services:
       - products_for_you_net
     restart: unless-stopped
   e_search:
-    container_name: product_for_you_elastic
-    image: elasticsearch:8.14.3
+    container_name: product_for_you_elastic_2
+    image: elasticsearch:7.17.22
     environment:
       - cluster.name=elastic-cluster
       - discovery.type=single-node

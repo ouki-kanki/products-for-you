@@ -6,7 +6,7 @@ import cartReducer from '../../features/cart/cartSlice'
 import { productsSlice } from "../../features/products/productsSlice";
 import authReducer from '../../features/auth/Login/loginSlice';
 import userReducer from '../../features/users/userSliceV2';
-import { authApi, userApi, productsApi, orderApi } from "../../api";
+import { authApi, userApi, productsApi, orderApi, searchApi } from "../../api";
 
 import { cartMiddleware, cartListenerMiddleware } from "./middleware/cartMiddleware";
 
@@ -22,6 +22,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     user: userReducer,
     [productsApi.reducerPath]: productsApi.reducer,
+    [searchApi.reducerPath]: searchApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer
   },
   middleware: (getDefaultMiddleware) => (
@@ -34,6 +35,7 @@ export const store = configureStore({
       userApi.middleware,
       productsApi.middleware,
       orderApi.middleware,
+      searchApi.middleware,
       cartMiddleware
     ])
   )

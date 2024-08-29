@@ -23,6 +23,6 @@ def representation_categories_to_list(repr_data):
     take the prepr object, return categories & parent categories to list
     """
     category = repr_data['category']
-    list_of_catogories = get_list_of_parent_categories(category, [])
-    repr_data['category'] = list_of_catogories
+    list_of_categories = get_list_of_parent_categories(category, [])
+    repr_data['category'] = list_of_categories
     return repr_data

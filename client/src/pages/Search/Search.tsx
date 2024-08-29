@@ -4,6 +4,8 @@ import styles from './search.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 
+import { useSearchProductItemQuery } from '../../api/searchApi';
+
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
 
 const buttons = [
@@ -19,12 +21,15 @@ export const Search = () => {
   const { slug } = useParams()
   // console.log("the searchParams", searchParams.entries())
   console.log(slug)
+  const { data, isError, isFetching, isLoading, isSuccess } = useSearchProductItemQuery(slug)
+
+
+  console.log("the data from search", data)
 
   const handleChangeLayout = (num: number) => {
       switch(num) {
         case 1:
-    console.log("the seach value", searchValue)
-    setLayout('')
+          setLayout('')
           break
         case 2:
           setLayout('twoColLayout')

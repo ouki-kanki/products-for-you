@@ -26,7 +26,8 @@ urlpatterns = [
 
     path('orders/create', OrderCreateView.as_view(), name='order-create'),
 
-    path('search/product-items/<str:query>', SearchProductItemView.as_view(), name='search-product-items'),
+
+    path('search/', include('search.urls')),
 
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('schema/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

@@ -103,7 +103,7 @@ const flatAndConvertToCamel = (products) => {
 export const productsApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}`,
+    baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token
       if (token) {

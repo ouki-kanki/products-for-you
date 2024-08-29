@@ -219,7 +219,8 @@ ELASTICSEARCH_DSL = {
 }
 
 ELASTICSEARCH_INDEX_NAMES = {
-    'product.productitem': 'productitem',
+    # 'product.productitem': 'productitem',
+    'search.documents.productitem': 'productitem',
 }
 
 

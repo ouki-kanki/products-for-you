@@ -1,16 +1,40 @@
 from rest_framework import serializers
-from products.models import ProductItem, Product, Category
-# from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+
+from .documents.productitem import ProductItemDocument
+
+class SearchProductThumbNailSerializer(serializers.Serializer): # noqa
+    thumbnail = serializers.SerializerMethodField()
+    is_default = serializers.BooleanField()
+    def get_thumbnail(self, obj): # noqa
+        if not obj.thumbnail:
+            return 'no image'
+        request = self.context.get('request')
+        return request.build_absolute_uri(obj.thumbnail) if request else 'no_image'
 
 
-class ProductSerializer(serializers.Serializer): # noqa
+class SearchProductItemDocumentSerializer(DocumentSerializer):
 
-    name = serializers.CharField(read_only=True)
+    class Meta:
+        document = ProductItemDocument
+        fields = [
+            'name',
+            'categories',
+            'detailed_description',
+            'slug',
+            'sku',
+            'quantity',
+            'price',
+            'is_default'
+        ]
 
 
 class SearchProductItemsSerializer(serializers.Serializer): # noqa
-    product = ProductSerializer()
+    name = serializers.SerializerMethodField()
+    # name = serializers.CharField(read_only=True)
     categories = serializers.SerializerMethodField()
+    # categories = serializers.ListField(read_only=True)
+    product_image = SearchProductThumbNailSerializer(read_only=True, many=True)
 
     sku = serializers.CharField(read_only=True)
     slug = serializers.CharField(read_only=True)
@@ -28,9 +52,13 @@ class SearchProductItemsSerializer(serializers.Serializer): # noqa
             'price',
             'detailed_description',
             'is_default',
-            'product'
-            'categories'
+            # 'product'
+            # 'categories'
         )
+
+    def get_name(self, obj): # noqa
+        print("the obj", obj)
+        return obj.product.name
 
     def get_categories(self, obj): # noqa
         if obj.categories:
