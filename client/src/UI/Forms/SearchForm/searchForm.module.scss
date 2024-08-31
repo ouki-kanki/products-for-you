@@ -3,13 +3,19 @@
   display: flex;
   align-items: center;
 
-  // TODO: check if this is ok 
+  // TODO: check if this is ok
   svg {
     path {
       // color: $search_color_primary;
       color: '#dcdcdc'
     }
   }
+}
+
+.datalist {
+  position: absolute;
+  left: 0;
+  top: 40px;
 }
 
 .input {

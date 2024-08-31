@@ -17,7 +17,7 @@ import { Sidebar } from './components/Sidebar/Sidebar'
 import { CartModal } from './pages'
 
 
-import { useDebouncedEffect } from './hooks/useDebounced';
+import { useDebounce } from './hooks/useDebounce';
 
 import { useDispatch } from 'react-redux';
 import { initCart } from './features/cart/cartSlice';
@@ -101,7 +101,7 @@ function App() {
     handleSetCredentials({ userId, token })
   }, [handleSetCredentials, handleUiConfig])
 
-  useDebouncedEffect(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
+  useDebounce(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
 
   // lazy use of rtk
   const handleFetchProducts = () => {

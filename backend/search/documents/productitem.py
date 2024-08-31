@@ -14,9 +14,10 @@ class ProductItemDocument(Document):
     slug = fields.TextField(
         fields={
             'raw': fields.TextField(analyzer=html_strip),
-            'suggest': fields.CompletionField()
+            'suggest': fields.Completion()
         }
     )
+
     sku = fields.TextField()
     price = fields.FloatField()
     upc = fields.TextField()
@@ -30,6 +31,7 @@ class ProductItemDocument(Document):
             'suggest': fields.CompletionField()
         }
     )
+
     thumb = fields.TextField()
     description = fields.TextField()
     # categories = fields.KeywordField(multi=True)
@@ -70,7 +72,7 @@ class ProductItemDocument(Document):
             "weight": 10
         }
 
-    def prepare_slug_suggest(self, instance):
+    def prepare_slug_suggest(self, instance):  # noqa
         return {
             "input": [instance.slug],
             "weight": 10

@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -51,10 +53,19 @@ class ProductItemSuggestView(APIView):
     def get(self, request):
         try:
             param = request.query_params.get('suggest')
-            # suggest = self.search_document.search().suggest('name_suggestion', param, completion={'field': 'slug.suggest'})
-            # print("suggest", suggest)
+            # suggest = self.search_document.search().suggest('slug_suggestion', param, completion={'field': 'slug.suggest'})
 
-            suggest = Search(index='productitem').suggest(
+            suggest_with_categories = Search(index='productitem').suggest(
+                'cat_suggestion',
+                param,
+                completion={
+                    'field': 'categories.suggest',
+                    'fuzzy': {
+                        'fuzziness': 2
+                    },
+                    "size": 5
+                }
+            ).suggest(
                 'slug_suggestion',
                 param,
                 completion={
@@ -66,8 +77,19 @@ class ProductItemSuggestView(APIView):
                 }
             )
 
-            response = suggest.execute()
-            suggestions = [option._source.slug for option in response.suggest.slug_suggestion[0].options]
+            response = suggest_with_categories.source(['slug_suggest', 'categories']).execute()
+            # pprint(response_from_categories.to_dict())
+
+            suggestions = [
+                ''.join(option._source.slug_suggest.input) for option in response.suggest.slug_suggestion[0].options
+                if response.suggest.slug_suggestion[0].options] # noqa
+
+            print("suggestions from slug", suggestions)
+            suggestions += [
+                ''.join(option._source.slug_suggest.input) for option in response.suggest.cat_suggestion[0].options
+                if response.suggest.cat_suggestion[0].options] # noqa
+
+            # print(response.to_dict())
 
             return Response(suggestions)
 

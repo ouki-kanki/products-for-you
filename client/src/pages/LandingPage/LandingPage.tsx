@@ -4,7 +4,6 @@ import { useGetLatestProductsQuery } from "../../api/productsApi"
 import { FeaturedProduct } from './FeaturedProduct';
 import { ProductV2 } from "../../components/Product/ProductV2"
 
-
 import { Grid } from "../../UI/Layout/Grid/Grid";
 
 // TODO: move from here
@@ -39,7 +38,6 @@ export interface IProductV4 {
 export const LandingPage = () => {
   const { data: latestProducts, isLoading } = useGetLatestProductsQuery('10')
   const [ productView, setProductView ] = useState<string>('landing')
-
 
   const switchView = () => {
     setProductView((prevView) => (
