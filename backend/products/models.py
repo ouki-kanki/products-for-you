@@ -272,6 +272,10 @@ class ProductItem(models.Model):
 
         return f'{self.product.name} {variation_values}'
 
+    @property
+    def is_available(self):
+        return self.quantity > 0
+
     def __str__(self):
         qs = self.variation_option.all()
         # returns the variations joined in a string
@@ -299,7 +303,7 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
         if other_default_variations:
             other_default_variations.update(is_default=False)
 
-    if instance.slug is "" or instance.slug is None:
+    if instance.slug == "" or instance.slug is None:
         slugify_unique(sender, instance, instance.sku)
 
 
@@ -376,7 +380,6 @@ def product_image_post_save(sender, instance, *args, **kwargs):
     output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
     if instance.remove_background:
         remove_background(instance.image, output_path)
-
 
 
 class Discount(models.Model):

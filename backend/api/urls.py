@@ -8,7 +8,7 @@ from products.views import (
     ProductPreview, CategoryListView, ProductListByCategoryView, GetDefaultVariationsView
 )
 from order.views import OrderCreateView
-from search.views import SearchProductItemView
+
 # router = DefaultRouter()
 # router.register(r'schema', SpectacularAPIView)
 # router.register(r'schema/docs', SpectacularSwaggerView)

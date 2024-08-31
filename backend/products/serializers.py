@@ -95,7 +95,6 @@ class ProductThumbNailSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(instance.thumbnail.url)
         else:
             return None
-
     def to_representation(self, instance):
         return {
             'url': self.get_thumbnail(instance),

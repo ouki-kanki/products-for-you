@@ -2,117 +2,38 @@ from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.generics import GenericAPIView
 
-from elasticsearch_dsl import Q
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
-from django_elasticsearch_dsl_drf.filter_backends import (
-    FilteringFilterBackend,
-    OrderingFilterBackend,
-    SearchFilterBackend,
-    CompoundSearchFilterBackend
-)
+from elasticsearch_dsl import Q, Search
+from elasticsearch_dsl.query import Match, Term
 
-from .serializers import SearchProductItemsSerializer, SearchProductItemDocumentSerializer
-from .documents.productitem import ProductItemDocumentOld, ProductItemDocument
+from .serializers import SearchProductItemSerializer
+from .documents.productitem import ProductItemDocument
 
 
-def has_spaces(q):
-    space = ' '
-    for item in q:
-        if item == space:
-            return True
-    return False
+class ProductItemSearchView(APIView):
+    serializer = SearchProductItemSerializer
+    search_document = ProductItemDocument
 
-
-class ProductItemsDocumentViewSet(DocumentViewSet):
-
-    document = ProductItemDocument
-    serializer_class = SearchProductItemDocumentSerializer
-    lookup_field = 'id'
-    pagination_class = LimitOffsetPagination
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"request": self.request})
-        return context
-
-    filter_backends = [
-        FilteringFilterBackend,
-        # OrderingFilterBackend,
-        CompoundSearchFilterBackend
-    ]
-
-    search_fields = (
-        'name',
-        'slug',
-        'categories'
-    )
-
-    filter_fields = {
-        'name': 'name.raw',
-        'slug': 'slug.raw',
-        'categories': 'categories.raw'
-    }
-
-    def filter_queryset(self, queryset):
-        search_query = self.request.query_params.get('search', None)
-        queryset = queryset.filter('term', is_default=True)
-
-        return super().filter_queryset(queryset)
-
-
-class SearchProductItemView(APIView):
-    serializer = SearchProductItemsSerializer
-    search_document = ProductItemDocumentOld
-
-    def get(self, request, query):
+    def get(self, request): # noqa
+        query = request.query_params.get('search')
+        print("the params", query)
         q = ''
         try:
-            if not has_spaces(query):
-                print("isndei no spaces")
-                q = Q(
-                    {
-                        "term": {
-                            "product.name": query
-                        },
-                    }) | Q({
-                        'term': {
-                            "sku": query
-                        }
-                    }) & Q(
-                    'bool',
-                    should=[
-                        Q('match', is_default=True),
-                        Q('match', product_image__is_default=True)
-                    ]
-                )
-            else:
-                print('with spaces', print(has_spaces(query)))
-                q = Q(
-                    'multi_match',
-                    query=query,
-                    fields=[
-                        'product.name',
-                        'detailed_description',
-                        'categories'
-                    ],
-                    fuzziness='auto'
-                ) & Q(
-                    'bool',
-                    should=[
-                        Q('match', is_default=True),
-                    ],
-                    minimum_should_match=1
-                ) & Q(
-                    'nested',
-                    path='product_image',
-                    query=Q(
-                        'bool',
-                        should=[
-                            Q('term', product_image__is_default=True),
-                        ]
-                    ),
-                )
+            q = Q(
+                'multi_match',
+                query=query,
+                fields=[
+                    'name',
+                    'slug',
+                    'categories',
+                    'description'
+                ],
+                fuzziness='auto'
+            )
+
+            # suggest = self.search_document.search().suggest('name_suggestion', query, completion={'field': 'slug.suggest'})
+            # response = suggest.execute()
 
             search = self.search_document.search().query(q)
             response = search.execute()
@@ -123,4 +44,32 @@ class SearchProductItemView(APIView):
             return HttpResponse(e, status=500)
 
 
+class ProductItemSuggestView(APIView):
+    serializer = SearchProductItemSerializer
+    search_document = ProductItemDocument
 
+    def get(self, request):
+        try:
+            param = request.query_params.get('suggest')
+            # suggest = self.search_document.search().suggest('name_suggestion', param, completion={'field': 'slug.suggest'})
+            # print("suggest", suggest)
+
+            suggest = Search(index='productitem').suggest(
+                'slug_suggestion',
+                param,
+                completion={
+                    'field': 'slug_suggest',
+                    'fuzzy': {
+                        'fuzziness': 2
+                    },
+                    "size": 5
+                }
+            )
+
+            response = suggest.execute()
+            suggestions = [option._source.slug for option in response.suggest.slug_suggestion[0].options]
+
+            return Response(suggestions)
+
+        except Exception as e:
+            return HttpResponse(e, status=500)

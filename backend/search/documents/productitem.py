@@ -1,121 +1,77 @@
-from django.conf import settings
-
-from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl.registries import registry
-from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
-from django_elasticsearch_dsl_drf.versions import LOOSE_ELASTICSEARCH_VERSION
-
-
+from django_elasticsearch_dsl import Document, Index, fields
 from products.models import ProductItem, Product, ProductImage
-
-__all__ = ('ProductItemDocument',)
-
-from search.documents.analyzers import html_strip
-
-INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
-
-INDEX.settings(
-    number_of_shards=1,
-    number_of_replicas=1,
-    blocks={'read_only_allow_delete': None}
-)
+from .analyzers import html_strip
+from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 
 
-@INDEX.doc_type
+@registry.register_document
 class ProductItemDocument(Document):
 
-    id = fields.IntegerField()
+    name_suggest = fields.Completion()
+    slug_suggest = fields.CompletionField()
 
-    __name_fields = {
-        'raw': KeywordField(),
-        'suggest': fields.CompletionField(),
-        'edge_ngram_completion': StringField(
-            analyzer=edge_ngram_completion
-        ),
-        'mlt': StringField(analyzer='english')
-    }
-
-    __name_fields.update(
-        {
-            'suggest_context': fields.CompletionField(
-                contexts=[
-                    {
-                        "name": "categories",
-                        "type": "category",
-                        "path": "product.category"
-                    }
-                ]
-            )
-        }
-    )
-
-    detailed_description = fields.TextField(
-        analyzer=html_strip,
+    slug = fields.TextField(
         fields={
-            'raw': KeywordField(),
-            'mlt': StringField(analyzer='english')
+            'raw': fields.TextField(analyzer=html_strip),
+            'suggest': fields.CompletionField()
         }
     )
-
-    name = fields.TextField()
-    categories = fields.TextField(multi=True)
-    slug = fields.TextField()
-    price = fields.FloatField()
     sku = fields.TextField()
+    price = fields.FloatField()
     upc = fields.TextField()
     is_default = fields.BooleanField()
-    quantity = fields.IntegerField()
+    is_available = fields.BooleanField()
 
-    class Django(object):
+    # -- custom fields --
+    name = fields.TextField(
+        fields={
+            'raw': fields.TextField(analyzer=edge_ngram_completion),
+            'suggest': fields.CompletionField()
+        }
+    )
+    thumb = fields.TextField()
+    description = fields.TextField()
+    # categories = fields.KeywordField(multi=True)
 
+    categories = fields.TextField(
+        analyzer=html_strip,
+        fields={
+            'raw': fields.TextField(multi=True),
+            'suggest': fields.CompletionField(multi=True)
+        },
+        multi=True
+    )
+
+    class Index:
+        name = 'productitem'
+        settings = {
+            'number_of_shards': 1,
+            'number_of_replicas': 0
+        }
+
+    class Django:
         model = ProductItem
+        related_models = [Product, ProductImage]
 
     def prepare_name(self, instance): # noqa
         return instance.product.name
 
-    def prepare_categories(self, instance): # noqa
-        return instance.categories
+    def prepare_thumb(self, instance): # noqa
+        qs = instance.product_image.filter(is_default=True)
+        return "".join([item.thumbnail.url for item in qs]) if qs else ''
 
+    def prepare_description(self, instance): # noqa
+        return instance.product.description
 
-@registry.register_document
-class ProductItemDocumentOld(Document):
-
-    product = fields.ObjectField(
-        properties={
-            "name": fields.TextField(),
-            "description": fields.TextField(),
+    def prepare_name_suggest(self, instance): # noqa
+        return {
+            "input": [instance.product.name],
+            "weight": 10
         }
-    )
 
-    product_image = fields.NestedField(properties={
-        'thumbnail': fields.FileField(),
-        'is_default': fields.BooleanField(),
-    })
-
-    categories = fields.KeywordField(multi=True)
-    product_name = fields.TextField()
-
-    class Index:
-        name = "productitem"
-
-    class Django:
-        model = ProductItem
-
-        fields = [
-            'sku',
-            'slug',
-            'detailed_description',
-            'is_default',
-            'quantity',
-            'price',
-        ]
-        related_models = [Product, ProductImage]
-
-        def prepare_categories(self, instance): # noqa
-            return instance.categories
-
-        def prepate_product_name(self, instance): # noqa
-            return instance.product_name
-
-
+    def prepare_slug_suggest(self, instance):
+        return {
+            "input": [instance.slug],
+            "weight": 10
+        }
