@@ -11,7 +11,7 @@ export const searchApi = createApi({
   endpoints: (builder) => ({
     searchProductItem: builder.query({
       query: (query) => ({
-          url: `search/productitems/`,
+          url: `search/product-items/`,
           params: {
             search: query
         }

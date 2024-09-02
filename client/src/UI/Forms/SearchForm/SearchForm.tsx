@@ -28,7 +28,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
     setSearchValue(value)
   }
 
-  const debouncedSearchValue = useDebouncedValue(searchValue, 1000)
+  const debouncedSearchValue = useDebouncedValue(searchValue, 500)
   const [ trigger, { data: suggeStionData, isUninitialized }] = useLazySugestProductNameQuery()
 
   useEffect(() => {

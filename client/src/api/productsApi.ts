@@ -147,11 +147,13 @@ export const productsApi = createApi({
         return flattened
       }
     }),
+
     getFeaturedProducts: builder.query<IProductApiResponse, string>({
       query: (pageSize) => ({
         url: `products/featured${pageSize && `?${pageSize}`}`
       })
     }),
+
     getProductDetail: builder.query<IproductDetail, string | null>({
       query: (slug) => ({
         url: `products/product-detail/${slug}`
@@ -161,6 +163,7 @@ export const productsApi = createApi({
         return response
       })
     }),
+
     getProductVariationPreview: builder.query<IproductVariationPreview, string | null>({
        query: (slug) => ({
         url: `products/product-preview/${slug}`
@@ -170,14 +173,16 @@ export const productsApi = createApi({
         return response
        })
     }),
+
     getCategories: builder.query<ICategory[], void>({
       query: () => ({
         url: `categories/`
       })
     }),
-    filterByCategory: builder.query<IProductApiResponse, number>({
-      query: (id) => ({
-        url: `products/category/${id}`
+
+    filterByCategory: builder.query<IProductApiResponse, string>({
+      query: (slug) => ({
+        url: `products/category/${slug}`
       }),
       transformResponse: (response) => {
         return response

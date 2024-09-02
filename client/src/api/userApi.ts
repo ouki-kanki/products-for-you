@@ -18,21 +18,21 @@ export interface IUserProfile {
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ 
+  baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders
     // prepareHeaders: (headers, { getState }) => {
     //   const token = (getState() as RootState).auth.token
     //   if (token) {
     //     headers.set(AuthEnum.authorization, `Bearer ${token}`)
-    //   }      
+    //   }
     //   return headers
     // }
    }),
   endpoints: (builder) => ({
     getProfile: builder.query<IUserProfile, string>({
       query: (userId) => ({
-        url: `/users/profile/${userId}`,
+        url: `/user-control/profile/${userId}`,
         // method: 'GET',
       })
     })

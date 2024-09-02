@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react'
-// import './index.scss';
 import styles from './app.module.scss'
 
 import type { IUiConfig } from './types';
@@ -11,17 +10,14 @@ import { useLazyGetProductsQuery } from './features/products/productsSlice'
 import { setCredentials } from './features/auth/Login/loginSlice';
 import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 
-
 import { EcommerceRoutes } from './routes';
 import { Sidebar } from './components/Sidebar/Sidebar'
 import { CartModal } from './pages'
-
 
 import { useDebounce } from './hooks/useDebounce';
 
 import { useDispatch } from 'react-redux';
 import { initCart } from './features/cart/cartSlice';
-
 
 import type { ICredentials } from './types';
 
@@ -48,7 +44,7 @@ function App() {
         numberOfItems
       }))
     } catch (error) {
-      // TODO: inform the server ?
+      // TODO: handle the error
       console.log(error)
     }
 
@@ -67,8 +63,6 @@ function App() {
       error
     }
   ] = useLazyGetProductsQuery()
-
-  // SET TOKEN FROM LOCAL
 
   // TODO : remove the following logic from the app and put it to another file . create a custom hook useKeepLoggedIn
   const handleSetCredentials = useCallback((creds: ICredentials) => {
@@ -103,11 +97,6 @@ function App() {
 
   useDebounce(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
 
-  // lazy use of rtk
-  const handleFetchProducts = () => {
-    trigger()
-  }
-
   if (isLoading) {
     return (
       <div>IS LOADING</div>
@@ -117,11 +106,9 @@ function App() {
   return (
     <div className={styles.appContainer}>
         <Sidebar/>
-      <div className={styles.contentNavContainer}>
         <CartModal/>
-        <div>
-          <EcommerceRoutes/>
-        </div>
+      <div className={styles.contentNavContainer}>
+        <EcommerceRoutes/>
       </div>
     </div>
   )

@@ -1,14 +1,15 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from rest_framework.response import Response
 from rest_framework import (
     generics, viewsets, mixins, permissions, authentication
 )
 
-from .models import Product, ProductItem, Category
+from .models import Product, ProductItem, Category, ProductImage
 from .serializers import (
     ProductSerializer, ProductVariationSerializer, ProductItemDetailSerializer,
-    ProductItemSerializer, CategorySerializer
+    ProductItemSerializer, CategorySerializer, ProductImageSerializer
 )
 from common.util.custom_pagination import CustomPageNumberPagination
 
@@ -83,7 +84,7 @@ class ProductPreview(generics.RetrieveAPIView):
 class ProductListByCategoryView(generics.ListAPIView):
     """
     endpoint: /api/products/category/<int:id>
-    description: get products filtered by category
+    description: get products filtered by category using the id
     """
     serializer_class = ProductSerializer
 
@@ -91,6 +92,29 @@ class ProductListByCategoryView(generics.ListAPIView):
         category_id = self.kwargs.get('category_id')
         category = get_object_or_404(Category, id=category_id)
 
+        queryset = Product.objects.filter(category=category).prefetch_related(
+            'product_variations',
+            'product_variations__product_image'
+        )
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+
+class ProductListByCategoryBySlug(generics.ListAPIView):
+    """ get products filter by category slug"""
+
+    serializer_class = ProductSerializer
+    lookup_field = 'slug'
+
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        category = get_object_or_404(Category, slug=slug)
         queryset = Product.objects.filter(category=category).prefetch_related(
             'product_variations',
             'product_variations__product_image'
@@ -115,3 +139,5 @@ class CategoryListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Category.objects.all().order_by('position', 'id')
+
+

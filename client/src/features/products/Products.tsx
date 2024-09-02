@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import styles from './products.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
+import { faTableList,faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
-import { useLocation } from 'react-router-dom';
-import { useFilterByCategoryQuery, useLazyFilterByCategoryQuery } from '../../api/productsApi';
+import { useLocation, useParams } from 'react-router-dom';
+import { useLazyFilterByCategoryQuery } from '../../api/productsApi';
 
 import { ProductCardV3 } from '../../components/Product/ProductCardV3';
 
@@ -19,22 +19,24 @@ const buttons = [
 export const Products = () => {
   const [layout, setLayout] = useState('')
   const location = useLocation()
-  const categoryId = location.state?.categoryId
+  const categorySlug = location.state?.categorySlug
+  const { slug } = useParams()
   const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
-  
+
   // use the latest_products_query
-  // use query paramater and if there is query parameter take the parameter and filter with the parameter 
-  // when the user redirects from the categories asing the value from the router state to a variable named category_id and use this to apply a filter 
+  // use query paramater and if there is query parameter take the parameter and filter with the parameter
+  // when the user redirects from the categories asing the value from the router state to a variable named category_id and use this to apply a filter
 
   useEffect(() => {
-    trigger(categoryId)
-  }, [categoryId, trigger])
+    if (slug) {
+      trigger(slug)
+    }
+  }, [categorySlug, trigger])
 
-  // console.log("the result from /lazy", result)
   const data = result?.data
 
   console.log("the data", data)
- 
+
   const handleChangeLayout = (num: number) => {
       switch(num) {
         case 1:
@@ -45,7 +47,7 @@ export const Products = () => {
           break
         case 3:
           setLayout('fourColLayout')
-          break; 
+          break;
         case 4:
           setLayout('sixColLayout')
       }
@@ -57,7 +59,7 @@ export const Products = () => {
         <div className={styles.buttonGroup}>
           <ButtonGroup
             onClick={(num) => handleChangeLayout(num)}
-            options={buttons} 
+            options={buttons}
             width={200}/>
         </div>
         <div>{data && data.length} products found</div>
@@ -68,7 +70,7 @@ export const Products = () => {
       <div className={`${styles.content} ${styles[layout]}`}>
         {data && data.map((product, index) => (
           <ProductCardV3
-             
+
             key={index}/>
         ))}
         <div className={styles.productItem}>item 1</div>

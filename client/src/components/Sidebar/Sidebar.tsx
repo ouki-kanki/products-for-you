@@ -1,16 +1,15 @@
+import styles from "./Sidebar.module.scss";
 import type { RootState } from '../../app/store/store';
 
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Sidebar.module.scss";
 import { useSelector } from 'react-redux';
+import { sideBarData } from './sidebarData';
 import { useSroll } from '../../hooks/useScroll';
 
 import { SideBarField } from './SideBarField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
-
-import { sideBarData } from './sidebarData';
 
 export const Sidebar = () => {
   const navigate = useNavigate()
@@ -45,9 +44,11 @@ export const Sidebar = () => {
       <div className={styles.footer}>
         <FontAwesomeIcon icon={faFacebook} size='lg'/>
         <FontAwesomeIcon icon={faInstagram} size='lg'/>
-        <Link to='/terms-of-use'>Terms of use</Link>
-        <Link to='/privacy'>Pricacy Policy</Link>
-        <Link to='/payment-return-policies'>Payment & return policies</Link>
+        <div className={styles.footerLinks}>
+          <Link to='/terms-of-use'>Terms of use</Link>
+          <Link to='/privacy'>Pricacy Policy</Link>
+          <Link to='/payment-return-policies'>Payment & return policies</Link>
+        </div>
       </div>
     </div>
   );

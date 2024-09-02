@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useParams, LInk } from 'react-router-dom';
 import styles from './search.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 
 import { useSearchProductItemQuery } from '../../api/searchApi';
+import { useClassLister } from '../../hooks/useClassLister';
 
+import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/ProductPreview1';
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
 
 const buttons = [
@@ -20,9 +22,8 @@ export const Search = () => {
   const [layout, setLayout] = useState('')
   const { slug } = useParams()
   // console.log("the searchParams", searchParams.entries())
-  console.log(slug)
   const { data, isError, isFetching, isLoading, isSuccess } = useSearchProductItemQuery(slug)
-
+  const classes = useClassLister(styles)
 
   console.log("the data from search", data)
 
@@ -57,17 +58,31 @@ export const Search = () => {
       </div>
 
       <div className={`${styles.content} ${styles[layout]}`}>
-        <div>item 1</div>
-        <div>item 2</div>
+        {data && data.map((product, id) => (
+          <ProductPreview1 key={id} { ...product }/>
+        ))}
+      </div>
+
+      <br />
+
+
+      <div className={styles.sampleContainer}>
+            <div className={classes('sample', 'sample_prime')}></div>
+            <div className={classes('sample', 'sample_second')}></div>
+            <div className={classes('sample', 'sample_active')}></div>
+          </div>
+
+      {/* <div className={`${styles.content} ${styles[layout]}`}> */}
+        {/* <div>item 2</div> */}
         {/* <div className={styles['grid-col-span-2']}>item 2</div> */}
-        <div>item 3</div>
+        {/* <div>item 3</div>
         <div>item 4</div>
         <div>item 5</div>
         <div>item 6</div>
         <div>item 7</div>
         <div>item 8</div>
-        <div>item 9</div>
-      </div>
+        <div>item 9</div> */}
+      {/* </div> */}
 
     </div>
   )

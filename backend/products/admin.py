@@ -206,7 +206,11 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(ProductItem)
 class ProductItemAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'slug', 'id', 'get_default_image', 'product', 'quantity_formated', 'get_category')
+    list_display = (
+        '__str__', 'slug', 'id', 'get_default_image',
+        'product', 'quantity_formated', 'get_category',
+        'limited_number_of_items_threshold',
+    )
     list_select_related = ('product', )
     list_filter = ('product', 'quantity')
     inlines = [ProductImageInline, ]
@@ -216,11 +220,11 @@ class ProductItemAdmin(admin.ModelAdmin):
         return mark_safe(f'<span style="color: {color};">{quantity}</span>')
 
     @admin.display(description="yoyo", ordering='quantity')
-    def quantity_formated(self, obj):
+    def quantity_formated(self, obj):  # noqa
         quantity = obj.quantity
         if quantity == 0:
             return self.format_qnt(quantity, 'red')
-        if quantity < 3:
+        if quantity < obj.limited_number_of_items_threshold:
             return self.format_qnt(quantity, 'yellow')
         else:
             return quantity

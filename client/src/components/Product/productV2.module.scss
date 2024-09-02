@@ -24,10 +24,10 @@
   // border: $border-green;
   // background-color: black;
   grid-template-columns: 230px 300px 1fr;
-  text-align: left; 
+  text-align: left;
 }
 
-.ml { 
+.ml {
   // border: 1px solid red;
   position: relative;
 }
@@ -170,7 +170,7 @@
     overflow: hidden;
     transition: width .3s ease-in;
     background-color: white;
-    
+
 
     &:hover {
       transform: scale(1.3);
@@ -178,7 +178,7 @@
       height: 55px;
     }
   }
-  
+
   & img {
     // object-fit: contain;
     // object-position: 50% 50%;
@@ -258,14 +258,3 @@
 
 }
 
-.label {
-  padding: 10px 0; 
-}
-
-.danger {
-  color: tomato;
-}
-
-.caution {
-  color: khaki;
-}

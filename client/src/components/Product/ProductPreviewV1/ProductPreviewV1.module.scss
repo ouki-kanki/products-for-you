@@ -1,0 +1,109 @@
+.containerProduct {
+  font-size: 1rem;
+  display: flex;
+}
+
+.containerLeft {
+  .imageContainer {
+    height: 100%;
+    position: relative;
+    display: flex;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}
+
+.container_right {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: #FAF9F6;
+  // background-color: $blue-light-primary;
+
+
+
+  &__middle {
+    flex-grow: 1;
+
+    .category {
+      text-decoration: underline;
+      color: $grey_m;
+    }
+
+    .description {
+      margin-top: 10px;
+    }
+
+    .priceContainer {
+      margin-top: 20px;;
+      div:first-child {
+        font-weight: bold;
+      }
+
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+}
+
+
+.container {
+  flex: 0 0 50%;
+  // flex-grow: 1;
+  // flex-basis: 50%;
+}
+
+
+$gradient_blue_dark: #5d95d5;
+$gradient_blue_light: #7bb3eb;
+
+.button {
+  background: linear-gradient(to bottom right, $gradient_blue_dark, $gradient_blue_light);
+  border: 0;
+  border-radius: 8px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(46, 119, 158, 0.5), .125rem .125rem 1rem rgba(114, 179, 219, 0.5);
+}
+
+.button:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(46, 119, 158, 0.5), .125rem .125rem 1rem rgba(114, 179, 219, 0.5);
+}
+
+.button:not([disabled]):active {
+  box-shadow: none;
+}

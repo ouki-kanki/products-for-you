@@ -34,9 +34,6 @@ class ProductItemSearchView(APIView):
                 fuzziness='auto'
             )
 
-            # suggest = self.search_document.search().suggest('name_suggestion', query, completion={'field': 'slug.suggest'})
-            # response = suggest.execute()
-
             search = self.search_document.search().query(q)
             response = search.execute()
             serializer = self.serializer(response, context={'request': request}, many=True)

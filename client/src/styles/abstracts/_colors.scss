@@ -1,8 +1,14 @@
-// $primary: 
-$light-blue: rgb(158, 189, 219);
+// $primary:
+
+
+
+
+$blue-light-primary: #a2d2ff;
+$blue-light-secondary: rgb(158, 189, 219);
+$blue-light-active: #cbeae8;
+
 $yellow: rgba(238, 215, 13, 0.867);
 $light_pink: #ffc8dd;
-$blue_lightV2: #a2d2ff;
 $violet: #cdb4db;
 
 $gray: #708090;
@@ -12,29 +18,32 @@ $dark-maroon: #800000;
 
 $header-subtitle: #666666;
 
-$lime: #d8f1a0;
-
+$lime-primary: #F3FEB8;
+$lime-secondary: #d8f1a0;
 
 // grey tones
 $grey_m: #9a94bc;
 $grey_neutral: #525252;
 
+// green tones
+$positive_green: #57dca6;
 
-$search_color_primary: $grey_neutral; 
+
+$search_color_primary: $grey_neutral;
 
 
 // borders
-$border-red: 1px solid red; 
+$border-red: 1px solid red;
 $border-green: 1px solid green;
 $border-yellow: 1px solid yellow;
 $border-pink: 1px solid hotpink;
 
-$border-red-bold: 2px solid red; 
+$border-red-bold: 2px solid red;
 $border-green-bold: 2px solid green;
 $border-yellow-bold: 2px solid yellow;
 $border-pink-bold: 2px solid hotpink;
 
-$border-red-bolder: 3px solid red; 
+$border-red-bolder: 3px solid red;
 $border-green-bolder: 3px solid green;
 $border-yellow-bolder: 3px solid yellow;
 $border-pink-bolder: 3px solid hotpink;
@@ -43,3 +52,14 @@ $border-pink-bolder: 3px solid hotpink;
 // gradients
 $gradient_yellow_45: linear-gradient(-45deg, rgba(235, 219, 175, 0.7), rgba(243, 185, 24, 0.7), rgba(255, 102, 90, 0.7));
 $gradient_yellow_45_var2: linear-gradient(45deg, rgba(223, 92, 17, 0.7) 20%, rgba(231, 39, 189, 0.7) 50%, rgba(255, 101, 90, 0.781) 20%);
+
+
+// **--- FINAL PALETTE FOR PROJECT ---**
+
+$color-primary: $blue-light-primary;
+$color-secondary: $blue-light-secondary;
+$color-active: $blue-light-active;
+
+$test-color-primary: $blue-light-primary;
+$test-color-secondary: $blue-light-secondary;
+$test-color-active: $blue-light-active;

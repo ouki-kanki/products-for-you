@@ -38,6 +38,7 @@ export const EcommerceRoutes = () => (
     <Route path='/products/' element={<ProductsPage/>}/>
     <Route path='/products/:slug' element={<ProductsPage/>}/>
     <Route path='/testproducts/' element={<ProductsPage/>}/>
+    {/* first slug -> category second slug -> item (uses the contructed url field)*/}
     <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
     <Route path='/search/:slug' element={<Search/>}/>
     <Route path='login' element={<LoginPage/>}/>

@@ -57,10 +57,10 @@ class ProductSerializer(serializers.ModelSerializer):
         """
         return the featured variation, if there is none, return the last created
         """
-        variation = obj.product_variations.filter(is_default=True).first()
-        if not variation:
-            variation = obj.product_variations.last()
-        product_item_serializer = ProductItemSerializer(variation, context=self.context)
+        default_variation = obj.product_variations.filter(is_default=True).first()
+        if not default_variation:
+            default_variation = obj.product_variations.last()
+        product_item_serializer = ProductItemSerializer(default_variation, context=self.context)
         return product_item_serializer.data
 
     def to_representation(self, instance):
@@ -195,6 +195,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = ProductImage
         fields = ( 'id', 'url', 'is_default')

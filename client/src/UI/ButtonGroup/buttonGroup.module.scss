@@ -3,20 +3,12 @@
   grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
   border: 2px solid $dark-gray;
   border-radius: 10px;
-  // padding: 5px 10px;
-  // width: min-content;
-  // width: max-content;
-  // width: fit-content;
-  // max-width: min-content;
   justify-content: space-evenly;
-  
-  // min-width: 150px;
   height: 40px;
   cursor: pointer;
   overflow: hidden;
-  
+
   & > div {
-    // width: 50px;
     position: relative;
     padding: 10px;
     transition: background-color 0.2s ease-out;
@@ -25,7 +17,8 @@
 
     &:hover {
       color: whitesmoke;
-      background-color: #555;
+      // background-color: #555;
+      background-color: $blue-light-secondary;
 
       // if it uses fontawesome as reactNode
       path{
@@ -34,9 +27,10 @@
     }
 
     &:active {
-      background-color: $font_light_1_brown;
+      // background-color: $font_light_1_brown;
+      background-color: $blue-light-active;
     }
-  }  
+  }
 }
 
 .btn:not(:last-child)::after {
@@ -49,7 +43,9 @@
     height: 100%
 }
 
+// the active selection
 .active {
-  background-color: $font_light_1_brown;
+  // background-color: $font_light_1_brown;
+  background-color: $color-primary;
   // border-radius: 10px;
 }

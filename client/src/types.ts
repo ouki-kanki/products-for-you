@@ -58,6 +58,7 @@ export interface IUiConfig {
 export interface ICategory {
   id: number;
   name: string;
+  slug: string
   icon: string;
   children: ICategory[],
   my_parent_category: string | null

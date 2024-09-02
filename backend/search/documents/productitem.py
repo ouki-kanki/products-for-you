@@ -22,7 +22,7 @@ class ProductItemDocument(Document):
     price = fields.FloatField()
     upc = fields.TextField()
     is_default = fields.BooleanField()
-    is_available = fields.BooleanField()
+    availability = fields.TextField()
 
     # -- custom fields --
     name = fields.TextField(
@@ -33,8 +33,8 @@ class ProductItemDocument(Document):
     )
 
     thumb = fields.TextField()
+    image = fields.TextField()
     description = fields.TextField()
-    # categories = fields.KeywordField(multi=True)
 
     categories = fields.TextField(
         analyzer=html_strip,
@@ -56,12 +56,23 @@ class ProductItemDocument(Document):
         model = ProductItem
         related_models = [Product, ProductImage]
 
+    def get_instances_from_related(self, related_instance):  # noqa
+        if isinstance(related_instance, ProductImage):
+            return related_instance.product_item
+
+        if isinstance(related_instance, Product):
+            return related_instance.product_variations.all()
+
     def prepare_name(self, instance): # noqa
         return instance.product.name
 
     def prepare_thumb(self, instance): # noqa
         qs = instance.product_image.filter(is_default=True)
         return "".join([item.thumbnail.url for item in qs]) if qs else ''
+
+    def prepare_image(self, instance): # noqa
+        qs = instance.product_image.filter(is_default=True)
+        return "".join([item.image.url for item in qs] if qs else '')
 
     def prepare_description(self, instance): # noqa
         return instance.product.description

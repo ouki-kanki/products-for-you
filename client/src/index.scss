@@ -19,21 +19,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
-// TODO refactor
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
 /* NOTE: do not use viewport units with typography! it will cause problems . zoom in - out not working! */
 
 /* landscape full */

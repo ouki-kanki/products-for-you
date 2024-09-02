@@ -1,5 +1,17 @@
 .searchContainer {
-  padding: 50px;  
+  padding: 48px;
+
+  @media screen and (max-width: 1024px) {
+    padding: 20px 20px;
+  }
+
+  @media screen and (max-width: 650px) {
+    padding: 20px 20px;
+  }
+
+  @media screen and (max-width: 391px) {
+    padding: 20px 0;
+  }
 
 }
 
@@ -31,12 +43,12 @@
 
 .content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  grid-gap: 1.5rem;  
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  grid-gap: 1.5rem;
 
   & > div {
     // aspect-ratio: 1 / 1.5;
-    height: 200px;
+    height: 290px;
     // width: 300px;
     background-color: pink;
     box-shadow: $box-shadow-transparent-black;
@@ -58,4 +70,31 @@
 
 .grid-col-span-2 {
   grid-column: span 2;
+}
+
+.sample {
+  height: 40px;
+  width: 400px;
+  margin-bottom: 10px;
+}
+
+.sample_prime {
+  background-color: $test-color-primary;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $test-color-secondary;
+  }
+
+  &:active {
+    background-color: $test-color-active;
+  }
+}
+
+.sample_second {
+  background-color: $color-secondary;
+}
+
+.sample_active {
+  background-color: $color-active;
 }

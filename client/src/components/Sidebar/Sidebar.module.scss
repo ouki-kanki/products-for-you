@@ -9,7 +9,7 @@
   // background: linear-gradient(240deg, #23221F, #444, #dbdad5);
   // flex:0 0 $sidebar-width;
   // white-space: nowrap;
-  flex-shrink: 0; // TODO: if i use basis if the elemement is hidden the right item does not fill the remaining space 
+  flex-shrink: 0; // TODO: if i use basis if the elemement is hidden the right item does not fill the remaining space
   width: $sidebar-width;
   display: flex;
   flex-direction: column;
@@ -20,17 +20,17 @@
   // box-shadow: $box-shadow-transparent-black;
   // margin-bottom: -5000px;
   // padding-bottom: 1000px;
-  
-  
-  
+
+
+
   @media screen and (max-width: 1200px) {
     // flex: 0 0 170px;
     width: 170px;
     // flex-basis: 170px;
     font-size: small;
   }
-  
-  
+
+
   @media screen and (max-width: 768px) {
     // flex: 0 1 50px;
     width: 50px;
@@ -38,28 +38,33 @@
   }
 }
 
-// .scrolledDown {
-//   position: sticky;
-//   width: $sidebar-width;
-//   top: auto;
-//   bottom: 0;
-// }
-
 .hidden {
   transform: translateX(-300px);
   width: 0;
 }
 
 .logoContainer {
-  // font-family: 'Kaushan Script', cursive;
-  // font-family: 'Lemon', serif;
   margin-bottom: 3rem;
   padding: 1rem;
   font-size: 1rem;
   text-align: center;
   text-transform: uppercase;
   cursor: pointer;
+
+  @media  screen and (max-width: 800px) {
+    h2 {
+      font-size: .7rem;
+      // display: none;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    h2 {
+      display: none;
+    }
+  }
 }
+
 
 .fieldsContainer {
   display: flex;
@@ -68,7 +73,6 @@
 }
 
 .footer{
-  // border: $border-red;
   margin-top: auto;
   display: flex;
   flex-direction: column;
@@ -76,17 +80,23 @@
   padding: 0 0 1.2rem 1.2rem;
   font-size: small;
   font-weight: bold;
-  
+
   &> * {
     padding-bottom: .3rem;
     color: $font_light_1_brown;
+  }
+
+  @media screen and (max-width: 768px) {
+    a {
+      font-size: .4rem;
+    }
   }
 }
 
 .icon {
   path {
     fill: #555555;
-  }  
+  }
 }
 
 .cartIcon {
@@ -97,4 +107,19 @@
     color: red;
     fill: red;
   }
+}
+
+.footerLinks {
+  margin-top: .6rem;
+  display: flex;
+  flex-direction: column;
+  a {
+    padding-bottom: .3rem;
+    color: $font_light_1_brown;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: None;
+  }
+
 }

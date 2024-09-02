@@ -6,14 +6,12 @@
 }
 
 .contentNavContainer {
-  // flex: 1 0 100%;
   flex-grow: 1;
-  // flex: 1;
-  // position: relative;
-  // max-width: 100%;
-  // overflow: auto;
-  overflow-x: hidden; // CAUTION: for some reason if this is missing sidebar is srinking when the products do not fit inside the products container in landing and products page. why is that ??
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; // CAUTION: for some reason if this is missing sidebar is srinking when the products do not fit inside the products container in landing and products page.
   // justify-content: center;
 
 }
+
 

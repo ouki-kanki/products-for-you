@@ -5,9 +5,9 @@ import ChatIcon from '../../assets/svg_icons/chat.svg?react';
 export const ChatButton = () => {
   return (
     <div className={styles.chatButtonContainer}>
-        <ChatIcon 
+        <ChatIcon
           className={styles.chatIcon}/>
       <div>Chat with <span>us</span>!</div>
-      </div>
+    </div>
   )
 }

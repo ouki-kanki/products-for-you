@@ -11,18 +11,18 @@
   cursor: pointer;
   transition: border .2s linear;
   border: 1px solid transparent;
-  
+
   & :first-child {
     height: 60%;
     // flex-basis: 50px;
     position: relative;
-    
+
     & img {
       height: 100%;
       width: 100%;
     }
   }
-  
+
   & div {
     color: inherit;
   }
@@ -32,8 +32,14 @@
   }
 }
 
-.chatButtonContainer:hover {
-  border: 1px solid  #585753;
+.chatButtonContainer {
+    > div {
+
+      &:hover {
+        color: $grey_m;
+      }
+    }
+  // border: 1px solid  #585753;
   // border-width: 2px solid #585753;
   // color: red;
   // box-shadow: $box-shadow-btn-d;

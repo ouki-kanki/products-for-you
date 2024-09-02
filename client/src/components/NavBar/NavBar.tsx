@@ -36,13 +36,13 @@ export const NavBar = () => {
   // const { trigger, data, error } = useProfile()
 
 
-  // TODO: THIS IS A NASTY FIX !!! have to fix later 
+  // TODO: THIS IS A NASTY FIX !!! have to fix later
   const { data, isFetching, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
 
 
   // console.log(showNav)
-  // TODO : transfrom the response inside the query to retrieve only the image and the name 
-  // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT 
+  // TODO : transfrom the response inside the query to retrieve only the image and the name
+  // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT
 
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
@@ -62,7 +62,7 @@ export const NavBar = () => {
 
   // TODO: does the warning that navigate is missing from deps gives problems ?
   const handleBack = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Escape") { 
+    if (e.key === "Escape") {
       navigate(-1) // this is like legacy history?
     }
   }, [])
@@ -77,19 +77,19 @@ export const NavBar = () => {
       window.removeEventListener('keydown', handleBack as EventListenerOrEventListenerObject)
     }
   }, [lastScrollValue, handleNavShow, handleBack])
-  
-  
+
+
   const renderLoginLogout = () => {
     if (token) {
       return (
         <Button
-          onClick={() => logout()} 
-          size='m'>Logout</Button>          
-          )  
+          onClick={() => logout()}
+          size='m'>Logout</Button>
+          )
       } else {
         return (
           <Button
-            onClick={handleNavigate('login')} 
+            onClick={handleNavigate('login')}
             size='m'>Login</Button>
           )
       }
@@ -113,8 +113,8 @@ export const NavBar = () => {
         {pathname !== '/' && (
           <Link
             to='/'
-            className={`${styles.icons} ${styles.back}`}> 
-            take me home
+            className={`${styles.icons} ${styles.back}`}>
+            Products For You
           </Link>
         )}
       </div>
@@ -144,7 +144,7 @@ export const NavBar = () => {
           </Link>
           {data && token && (
             <div
-              onClick={handleNavigate('/profile')} 
+              onClick={handleNavigate('/profile')}
               className={styles.profileImageContainer}>
               {/* <div>yoyo</div> */}
               <img src={data.image} alt='profile image' />
@@ -152,13 +152,13 @@ export const NavBar = () => {
           )}
 
           <div className={`margin-right-10 ${styles.centerField}`}>
-            { pathname === '/login' 
+            { pathname === '/login'
               ? <p className='annotation'>Don't Have an Account ? </p>
               : renderLoginLogout()
             }
           </div>
           { !token && (
-            <div 
+            <div
               className={styles.signUp}
               onClick={handleNavigate('sign-up')}
               >

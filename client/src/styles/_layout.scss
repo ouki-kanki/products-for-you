@@ -19,7 +19,7 @@ $btn_height: 40px;
 // ** images **
 .img__cover {
   width: 100%;
-  aspect-ratio: 1 / 1; // width 1 , height 1 
+  aspect-ratio: 1 / 1; // width 1 , height 1
   object-fit: cover;
 }
 
@@ -41,13 +41,13 @@ $btn_height: 40px;
 @mixin basic_auto_grid($min: 15rem) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
-  grid-gap: 1.5rem;  
+  grid-gap: 1.5rem;
 }
 
 // @mixin basic_auto_grid() {
 //   display: grid;
 //   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-//   grid-gap: 1.5rem;  
+//   grid-gap: 1.5rem;
 // }
 
 // BASIC STYLE FOR ICONS
@@ -57,13 +57,13 @@ $btn_height: 40px;
   height: $btn_height;
   margin-right: .4rem;
   cursor: pointer;
-  
+
   background: linear-gradient(133deg, rgba(49, 39, 65, 0.50) 6.04%, rgba(195, 180, 221, 0.50) 94.35%);
   border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   & img {
     width: 60%;
     // top: 50%;
@@ -71,5 +71,5 @@ $btn_height: 40px;
 }
 
 // elemement dimentions
-$h1_font_size: 3.6em;  
+$h1_font_size: 3.6em;
 

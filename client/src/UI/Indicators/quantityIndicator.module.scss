@@ -1,0 +1,20 @@
+.label {
+  padding: 10px 0;
+}
+
+.available {
+  margin-top: 10px;
+  font-weight: 700;
+  // color: #6fc17f;
+  color: $positive_green;
+}
+
+.danger {
+  color: tomato;
+}
+
+.caution {
+  color: khaki;
+}
+
+

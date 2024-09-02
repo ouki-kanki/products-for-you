@@ -61,29 +61,30 @@ const Categories = () => {
   }, [categories, slug])
 
 
-
+  console.log("categories", categories)
 
   const navigate = useNavigate()
   const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
 
-  const fetchRelatedProducts = (slug: string, id: number) => {
-    navigate(`/products/${slug}`, { state: { categoryId:id }})
+  const fetchRelatedProducts = (slug: string, categorySlug:string) => {
+
+    // NOTE: state is not used because products route has to not be dependended on the router state. if someone paste the url from somewhere the url has to give the result.
+    navigate(`/products/${slug}`, { state: { categorySlug:categorySlug }})
   }
 
+  const handleClickCategory = (slug: string) => {
+    const currentCategory = currentCategories && currentCategories.find(cat => cat.slug === slug)
+    console.log('currentcat', currentCategory, slug)
 
-  const handleClickCategory = (name: string) => {
-    const currentCategory = currentCategories && currentCategories.find(cat => cat.name === name)
-
+    // if there no more chilren fetch the related items
     if (currentCategory && currentCategory.children.length === 0) {
-      fetchRelatedProducts(name, currentCategory.id)
+      fetchRelatedProducts(slug, currentCategory.id)
    } else {
     // TODO: if there is no else clause after navigate to products the following navigate triggers . check why this happening.doesn't the component unmounts after navigation ?
-     navigate(`${name}`)
+     navigate(`${slug}`)
    }
 
   }
-
-
 
   return (
     <div>
@@ -97,13 +98,6 @@ const Categories = () => {
             handleCategoryClick={() => handleClickCategory(category.name)}
             alt={`${category.name}-image`}
             />
-          // <li
-          //   className={styles.categoryField}
-          //   key={category.id}
-          //   onClick={() => handleClickCategory(category.name)}
-          // >
-          //   {category.name}
-          // </li>
         ))}
       </div>
 

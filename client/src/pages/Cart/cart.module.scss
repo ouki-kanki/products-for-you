@@ -27,7 +27,7 @@
 
 .tableHeader {
   font-weight: bold;
-  background-color: $blue_lightV2;
+  background-color: $blue-light-primary;
   color: #ddd;
 }
 
@@ -43,7 +43,7 @@
   position: relative;
   box-shadow: $box-shadow-transparent-black;
   cursor: pointer;
-  
+
   & > img {
     max-width: 100%;
     max-height: 100%;
@@ -64,7 +64,7 @@
      height: 2em;
      width: 2em;
      cursor: pointer;
-     
+
      :hover {
        height: 2.1em;
        width: 2.1em;

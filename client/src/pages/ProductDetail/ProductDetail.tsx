@@ -13,8 +13,6 @@ import TrackIcon from '../../assets/svg_icons/track.svg?react'
 import AddIcon from '../../assets/svg_icons/add_filled.svg?react'
 import SubtractIcon from '../../assets/svg_icons/subtract_filled.svg?react'
 
-import type { ICartItem } from '../../features/cart/cartSlice'
-
 export const ProductDetail = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
@@ -77,7 +75,6 @@ export const ProductDetail = () => {
       setDesiredQuantity(1)
     }
   }
-
 
   const handleAddToCart = () => {
     if (data) {

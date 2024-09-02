@@ -243,14 +243,19 @@ class ProductItem(models.Model):
     variation_name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
     sku = models.CharField(max_length=255)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField()
     detailed_description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_default = models.BooleanField(default=False)
-    variation_option = models.ManyToManyField('variations.VariationOptions') # to avoid circular imports
+    variation_option = models.ManyToManyField('variations.VariationOptions')  # to avoid circular imports
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     discount = models.ManyToManyField("products.Discount", verbose_name="product_discount")
+    limited_number_of_items_threshold = models.PositiveIntegerField(default=3,
+                                                                    help_text='below and including this number'
+                                                                              ' client will show "limited'
+                                                                              ' number of items"')
+
 
     @property
     def product_name(self):
@@ -273,8 +278,14 @@ class ProductItem(models.Model):
         return f'{self.product.name} {variation_values}'
 
     @property
-    def is_available(self):
-        return self.quantity > 0
+    def availability(self):
+        quantity = self.quantity
+        threshold = self.limited_number_of_items_threshold
+        if quantity > threshold:
+            return 'available'
+        elif quantity > 0:
+            return 'limited number of items'
+        return 'not available'
 
     def __str__(self):
         qs = self.variation_option.all()

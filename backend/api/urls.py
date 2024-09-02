@@ -5,7 +5,8 @@ from drf_spectacular.views import (
 
 from products.views import (
     ProductsAndRelatedVariationsView, FeaturedProductsListView, ProductDetailViewV4,
-    ProductPreview, CategoryListView, ProductListByCategoryView, GetDefaultVariationsView
+    ProductPreview, CategoryListView, ProductListByCategoryView, GetDefaultVariationsView,
+    ProductListByCategoryBySlug,
 )
 from order.views import OrderCreateView
 
@@ -20,13 +21,13 @@ urlpatterns = [
     path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),
     path('products/product-detail/<slug:slug>/', ProductDetailViewV4.as_view(), name='product-detail'),
     path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-detail'),
-    path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category'),
+    path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category-id'),
+    path('products/category/<slug:slug>', ProductListByCategoryBySlug.as_view(), name='products-by-category-id'),
 
     path('categories/', CategoryListView.as_view(), name='categories'),
-
     path('orders/create', OrderCreateView.as_view(), name='order-create'),
 
-
+    path('user-control/', include('user_control.urls')),
     path('search/', include('search.urls')),
 
     path('schema/', SpectacularAPIView.as_view(), name='schema'),

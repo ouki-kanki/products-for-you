@@ -13,6 +13,7 @@ import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons
 
 import { Card } from '../../UI/Card/Card';
 import { Button } from '../../UI/Button/Button';
+import { QuantityIndicator } from '../../UI/Indicators/QuantityIndicator';
 
 import kdeImage from '../../assets/kd14_low_res.png'
 import kdeRight from '../../assets/kd14_right.jpg'
@@ -24,7 +25,7 @@ import kdIce from '../../assets/variations/kd14_ice.jpg';
 import kdDeepBlue from '../../assets/variations/kd14_deep_blue.jpg'
 import kdBl from '../../assets/variations/kd14var_bl_or.jpg';
 
-import { IProduct } from '../../api/productsApi'; 
+import { IProduct } from '../../api/productsApi';
 
 import { useLazyGetProductVariationPreviewQuery } from '../../api/productsApi';
 
@@ -32,7 +33,7 @@ import { useLazyGetProductVariationPreviewQuery } from '../../api/productsApi';
 const formatPrice = (strNum: string) => {
   const num = Number(strNum).toLocaleString()
   return `${num} €`
-  
+
 }
 
 interface IProductV2Props extends IProduct {
@@ -41,13 +42,13 @@ interface IProductV2Props extends IProduct {
 }
 
 
-export const ProductV2 = ({ 
-  name: title, 
-  price, 
-  features, 
+export const ProductV2 = ({
+  name: title,
+  price,
+  features,
   slug,
   productThumbnails,
-  quantity, 
+  quantity,
   description,
   variations,
   constructedUrl,
@@ -58,7 +59,7 @@ export const ProductV2 = ({
   const navigate = useNavigate()
   const [newQuantity, setNewQuantity] = useState<number | null>(null)
   const [variationPrice, setVariationPrice] = useState<string | null>(null)
-  const [variationProductThumbnails, setVariationProductsThumbnails] = useState({}) 
+  const [variationProductThumbnails, setVariationProductsThumbnails] = useState({})
   const [variationSlug, setVariationSlug] = useState<string>('')
   const [ trigger, result, lastPromiseInfo ] = useLazyGetProductVariationPreviewQuery()
 
@@ -87,7 +88,7 @@ export const ProductV2 = ({
   const handleVariationChange = (e: React.MouseEvent<HTMLDivElement>, slug: string) => {
     e.stopPropagation();
 
-    // console.log("the index and product url", slug) 
+    // console.log("the index and product url", slug)
     trigger(slug)
   }
 
@@ -107,7 +108,7 @@ export const ProductV2 = ({
       return (
         <div className={styles.variationsContainer}>
           {variations.map((variation, index) => (
-            <div 
+            <div
               className={styles.varImageContainer}
               key={index}
               onClick={(e) => handleVariationChange(e, variation.slug)}>
@@ -133,18 +134,7 @@ export const ProductV2 = ({
     }
   }
 
-  const renderQuantity = (quantity) => {
-    // console.log("the qunati", quantity)
-    switch(true) {
-      case quantity === 0:
-        return <div className={`${styles.label} ${styles.danger}`}>not available</div>
-      case quantity < 4:
-        return <div className={`${styles.label} ${styles.caution}`}>limited number of items left</div>
-      case quantity >= 4:
-        return <div className={`${styles.label} ${styles.available}`}>available</div>
-        
-    }
-  } 
+
 
   return (
     // <div key={id}>
@@ -155,10 +145,10 @@ export const ProductV2 = ({
         shadow={shadow}
         >
         <FontAwesomeIcon
-          className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`} 
-          icon={faHeart} 
+          className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`}
+          icon={faHeart}
           size='2x'/>
-        <div 
+        <div
           className={styles.productContainer}
           onClick={handleProductDetail}
           >
@@ -166,12 +156,12 @@ export const ProductV2 = ({
             <h2>{title}</h2>
           </div>
           <div className={`${styles.medRegion} ${width === 'wide' && styles.wide}`}>
-            
+
             <div className={styles.ml}>
               <div className={styles.imageContainer}>
-                <img 
+                <img
                   src={currentImage}
-                  className={`${styles.imageMain} ${isTempHovered && styles.imageHovered}`} 
+                  className={`${styles.imageMain} ${isTempHovered && styles.imageHovered}`}
                   alt="shoe image" />
               </div>
             </div>
@@ -190,19 +180,19 @@ export const ProductV2 = ({
                 {/* TODO: move it to a seperate component */}
                 <div className={styles.ratingsContainer}>
                 <FontAwesomeIcon
-                  className={styles.starIcon} 
-                  icon={faSolidStar} 
+                  className={styles.starIcon}
+                  icon={faSolidStar}
                   size='lg'/>
                 <FontAwesomeIcon
-                  className={styles.starIcon} 
-                  icon={faSolidStar} 
+                  className={styles.starIcon}
+                  icon={faSolidStar}
                   size='lg'/>
                 <FontAwesomeIcon
-                  className={styles.starIcon} 
-                  icon={faStar} 
+                  className={styles.starIcon}
+                  icon={faStar}
                   size='lg'/>
                 </div>
-                { renderQuantity(newQuantity) }
+                <QuantityIndicator quantity={newQuantity}/>
               </div>
 
               {/* VARIATIONS */}
@@ -224,7 +214,7 @@ export const ProductV2 = ({
           {/* Product views */}
           <div className={styles.bottomRegion}>
             {variationProductThumbnails && variationProductThumbnails.length > 0 ? variationProductThumbnails.map((thumb, index) => (
-              <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}> 
+              <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}>
                 <img src={thumb.url} alt="top view of the product" />
               </div>)) : (
               <>
@@ -248,7 +238,7 @@ export const ProductV2 = ({
               className={styles.addIcon}
               icon={faPlus}
               size='2x'
-              />    
+              />
           </div>
         </div>
       </Card>
