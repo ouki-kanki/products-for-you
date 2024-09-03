@@ -225,7 +225,7 @@ ELASTICSEARCH_INDEX_NAMES = {
 }
 
 PAGE_SIZE = 5
-
+MAX_PAGE_SIZE_LIMIT = 30
 # REST_AUTH_SERIALIZERS = {
 #     'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',
 #     'TOKEN_SERIALIZER': 'users.serializers.TokenSerializer'

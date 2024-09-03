@@ -20,6 +20,7 @@ interface ListResponse<T> {
   next: string | null;
   prev: string | null;
   total_items: number;
+  num_of_pages: number;
   per_page: number;
   results: T[]
 }

@@ -98,3 +98,26 @@
 .sample_active {
   background-color: $color-active;
 }
+
+
+.paginationContainer {
+  padding: 20px;
+  padding-left: 0;
+  display: flex;
+
+  div, .page {
+    margin-right: 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .disabled {
+    user-select: none;
+    color: $button-disabled;
+    cursor: default;
+  }
+
+  .isActive {
+    color: red;
+  }
+}

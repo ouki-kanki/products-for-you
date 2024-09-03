@@ -1,3 +1,33 @@
+const testParams = (path, params) => {
+  // console.log(params)
+  console.log('yoyoyo', params)
+
+  let params_str = ''
+  for (const [key, value] of Object.entries(params)) {
+    if (!params_str) {
+      params_str += `?${key}=${value}`
+    } else {
+      params_str += `&${key}=${value}`
+    }
+  }
+
+  console.log(params_str)
+
+
+  const finalPath = `path`
+
+}
+
+
+testParams('test', {
+  name: 'max',
+  age: 23
+})
+
+
+
+
+const arr = Array.from(Array(10))
 
 const items = ['item1', 'item-2', 'item-3', 'item-4', 'item-5', 'item-6', 'item-7', 'item-8', 'item-9', 'item-10']
 const num = 4
@@ -20,7 +50,7 @@ const postInd = (length, num, activeIndex) => {
     .map(_ => {
       const temp = num
       num -= 1
-    
+
       return (activeIndex + temp) % length
     }).reverse()
 }
@@ -29,5 +59,5 @@ const postInd = (length, num, activeIndex) => {
 const prev = prevInd(length, num, active)
 const post = postInd(length, num, active)
 
-console.log(prev)
-console.log(post)
+// console.log(prev)
+// console.log(post)

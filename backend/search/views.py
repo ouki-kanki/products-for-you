@@ -15,6 +15,11 @@ from common.paginators.paginator_elasticsearch import ElasticSearchPaginator, El
 
 
 class ProductItemSearchView(APIView, ElasticSearchPagination):
+    """
+    get list of ProductItem objects
+    searh-by: broduct name category
+    pagination: pageNumberPagination
+    """
     serializer = SearchProductItemSerializer
     search_document = ProductItemDocument
 
@@ -36,14 +41,20 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             )
 
             uri = request.build_absolute_uri(request.path)
-            page = int(request.query_params.get('page', '1'))
-            # if there is no page_size get default from settings
-            page_size = int(request.query_params.get('page_size', settings.PAGE_SIZE))
+            default_page = '1'
+            default_page_size = settings.PAGE_SIZE
+
+            page = int(request.query_params.get('page', default_page))
+            page_size = int(request.query_params.get('page_size', default_page_size))
+
+            print(type(page_size), page_size)
+            if page_size <= 0 or page_size > settings.MAX_PAGE_SIZE_LIMIT:
+                page_size = default_page_size
 
             start = (page - 1) * page_size
             end = start + page_size
 
-            # print("the page", page, start, end)
+            print("the page", page, start, end)
 
             search = self.search_document.search().query(q)[start:end]
             response = search.execute()

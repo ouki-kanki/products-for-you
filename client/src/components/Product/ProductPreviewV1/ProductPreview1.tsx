@@ -16,7 +16,7 @@ interface ProductPreviewProps {
 }
 
 export const ProductPreview1 = (props: ProductPreviewProps) => {
-  console.log(props)
+  // console.log(props)
   const navigate = useNavigate()
   const category = props.categories[props.categories.length -1]
   const { slug, name } = props

@@ -2,13 +2,16 @@ import { InputHTMLAttributes,
          forwardRef,
          FormEvent,
          ChangeEvent,
+         useContext,
          useEffect,
          useState } from 'react'
 import styles from './searchForm.module.scss';
 import { useNavigate } from 'react-router-dom';
 
+
 import { useLazySugestProductNameQuery } from '../../../api/searchApi';
 import { useDebouncedValue } from '../../../hooks/useDebounce';
+import { SettingsContext } from '../../../context/SettingsContext';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -23,6 +26,7 @@ type Ref = HTMLInputElement
 export const SearchForm = forwardRef<Ref, IInput>(() => {
   const [searchValue, setSearchValue] = useState('')
   const navigate = useNavigate();
+  const { defaultPageSize } = useContext(SettingsContext)
 
   const handleChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(value)
@@ -42,7 +46,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
 
     if (searchValue !== '') {
       setSearchValue('')
-      navigate(`/search/${ searchValue }`)
+      navigate(`/search/?search=${ searchValue }&page_size=${defaultPageSize}`)
     }
   }
 
