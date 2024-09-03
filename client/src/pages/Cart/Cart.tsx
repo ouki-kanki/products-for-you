@@ -88,11 +88,13 @@ export const Cart = () => {
               <div>0</div>
             </div>
             <div className={styles.totalFinal}>
-              <div>Total</div>
+              <div>Total: </div>
               <div>{cart.total}<span>€</span></div>
             </div>
-            <button onClick={() => dispatch(clearCart())}>clear</button>
-            <div className={styles.orderBtnContainer}>
+            <div className={styles.BtnContainer}>
+              <button
+                onClick={() => dispatch(clearCart())}
+                className={styles.clearBtn}>clear</button>
               <Link to='/checkout' className={styles.orderBtn}>Go to order</Link>
             </div>
           </div>

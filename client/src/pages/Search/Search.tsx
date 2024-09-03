@@ -20,9 +20,14 @@ const buttons = [
 
 export const Search = () => {
   const [layout, setLayout] = useState('')
-  const { slug } = useParams()
+  const { slug, page, page_size } = useParams()
+  console.log(slug, page, page_size)
   // console.log("the searchParams", searchParams.entries())
-  const { data, isError, isFetching, isLoading, isSuccess } = useSearchProductItemQuery(slug)
+  const { data, isError, isFetching, isLoading, isSuccess } = useSearchProductItemQuery({
+    query: slug,
+    page: 2,
+    page_size: 1
+  })
   const classes = useClassLister(styles)
 
   console.log("the data from search", data)
@@ -58,7 +63,7 @@ export const Search = () => {
       </div>
 
       <div className={`${styles.content} ${styles[layout]}`}>
-        {data && data.map((product, id) => (
+        {data && data.results.map((product, id) => (
           <ProductPreview1 key={id} { ...product }/>
         ))}
       </div>

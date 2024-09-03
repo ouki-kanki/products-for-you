@@ -2,6 +2,28 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./baseConfig";
 // import type { BaseQueryFn } from '@reduxjs/toolkit/query'
 
+interface SearchProductItem {
+  thumb: string;
+  image: string;
+  name: string;
+  categories: string[];
+  description: string;
+  slug: string;
+  sku: string;
+  upc: string;
+  price: string;
+  is_default: boolean;
+  availability: string;
+}
+
+interface ListResponse<T> {
+  next: string | null;
+  prev: string | null;
+  total_items: number;
+  per_page: number;
+  results: T[]
+}
+
 
 export const searchApi = createApi({
   reducerPath: 'searchApi',
@@ -9,16 +31,23 @@ export const searchApi = createApi({
     baseUrl: BASE_URL
   }),
   endpoints: (builder) => ({
-    searchProductItem: builder.query({
-      query: (query) => ({
+    searchProductItem: builder.query<ListResponse<SearchProductItem>, {
+      query: string;
+      page?: number;
+      page_size?: number
+    }>({
+      query: ({
+        query,
+        page,
+        page_size
+      }) => ({
           url: `search/product-items/`,
           params: {
-            search: query
+            search: query,
+            page,
+            page_size
         }
       }),
-      transformResponse: (response, meta, arg) => {
-        return response
-      },
       transformErrorResponse: (response: { status: string | number }, meta, arg) => response.status
     }),
     sugestProductName: builder.query<string[], string>({

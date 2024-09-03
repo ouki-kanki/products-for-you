@@ -23,7 +23,6 @@ export const QuantityIndicator = ({availability }: QuantityIndicatorProps) => {
     const classes = useClassLister(styles)
     if (availability) {
 
-      console.log(availability)
       const availabilityClass: string = mapAvailabilitytoClasses[availability]
 
       return (

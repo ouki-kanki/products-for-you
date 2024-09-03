@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_elasticsearch_dsl_drf',
     'django_elasticsearch_dsl',
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -223,6 +224,7 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search.documents.productitem': 'productitem',
 }
 
+PAGE_SIZE = 5
 
 # REST_AUTH_SERIALIZERS = {
 #     'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',

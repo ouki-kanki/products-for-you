@@ -98,7 +98,6 @@
   min-width: 250px;
 }
 
-
 .actionRow {
   user-select: none;
   display: flex;
@@ -135,7 +134,6 @@
   padding: 10px 0 10px 10px;
 
   div {
-    // color: red;
     font-weight: bold;
     font-size: 1.3em;
   }
@@ -145,7 +143,7 @@
     color: #777;
     margin-right: 10px;
     font-weight: bold;
-    font-family: 'Lemon', serif;
+    // font-family: 'Lemon', serif;
   }
 
   & > div:nth-child(2) {
@@ -159,13 +157,20 @@
   }
 }
 
-.orderBtnContainer {
+.BtnContainer {
   display: flex;
   justify-content: flex-end;
 
   .orderBtn {
     margin-top: 20px;
     @include btn_blue();
+  }
+
+  .clearBtn {
+    margin-top: 20px;
+    margin-right: 5px;
+    @include btn_secondary;
+    font-size: 1rem;
   }
 }
 

@@ -36,19 +36,13 @@ $btn_height: 40px;
 
 
 // MIXINS
-// TODO have mixins also in a seperate folder, have to deal with that.
+// TODO have mixins also in a seperate folder,
 
 @mixin basic_auto_grid($min: 15rem) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
   grid-gap: 1.5rem;
 }
-
-// @mixin basic_auto_grid() {
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-//   grid-gap: 1.5rem;
-// }
 
 // BASIC STYLE FOR ICONS
 
@@ -70,6 +64,6 @@ $btn_height: 40px;
   }
 }
 
-// elemement dimentions
+// elemement dimensions
 $h1_font_size: 3.6em;
 
