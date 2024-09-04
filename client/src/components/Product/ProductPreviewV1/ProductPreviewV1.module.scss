@@ -1,6 +1,14 @@
 .containerProduct {
   font-size: 1rem;
   display: flex;
+  // overflow: hidden;
+}
+
+// left and right parent
+.container {
+  flex: 0 0 50%;
+  // flex-grow: 1;
+  // flex-basis: 50%;
 }
 
 .containerLeft {
@@ -18,6 +26,7 @@
   }
 }
 
+// TODO: change the syntax to camelcase
 .container_right {
   padding: 20px;
   display: flex;
@@ -64,12 +73,6 @@
 }
 
 
-.container {
-  flex: 0 0 50%;
-  // flex-grow: 1;
-  // flex-basis: 50%;
-}
-
 
 $gradient_blue_dark: #5d95d5;
 $gradient_blue_light: #7bb3eb;
@@ -106,4 +109,69 @@ $gradient_blue_light: #7bb3eb;
 
 .button:not([disabled]):active {
   box-shadow: none;
+}
+
+.listLayout {
+  .container {
+    flex: 1 1 100%; // reset
+  }
+
+  .containerLeft {
+    flex: 0 0 30%;
+  }
+
+  .container_right {
+    flex: 0 0 70%;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 3fr 6fr 1fr;
+    grid-template-rows: auto;
+    overflow: hidden;
+
+    @media screen and (max-width: 1200px) {
+      h2 {
+        font-size: 12px;
+      }
+    }
+
+    &__middle {
+      display: flex;
+      align-items: first baseline;
+
+      &__left {
+        display: flex;
+        align-items: center;
+      }
+
+      .category {
+        flex: 0;
+        margin-right: 20px;
+      }
+
+      .description {
+        flex: 1;
+        margin-right: 20px;
+        margin-top: 0;
+      }
+
+      .priceContainer {
+        margin-top: 0;
+      }
+
+      .availabilityContainer {
+        margin-left: auto;
+      }
+
+    }
+  }
+
+
+  .description {
+    font-size: 10px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 5px 15px;
+  }
 }

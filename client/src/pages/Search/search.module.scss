@@ -64,8 +64,14 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
-.sixColLayout {
-  grid-template-columns: repeat(6, 1fr);
+.listLayout {
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    height: 100px;
+  }
+  // grid-template-columns: repeat(6, 1fr);
 }
 
 .grid-col-span-2 {

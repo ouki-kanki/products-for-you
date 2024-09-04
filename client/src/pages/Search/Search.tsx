@@ -53,7 +53,7 @@ export const Search = () => {
           setLayout('fourColLayout')
           break;
         case 4:
-          setLayout('sixColLayout')
+          setLayout('listLayout')
       }
   }
 
@@ -88,7 +88,10 @@ export const Search = () => {
 
       <div className={`${styles.content} ${styles[layout]}`}>
         {data && data.results.map((product, id) => (
-          <ProductPreview1 key={id} { ...product }/>
+          <ProductPreview1
+            key={id}
+            layout={layout}
+            { ...product }/>
         ))}
       </div>
 

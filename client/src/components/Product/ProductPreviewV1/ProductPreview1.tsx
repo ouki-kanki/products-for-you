@@ -2,6 +2,8 @@ import styles from './ProductPreviewV1.module.scss'
 import { Link, useNavigate } from 'react-router-dom';
 
 import { QuantityIndicator } from '../../../UI/Indicators/QuantityIndicator';
+import { useClassLister } from '../../../hooks/useClassLister';
+
 
 interface ProductPreviewProps {
   name: string;
@@ -13,11 +15,15 @@ interface ProductPreviewProps {
   upc: string;
   price: string;
   availability: string;
+  layout: string
 }
 
 export const ProductPreview1 = (props: ProductPreviewProps) => {
   // console.log(props)
+  const { layout } = props
+  console.log(layout)
   const navigate = useNavigate()
+  const classes = useClassLister(styles)
   const category = props.categories[props.categories.length -1]
   const { slug, name } = props
 
@@ -29,7 +35,8 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
   }
 
   return (
-    <div className={styles.containerProduct}>
+    <div
+      className={classes('containerProduct', `${layout}`)}>
 
       <div className={[styles.containerLeft, styles.container].join(' ')}>
         {/* TODO: fetch the image and not the thumb */}
@@ -45,16 +52,20 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
       <div className={[styles.container_right, styles.container].join(' ')}>
         <h2>{props.name}</h2>
         <div className={styles.container_right__middle}>
-          {category && (
-            <Link
-              to={`/products/${category}`}
-              className={styles.category}>{category}</Link>
-          )}
-          <p className={styles.description}>{props.description}</p>
-          <div className={styles.priceContainer}>
-            <div>Price: <span>{props.price}€</span></div>
+          <div className={styles.container_right__middle__left}>
+            {category && (
+              <Link
+                to={`/products/${category}`}
+                className={styles.category}>{category}</Link>
+            )}
+            <p className={styles.description}>{props.description}</p>
+            <div className={styles.priceContainer}>
+              <div>Price: <span>{props.price}€</span></div>
+            </div>
           </div>
-          <QuantityIndicator availability={props.availability}/>
+          <div className={styles.availabilityContainer}>
+            <QuantityIndicator availability={props.availability}/>
+          </div>
         </div>
 
         <div className={styles.container_right__bottom}>
