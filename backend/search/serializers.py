@@ -19,6 +19,7 @@ class SearchProductItemSerializer(serializers.Serializer): # noqa
     price = serializers.DecimalField(read_only=True, max_digits=6, decimal_places=2)
     is_default = serializers.BooleanField(read_only=True)
     availability = serializers.CharField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
 
     def get_thumb(self, hit):
         request = self.context.get('request')

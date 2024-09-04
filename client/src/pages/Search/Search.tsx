@@ -7,6 +7,8 @@ import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@f
 import { useSearchProductItemQuery } from '../../api/searchApi';
 import { useClassLister } from '../../hooks/useClassLister';
 import { usePagination } from '../../hooks/usePagination';
+import { useSort } from '../../hooks/useSort';
+
 
 import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/ProductPreview1';
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
@@ -29,11 +31,14 @@ export const Search = () => {
   const classes = useClassLister(styles)
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
+  const { sortValue, setSortValue } = useSort('time')
+
 
   const { data, isError, isFetching, isLoading, isSuccess } = useSearchProductItemQuery({
     query: searchValue,
     page,
-    page_size: page_size
+    page_size: page_size,
+    sort_by: sortValue
   })
 
   const handleChangeLayout = (num: number) => {
@@ -63,7 +68,22 @@ export const Search = () => {
         </div>
         <div>3 products found</div>
         <div className={styles.line}></div>
-        <div className={styles.sortContainer}>Sort by btn</div>
+        <div className={styles.sortContainer}>
+          <label htmlFor="sort_by">Sort by</label>
+          <select
+              value={sortValue}
+              onChange={(e) => setSortValue(e.target.value)}
+              name="sort_by"
+              id="sort_by"
+              >
+              <option value="time">time</option>
+              <option value="time desc">time descenting</option>
+              <option value="name">name</option>
+              <option value="name desc">name descenting</option>
+              <option value="price">price</option>
+              <option value="price desc">price descenting</option>
+            </select>
+        </div>
       </div>
 
       <div className={`${styles.content} ${styles[layout]}`}>
@@ -93,6 +113,12 @@ export const Search = () => {
           className={page == data?.num_of_pages ? styles.disabled : ''}
           onClick={() => page < data!.num_of_pages && handleNavigate(page + 1)}
           >next</div>
+      </div>
+      <div>
+        <h2>sort by</h2>
+        <div style={{ display: 'flex' }}>
+
+        </div>
       </div>
 
       <br />

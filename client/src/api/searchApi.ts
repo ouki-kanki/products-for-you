@@ -25,6 +25,12 @@ interface ListResponse<T> {
   results: T[]
 }
 
+type QueryParams = {
+  query: string;
+  page?: number;
+  page_size?: number;
+  sort_by?: number;
+}
 
 export const searchApi = createApi({
   reducerPath: 'searchApi',
@@ -32,21 +38,19 @@ export const searchApi = createApi({
     baseUrl: BASE_URL
   }),
   endpoints: (builder) => ({
-    searchProductItem: builder.query<ListResponse<SearchProductItem>, {
-      query: string;
-      page?: number;
-      page_size?: number
-    }>({
+    searchProductItem: builder.query<ListResponse<SearchProductItem>, QueryParams>({
       query: ({
         query,
         page,
-        page_size
+        page_size,
+        sort_by
       }) => ({
           url: `search/product-items/`,
           params: {
             search: query,
             page,
-            page_size
+            page_size,
+            sort_by
         }
       }),
       transformErrorResponse: (response: { status: string | number }, meta, arg) => response.status

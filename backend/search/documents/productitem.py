@@ -23,6 +23,7 @@ class ProductItemDocument(Document):
     upc = fields.TextField()
     is_default = fields.BooleanField()
     availability = fields.TextField()
+    created_at = fields.DateField()
 
     # -- custom fields --
     name = fields.TextField(

@@ -4,9 +4,8 @@ from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.pagination import LimitOffsetPagination
 
-from elasticsearch_dsl import Q, Search
+from elasticsearch_dsl import Q, Search, FacetedSearch
 from elasticsearch_dsl.query import Match, Term
 
 from .serializers import SearchProductItemSerializer
@@ -14,7 +13,7 @@ from .documents.productitem import ProductItemDocument
 from common.paginators.paginator_elasticsearch import ElasticSearchPaginator, ElasticSearchPagination
 
 
-class ProductItemSearchView(APIView, ElasticSearchPagination):
+class ProductItemSearchView(APIView, ElasticSearchPagination, FacetedSearch):
     """
     get list of ProductItem objects
     searh-by: broduct name category
@@ -25,7 +24,18 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
     def get(self, request): # noqa
         query = request.query_params.get('search')
-        print("the params", query)
+        sort_by = request.query_params.get('sort_by')
+        print("sort by", sort_by)
+
+        sort_hash = {
+            'time': 'created_at',
+            'time desc': '-created_at',
+            'price': 'price',
+            'price desc': '-price',
+            'name': 'name',
+            'name desc': '-name'
+        }
+
         q = ''
         try:
             q = Q(
@@ -47,7 +57,6 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             page = int(request.query_params.get('page', default_page))
             page_size = int(request.query_params.get('page_size', default_page_size))
 
-            print(type(page_size), page_size)
             if page_size <= 0 or page_size > settings.MAX_PAGE_SIZE_LIMIT:
                 page_size = default_page_size
 
@@ -57,6 +66,9 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             print("the page", page, start, end)
 
             search = self.search_document.search().query(q)[start:end]
+            if sort_by:
+                search = search.sort(sort_hash[sort_by])
+
             response = search.execute()
 
             paginator = ElasticSearchPaginator(response, page_size)
@@ -73,7 +85,6 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             except PageNotAnInteger:
                 posts = paginator.page(1)
             except EmptyPage:
-                print(paginator)
                 posts = paginator.page(paginator.num_pages)
 
             serializer = self.serializer(posts, context={'request': request}, many=True)
