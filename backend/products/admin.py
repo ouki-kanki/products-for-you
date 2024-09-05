@@ -199,9 +199,31 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    exclude = ['thumbnail',]
+    readonly_fields = ['product_image', 'product_thumb']
+    exclude = ['thumbnail',]  #  TODO: if there is need for custom thump remove this but have to inform that thumb is generated automatically
     extra = 1
     form = ProductImageForm  
+
+    def product_image(self, obj):  # noqa
+        return render_icon(obj, 'image')
+
+    def product_thumb(self, obj):
+        return render_icon(obj, 'thumbnail')
+
+
+class ProductItemForm(forms.ModelForm):
+    class Meta:
+        model = ProductItem
+        fields = '__all__'
+
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     product_item = self.instance
+    #
+    #     if not product_item.product_image.filter(is_default=True).exists():
+    #         raise forms.ValidationError('at least one image has to be default')
+    #
+    #     return cleaned_data
 
 
 @admin.register(ProductItem)
@@ -214,6 +236,8 @@ class ProductItemAdmin(admin.ModelAdmin):
     list_select_related = ('product', )
     list_filter = ('product', 'quantity')
     inlines = [ProductImageInline, ]
+    form = ProductItemForm
+
 
     @staticmethod
     def format_qnt(quantity, color):

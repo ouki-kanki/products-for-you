@@ -69,7 +69,13 @@ class ProductItemDocument(Document):
 
     def prepare_thumb(self, instance): # noqa
         qs = instance.product_image.filter(is_default=True)
-        return "".join([item.thumbnail.url for item in qs]) if qs else ''
+        for item in qs:
+            if item.thumbnail:
+                return "".join(item.thumbnail.url)
+            else:
+                return ""
+        # if item.thumbnail:
+            # return "".join([item.thumbnail.url for item in qs]) if qs else ''
 
     def prepare_image(self, instance): # noqa
         qs = instance.product_image.filter(is_default=True)

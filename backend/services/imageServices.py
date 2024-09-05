@@ -11,51 +11,33 @@ from django.core.exceptions import SuspiciousFileOperation
 from PIL import Image
 
 
-def generate_thumbnailV2(instance, name_of_field, suffix, size=(300, 200)):
+def generate_thumbnail_v2(instance, image_field, suffix, size=(300, 200)):
     """
-    creates a thumbnail from the existing image
+    creates a thumbnail from the existing image, return the name of the thumb
 
     instance: the model instance
-    name_of_field: the name of the field that holds the image
-    suffix (str): it will be used combined with the filename suffix_filename to construct the name of the file 
-    size: the size of the output thumb
+    image_field: the name of the field that holds the image
+    size: the size of the output thumb tuple (width, height)
     """
-    if not getattr(instance, name_of_field):
+    if not getattr(instance, image_field):
         return
     
-    original_image = Image.open(getattr(instance, name_of_field))
+    original_image = Image.open(getattr(instance, image_field))
     image = original_image.convert("RGB")    
     image.thumbnail(size, Image.ANTIALIAS)
     temp_thumb = BytesIO()
-    image.save(temp_thumb, "JPEG")
+    image.save(temp_thumb, "PNG")
     temp_thumb.seek(0)
 
     original_image.close()
     image.close()
 
-    name_of_the_file = getattr(instance, name_of_field).name
+    relative_path = getattr(instance, image_field).name
+    file_name = relative_path.split('/')[-1]
+    file_name = 'thumb_' + file_name
+    thumb_file = File(temp_thumb, name=file_name)
 
-    category_with_filename = f'{suffix}_{name_of_the_file}'
-
-    image_file = File(temp_thumb, name=category_with_filename)
-
-    return image_file
-
-
-def generate_thumbnail(instance, size=(300, 200)):
-    instance.refresh_from_db()
-    img = Image.open(instance.image.path)
-    img.convert('RGB')
-    img.thumbnail(size)
-
-    thumb_io = BytesIO()
-    img.save(thumb_io, 'JPEG', quality=85)
-    base_name = os.path.basename(instance.image.name)  # because this returns the alleready created path, i want the name
-    thumb_name = f'thumbnail_{base_name}'  # gets the name from the uploaded file.
-
-    # this will the upload method after that
-    instance.thumbnail.save(thumb_name, File(thumb_io), save=False)
-    thumb_io.close()
+    return thumb_file
 
 
 def remove_background(input_image_field, output_path, col_low=(0, 0, 100), col_up=(50, 50, 255)):

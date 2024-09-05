@@ -41,6 +41,11 @@ export const Search = () => {
     sort_by: sortValue
   })
 
+
+  // console.log("the data", data)
+
+
+
   const handleChangeLayout = (num: number) => {
       switch(num) {
         case 1:
@@ -66,7 +71,7 @@ export const Search = () => {
             options={buttons}
             width={200}/>
         </div>
-        <div>3 products found</div>
+        <div>{ data?.results ? data.results.length : 'no' } products found</div>
         <div className={styles.line}></div>
         <div className={styles.sortContainer}>
           <label htmlFor="sort_by">Sort by</label>

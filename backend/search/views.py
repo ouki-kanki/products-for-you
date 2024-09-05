@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from elasticsearch_dsl import Q, Search, FacetedSearch
+from elasticsearch_dsl import Q, Search, FacetedSearch, TermsFacet
 from elasticsearch_dsl.query import Match, Term
 
 from .serializers import SearchProductItemSerializer
@@ -22,10 +22,21 @@ class ProductItemSearchView(APIView, ElasticSearchPagination, FacetedSearch):
     serializer = SearchProductItemSerializer
     search_document = ProductItemDocument
 
+    facets = {
+        'categories': TermsFacet(field='categories'),
+    }
+
+    def search(self):
+        s = super().search()
+
+        return s.filter('range', publish_from={'lte': 'now/h'})
+
+
     def get(self, request): # noqa
         query = request.query_params.get('search')
         sort_by = request.query_params.get('sort_by')
         print("sort by", sort_by)
+
 
         sort_hash = {
             'time': 'created_at',
@@ -70,6 +81,11 @@ class ProductItemSearchView(APIView, ElasticSearchPagination, FacetedSearch):
                 search = search.sort(sort_hash[sort_by])
 
             response = search.execute()
+
+            for hit in response:
+                print(hit)
+
+            print(response.facets)
 
             paginator = ElasticSearchPaginator(response, page_size)
 

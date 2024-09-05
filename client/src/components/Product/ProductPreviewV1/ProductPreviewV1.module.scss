@@ -12,6 +12,8 @@
 }
 
 .containerLeft {
+  position: relative;
+
   .imageContainer {
     height: 100%;
     position: relative;
@@ -22,7 +24,17 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
+      background-color: transparent;
     }
+  }
+
+  .imageContainer:before {
+    position: absolute;
+    display: block;
+    content: '';
+    height: inherit;
+    width: inherit;
+    background-color: $blue-light-primary;
   }
 }
 
