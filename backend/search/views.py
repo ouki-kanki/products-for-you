@@ -5,53 +5,74 @@ from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from elasticsearch_dsl import Q, Search, FacetedSearch, TermsFacet
+from elasticsearch_dsl import Q, Search, FacetedSearch, TermsFacet, DateHistogramFacet
 from elasticsearch_dsl.query import Match, Term
 
 from .serializers import SearchProductItemSerializer
 from .documents.productitem import ProductItemDocument
 from common.paginators.paginator_elasticsearch import ElasticSearchPaginator, ElasticSearchPagination
 
+sort_hash = {
+    'time': 'created_at',
+    'time desc': '-created_at',
+    'price': 'price',
+    'price desc': '-price',
+    'name': 'name',
+    'name desc': '-name'
+}
 
-class ProductItemSearchView(APIView, ElasticSearchPagination, FacetedSearch):
+
+class ProductsFacetedSearch(FacetedSearch):
+    doc_types = [ProductItemDocument, ]
+    # fields = ['name', 'price',]
+    serializer = SearchProductItemSerializer
+    index = 'productitem'
+
+    facets = {
+        'name': TermsFacet(field='name')
+    }
+
+    def search(self):
+        """ add facets """
+        s = super().search()
+        print("inside the overriden search")
+        q = Q(
+            'multi_match',
+            query=self.query,
+            fields=[
+                'name',
+                'slug',
+                'categories',
+            ],
+            fuzziness='AUTO'
+        )
+        s.query(q)
+        return s
+
+    # def query(self, search, query):
+    #     print("overriden query")
+    #     search = self.search()  # returns the search obj
+    #     custom_q = super().query(search, query)
+    #     return custom_q
+
+
+class ProductItemSearchView(APIView, ElasticSearchPagination):
     """
     get list of ProductItem objects
-    searh-by: broduct name category
+    search-by: broduct name category
     pagination: pageNumberPagination
     """
     serializer = SearchProductItemSerializer
     search_document = ProductItemDocument
 
-    facets = {
-        'categories': TermsFacet(field='categories'),
-    }
-
-    def search(self):
-        s = super().search()
-
-        return s.filter('range', publish_from={'lte': 'now/h'})
-
-
     def get(self, request): # noqa
-        query = request.query_params.get('search')
+        search_str = request.query_params.get('search')
         sort_by = request.query_params.get('sort_by')
-        print("sort by", sort_by)
 
-
-        sort_hash = {
-            'time': 'created_at',
-            'time desc': '-created_at',
-            'price': 'price',
-            'price desc': '-price',
-            'name': 'name',
-            'name desc': '-name'
-        }
-
-        q = ''
         try:
             q = Q(
                 'multi_match',
-                query=query,
+                query=search_str,
                 fields=[
                     'name',
                     'slug',
@@ -74,27 +95,58 @@ class ProductItemSearchView(APIView, ElasticSearchPagination, FacetedSearch):
             start = (page - 1) * page_size
             end = start + page_size
 
-            print("the page", page, start, end)
+            # search = self.search_document.search().query(q)[start:end]
+            # search = self.search().query(q)[start:end]
 
-            search = self.search_document.search().query(q)[start:end]
+            air_name = 'dualshock 4'
+            filters = {
+                "name": ['Air Jordan', 'headhunter']
+            }
+
+            sort_term = None
             if sort_by:
-                search = search.sort(sort_hash[sort_by])
+                sort_term = [sort_hash.get(sort_by, ''),]
 
-            response = search.execute()
+            fc = ProductsFacetedSearch(
+                query=search_str,
+                filters=filters,
+                sort=sort_term
+            )
 
-            for hit in response:
-                print(hit)
+            fc = fc[start:end]
+            response = fc.execute()
+            # print("the response", response.to_dict())
+            # print("facets", response.facets)
 
-            print(response.facets)
+            for item in response.facets:
+                print(item.count)
+
+            # search = fc.search()
+            # yo = fc.query(search, q)
+            # res2 = yo.execute()
+            # pprint(res2.to_dict())
+
+
+            # response = bs.execute()
+
+            # name_facets = [
+            #     {'key': bucket.key, 'doc_count': bucket.doc_count}
+            #     for bucket in response.aggregations.name.buckets
+            # ]
+
+            for (name, count, selected) in response.facets.name:
+                print("the name facet group", name, count, selected)
+
+            # print("name_facets", name_facets)
 
             paginator = ElasticSearchPaginator(response, page_size)
 
             next_link = None
             prev_link = None
             if page < paginator.num_pages:
-                next_link = f'{uri}/?search={query}&page={page + 1}&page_size={page_size}'
+                next_link = f'{uri}/?search={search_str}&page={page + 1}&page_size={page_size}'
             if page > 1:
-                prev_link = f'{uri}/?search={query}&page={page - 1}&page_size={page_size}'
+                prev_link = f'{uri}/?search={search_str}&page={page - 1}&page_size={page_size}'
 
             try:
                 posts = paginator.page(page)

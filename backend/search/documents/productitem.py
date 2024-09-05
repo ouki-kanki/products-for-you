@@ -26,7 +26,7 @@ class ProductItemDocument(Document):
     created_at = fields.DateField()
 
     # -- custom fields --
-    name = fields.TextField(
+    name = fields.KeywordField(
         fields={
             'raw': fields.TextField(analyzer=edge_ngram_completion),
             'suggest': fields.CompletionField()

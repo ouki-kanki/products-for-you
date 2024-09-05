@@ -62,6 +62,12 @@ export const Search = () => {
       }
   }
 
+  if (isLoading) {
+    return <div>Is loading</div>
+  }
+
+
+
   return (
     <div className={styles.searchContainer}>
       <div className={styles.controlBar}>

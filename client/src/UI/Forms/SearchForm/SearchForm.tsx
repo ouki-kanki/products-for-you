@@ -37,6 +37,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
 
   useEffect(() => {
     if (debouncedSearchValue !== '') {
+      console.log("inside trigger")
       trigger(debouncedSearchValue)
     }
   }, [debouncedSearchValue, trigger, isUninitialized])
@@ -49,9 +50,6 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
       navigate(`/search/?search=${ searchValue }&page_size=${defaultPageSize}`)
     }
   }
-
-
-  // console.log("the data", suggeStionData)
 
   return (
       <form
