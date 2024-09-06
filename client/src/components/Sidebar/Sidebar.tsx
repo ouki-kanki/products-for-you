@@ -14,6 +14,7 @@ import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 export const Sidebar = () => {
   const navigate = useNavigate()
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
+  const { facets, sideBarFieldName } = useSelector((state: RootState) => state.filters)
   const { isScrollingDown } = useSroll()
 
 
@@ -38,6 +39,8 @@ export const Sidebar = () => {
               title={title}
               icon={icon}
               link={link}
+              name={sideBarFieldName}
+              facets={facets}
             />
           ))}
       </nav>

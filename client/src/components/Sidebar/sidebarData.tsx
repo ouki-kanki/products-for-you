@@ -5,6 +5,7 @@ import styles from "./Sidebar.module.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import HomeIcon from '../../assets/svg_icons/home.svg?react';
 import CartIcon from '../../assets/svg_icons/cart.svg?react'
@@ -38,6 +39,11 @@ export const sideBarData: IsidebarData[] = [
     title: 'Products',
     icon: <FontAwesomeIcon icon={faBoxOpen}/>,
     link: '/products'
+  },
+  {
+    title: 'Search',
+    icon: <FontAwesomeIcon icon={faMagnifyingGlass}/>,
+    link: '/search'
   },
   {
     title: 'Cart',

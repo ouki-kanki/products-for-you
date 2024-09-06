@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { addFacets } from '../../features/filtering/facetSlice';
 import { useSearchParams, NavLink } from 'react-router-dom';
 import styles from './search.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +10,7 @@ import { useSearchProductItemQuery } from '../../api/searchApi';
 import { useClassLister } from '../../hooks/useClassLister';
 import { usePagination } from '../../hooks/usePagination';
 import { useSort } from '../../hooks/useSort';
+import { isEmpty } from '../../utils/objUtils';
 
 
 import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/ProductPreview1';
@@ -29,6 +32,7 @@ export const Search = () => {
   const [layout, setLayout] = useState('')
   const [ searchParams ] = useSearchParams()
   const classes = useClassLister(styles)
+  const dispatch = useDispatch()
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
   const { sortValue, setSortValue } = useSort('time')
@@ -40,6 +44,25 @@ export const Search = () => {
     page_size: page_size,
     sort_by: sortValue
   })
+
+
+
+  const facets = data?.facets
+
+  let facets_for_dep = ''
+  if (!isEmpty(facets)) {
+    facets_for_dep = JSON.stringify(facets)
+  }
+
+  useEffect(() => {
+    if (facets_for_dep.length > 0) {
+      const fts = JSON.parse(facets_for_dep)
+      dispatch(addFacets({
+        facets: fts,
+        sideBarFieldName: 'search'
+      }))
+    }
+  }, [facets_for_dep, dispatch])
 
 
   // console.log("the data", data)
@@ -66,8 +89,6 @@ export const Search = () => {
     return <div>Is loading</div>
   }
 
-
-
   return (
     <div className={styles.searchContainer}>
       <div className={styles.controlBar}>
@@ -77,7 +98,7 @@ export const Search = () => {
             options={buttons}
             width={200}/>
         </div>
-        <div>{ data?.results ? data.results.length : 'no' } products found</div>
+        <div>{ data?.results ? <b>{data.total_items}</b>: 'no' } products found</div>
         <div className={styles.line}></div>
         <div className={styles.sortContainer}>
           <label htmlFor="sort_by">Sort by</label>

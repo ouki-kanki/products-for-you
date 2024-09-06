@@ -49,19 +49,9 @@ class ProductsFacetedSearch(FacetedSearch):
         s.query(q)
         return s
 
-    # def query(self, search, query):
-    #     print("overriden query")
-    #     search = self.search()  # returns the search obj
-    #     custom_q = super().query(search, query)
-    #     return custom_q
-
 
 class ProductItemSearchView(APIView, ElasticSearchPagination):
-    """
-    get list of ProductItem objects
-    search-by: broduct name category
-    pagination: pageNumberPagination
-    """
+    """ search - faceted-search """
     serializer = SearchProductItemSerializer
     search_document = ProductItemDocument
 
@@ -70,18 +60,7 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
         sort_by = request.query_params.get('sort_by')
 
         try:
-            q = Q(
-                'multi_match',
-                query=search_str,
-                fields=[
-                    'name',
-                    'slug',
-                    'categories',
-                    'description'
-                ],
-                fuzziness='auto'
-            )
-
+            # --**-- pagination --**--
             uri = request.build_absolute_uri(request.path)
             default_page = '1'
             default_page_size = settings.PAGE_SIZE
@@ -95,9 +74,6 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             start = (page - 1) * page_size
             end = start + page_size
 
-            # search = self.search_document.search().query(q)[start:end]
-            # search = self.search().query(q)[start:end]
-
             air_name = 'dualshock 4'
             filters = {
                 "name": ['Air Jordan', 'headhunter']
@@ -109,35 +85,16 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
             fc = ProductsFacetedSearch(
                 query=search_str,
-                filters=filters,
+                # filters=filters,
                 sort=sort_term
             )
 
             fc = fc[start:end]
             response = fc.execute()
-            # print("the response", response.to_dict())
-            # print("facets", response.facets)
-
-            for item in response.facets:
-                print(item.count)
-
-            # search = fc.search()
-            # yo = fc.query(search, q)
-            # res2 = yo.execute()
-            # pprint(res2.to_dict())
-
-
-            # response = bs.execute()
-
-            # name_facets = [
-            #     {'key': bucket.key, 'doc_count': bucket.doc_count}
-            #     for bucket in response.aggregations.name.buckets
-            # ]
+            print("facets", response.facets)
 
             for (name, count, selected) in response.facets.name:
                 print("the name facet group", name, count, selected)
-
-            # print("name_facets", name_facets)
 
             paginator = ElasticSearchPaginator(response, page_size)
 
@@ -157,21 +114,26 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
             serializer = self.serializer(posts, context={'request': request}, many=True)
 
-            paged_response = {
+            paged_response_with_facets = {
                 'next': next_link,
                 'prev': prev_link,
                 'total_items': paginator._count.value,
                 'per_page': paginator.count,
                 'num_of_pages': paginator.num_pages,
-                'results': serializer.data
+                'results': serializer.data,
+                'facets': response.facets.to_dict()
             }
 
-            return Response(paged_response)
+            print(response.facets.to_dict())
+
+            return Response(paged_response_with_facets)
         except Exception as e:
             return HttpResponse(e, status=500)
 
 
 class ProductItemSuggestView(APIView):
+    """ input: productName or category out: products"""
+    # TODO: when input is category suggest categories
     serializer = SearchProductItemSerializer
     search_document = ProductItemDocument
 

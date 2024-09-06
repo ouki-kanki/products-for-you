@@ -1,3 +1,7 @@
+.navFieldContainer {
+  position: relative;
+}
+
 .linkContainer {
   padding: 10px;
   display: flex;
@@ -32,4 +36,9 @@
   svg {
     transform: scale(1.2);
   }
+}
+
+.nestedFieldContainer {
+  position: relative;
+  left: 30px;
 }

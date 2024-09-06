@@ -2,6 +2,7 @@ import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import usersReducer from '../../features/users/usersSlice';
 import uiReducer from '../../features/UiFeatures/UiFeaturesSlice';
 import cartReducer from '../../features/cart/cartSlice'
+import facetRecucer from '../../features/filtering/facetSlice'
 
 import { productsSlice } from "../../features/products/productsSlice";
 import authReducer from '../../features/auth/Login/loginSlice';
@@ -16,6 +17,7 @@ export const store = configureStore({
     users: usersReducer,
     ui: uiReducer,
     cart: cartReducer,
+    filters: facetRecucer,
     [productsSlice.reducerPath]: productsSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     auth: authReducer,
@@ -23,7 +25,8 @@ export const store = configureStore({
     user: userReducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
-    [orderApi.reducerPath]: orderApi.reducer
+    [orderApi.reducerPath]: orderApi.reducer,
+    // [facetSlice.red]
   },
   middleware: (getDefaultMiddleware) => (
     getDefaultMiddleware().prepend(

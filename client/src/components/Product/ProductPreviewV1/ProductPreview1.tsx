@@ -19,9 +19,7 @@ interface ProductPreviewProps {
 }
 
 export const ProductPreview1 = (props: ProductPreviewProps) => {
-  // console.log(props)
   const { layout } = props
-  console.log(layout)
   const navigate = useNavigate()
   const classes = useClassLister(styles)
   const category = props.categories[props.categories.length -1]

@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./baseConfig";
 // import type { BaseQueryFn } from '@reduxjs/toolkit/query'
 
+import { addFacets } from "../features/filtering/facetSlice";
+
 interface SearchProductItem {
   thumb: string;
   image: string;
@@ -16,13 +18,19 @@ interface SearchProductItem {
   availability: string;
 }
 
+export type Facet = [string, number, boolean]
+export interface Facets {
+  [key: string]: Facet,
+}
+
 interface ListResponse<T> {
   next: string | null;
   prev: string | null;
   total_items: number;
   num_of_pages: number;
   per_page: number;
-  results: T[]
+  results: T[];
+  facets: Facets;
 }
 
 type QueryParams = {
