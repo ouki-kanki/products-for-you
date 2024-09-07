@@ -4,8 +4,10 @@ import { NavLink } from 'react-router-dom';
 import type { Facets } from '../../api/searchApi';
 import { IsEmptyObj } from '@reduxjs/toolkit/dist/tsHelpers';
 import { isEmpty } from '../../utils/objUtils';
-
 import { useLocation } from 'react-router-dom'
+
+import { SidebarNested } from './SidebarNested/SidebarNested';
+
 interface SidebarFieldProps {
   title: string,
   icon: ReactElement,
@@ -25,41 +27,21 @@ interface SidebarFieldProps {
  */
 export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldProps) => {
   const [isHovered, setIsHovered] = useState<string | null>(null)
-  const [showNested, setShowNestd] = useState(false)
-  const [nestedFields, setNestedfields] = useState({})
-
-  const facets_for_dep = !isEmpty(facets) ? JSON.stringify(facets) : ''
   const location = useLocation()
+  const rawPath = location.pathname
+  const lastElementOfPath = rawPath.slice(-1)
 
-  const pathAr = location.pathname.split('/')
-  const path = pathAr[pathAr.length -1]
+  // open sidebar nested fields according to the path
+  let path = ''
+  if (lastElementOfPath === '/') {
+    const arr = rawPath.split('/')
 
-  console.log(path, name)
-
-
-  const getNestedFields = useCallback(() => {
-    if (facets_for_dep) {
-      const facets = JSON.parse(facets_for_dep)
-      const innerKeys = ['name', 'count', 'isActive']
-
-      const transformed = Object.keys(facets).reduce((ac, key) => {
-        const arrayOfobj = facets[key].map(ar => {
-          return ar.reduce((ac, item, index) => {
-            return { ...ac, [innerKeys[index]]: item}
-          }, {})
-        })
-        return {...ac, [key]: arrayOfobj}
-      }, {})
-      setNestedfields(transformed)
-    }
-  }, [facets_for_dep])
-
-
-  useEffect(() => {
-    if (title.toLowerCase() === name.toLowerCase()) {
-      getNestedFields()
-    }
-  }, [title, name, getNestedFields])
+    arr.pop()
+    path = arr[arr.length - 1]
+  } else {
+    const arr = rawPath.split('/')
+    path = arr[arr.length -1]
+  }
 
   return (
     <div className={styles.navFieldContainer}>
@@ -79,25 +61,9 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
       {/* TODO: extract to its own component */}
       {path === name.toLowerCase() && path == title.toLowerCase() && (
         <div className={styles.nestedFieldContainer}>
-          {!isEmpty(nestedFields) && (
-            Object.keys(nestedFields).map((field, i) => (
-              <div key={i}>
-                <h3>{field}</h3>
-                {nestedFields[field].map((item, i) => (
-                  <div key={i}>{item.name}- {item.count}</div>
-                ))}
-              </div>
-            ))
+          {!isEmpty(facets) && (
+              <SidebarNested nestedFields={facets}/>
           )}
-          {/* {Object.keys(nestedFields()).map(field => (
-            <div>{field}</div>
-            // <ul></ul>
-          ))} */}
-          <ul>
-            <li>yo</li>
-            <li>yo</li>
-            <li>yo</li>
-          </ul>
         </div>
       )}
     </div>

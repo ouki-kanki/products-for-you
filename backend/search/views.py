@@ -58,6 +58,33 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
     def get(self, request): # noqa
         search_str = request.query_params.get('search')
         sort_by = request.query_params.get('sort_by')
+        name = request.query_params.getlist('name')
+        print("the name facets", name)
+
+        filters = {
+            'name': name
+        }
+
+        print()
+
+
+        query_list = request.GET.urlencode()
+
+        print("queryList", query_list)
+
+        queryAr = query_list.split('&')
+        print(queryAr)
+
+        newArr = []
+        for item in queryAr:
+            itemArr = item.split('=')
+            item_dict = {itemArr[0]: itemArr[1]}
+            print("the item dict", item_dict)
+
+
+
+        # qs = request.META
+        # print("meta", qs)
 
         try:
             # --**-- pagination --**--
@@ -75,26 +102,27 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             end = start + page_size
 
             air_name = 'dualshock 4'
-            filters = {
-                "name": ['Air Jordan', 'headhunter']
-            }
+            # filters = {
+            #     "name": ['Air Jordan', 'headhunter']
+            # }
 
             sort_term = None
             if sort_by:
                 sort_term = [sort_hash.get(sort_by, ''),]
 
+            print("filter: ", filters)
             fc = ProductsFacetedSearch(
                 query=search_str,
-                # filters=filters,
+                filters=filters,
                 sort=sort_term
             )
 
             fc = fc[start:end]
             response = fc.execute()
-            print("facets", response.facets)
+            # print("facets", response.facets)
 
-            for (name, count, selected) in response.facets.name:
-                print("the name facet group", name, count, selected)
+            # for (name, count, selected) in response.facets.name:
+            #     print("the name facet group", name, count, selected)
 
             paginator = ElasticSearchPaginator(response, page_size)
 
@@ -124,7 +152,7 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
                 'facets': response.facets.to_dict()
             }
 
-            print(response.facets.to_dict())
+            # print(response.facets.to_dict())
 
             return Response(paged_response_with_facets)
         except Exception as e:

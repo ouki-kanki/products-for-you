@@ -39,6 +39,10 @@
 }
 
 .nestedFieldContainer {
+  padding-right: 10px;
   position: relative;
   left: 30px;
+  width: calc(100% - 30px);
 }
+
+

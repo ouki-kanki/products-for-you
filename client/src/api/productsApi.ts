@@ -177,9 +177,9 @@ export const productsApi = createApi({
     getCategories: builder.query<ICategory[], void>({
       query: () => ({
         url: `categories/`
-      })
+      }),
+      onQueryStarted: (q) => console.log("Categories query -started--")
     }),
-
     filterByCategory: builder.query<IProductApiResponse, string>({
       query: (slug) => ({
         url: `products/category/${slug}`

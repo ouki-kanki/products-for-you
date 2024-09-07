@@ -1,4 +1,5 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { useDispatch as useBaseDispatch } from "react-redux";
 import usersReducer from '../../features/users/usersSlice';
 import uiReducer from '../../features/UiFeatures/UiFeaturesSlice';
 import cartReducer from '../../features/cart/cartSlice'
@@ -49,3 +50,4 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 export const selectUsers = (state: RootState) => state.users
+export const useAppDispatch = (): AppDispatch => useBaseDispatch()

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useLocation, Link } from 'react-router-dom'
+import { isEmpty } from '../../utils/objUtils'
 
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
@@ -20,6 +21,8 @@ export const ProductDetail = () => {
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
+
+  // TODO: it breaks if there is no default image
   const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0].url
 
 
@@ -27,14 +30,16 @@ export const ProductDetail = () => {
     setFeaturedImage(featuredImageUrl as string)
   }, [featuredImageUrl])
 
-  // console.log(data)
 
-  const handleSetMainImage = (url) => {
-    setFeaturedImage(url)
+  const handleSetMainImage = (url: string) => {
+    if (url) {
+      setFeaturedImage(url)
+    }
   }
 
   const handleIncrement = () => {
-    if (data) {
+    if (!isEmpty(data)) {
+      console.log(desiredQuantity)
       if (desiredQuantity === '') {
         setDesiredQuantity(1)
       }

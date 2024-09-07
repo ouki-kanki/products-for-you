@@ -38,17 +38,13 @@ const filterCategoriesWithNoParent = (categories: ICategory[] | undefined) => {
   return []
 }
 
-// TODO: export the logic of the router to a seperate component or hook to use it for the breadcrumb?
-
 
 // MAIN COMPONENT
 const Categories = () => {
+  console.log("categories component mounted")
   const { data: categories , isLoading } = useGetCategoriesQuery()
   const [ currentCategories, setCurrentCategories ] = useState<ICategory[] | undefined>([])
   const { slug } = useParams()
-
-  // console.log("the slug", slug)
-  // console.log("the current categories", currentCategories)
 
   useEffect(() => {
     if (slug) {

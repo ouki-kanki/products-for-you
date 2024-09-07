@@ -7,6 +7,7 @@ import { useClassLister } from '../../../hooks/useClassLister';
 
 interface ProductPreviewProps {
   name: string;
+  slug: string;
   categories: string[];
   thumb: string;
   image: string;

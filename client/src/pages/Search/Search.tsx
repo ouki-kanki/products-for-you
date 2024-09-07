@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../app/store/store';
 import { addFacets } from '../../features/filtering/facetSlice';
-import { useSearchParams, NavLink } from 'react-router-dom';
-import styles from './search.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 
-import { useSearchProductItemQuery } from '../../api/searchApi';
+import { isEmpty } from '../../utils/objUtils';
+
+// TODO: create index.ts to export all hooks
+import { useSearchProductItemQuery, useLazySearchProductItemQuery } from '../../api/searchApi';
+import { useSearchParams, NavLink, json } from 'react-router-dom';
 import { useClassLister } from '../../hooks/useClassLister';
 import { usePagination } from '../../hooks/usePagination';
 import { useSort } from '../../hooks/useSort';
-import { isEmpty } from '../../utils/objUtils';
+import { useListSearchParams } from '../../utils/routerUtils';
 
 
+import styles from './search.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/ProductPreview1';
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
 
@@ -30,24 +34,61 @@ interface PaginationObject {
 // *** --- Main --- ***
 export const Search = () => {
   const [layout, setLayout] = useState('')
-  const [ searchParams ] = useSearchParams()
+  const [ searchParams, setSearchParams ] = useSearchParams()
   const classes = useClassLister(styles)
   const dispatch = useDispatch()
+
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
   const { sortValue, setSortValue } = useSort('time')
+  const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
 
 
-  const { data, isError, isFetching, isLoading, isSuccess } = useSearchProductItemQuery({
+  console.log("the facets srt -> ", paramsStr)
+
+
+  const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
     page,
     page_size: page_size,
-    sort_by: sortValue
+    sort_by: sortValue || '',
+    facets: paramsStr
   })
 
+  useEffect(() => {
+    refetch()
+  }, [paramsStr, refetch])
 
 
   const facets = data?.facets
+  const activeFacets = useSelector((state: RootState) => state.filters.activeFacets)
+
+  let activeFacetsStr = '';
+  if (!isEmpty(activeFacets)) {
+    activeFacetsStr = JSON.stringify(activeFacets)
+  }
+
+  // set filters to the querystr
+  useEffect(() => {
+    if (activeFacetsStr.length > 0) {
+      const activeFacets = JSON.parse(activeFacetsStr)
+      Object.entries(activeFacets).forEach(([ key, value ]) => {
+        const valuesstr = value.join(',')
+
+        setSearchParams(searchParams => {
+          // if there are no values for the certain facet
+          if (activeFacets[key].length === 0) {
+            searchParams.delete(key)
+          } else {
+            searchParams.set(key, valuesstr) // append to prev
+          }
+
+          return searchParams
+        })
+
+      })
+    }
+  }, [activeFacetsStr, setSearchParams])
 
   let facets_for_dep = ''
   if (!isEmpty(facets)) {
@@ -63,11 +104,6 @@ export const Search = () => {
       }))
     }
   }, [facets_for_dep, dispatch])
-
-
-  // console.log("the data", data)
-
-
 
   const handleChangeLayout = (num: number) => {
       switch(num) {
@@ -92,6 +128,7 @@ export const Search = () => {
   return (
     <div className={styles.searchContainer}>
       <div className={styles.controlBar}>
+      {/* <button onClick={() => appDispatch(asyncTest('test'))}>test async</button> */}
         <div className={styles.buttonGroup}>
           <ButtonGroup
             onClick={(num) => handleChangeLayout(num)}
@@ -103,7 +140,7 @@ export const Search = () => {
         <div className={styles.sortContainer}>
           <label htmlFor="sort_by">Sort by</label>
           <select
-              value={sortValue}
+              value={sortValue || ''}
               onChange={(e) => setSortValue(e.target.value)}
               name="sort_by"
               id="sort_by"
