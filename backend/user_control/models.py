@@ -84,6 +84,7 @@ def get_user_image(self, path):
 def get_default_user_image():
     return 'user_images/default_user_image.png'
 
+
 class UserDetail(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, blank=True)
@@ -107,14 +108,14 @@ class UserDetail(models.Model):
         return 'there is no image'
 
     def get_user_image_filename(self):
-        '''
-        get the path of the user image
-        '''
+        """
+        returns the path of user_icon
+        """
         return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if (self.image):
+        if self.image:
             self.image = make_thumbnail(self.image)
         
         super().save(*args, **kwargs)

@@ -1,10 +1,21 @@
-'''settins for dev env'''
-
 import os
 import sys
 from .settings import *
+from decouple import config
+
 
 ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
+
+DATABASES.update({
+    'test': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('DB_TEST_NAME'),
+        'USER': config('DB_TEST_USER'),
+        'PASSWORD': config('DB_TEST_PASSWORD'),
+        'HOST': config('DB_TEST_HOST'),
+        'PORT': config('DB_TEST_PORT')
+    }
+})
 
 INSTALLED_APPS += [
     'drf_spectacular',
@@ -16,15 +27,6 @@ INSTALLED_APPS += [
 DEBUG = True
 
 WSGI_APPLICATION = 'e_shop.wsgi.dev.application'
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 
 REST_FRAMEWORK_DEV_SETTINGS = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',

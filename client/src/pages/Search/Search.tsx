@@ -43,9 +43,7 @@ export const Search = () => {
   const { sortValue, setSortValue } = useSort('time')
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
 
-
-  console.log("the facets srt -> ", paramsStr)
-
+  // console.log("the facets srt -> ", paramsStr)
 
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
@@ -55,7 +53,10 @@ export const Search = () => {
     facets: paramsStr
   })
 
+  console.log(data)
+
   useEffect(() => {
+    // facets are cached. trigger request when facetslist is changed
     refetch()
   }, [paramsStr, refetch])
 

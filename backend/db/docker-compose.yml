@@ -2,14 +2,25 @@ version: "3"
 
 services:
   products_for_you:
-    container_name: products_for_you
+    container_name: ${DB_NAME}
     image: postgres
     environment:
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin123"
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /data/products_for_you
     volumes:
       - products_for_you:/data/products_for_you
+    ports:
+      - "5432:5432"
+    networks:
+      - products_for_you_net
+    restart: unless-stopped
+  product_for_you_test:
+    container_name: ${DB_TEST_NAME}
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_TEST_USER}
+      POSTGRES_PASSWORD: ${DB_TEST_PASSWORD}
     ports:
       - "5433:5432"
     networks:

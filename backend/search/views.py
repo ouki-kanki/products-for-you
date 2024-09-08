@@ -1,11 +1,15 @@
 from pprint import pprint
+from django.db.models import F
 from django.conf import settings
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from elasticsearch_dsl import Q, Search, FacetedSearch, TermsFacet, DateHistogramFacet
+from elasticsearch_dsl import (
+    Q, Search, FacetedSearch, TermsFacet,
+    DateHistogramFacet, RangeFacet
+)
 from elasticsearch_dsl.query import Match, Term
 
 from .serializers import SearchProductItemSerializer
@@ -29,7 +33,12 @@ class ProductsFacetedSearch(FacetedSearch):
     index = 'productitem'
 
     facets = {
-        'name': TermsFacet(field='name')
+        'name': TermsFacet(field='name'),
+        'price': RangeFacet(field='price', ranges=[
+            ('0 - 100', (0.01, 100)),
+            ('100 - 2000', (100, 2000)),
+            ('> 2000', (2000, None))
+        ])
     }
 
     def search(self):
@@ -46,6 +55,12 @@ class ProductsFacetedSearch(FacetedSearch):
             ],
             fuzziness='AUTO'
         )
+        print("inside searhc --- - - ")
+
+        price_filter = F({'range': {'price': {'gte': 100, 'lte': 2000}}})
+        # s.filter(price_filter)
+        # s.filter('range', **{'price': {'from': 100, "to": 1000}})
+        # s.filter('match', **{'name': 'Air Jordan'})
         s.query(q)
         return s
 
@@ -59,32 +74,20 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
         search_str = request.query_params.get('search')
         sort_by = request.query_params.get('sort_by')
         name = request.query_params.getlist('name')
-        print("the name facets", name)
+        price = request.query_params.getlist('price')
 
         filters = {
-            'name': name
+            'name': name,
+            'price': price
         }
 
-        print()
-
-
         query_list = request.GET.urlencode()
+        query_ar = query_list.split('&')
 
-        print("queryList", query_list)
-
-        queryAr = query_list.split('&')
-        print(queryAr)
-
-        newArr = []
-        for item in queryAr:
+        for item in query_ar:
             itemArr = item.split('=')
             item_dict = {itemArr[0]: itemArr[1]}
-            print("the item dict", item_dict)
-
-
-
-        # qs = request.META
-        # print("meta", qs)
+            # print("the item dict", item_dict)
 
         try:
             # --**-- pagination --**--
@@ -100,11 +103,6 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
             start = (page - 1) * page_size
             end = start + page_size
-
-            air_name = 'dualshock 4'
-            # filters = {
-            #     "name": ['Air Jordan', 'headhunter']
-            # }
 
             sort_term = None
             if sort_by:

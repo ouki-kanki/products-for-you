@@ -13,7 +13,10 @@ from django.core.files.storage import default_storage
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from common.util.static_helpers import upload_icon
+from common.util.static_helpers import (
+    upload_icon, upload_product_item_image,
+    upload_product_thumb, upload_category_icon
+)
 from common.util.slugify_helper import slugify_unique
 from services.imageServices import (
     generate_thumbnail_v2,
@@ -25,42 +28,6 @@ from user_control.models import CustomUser as User
 
 from .utils import get_list_of_parent_categories
 
-# NOTE: models.PROTECT it seems that does not allow null=True
-
-
-# HELPERS
-
-# TODO: need to dry this
-def upload_category_icon(instance, filename):
-    # NOTE: this will save to /images/categoryname/filename
-    return upload_icon('category', instance, filename, 'icon', 'name')
-
-
-# need to provide the folder name in this case use the slug from the parent
-def upload_product_item_image(instance, filename):
-    variation_name = str(instance.product_item)
-    return upload_icon(
-        'products',
-        instance.product_item.product.name,
-        variation_name,
-        'images',
-        instance,
-        'image',
-        filename)
-
-
-# uploads to media/product_item/thumbnail/
-def upload_product_thumb(instance, filename):
-    variation_name = str(instance.product_item)
-    return upload_icon(
-        'products',
-        instance.product_item.product.name,
-        variation_name,
-        'thumbnails',
-        instance,
-        'thumbnail',
-        filename)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -70,7 +37,6 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     position = models.IntegerField(blank=True, default=100,)
-    # is_parent = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -90,10 +56,6 @@ class Category(models.Model):
         if not self.pk:
             max_position = Category.objects.aggregate(models.Max('position'))['position__max'] or 1
             self.position = max_position + 1
-            # TODO: make a field for the icon and a field for the image . right now there is thumb
-            # if self.icon:
-                #
-                # self.gen_thumb()
             super().save(*args, **kwargs)
         else:
             prev_category_obj = Category.objects.get(pk=self.pk)
@@ -143,6 +105,8 @@ pre_save.connect(category_pre_save, sender=Category)
 class Brand(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
+    icon = models.ImageField(upload_to='brands/', blank=True, default='icons/placeholder.jpg')
+    # TODO: add icon, upload to /brands
 
     def __str__(self):
         return self.name
@@ -214,11 +178,7 @@ class Product(models.Model):
 def product_pre_save(sender, instance, *args, **kwargs):
     if instance.slug == "" or instance.slug is None:
         slugify_unique(sender, instance, instance.name)
-        # instance.slug = slugify(instance.name)
 
-# def product_post_save(sender, instance, created, *args, **kwargs):
-#     if created:
-#         instance.save()
 
 pre_save.connect(product_pre_save, Product)
 
@@ -235,9 +195,7 @@ class VariationManager(models.Manager):
 
 
 class ProductItem(models.Model):
-    """
-    RPODUCT - VARIANT
-    """
+    """ PRODUCT - VARIANT """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     variation_name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
@@ -346,14 +304,11 @@ class ProductImage(models.Model):
             print("there was an error", e)
 
     def save(self, *args, **kwargs):
-        print("out of ")
 
         # if there was an instance before delete old image and thumb
         if self.pk:
-            print('inside of, has prev item')
             prev_obj = ProductImage.objects.get(pk=self.pk)
 
-            print("has thumb", self.has_thumbnail)
             if self.image and self.image != prev_obj.image:
 
                 if prev_obj.image:

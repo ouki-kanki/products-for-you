@@ -35,7 +35,6 @@ const wait = (ms: number) => {
   })
 }
 
-//
 export const asyncToggleFacet = createAsyncThunk(
   "facets/asyncToggleFacet",
   async (value: ToggleFacet, {dispatch}) => {
@@ -57,7 +56,9 @@ export const facetSlice = createSlice({
     toggleFacet: (state, action: PayloadAction<ToggleFacet>) => {
       const { facetName, propertyName, isActive } = action.payload
       state.facets[facetName].forEach(property => {
-        if (property.name === propertyName) {
+
+        // console.log(property.name, propertyName)
+        if (property.name.toString() === propertyName) {
           property.isActive = isActive
         }
       })

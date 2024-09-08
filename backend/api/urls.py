@@ -10,9 +10,6 @@ from products.views import (
 )
 from order.views import OrderCreateView
 
-# router = DefaultRouter()
-# router.register(r'schema', SpectacularAPIView)
-# router.register(r'schema/docs', SpectacularSwaggerView)
 
 app_name = 'api'
 urlpatterns = [

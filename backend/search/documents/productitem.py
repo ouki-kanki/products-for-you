@@ -19,7 +19,7 @@ class ProductItemDocument(Document):
     )
 
     sku = fields.TextField()
-    price = fields.FloatField()
+    price = fields.ScaledFloatField(scaling_factor=100)
     upc = fields.TextField()
     is_default = fields.BooleanField()
     availability = fields.TextField()
