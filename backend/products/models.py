@@ -212,6 +212,10 @@ class ProductItem(models.Model):
                                                                     help_text='below and including this number'
                                                                               ' number of items"')
 
+    class Meta:
+        verbose_name = "Product Variation"
+        db_table_comment = "Variation of Product"
+
     @property
     def product_name(self):
         return self.product.name
@@ -220,10 +224,6 @@ class ProductItem(models.Model):
     def categories(self):
         list_of_categories = get_list_of_parent_categories(self.product.category, [])
         return list_of_categories
-
-    class Meta:
-        verbose_name = "Product Variation"
-        db_table_comment = "Variation of Product"
 
     @property
     def variation_name(self):  # noqa
@@ -246,6 +246,9 @@ class ProductItem(models.Model):
         elif quantity > 0:
             return 'limited quantity'
         return 'not available'
+
+    # TODO override save method to prevent diff productitems to have the same
+    # TODO type of variations ex: jordan color-blue, size=large
 
     def __str__(self):
         qs = self.variation_option.all()

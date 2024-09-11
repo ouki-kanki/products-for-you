@@ -29,6 +29,7 @@ exceptiongroup==1.2.0
 factory-boy==3.3.0
 Faker==20.1.0
 gprof2dot==2022.7.29
+hypothesis==6.112.0
 inflection==0.5.1
 iniconfig==2.0.0
 jsonschema==4.17.3
@@ -52,6 +53,7 @@ pytz==2023.3
 PyYAML==6.0.1
 setuptools==70.0.0
 six==1.16.0
+sortedcontainers==2.4.0
 sqlparse==0.4.4
 tablib==3.5.0
 tomli==2.0.1

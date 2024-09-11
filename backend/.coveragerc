@@ -1,0 +1,19 @@
+[run]
+source = .
+omit =
+    */sandbox/*
+    */wsgi/*
+    asgi.py
+    sandbox.py
+    *urls.py
+    conftest.py
+    manage.py
+    e_shop/settings/*
+    */tests/*
+    */tests.py
+    */__init__.py
+    */migrations/*
+    management/*
+
+[report]
+#skip_covered = True

@@ -20,6 +20,7 @@ urlpatterns = [
     path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-detail'),
     path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category-id'),
     path('products/category/<slug:slug>', ProductListByCategoryBySlug.as_view(), name='products-by-category-id'),
+    path('products/promotions/', include('promotion.urls')),
 
     path('categories/', CategoryListView.as_view(), name='categories'),
     path('orders/create', OrderCreateView.as_view(), name='order-create'),

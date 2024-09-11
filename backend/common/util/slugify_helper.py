@@ -11,10 +11,15 @@ def __lower_random(number_of_letters):
     return "".join(random.choice(string.ascii_lowercase) for _ in range(number_of_letters)) 
 
 
-def slugify_unique(sender, instance, source):
-    '''
-    takes the class, the instance and the source that will be used for slug, if the slug exists it will append a random hash to end of slug
-    '''
+def slugify_unique(sender, instance, source: str) -> None:
+    """
+    takes the model, the instance and the source (eg: instance.name) that will be used for slug,
+    if the slug exists it will append a random hash to end of slug
+    ** changes the slug field of the instance. this method returns void
+    sender: Model class
+    instance: the current instance
+    source: the text that it will be used for slug
+    """
     slug = slugify(source)
     qs = sender.objects.filter(slug=slug).exclude(id=instance.id)
 

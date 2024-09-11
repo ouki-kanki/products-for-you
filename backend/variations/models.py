@@ -1,18 +1,15 @@
 from django.db import models
-
 from products.models import Category
 
 
 class Variation(models.Model):
-    # TODO: why this is connected to category
+    # TODO: connect to a new table (product type) in relation to type can have certain group of variations
     category_id = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = "Variation"
         verbose_name_plural = "1 Variations"
-
-    # TODO: maybe this is not the recomened way. this will be used to grandchild in order to show in which category each variation belongs.
 
     @property
     def related_category(self):
@@ -25,8 +22,7 @@ class Variation(models.Model):
 class VariationOptions(models.Model):
     variation_id = models.ForeignKey(Variation, on_delete=models.PROTECT, related_name='variation_values')
     value = models.CharField(max_length=255)
-
-    # TODO: need to add extra table related to this to give the ability to add extra attributes to each variation (for instance color code)
+    is_default = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Variation Values"
@@ -34,9 +30,7 @@ class VariationOptions(models.Model):
 
     @property
     def variation(self):
-        '''
-        returns the name of the variation (for instance "color")
-        '''
+        """ returns the name of the variation (for instance "color") """
         return self.variation_id.name
     
     def __str__(self):

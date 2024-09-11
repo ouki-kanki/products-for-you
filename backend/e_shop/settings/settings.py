@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'shopping_cart.apps.ShoppingCartConfig',
     'order.apps.OrderConfig',
     'variations.apps.VariationsConfig',
+    'promotion',
 
 
     # third party apps
