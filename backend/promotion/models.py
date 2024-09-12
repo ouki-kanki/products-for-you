@@ -2,11 +2,9 @@ from math import ceil
 from decimal import Decimal
 
 from django.db import models, transaction
-from django.db.models.signals import post_save, m2m_changed
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
-from django.dispatch import receiver
 
 from common.util.slugify_helper import slugify_unique
 from products.models import ProductItem

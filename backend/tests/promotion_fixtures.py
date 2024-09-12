@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from datetime import datetime
 import pytest
 from promotion.models import PromoType, Promotion, Coupon, ProductsOnPromotion
 
@@ -16,7 +17,7 @@ def coupon(db):
 
 
 @pytest.fixture
-def promotion(db, single_product_item, coupon, single_promotion_type):
+def promotion_fixture(db, single_product_item, coupon, single_promotion_type):
     promotion = Promotion.objects.create(
         name="summer promotion",
         slug="summer_promotion",

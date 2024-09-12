@@ -11,15 +11,6 @@ from products.models import (
 )
 
 
-# @pytest.fixture(scope='session')
-# def django_db_setup():
-#     settings.DATABASES['default'] = TESTDB['test']
-#     try:
-#         connections['default'].ensure_connection()
-#     except OperationalError:
-#         pytest.fail("cannot connect to test db")
-
-
 @pytest.fixture
 def single_parent_category(db):
     """ returns a category instance to be used as parent to the category"""

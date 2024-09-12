@@ -87,7 +87,6 @@ class Category(models.Model):
 # NOTE: sender is the class
 def category_pre_save(sender, instance, *args, **kwargs):
     if instance.slug is None or instance.slug == "":
-        print("inside pre_save", instance.slug)
         instance.slug = slugify(instance.name)
 
 
