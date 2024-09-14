@@ -25,6 +25,7 @@ urlpatterns = [
     path('categories/', CategoryListView.as_view(), name='categories'),
     path('orders/create', OrderCreateView.as_view(), name='order-create'),
 
+    path('auth/', include('auth.urls')),
     path('user-control/', include('user_control.urls')),
     path('search/', include('search.urls')),
 

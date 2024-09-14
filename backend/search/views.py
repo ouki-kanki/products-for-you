@@ -55,7 +55,6 @@ class ProductsFacetedSearch(FacetedSearch):
             ],
             fuzziness='AUTO'
         )
-        print("inside searhc --- - - ")
 
         price_filter = F({'range': {'price': {'gte': 100, 'lte': 2000}}})
         # s.filter(price_filter)

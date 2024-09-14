@@ -5,7 +5,7 @@ import { isEmpty } from '../../utils/objUtils'
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
 import { useGetProductDetailQuery } from '../../api/productsApi'
-import { Notification, showNotification } from '../../components/Notifications/Notification'
+import { showNotification } from '../../components/Notifications/showNotification'
 
 
 import styles from './productDetail.module.scss'
@@ -43,6 +43,7 @@ export const ProductDetail = () => {
       if (desiredQuantity === '') {
         setDesiredQuantity(1)
       }
+
       const { quantity } = data
       if (desiredQuantity >= Number(quantity)) {
         return
@@ -123,7 +124,8 @@ export const ProductDetail = () => {
       position: 'top-right',
       appearFrom: 'from-right',
       overrideDefaultHideDirection: true,
-      hideDirection: 'to-top'
+      hideDirection: 'to-top',
+      type: 'success'
     })
   }
 

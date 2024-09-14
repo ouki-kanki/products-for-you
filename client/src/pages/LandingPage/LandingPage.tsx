@@ -36,8 +36,9 @@ export interface IProductV4 {
 
 
 export const LandingPage = () => {
-  const { data: latestProducts, isLoading } = useGetLatestProductsQuery('10')
+  const { data: latestProducts, isLoading, isFetching } = useGetLatestProductsQuery('10')
   const [ productView, setProductView ] = useState<string>('landing')
+
 
   const switchView = () => {
     setProductView((prevView) => (

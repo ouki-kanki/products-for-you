@@ -1,10 +1,10 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import type { RootState, AppDispatch } from './../../store';
 import type { TypedStartListening, TypedAddListener } from '@reduxjs/toolkit';
-import { 
-  addItem, 
-  removeItem, 
-  clearCart, 
+import {
+  addItem,
+  removeItem,
+  clearCart,
   initCart,
   addQuantity,
   subtractQuantity } from "../../../features/cart/cartSlice"
@@ -29,9 +29,8 @@ startCartListening({
   effect: async (action, listenerApi) => {
     console.log(listenerApi.getState())
     const { cart } = listenerApi.getState()
-    console.log(cart)
     localStorage.setItem('cart', JSON.stringify(cart))
-  }  
+  }
 })
 
 

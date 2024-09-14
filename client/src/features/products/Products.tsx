@@ -23,10 +23,6 @@ export const Products = () => {
   const { slug } = useParams()
   const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
 
-  // use the latest_products_query
-  // use query paramater and if there is query parameter take the parameter and filter with the parameter
-  // when the user redirects from the categories asing the value from the router state to a variable named category_id and use this to apply a filter
-
   useEffect(() => {
     if (slug) {
       trigger(slug)
@@ -75,7 +71,6 @@ export const Products = () => {
         ))}
         <div className={styles.productItem}>item 1</div>
         <div className={styles.productItem}>item 2</div>
-        {/* <div className={styles['grid-col-span-2']}>item 2</div> */}
         <div className={styles.productItem}>item 3</div>
         <div className={styles.productItem}>item 4</div>
         <div className={styles.productItem}>item 5</div>

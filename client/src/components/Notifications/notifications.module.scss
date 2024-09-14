@@ -8,6 +8,7 @@
   opacity: 1;
   padding: 10px 20px;
   transition: opacity 0.3s ease-in-out;
+  z-index: 1000;
 }
 
 .notification.top-left {
@@ -44,7 +45,7 @@
 
 .notification.from-right {
   animation: fromRight .5s ease-out forwards;
-  
+
 }
 
 .notification.from-bottom {

@@ -9,7 +9,7 @@
   width: 80%;
   max-width: 60%;
   position: relative;
-  border: 2px solid #dcdcdd;
+  // border: 2px solid #dcdcdd;
   border-radius: 15px;
   box-shadow: $box-shadow-v2;
   overflow: hidden;
@@ -39,7 +39,9 @@
 
 .leftContainer {
   flex: 2;
-  background: linear-gradient(to right, #da8db3, #e2c0d2, #ebe1e7, #ffffff);
+  // background: linear-gradient(to right, #da8db3, #e2c0d2, #ebe1e7, #ffffff);
+  background: linear-gradient(to right, $blue-light-primary, $blue-light-active, #ffffff);
+
 }
 
 .rightContainer {
@@ -48,7 +50,7 @@
   display: flex;
   flex-direction: column;
 
-  
+
   form {
     display: flex;
     flex-direction: column;
@@ -60,18 +62,26 @@
 
   &::before {
     content: '';
-    background-color: #f0d98f;
+    background-color: #ffffff;
+    // background-color: #f0d98f;
     position: absolute;
     height: 150%;
     width: 150%;
     top: -20%;
     left: -20%;
-    transform: rotate(7.6deg);
+    transform: rotate(70deg);
     z-index: 0;
     // box-shadow: 0px 0px 20px rgba(0, 0, 0, .4);
-    box-shadow: 
-    inset 0 0 60px rgba(0, 0, 0, 0.5), /* Inner shadow */
+    box-shadow:
+    inset 0 0 120px rgba(0, 0, 0, 0.5), /* Inner shadow */
     // 0 0 10px rgba(0, 0, 0, 0.5); /* Outer shadow */
+
+  }
+
+  @media screen and (max-width: 1850px) {
+    &::before {
+      transform: rotate(6deg);
+    }
   }
 }
 

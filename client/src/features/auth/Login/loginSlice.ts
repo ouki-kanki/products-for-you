@@ -7,6 +7,8 @@ type AuthState = {
 };
 
 
+// *** OBSOLETE ***
+
 const slice = createSlice({
   name: "auth",
   initialState: { userId: null, token: null } as AuthState,

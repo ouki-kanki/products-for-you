@@ -2,13 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../api/baseConfig';
 import { IPayload as IUsersState } from '../../types';
 
-// TODO: move it to another file 
-// interface IServerError {
-//   statusCode: number,
-//   description: string,
-//   message?: string
-// } 
-
 interface IUser {
   name: string,
   isAdmin: boolean
@@ -16,18 +9,11 @@ interface IUser {
 
 type IUsers = Array<IUser>
 
-// interface IUsersState<T> { 
-//   data: Array<T>,
-//   status: 'idle' | 'success' | 'error' | 'pending',
-//   error: IServerError | string | unknown
-// } 
-
 const initialState: IUsersState<IUser> = {
   data: [],
   status: 'idle',
   error: ''
 }
-
 
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async (arg, thunkApi) => {
@@ -43,7 +29,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (arg, thunk
   } catch (error) {
       if (error instanceof Error) {
         const { message } = error
-        return thunkApi.rejectWithValue(message) 
+        return thunkApi.rejectWithValue(message)
       }
   }
 })
@@ -71,7 +57,7 @@ export const usersSlice = createSlice({
       state.status = 'pending'
     })
     .addCase(fetchUsers.rejected, (state, action) => {
-      // TODO: typecheck this. 
+      // TODO: typecheck this.
       state.error = action.payload
     })
   }

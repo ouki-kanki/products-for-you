@@ -6,10 +6,6 @@ import { Input } from '../../../UI/Forms/Inputs';
 export const UserProfile = () => {
   // TODO : check how to handle the error
   const { data, isError, isLoading } = useGetProfileQuery('1')
-    
-  console.log("the data", data)
-  // TODO implement a sceleton form?
-  // if the number of the properties is fixed i can map the elements before data is here and show a loading text inside each input 
 
   return (
     <div className={styles.profileContainer}>
@@ -22,7 +18,7 @@ export const UserProfile = () => {
             <div className={styles.inputContainer} key={id}>
               <label htmlFor={property}>{property}</label>
               <Input
-                name={property} 
+                name={property}
                 type='text'
                 value={value}
                 onChange={() => {}}

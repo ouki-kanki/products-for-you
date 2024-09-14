@@ -5,7 +5,7 @@ export {default as Contact} from './Contact'
 export {default as Account} from './Account'
 export {default as Settings} from './Settings/Settings'
 export { ProductsPage } from './ProductsPage';
-export { LoginPage } from './LoginPage/LoginPage';
+export { Login } from './LoginPage/Login'
 export { SignUp } from './SignUp/SignUp';
 export { Profile } from './Profile/Profile'
 export { ErrorPage } from './ErrorPage/ErrorPage';

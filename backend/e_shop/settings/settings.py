@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 from decouple import config
 from urllib.parse import quote_plus as urlquote
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'corsheaders',
     'django_elasticsearch_dsl_drf',
@@ -49,7 +51,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "silk.middleware.SilkyMiddleware",
-    "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,7 +101,39 @@ DATABASES = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    # 'localhost:5173'
 ]
+
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:5173',
+# )
+
+# CORS_ALLOW_METHODS = (
+#     "GET",
+#     "OPTIONS",
+#     "POST"
+# )
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "referer",
+    "sec-ch-ua",
+    "sec-ch-ua-mobile",
+    "sec-ch-ua-platform"
+]
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173',]
+
+SESSION_COOKIE_SAMESITE: 'None'
+CORS_ALLOW_CREDENTIALS: True
 
 # *** --- PASSWORDS ---- ***
 
@@ -130,10 +163,7 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
 
-
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -145,7 +175,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_URL = 'static/'
 
 # NOTE: points inside e_shop directory
@@ -157,22 +186,8 @@ STATIC_URL = 'static/'
 # User uploaded files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_ROOT = BASE_DIR / Path(r'media').resolve()
-# MEDIA_ROOT = BASE_DIR / Path(r'media').resolve()
-# MEDIA_ROOT = BASE_DIR / Path(r'media/images').resolve()
-
-
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Config to support custom users
-
-
-
 
 
 # AUTHENTICATION
@@ -184,13 +199,15 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'common.config.config_auth.useBearerForAuth',
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
     ),
     'DEFAULT_THROTTLE_CLASSES': [
-    'rest_framework.throttling.AnonRateThrottle',
-    'rest_framework.throttling.UserRateThrottle'
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '1/second',
@@ -198,6 +215,17 @@ REST_FRAMEWORK = {
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
+}
+
+
+# JWT
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=10),
+    "SIGNING_KEY": config("SECRET_KEY"),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ('Bearer',)
 }
 
 # ---- ELASTIC SEARCH ----

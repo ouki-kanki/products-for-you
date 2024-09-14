@@ -11,7 +11,7 @@ interface ProtectedRouteProps {
 
 // TODO: maybe keep the user here, inform him that the page is protected and tell him to go to the login page?
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = () => {
-  const token = useSelector((state: RootState) => state.auth.token)
+  const token = useSelector((state: RootState) => state.auth.userTokens.accessToken)
 
   if (!token) {
     return (

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from './baseConfig';
-import { showNotification } from '../components/Notifications/Notification';
+import { showNotification } from '../components/Notifications/showNotification';
 
 export interface ICartProduct {
   product_item: string;
@@ -16,7 +16,7 @@ export interface IOrder {
   billing_address: string;
   order_total: number;
   refund_status: string,
-  order_item: ICartProduct[]  
+  order_item: ICartProduct[]
 }
 
 export const orderApi = createApi({
