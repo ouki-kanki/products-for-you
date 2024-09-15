@@ -20,6 +20,8 @@ import { useGetProfileQuery } from '../../api/userApi';
 
 import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
 
+import { getUserId } from '../../features/auth/authSlice';
+
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
@@ -28,20 +30,16 @@ export const NavBar = () => {
   const dispatch = useDispatch()
   const { pathname } = useLocation();
   const { token, logout } = useAuth()
-  const userId = useSelector((state: RootState) => state.auth.userId)
+  const userId = useSelector(getUserId)
   const isCartUpdating = useSelector((state: RootState) => state.cart.isUpdating)
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const numberOfproductInCart = useSelector((state: RootState) => state.cart.numberOfItems)
   // const { isScrollingDown } = useSroll()
-  // const { trigger, data, error } = useProfile()
+
+  const { data, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
 
 
-  // TODO: THIS IS A NASTY FIX !!! have to fix later
-  const { data, isFetching, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
-
-
-  // console.log(showNav)
-  // TODO : transfrom the response inside the query to retrieve only the image and the name
+  // TODO : transfrom response to retrieve only the image and the name
   // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT
 
   const handleNavigate = (destination: string) => () => {

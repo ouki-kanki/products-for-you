@@ -7,3 +7,6 @@ from .serializers import MyTokenObtainSerializer
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainSerializer
+
+    # def get_queryset(self):
+

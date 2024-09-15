@@ -3,7 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { useDispatch as useBaseDispatch } from "react-redux";
 
 import { apiSlice } from "../../api/apiSlice";
-import usersReducer from '../../features/users/usersSlice';
+import usersReducer from '../../features/users/usersSlice_old';
 import uiReducer from '../../features/UiFeatures/UiFeaturesSlice';
 import cartReducer from '../../features/cart/cartSlice'
 import facetRecucer from '../../features/filtering/facetSlice'

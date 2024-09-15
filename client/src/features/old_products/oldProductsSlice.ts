@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../api/baseConfig';
 
 import { IPayload as IProductsState, IServerError } from '../../types';
-import { fetchUsers } from '../users/usersSlice';
+import { fetchUsers } from '../users/usersSlice_old';
 
 
 interface Iproduct {
@@ -11,13 +11,13 @@ interface Iproduct {
   brand: string,
   slug: string,
   productVariations: [],
-} 
+}
 
 
 const initialState = {
   data: [],
   status: 'idle',
-  error: '' 
+  error: ''
 }
 
 // NOTE: extra reducers when you want to call actions from another slice or from asyncthunk
@@ -26,7 +26,7 @@ export const fetchProducts = createAsyncThunk('procuts/fetchProducts', async (ar
     const response = await fetch(`${BASE_URL}products`)
 
     if (response.status !== 200) {
-      // TODO: dry it, it is used in many locations 
+      // TODO: dry it, it is used in many locations
       throw new Error(response.statusText)
     }
 
@@ -35,7 +35,7 @@ export const fetchProducts = createAsyncThunk('procuts/fetchProducts', async (ar
   } catch (error) {
     if (error instanceof Error) {
       const { message } = error
-      return thunkApi.rejectWithValue(message) 
+      return thunkApi.rejectWithValue(message)
     }
   }
 })

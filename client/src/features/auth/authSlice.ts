@@ -3,7 +3,8 @@ import { RootState } from "../../app/store/store";
 
 
 interface UserInfo {
-  name: string | null;
+  user: string | null;
+  user_id: number;
 }
 
 interface UserTokens {
@@ -12,7 +13,8 @@ interface UserTokens {
 }
 
 interface Credentials extends UserTokens {
-  user: string
+  user: string,
+  userId: number
 }
 
 interface AuthError {
@@ -42,14 +44,15 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action: PayloadAction<Credentials>) => {
-      const { user, accessToken, refreshToken } = action.payload
+      const { user, accessToken, refreshToken, userId } = action.payload
 
-      state.userInfo.name = user
+      state.userInfo.user = user
+      state.userInfo.user_id = userId
       state.userTokens.accessToken = accessToken
       state.userTokens.refreshToken = refreshToken
     },
     logOut: state => {
-      state.userInfo.name = null,
+      state.userInfo = {} as UserInfo,
       state.userTokens = {} as UserTokens
     }
   },
@@ -61,5 +64,5 @@ export const { setCredentials, logOut } = authSlice.actions
 export const getAccessToken = (state: RootState) => state.auth.userTokens.accessToken
 export const getRefreshToken = (state: RootState) => state.auth.userTokens.refreshToken
 export const getUserInfo = (state: RootState) => state.auth.userInfo
-export const getUserName = (state: RootState) => state.auth.userInfo.name
-
+export const getUser = (state: RootState) => state.auth.userInfo.user
+export const getUserId = (state: RootState) => state.auth.userInfo.user_id

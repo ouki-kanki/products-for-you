@@ -1,11 +1,34 @@
-import { useGetProfileQuery } from '../../../api/userApi'
+import { useSelector } from 'react-redux';
+import { getUserId } from '../../auth/authSlice';
+import { useGetUserQuery } from '../usersApiSlice';
+
 import styles from './userProfile.module.scss';
 import { Input } from '../../../UI/Forms/Inputs';
 
 
+
 export const UserProfile = () => {
-  // TODO : check how to handle the error
-  const { data, isError, isLoading } = useGetProfileQuery('1')
+  const userId = useSelector(getUserId)
+  const userIdstr = userId ? userId.toString() : ''
+
+  const { data, isError, error, isLoading } = useGetUserQuery(userIdstr)
+
+  if (isLoading) {
+    // use a spinner or skeleton
+    return (
+      <div>is loading...</div>
+    )
+  }
+
+  // TODO: type the error
+  if (isError) {
+    return (
+      <>
+        <h2>Something went wrong</h2>
+        <div>{error.originalStatus}</div>
+      </>
+    )
+  }
 
   return (
     <div className={styles.profileContainer}>

@@ -5,7 +5,7 @@ from .views import (
     users_detail_view, 
     custom_auth_token,
     registration_view,
-    user_profile_view
+    UserProfileView
 )
 
 app_name = 'users'
@@ -15,6 +15,5 @@ urlpatterns = [
     path('register', registration_view, name='register'),
     # TODO: this fetches from the user model have to change the name
     path('<int:pk>', users_detail_view, name= 'detail'),
-    path('profile/<int:user>', user_profile_view, name='profile')
+    path('profile/<int:user>', UserProfileView.as_view(), name='profile')
 ]
- 

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { useSelector } from 'react-redux';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 import type { RootState } from '../app/store/store';
 
@@ -12,12 +12,11 @@ interface ProtectedRouteProps {
 // TODO: maybe keep the user here, inform him that the page is protected and tell him to go to the login page?
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = () => {
   const token = useSelector((state: RootState) => state.auth.userTokens.accessToken)
+  const location = useLocation()
 
-  if (!token) {
-    return (
-      <Navigate to='/login' replace/>
-    )
-  } else {
-    return <Outlet/>
-  }
+  return (
+    token
+      ? <Outlet />
+      : <Navigate to='/login' state={{ from: location }} replace/>
+  )
 }

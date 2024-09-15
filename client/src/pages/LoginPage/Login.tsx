@@ -70,9 +70,6 @@ export const Login = () => {
         type: 'danger'
       })
     }
-    return () => {
-      clearTimeout(delayNavigate)
-    }
   }, [isLoginSuccess, isError, navigate, error])
 
   const handleSubmitV2 = async (e: SyntheticEvent) => {
@@ -81,11 +78,12 @@ export const Login = () => {
     const data = await login({ email, password }).unwrap() as LoginData
 
     console.log("the data", jwtDecode(data.access))
-    const { username, email: userEmail } = jwtDecode(data.access)
+    const { username, email: userEmail, user_id : userId } = jwtDecode(data.access)
     const user = username ? username : userEmail
 
     dispatch(setCredentials({
       user,
+      userId,
       accessToken: data.access,
       refreshToken: data.refresh
     }))

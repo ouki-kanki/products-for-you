@@ -5,9 +5,8 @@ import type { IUiConfig } from './types';
 
 import { selectUsers } from './app/store/store'
 import { useAppSelector } from './hooks'
-import { fetchUsers } from './features/users/usersSlice'
+import { fetchUsers } from './features/users/usersSlice_old'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
-import { setCredentials } from './features/auth/Login/loginSlice';
 import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 
 import { EcommerceRoutes } from './routes';
@@ -73,7 +72,8 @@ function App() {
       token
     }
 
-    dispatch(setCredentials(data))
+    // TODO : use the new auth
+    // dispatch(setCredentials(data))
   }, [dispatch])
 
 

@@ -12,6 +12,7 @@ from .serializers import UserSerializer, RegistrationSerializer, UserDetailSeria
 
 
 # LOGIN
+# *** OBSOLETE ***
 class CustomAuthToken(ObtainAuthToken):
     '''
         customize the response 
@@ -36,6 +37,7 @@ class CustomAuthToken(ObtainAuthToken):
 
 custom_auth_token = CustomAuthToken.as_view()
 
+
 # TODO: give feedback to the user regarding the validity of email or password
 # REGISTER
 class RegistrationView(APIView):
@@ -47,6 +49,7 @@ class RegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 registration_view = RegistrationView.as_view()
+
 
 class UsersViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
     '''
@@ -68,12 +71,8 @@ users_detail_view = UsersViewSet.as_view({
 })
 
 
-
-class UserProfileView(generics.GenericAPIView,
-                     mixins.RetrieveModelMixin):
-    '''
-        returns data from the UserDetail table
-    '''
+class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
+    """ returns data from the UserDetail table """
     serializer_class = UserDetailSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'user'
@@ -83,5 +82,3 @@ class UserProfileView(generics.GenericAPIView,
         print(request.session)
         return self.retrieve(request, args, kwargs)
 
-
-user_profile_view = UserProfileView.as_view()

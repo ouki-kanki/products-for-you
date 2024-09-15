@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/react'
+import { BaseQueryApi } from '@reduxjs/toolkit/query/react'
 import { setCredentials, logOut } from '../features/auth/authSlice'
 
 import { BASE_URL } from './baseConfig'
@@ -19,25 +20,54 @@ const baseQuery = fetchBaseQuery({
   }
 })
 
+const refreshBaseQuery = fetchBaseQuery({
+  baseUrl: BASE_URL,
+  method: 'POST',
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.userTokens.refreshToken
+    if (token) {
+      headers.set(AuthEnum.authorization, `Bearer ${token}`)
+    }
 
-const baseQueryWithReauth = async (args, api, extraOptions) => {
+    return headers
+  }
+})
+
+
+const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
 
-  if (result?.error?.originalStatus === 403) { // token has expired
+  console.log("the reuslut inside basic", result)
+
+  if (result?.error?.status === 403 || result?.error?.status === 401) { // token has expired
     console.log('sending refresh token')
 
     // hit refresh user to get a new access and refresh token
-    const refreshResult = await baseQuery('auth/token/refresh/', api, extraOptions)
+
+    const refreshToken = (api.getState() as RootState).auth.userTokens.refreshToken
+    const refreshResult = await refreshBaseQuery({
+                                        url: '/auth/token/refresh/',
+                                        body: { refresh: refreshToken }},
+                                        { ...api, type: 'mutation', },
+                                        extraOptions, )
     console.log("refresh token reslut", refreshResult)
+    // debugger;
 
     if (refreshResult?.data) {
-      const user = api.getState().auth.userInfo.name
+      const user = (api.getState() as RootState).auth.userInfo.user
+      const userId = (api.getState() as RootState).auth.userInfo.user_id
+      console.log("the user isndie base", user) // TODO: is undefined
+
       // set the new access and refresh tokens
+      const { access, refresh } = refreshResult.data
+
       api.dispatch(setCredentials({
         user,
-        accessToken: data?.access,
-        refreshToken: data?.refresh
+        userId: userId,
+        accessToken: access,
+        refreshToken: refresh
       }))
+
 
       // retry with new access token
       result = await baseQuery(args, api, extraOptions)
