@@ -23,17 +23,11 @@ const baseQuery = fetchBaseQuery({
 })
 
 // TODO: get and send refresh with cookies
+// TODO: if refresh is send through cookies this is obsolete
 export const refreshBaseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   method: 'POST',
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.userTokens.refreshToken
-    if (token) {
-      headers.set(AuthEnum.authorization, `Bearer ${token}`)
-    }
-
-    return headers
-  }
+  credentials: 'include'
 })
 
 
@@ -42,25 +36,19 @@ const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOptions) 
 
   if (result?.error?.status === 403 || result?.error?.status === 401) {
     // if access is expired fetch new access and refresh tokens
-    const refreshToken = (api.getState() as RootState).auth.userTokens.refreshToken
     const refreshResult = await refreshBaseQuery({
-                                        url: '/auth/token/refresh/',
-                                        body: { refresh: refreshToken }},
+                                        url: '/auth/token/refresh/',},
                                         { ...api, type: 'mutation', },
                                         extraOptions, )
 
     if (refreshResult?.data) {
-      const user = (api.getState() as RootState).auth.userInfo.user
+      const user = (api.getState() as RootState).auth.userInfo.user as string
       const userId = (api.getState() as RootState).auth.userInfo.user_id
-
-      // TODO: correct types
-      // set the new access and refresh tokens
-      const { access, refresh } = refreshResult.data
+      const { access } = refreshResult.data as { access: string }
       api.dispatch(setCredentials({
         user,
         userId: userId,
         accessToken: access,
-        refreshToken: refresh
       }))
 
       // retry with new access token

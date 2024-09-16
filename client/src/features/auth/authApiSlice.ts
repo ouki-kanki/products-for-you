@@ -35,7 +35,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
           const user = (getState() as RootState).auth.userInfo.user as string
           const userId = (getState() as RootState).auth.userInfo.user_id
 
-          console.log("access, refresh inside refresh mut", access, refresh)
           dispatch(setCredentials({
             user,
             userId,

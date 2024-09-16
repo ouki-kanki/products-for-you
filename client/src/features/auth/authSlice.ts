@@ -9,7 +9,6 @@ interface UserInfo {
 
 interface UserTokens {
   accessToken: string;
-  refreshToken: string;
 }
 
 interface Credentials extends UserTokens {
@@ -44,12 +43,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action: PayloadAction<Credentials>) => {
-      const { user, accessToken, refreshToken, userId } = action.payload
+      const { user, accessToken, userId } = action.payload
 
       state.userInfo.user = user
       state.userInfo.user_id = userId
       state.userTokens.accessToken = accessToken
-      state.userTokens.refreshToken = refreshToken
     },
     logOut: state => {
       state.userInfo = {} as UserInfo,
@@ -62,7 +60,6 @@ const authSlice = createSlice({
 export default authSlice.reducer
 export const { setCredentials, logOut } = authSlice.actions
 export const getAccessToken = (state: RootState) => state.auth.userTokens.accessToken
-export const getRefreshToken = (state: RootState) => state.auth.userTokens.refreshToken
 export const getUserInfo = (state: RootState) => state.auth.userInfo
 export const getUser = (state: RootState) => state.auth.userInfo.user
 export const getUserId = (state: RootState) => state.auth.userInfo.user_id

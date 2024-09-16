@@ -111,7 +111,7 @@ CSRF_TRUSTED_ORIGINS = [
 # CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken", 'X-Requested-With']
 SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SAMESITE = None
-SESSION_COOKIE_SAMESITE: None
+# SESSION_COOKIE_SAMESITE: None
 
 
 # *** --- PASSWORDS ---- ***
@@ -198,17 +198,17 @@ REST_FRAMEWORK = {
 
 # JWT
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=50),
     "SIGNING_KEY": config("SECRET_KEY"),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ('Bearer',),
 
-    "AUTH_COOKIE": 'access',
+    # "AUTH_COOKIE": 'access',
     "AUTH_COOKIE_REFRESH": 'refresh',
-    "AUTH_COOKIE_DOMAIN": None,
-    "AUTH_COOKIE_SAMESITE": 'None',  # 'Lax', 'Strict', 'None'
+    # "AUTH_COOKIE_DOMAIN": None,
+    "AUTH_COOKIE_SAMESITE": 'Lax',  # 'Lax', 'Strict', 'None'
     "AUTH_COOKIE_HTTP_ONLY": True,
     "AUTH_COOKIE_PATH": '/',
     "AUTH_COOKIE_SECURE": False,

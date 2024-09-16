@@ -15,8 +15,6 @@ import { useDispatch } from 'react-redux';
 import { useValidation } from '../../hooks/useValidation/useValidation';
 import { useLocaleStorage } from '../../hooks/useLocaleStorage';
 
-import type { LoginCreds } from '../../features/auth/authApiSlice';
-
 
 interface LoginData {
   access: string;
@@ -89,12 +87,10 @@ export const Login = () => {
   }, [isLoginSuccess, isError, navigate, error])
 
   const handlePersist = () => setPersist((prev: boolean) => !prev)
-  const handleSubmitV2 = async (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
 
     const data = await login({ email, password }).unwrap() as LoginData
-
-    console.log("the data", jwtDecode(data.access))
     const { username, email: userEmail, user_id : userId } = jwtDecode(data.access)
     const user = username ? username : userEmail
 
@@ -102,7 +98,6 @@ export const Login = () => {
       user,
       userId,
       accessToken: data.access,
-      refreshToken: data.refresh
     }))
   }
 
@@ -115,7 +110,7 @@ export const Login = () => {
           </div>
           <div className={styles.rightContainer}>
             <div className={styles.formContainer}>
-              <form className={styles.form} onSubmit={handleSubmitV2}>
+              <form className={styles.form} onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 {loginFields.map(({ id, ...rest }) => (
                   <div className={styles.inputContainer} key={id}>
