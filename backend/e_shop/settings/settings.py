@@ -17,9 +17,6 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,10 +36,11 @@ INSTALLED_APPS = [
 
 
     # third party apps
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework.authtoken',
-    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework.authtoken',
     'django_elasticsearch_dsl_drf',
     'django_elasticsearch_dsl',
     'import_export'
@@ -50,7 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    "silk.middleware.SilkyMiddleware",
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = 'e_shop.urls'
@@ -84,7 +83,6 @@ WSGI_APPLICATION = 'e_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -96,44 +94,25 @@ DATABASES = {
     }
 }
 
-
 # *** --- CORS & CSRF CONFIG ---
 
-CORS_ALLOWED_ORIGINS = [
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', ]
+# CORS_ORIGIN_WHITELIST = ('http://localhost:8000', "http://localhost:5173",)
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", 'http://127.0.0.1:5173', ]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTP_ONLY = True
+CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
-    # 'localhost:5173'
+    "http://127.0.0.1:5173",
 ]
+# CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken", 'X-Requested-With']
+SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE: None
 
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:5173',
-# )
-
-# CORS_ALLOW_METHODS = (
-#     "GET",
-#     "OPTIONS",
-#     "POST"
-# )
-
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-    "referer",
-    "sec-ch-ua",
-    "sec-ch-ua-mobile",
-    "sec-ch-ua-platform"
-]
-
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173',]
-
-SESSION_COOKIE_SAMESITE: 'None'
-CORS_ALLOW_CREDENTIALS: True
 
 # *** --- PASSWORDS ---- ***
 
@@ -189,7 +168,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # AUTHENTICATION
 
 AUTH_USER_MODEL = "user_control.CustomUser"
@@ -210,7 +188,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '1/second',
+        'anon': '3/second',
         'user': '1000/day'
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -225,7 +203,16 @@ SIMPLE_JWT = {
     "SIGNING_KEY": config("SECRET_KEY"),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ('Bearer',)
+    "AUTH_HEADER_TYPES": ('Bearer',),
+
+    "AUTH_COOKIE": 'access',
+    "AUTH_COOKIE_REFRESH": 'refresh',
+    "AUTH_COOKIE_DOMAIN": None,
+    "AUTH_COOKIE_SAMESITE": 'None',  # 'Lax', 'Strict', 'None'
+    "AUTH_COOKIE_HTTP_ONLY": True,
+    "AUTH_COOKIE_PATH": '/',
+    "AUTH_COOKIE_SECURE": False,
+
 }
 
 # ---- ELASTIC SEARCH ----

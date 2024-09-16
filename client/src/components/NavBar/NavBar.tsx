@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../../app/store/store';
 import { useEffect, useState, useCallback } from 'react'
 import styles from './navbar.module.scss';
 import { useAuth } from '../../hooks/useAuth';
@@ -7,19 +8,15 @@ import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { hideSidebar, showSidebar } from '../../features/UiFeatures/UiFeaturesSlice';
-
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
 import cartIcon from '../../assets/svg_icons/cart.svg';
 import bellIcon from '../../assets/svg_icons/bell.svg'
+import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
 
 import { useSroll } from '../../hooks/useScroll';
 
-import type { RootState } from '../../app/store/store';
 import { useGetProfileQuery } from '../../api/userApi';
-
-import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
-
 import { getUserId } from '../../features/auth/authSlice';
 
 
@@ -38,10 +35,7 @@ export const NavBar = () => {
 
   const { data, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
 
-
   // TODO : transfrom response to retrieve only the image and the name
-  // TODO: PROFILE DATA INSIDE THE QUERY REMAINS AFTER LOG OUT
-
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
   }

@@ -13,6 +13,7 @@ import { setCredentials } from '../../features/auth/authSlice';
 import { useLoginMutation } from '../../features/auth/authApiSlice';
 import { useDispatch } from 'react-redux';
 import { useValidation } from '../../hooks/useValidation/useValidation';
+import { useLocaleStorage } from '../../hooks/useLocaleStorage';
 
 import type { LoginCreds } from '../../features/auth/authApiSlice';
 
@@ -20,6 +21,11 @@ import type { LoginCreds } from '../../features/auth/authApiSlice';
 interface LoginData {
   access: string;
   refresh: string;
+}
+
+type Error = {
+  status: string;
+  error: string;
 }
 
 export const Login = () => {
@@ -40,6 +46,7 @@ export const Login = () => {
   const firstInputRef = useRef<HTMLInputElement | null>(null)
 
   // RTK
+  const [persist, setPersist ] = useLocaleStorage()
   const [login, { data, isLoading, isError, isSuccess: isLoginSuccess, error }] = useLoginMutation()
   const loginFields = getLoginFields(handleEmailChange, handlePasswordChange, email, password, handleInputBlur, emailError, passwordError)
 
@@ -48,6 +55,7 @@ export const Login = () => {
       firstInputRef.current.focus()
     }
 
+    let delayId: number;
     if (isLoginSuccess) {
       showNotification({
         message: 'Login Success.',
@@ -57,21 +65,30 @@ export const Login = () => {
         position: 'bottom-right',
         overrideDefaultHideDirection: true
       })
-      navigate('/')
+
+      delayId = setTimeout(() => {
+        navigate('/')
+      }, 600);
     } else if (isError) {
-      // TODO: check the data type
+      const message = `something went wrong status: ${(error as Error).status}`
+
       showNotification({
         appearFrom: 'from-right',
         hideDirection: 'to-top',
         overrideDefaultHideDirection: true,
         duration: 3000,
-        message: error.data.detail,
+        message,
         position: 'top-right',
         type: 'danger'
       })
     }
+    return () => {
+      clearTimeout(delayId)
+    }
+
   }, [isLoginSuccess, isError, navigate, error])
 
+  const handlePersist = () => setPersist((prev: boolean) => !prev)
   const handleSubmitV2 = async (e: SyntheticEvent) => {
     e.preventDefault()
 
@@ -87,35 +104,6 @@ export const Login = () => {
       accessToken: data.access,
       refreshToken: data.refresh
     }))
-  }
-
-
-  const handleSubmitV2_ = async (e: SyntheticEvent) => {
-    console.log("request --- -- ")
-    e.preventDefault()
-    try {
-      const userData = await login({ email, password }).unwrap() as UserData
-      console.log("data from login", userData)
-
-      const { access, refresh } = data
-      const userInfo = jwtDecode(access)
-      console.log("userInfo", userInfo)
-
-      dispatch(setCredentials({ ...userData }))
-    } catch (err) {
-      showNotification({
-        appearFrom: 'from-right',
-        position: 'top-right',
-        duration: 1000,
-        message: err.message,
-        type: 'danger',
-        hideDirection: 'to-right'
-      })
-    }
-
-    if (email && password) {
-      await login({ email, password })
-    }
   }
 
   return (
@@ -138,9 +126,19 @@ export const Login = () => {
                   </div>
                 ))}
                 <div className={styles.inputContainer}>
+                  <div>
                   <Button type='submit' disabled={!isValid}>
                     {isLoading ? 'Loading...' : 'Login V2'}
                   </Button>
+                  <label htmlFor="persist">
+                    <input
+                      type="checkbox"
+                      id='persist'
+                      onChange={handlePersist}
+                    />
+                    Remember Credentials
+                    </label>
+                  </div>
                 </div>
               </form>
             </div>

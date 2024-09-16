@@ -3,7 +3,7 @@
 from .settings import *
 
 DEBUG = False
-ALLOWED_HOSTS += ['http://productsforyou.com']
+ALLOWED_HOSTS = ['http://productsforyou.com', ]
 WSGI_APPLICATION = 'e_shop.wsgi.prod.application'
 
 DATABASES = {

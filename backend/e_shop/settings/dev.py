@@ -4,7 +4,7 @@ from .settings import *
 from decouple import config
 
 
-ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 DATABASES.update({
     'test': {
@@ -42,12 +42,6 @@ SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
 }
-
-
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:3000',
-#     'http://127.0.0.1:3000',
-# )
 
 # FOR DEBUG TOOLBAR
 INTERNAL_IPS = [
