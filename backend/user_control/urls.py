@@ -11,7 +11,7 @@ from .views import (
 app_name = 'users'
 urlpatterns = [
     path('', users_list_view, name= "list"),
-    path('token-auth', custom_auth_token, name='login'),
+    path('token-auth', custom_auth_token, name='login'), # TODO: obsolete
     path('register', registration_view, name='register'),
     # TODO: this fetches from the user model have to change the name
     path('<int:pk>', users_detail_view, name= 'detail'),

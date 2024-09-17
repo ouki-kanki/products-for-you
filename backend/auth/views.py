@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework.views import APIView
 
 from .serializers import MyTokenObtainSerializer
 
@@ -27,6 +28,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 class MyRefreshTokenObtainView(TokenRefreshView):
+    """ send a new access & refresh token """
     serializer_class = TokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
@@ -50,4 +52,16 @@ class MyRefreshTokenObtainView(TokenRefreshView):
 
         return response
 
+
+class LogOutView(APIView):
+    def post(self, request, *args, **kwargs): # noqa
+        """ logout the user, clear the cookie """
+        message = {
+            'message': 'user logged out successfully'
+        }
+
+        response = Response(message, status=status.HTTP_200_OK)
+        response.delete_cookie('refresh')
+
+        return response
 

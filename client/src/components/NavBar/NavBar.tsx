@@ -1,23 +1,25 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../app/store/store';
 import { useEffect, useState, useCallback } from 'react'
-import styles from './navbar.module.scss';
-import { useAuth } from '../../hooks/useAuth';
 import { showCartModal } from '../../features/UiFeatures/UiFeaturesSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import styles from './navbar.module.scss';
 import { hideSidebar, showSidebar } from '../../features/UiFeatures/UiFeaturesSlice';
 import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
 import cartIcon from '../../assets/svg_icons/cart.svg';
 import bellIcon from '../../assets/svg_icons/bell.svg'
 import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
-
 import { useSroll } from '../../hooks/useScroll';
 
+
+import { useAuth } from '../../hooks/useAuth';
+import { useLogoutMutation } from '../../api/authApi';
 import { useGetProfileQuery } from '../../api/userApi';
 import { getUserId } from '../../features/auth/authSlice';
+import { showNotification } from '../Notifications/showNotification';
 
 
 export const NavBar = () => {
@@ -34,10 +36,26 @@ export const NavBar = () => {
   // const { isScrollingDown } = useSroll()
 
   const { data, isLoading } = useGetProfileQuery((userId ? userId.toString() : ''), { skip: !userId })
+  const [ clearCookie, { data: logOutData, isLoading: isLoadingLogOut, isSuccess, isError, error }] = useLogoutMutation()
 
   // TODO : transfrom response to retrieve only the image and the name
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
+  }
+
+  const handleLogOut = async () => {
+    // clear store
+    logout()
+    // clear cookie
+    const data = await clearCookie().unwrap()
+    showNotification({
+      appearFrom: 'from-bottom',
+      duration: 2000,
+      message: data.message,
+      hideDirection: 'to-bottom',
+      position: 'bottom-right',
+      overrideDefaultHideDirection: false
+    })
   }
 
   const handleNavShow =  useCallback(() => {
@@ -70,12 +88,11 @@ export const NavBar = () => {
     }
   }, [lastScrollValue, handleNavShow, handleBack])
 
-
   const renderLoginLogout = () => {
     if (token) {
       return (
         <Button
-          onClick={() => logout()}
+          onClick={handleLogOut}
           size='m'>Logout</Button>
           )
       } else {
@@ -138,7 +155,6 @@ export const NavBar = () => {
             <div
               onClick={handleNavigate('/profile')}
               className={styles.profileImageContainer}>
-              {/* <div>yoyo</div> */}
               <img src={data.image} alt='profile image' />
             </div>
           )}

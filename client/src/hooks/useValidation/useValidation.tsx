@@ -9,7 +9,7 @@ import { ActionTypes } from './validationTypes';
 import { getTracker, getPasswordStrength } from './helpers';
 
 const  validationReducer: Reducer<IValidationState, IValidationAction> = (state , action): IValidationState => {
-  // TODO if i destructure payload it throws errors when used inside the reducer 
+  // TODO if i destructure payload it throws errors when used inside the reducer
   const { type } = action
   switch (type) {
     case ActionTypes.SET_EMAIL:
@@ -47,7 +47,7 @@ const initialState: IValidationState = {
   isTouched: false
 }
 
-// TODO this is crap have to refactor to a better solution cause now if somedody nees to add a field for validation he has to change the types, the reducer and a bacnch of crap . have to make the validators general and decouple the logic for each validation maybe to a new method. 
+// TODO this is crap have to refactor to a better solution cause now if somedody nees to add a field for validation he has to change the types, the reducer and a bacnch of crap . have to make the validators general and decouple the logic for each validation maybe to a new method.
 export const useValidation = () => {
   const [state, dispatch] = useReducer(validationReducer, initialState)
 
@@ -64,11 +64,11 @@ export const useValidation = () => {
 
   // validators
   const emailValidator = (email: string) => {
-    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/    
+    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     if (!regex.test(email) && state.isTouched) {
       dispatch({ type: ActionTypes.SET_EMAIL_ERROR, payload: 'Please provide a valid email' })
       dispatch({ type: ActionTypes.SET_EMAIL_IS_VALID, payload: false })
-      // is touched and no error 
+      // is touched and no error
     } else if (state.isTouched) {
       dispatch({ type: ActionTypes.SET_EMAIL_IS_VALID, payload: true })
     }
@@ -79,7 +79,8 @@ export const useValidation = () => {
       return
     }
     return
-    
+
+    // TODO: temp disabled
     const tracker = getTracker(password)
 
     let error = null;
@@ -91,7 +92,7 @@ export const useValidation = () => {
     if (!tracker.number) {
       error = 'password has to have at least one number'
     }
-    
+
     if (!tracker.specialChar) {
       error = 'password has to have at least one special character'
     }
@@ -124,7 +125,7 @@ export const useValidation = () => {
   }
 
 
-  // TODO: this affects all the inputs inside the form, i have to make it to affect each input seperatelly but in an elegant fashion. i don't want to put extra field to state for each input if it's possible 
+  // TODO: this affects all the inputs inside the form, i have to make it to affect each input seperatelly but in an elegant fashion. i don't want to put extra field to state for each input if it's possible
   const handleInputBlur = () => {
     dispatch({ type: ActionTypes.SET_IS_TOUCHED })
   }

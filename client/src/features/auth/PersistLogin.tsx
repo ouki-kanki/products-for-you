@@ -1,18 +1,18 @@
 import { Outlet, Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
-import { useRefreshMutation } from "./authApiSlice";
+import { useRefreshMutation } from "../../api/authApi";
 import { useLocaleStorage } from "../../hooks/useLocaleStorage";
 import { useSelector } from "react-redux";
 import { getAccessToken } from "./authSlice";
-import { getRefreshToken } from "./authSlice";
 
+import { showNotification } from "../../components/Notifications/showNotification";
 
 export const PersistLogin = () => {
   const [ persist ] = useLocaleStorage()
   // TODO: check the behavior if there is not an access token there is a chance that it will break because the whole objects is empty and there is no useTokens key inside
+
   const accessToken = useSelector(getAccessToken)
-  const refreshToken = useSelector(getRefreshToken)
   const effectRan = useRef(false)
 
   const [trueSuccess, setTrueSuccess] = useState(false)
@@ -20,19 +20,20 @@ export const PersistLogin = () => {
 
   useEffect((): void => {
     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-      const verifyRefreshToken = async (refreshToken: string) => {
+      const verifyRefreshToken = async () => {
         console.log("verifying refresh token")
         try {
-          await refresh(refreshToken)
+          await refresh()
           setTrueSuccess(true)
         } catch (error) {
           console.log("show notification", error)
+          // I want to stay in home page even if i am not logged in
           // TODO: show notification with the error
         }
       }
 
       if (!accessToken && persist) {
-        verifyRefreshToken(refreshToken)
+        verifyRefreshToken()
       }
     }
 
@@ -43,7 +44,23 @@ export const PersistLogin = () => {
     // eslint-disable-next-line
   }, [])
 
-  return (
-    <div>PersistLogin</div>
-  )
+  let content;
+  if (!persist || (isSuccess && trueSuccess) || (accessToken && isUninitialized)) {
+    content = <Outlet/>
+  } else if (isLoading) {
+    content =  <p>loading</p>
+  } else if (isError && persist) {
+    // TODO: inform the user in certain routes
+    // showNotification({
+    //   message: 'please login again',
+    //   appearFrom: 'from-bottom',
+    //   duration: 1000,
+    //   hideDirection: "to-bottom",
+    //   position: 'bottom-right',
+    //   overrideDefaultHideDirection: false,
+    // })
+    content = <Outlet/>
+    // return <Link to='/login'>login</Link>
+  }
+  return content
 }

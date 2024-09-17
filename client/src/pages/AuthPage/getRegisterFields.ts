@@ -2,7 +2,7 @@ import { ChangeEvent } from "react"
 import type { IInputBase } from '../../UI/Forms/Inputs/Input/Input';
 
 type Ievent = ChangeEvent<HTMLInputElement>
-interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
+export interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
   id: number,
   value: string
   onChange: () => void,
@@ -12,7 +12,7 @@ interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error'> {
 }
 
 // TODO: check e type
-export const getLoginFields = (handleEmailChange: (e: Ievent) => void, handlePasswordChange: (e: Ievent) => void, email: string, password: string, handleInputBlur: () => void, emailError: string | null , passwordError: string | null): Array<IloginInput> => (
+export const getRegisterFields = (handleEmailChange: (e: Ievent) => void, handlePasswordChange: (e: Ievent) => void, email: string, password: string, handleInputBlur: () => void, emailError: string | null , passwordError: string | null): Array<IloginInput> => (
   [
     {
       id: 1,
@@ -24,6 +24,18 @@ export const getLoginFields = (handleEmailChange: (e: Ievent) => void, handlePas
       onBlur: handleInputBlur,
       onFocus: handleInputBlur,
       error: emailError
+    },
+    {
+      id: 2,
+      label: 'Password',
+      name: 'password',
+      value: password,
+      placeholder: 'Enter password',
+      type: 'password',
+      onChange: handlePasswordChange,
+      onBlur: handleInputBlur,
+      onFocus: handleInputBlur,
+      error: passwordError,
     },
     {
       id: 2,

@@ -2,17 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { useDispatch as useBaseDispatch } from "react-redux";
 
-import { apiSlice } from "../../api/apiSlice";
-import usersReducer from '../../features/users/usersSlice_old';
+import { authBaseApi } from "../../api/authBaseApi";
 import uiReducer from '../../features/UiFeatures/UiFeaturesSlice';
 import cartReducer from '../../features/cart/cartSlice'
 import facetRecucer from '../../features/filtering/facetSlice'
 
 import { productsSlice } from "../../features/products/productsSlice";
 import authReducer from '../../features/auth/authSlice';
-import userReducer from '../../features/users/userSliceV2';
 import {
-  authApi,
   userApi,
   productsApi,
   orderApi,
@@ -29,12 +26,9 @@ export const store = configureStore({
     [productsSlice.reducerPath]: productsSlice.reducer,
 
     // this is the old api
-    // [authApi.reducerPath]: authApi.reducer,
-    [apiSlice.reducerPath]: apiSlice.reducer,
+    [authBaseApi.reducerPath]: authBaseApi.reducer,
     auth: authReducer,
     [userApi.reducerPath]: userApi.reducer,
-    user: userReducer,
-    users: usersReducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
@@ -45,7 +39,7 @@ export const store = configureStore({
     )
     .concat([
       productsSlice.middleware,
-      apiSlice.middleware,
+      authBaseApi.middleware,
       // authApi.middleware,
       userApi.middleware,
       productsApi.middleware,

@@ -14,9 +14,7 @@ from .serializers import UserSerializer, RegistrationSerializer, UserDetailSeria
 # LOGIN
 # *** OBSOLETE ***
 class CustomAuthToken(ObtainAuthToken):
-    '''
-        customize the response 
-    '''
+    """ return token with user creds """
     throttle_classes = [AnonRateThrottle]
 
     def post(self, request, *args, **kwargs):

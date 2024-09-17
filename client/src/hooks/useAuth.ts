@@ -26,7 +26,6 @@ export const useAuth = (): IReturnedObj => {
   return useMemo(() => {
     const logout = () => {
       dispatch(logOut())
-      localStorage.setItem('token', '')
     }
 
     return {
