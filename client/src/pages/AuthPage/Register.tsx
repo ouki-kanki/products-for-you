@@ -20,15 +20,16 @@ export const Register = () => {
   } = useValidation()
 
   // getRegisterFields
-  const registerFields = getRegisterFields(
+  const registerFields = getRegisterFields({
+    hadleUserNameChange: () => {},
     handleEmailChange,
     handlePasswordChange,
     email,
-    password,
-    handleInputBlur,
     emailError,
-    passwordError
-  )
+    password,
+    passwordError,
+    handleInputBlur,
+  })
 
   const handleRegister = () => {}
 
@@ -37,6 +38,7 @@ export const Register = () => {
   return (
     <LoginRegisterForm
       title='Register'
+      btnTitle='Register'
       handleSubmit={handleRegister}
       isLoading={false}
       isValid={isValid}

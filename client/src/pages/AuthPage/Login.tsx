@@ -45,9 +45,7 @@ const {
   const loginFields = getLoginFields(handleEmailChange, handlePasswordChange, email, password, handleInputBlur, emailError, passwordError)
 
   useEffect(() => {
-    if (firstInputRef.current) {
-      firstInputRef.current.focus()
-    }
+
     let delayId: TimeoutId;
     if (isLoginSuccess) {
       showNotification({
@@ -103,7 +101,7 @@ const {
 
   return <LoginRegisterForm
             handleSubmit={handleSubmit}
-            loginFields={loginFields}
+            fields={loginFields}
             isLoading={isLoading}
             isValid={isValid}
             >

@@ -118,7 +118,6 @@ export const useValidation = () => {
   const handlePasswordChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: ActionTypes.SET_PASSWORD, payload: value })
 
-    // TODO strength for now can only be tier 1 or mirror.have to check how complex is the pass and not only the length . how many uppercase, special chars, no repeated char etc
     const passStrength = getPasswordStrength(value, getTracker)
     dispatch({ type: ActionTypes.SET_PASSWORD_STRENGTH, payload: passStrength })
     passwordValidator(value, getTracker)

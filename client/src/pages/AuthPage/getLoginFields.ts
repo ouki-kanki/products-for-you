@@ -16,7 +16,7 @@ export const getLoginFields = (handleEmailChange: (e: Ievent) => void, handlePas
   [
     {
       id: 1,
-      name: 'username',
+      name: 'email',
       label: 'Email',
       value: email,
       placeholder: '',

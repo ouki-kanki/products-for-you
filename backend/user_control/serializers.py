@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from .models import CustomUser as User, UserDetail
+from .models import CustomUser, UserDetail
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('id', 'email', 'username', 'role')
 
 
@@ -23,7 +23,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     role = serializers.CharField(required=False, default='visitor')
 
     class Meta:
-        model = User
+        model = CustomUser
         # TODO remove the role and set default role 
         # ROLE MUST BE SET FROM SUPERUSER ONLY!!
         fields = ('email', 'username', 'password', 'password2', 'role')
@@ -32,7 +32,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         }
 
     def save(self):
-        user = User(email=self.validated_data['email'], role=self.validated_data['role'], username=self.validated_data['username'])
+        user = CustomUser(email=self.validated_data['email'], role=self.validated_data['role'], username=self.validated_data['username'])
         password = self.validated_data['password']
         password2 = self.validated_data["password2"]
         # username = self.validated_data["username"]

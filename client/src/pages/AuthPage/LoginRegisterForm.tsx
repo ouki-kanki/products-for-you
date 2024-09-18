@@ -13,13 +13,14 @@ interface FormProps {
   isValid: boolean;
   isLoading: boolean;
   title: string;
+  btnTitle: string;
   children: React.ReactNode
 }
 
 export const LoginRegisterForm = ({
   handleSubmit,
   fields,
-  isValid, isLoading, title, children}: FormProps) => {
+  isValid, isLoading, title, btnTitle, children}: FormProps) => {
 
     const firstInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -51,7 +52,7 @@ export const LoginRegisterForm = ({
                   <div className={styles.inputContainer}>
                     <div>
                     <Button type='submit' disabled={!isValid}>
-                      {isLoading ? 'Loading...' : 'Login'}
+                      {isLoading ? 'Loading...' : `${btnTitle}`}
                     </Button>
                     {children}
                     </div>
