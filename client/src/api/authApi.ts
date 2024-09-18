@@ -2,7 +2,6 @@ import { authBaseApi } from "./authBaseApi";
 import { setCredentials } from "../features/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
 
-
 export interface LoginCreds {
   email: string;
   password: string
@@ -15,6 +14,17 @@ interface JwtPayload {
 
 interface LogoutData {
   message: string;
+}
+
+interface RegisterData {
+  username?: string;
+  email: string;
+  password: string;
+  password2: string;
+}
+
+interface RegisterReturnData {
+
 }
 
 export const authApi = authBaseApi.injectEndpoints({
@@ -59,13 +69,24 @@ export const authApi = authBaseApi.injectEndpoints({
           // TODO: show notification
         }
       }
+    }),
+    register: builder.mutation<RegisterReturnData, RegisterData>({
+      query: ({
+        ...args
+      }) => ({
+        url: 'auth/register/',
+        method: 'POST',
+        body: {
+          ...args
+        }
+      }),
     })
   })
 })
 
-
 export const {
   useLoginMutation,
   useRefreshMutation,
-  useLogoutMutation
+  useLogoutMutation,
+  useRegisterMutation,
 } = authApi

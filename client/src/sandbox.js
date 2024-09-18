@@ -19,10 +19,22 @@ const testParams = (path, params) => {
 }
 
 
-testParams('test', {
-  name: 'max',
-  age: 23
-})
+const foo = (bar) => {
+  const a = 10;
+  const b = 20;
+
+  bar(a, b)
+}
+
+
+foo((a, b) => console.log(a + b) )
+
+
+
+// testParams('test', {
+//   name: 'max',
+//   age: 23
+// })
 
 
 

@@ -100,6 +100,8 @@ const {
   const handlePersist = () => setPersist((prev: boolean) => !prev)
 
   return <LoginRegisterForm
+            title='Login'
+            btnTitle='Login'
             handleSubmit={handleSubmit}
             fields={loginFields}
             isLoading={isLoading}

@@ -17,6 +17,7 @@ class TokenSerializer(serializers.ModelSerializer):
         fields = ('key', 'user', 'role')
 
 
+# *** OBSOLETE ** user geristration is now on auth app
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
     username = serializers.CharField(required=False, default='')

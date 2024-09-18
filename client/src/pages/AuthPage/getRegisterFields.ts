@@ -12,31 +12,35 @@ export interface IloginInput extends Omit<IInputBase, 'id' | 'hasLabel' | 'error
 }
 
 interface RegisterFieldsProps {
-  hadleUserNameChange: (e: Ievent) => void,
-  handleEmailChange: (e: Ievent) => void,
-  handlePasswordChange: (e: Ievent) => void,
-  username: string,
-  email: string,
-  password: string,
-  handleInputBlur: () => void,
-  emailError: string | null ,
-  passwordError: string | null
+  username: string;
+  email: string;
+  emailError: string | null;
+  handleUserNameChange: (e: Ievent) => void;
+  handleEmailChange: (e: Ievent) => void;
+  password: string;
+  handlePasswordChange: (e: Ievent) => void;
+  passwordError: string | null;
+  secondPassword: string;
+  handleSecondPasswordChange: (e: Ievent) => void;
+  secondPasswordError: string | null;
+  handleInputBlur: () => void;
 }
-
-
 
 
 // TODO: add isRequired -> will put a star at the end of the field if it is required
 export const getRegisterFields = ({
-  hadleUserNameChange,
+  username,
+  handleUserNameChange,
+  email,
+  emailError,
   handleEmailChange,
   handleInputBlur,
-  handlePasswordChange,
-  username,
-  email,
   password,
-  emailError,
+  handlePasswordChange,
   passwordError,
+  secondPassword,
+  handleSecondPasswordChange,
+  secondPasswordError
 }: RegisterFieldsProps): Array<IloginInput> => (
   [
     {
@@ -45,7 +49,7 @@ export const getRegisterFields = ({
       label: 'UserName',
       value: username,
       placeholder: '',
-      onChange: hadleUserNameChange,
+      onChange: handleUserNameChange,
       onBlur: handleInputBlur,
       onFocus: handleInputBlur,
       error: ''
@@ -75,15 +79,15 @@ export const getRegisterFields = ({
     },
     {
       id: 4,
-      label: 'Password',
-      name: 'password',
-      value: password,
+      label: 'Type password again',
+      name: 'second_passord',
+      value: secondPassword,
       placeholder: 'Enter password',
       type: 'password',
-      onChange: handlePasswordChange,
+      onChange: handleSecondPasswordChange,
       onBlur: handleInputBlur,
       onFocus: handleInputBlur,
-      error: passwordError,
+      error: secondPasswordError,
     }
   ]
 )

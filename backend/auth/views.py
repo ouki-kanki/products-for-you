@@ -6,7 +6,7 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.views import APIView
 
-from .serializers import MyTokenObtainSerializer
+from .serializers import MyTokenObtainSerializer, RegistrationSerializer
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -64,4 +64,14 @@ class LogOutView(APIView):
         response.delete_cookie('refresh')
 
         return response
+
+
+# TODO: give feedback to the user regarding the validity of email or password
+class RegistrationView(APIView):
+    def post(self, request): # noqa
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

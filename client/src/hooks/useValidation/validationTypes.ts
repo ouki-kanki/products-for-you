@@ -12,12 +12,8 @@ export type IGetTracker = (password: string) => IPasswordTracker
 
 export interface IValidationState {
   email: string;
-  password: string;
   emailError: string | null;
-  passwordError: string | null;
-  passwordStrength: string;
   isEmailValid: boolean;
-  isPasswordValid: boolean;
   isValid: boolean;
   isTouched: boolean;
 }
@@ -34,7 +30,8 @@ export const enum ActionTypes {
   SET_IS_VALID
 }
 
-export type IValidationAction = 
+// TODO: this is used for validation state & for password state.maybe decouple password actions
+export type IValidationAction =
   | { type: ActionTypes.SET_EMAIL,  payload: string}
   | { type: ActionTypes.SET_EMAIL_ERROR,  payload: string | null}
   | { type: ActionTypes.SET_PASSWORD,  payload: string}
