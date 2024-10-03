@@ -48,6 +48,7 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=Roles)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -66,7 +67,6 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
         #     return "michael jordan"
         # return self.user_detail.first_name
 
-
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -80,6 +80,7 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
 
 def get_user_image(self, path):
     return f'user_images/{self.pk}/user_image.png'
+
 
 def get_default_user_image():
     return 'user_images/default_user_image.png'

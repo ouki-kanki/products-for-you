@@ -17,39 +17,6 @@ class TokenSerializer(serializers.ModelSerializer):
         fields = ('key', 'user', 'role')
 
 
-# *** OBSOLETE ** user geristration is now on auth app
-class RegistrationSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
-    username = serializers.CharField(required=False, default='')
-    role = serializers.CharField(required=False, default='visitor')
-
-    class Meta:
-        model = CustomUser
-        # TODO remove the role and set default role 
-        # ROLE MUST BE SET FROM SUPERUSER ONLY!!
-        fields = ('email', 'username', 'password', 'password2', 'role')
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
-    def save(self):
-        user = CustomUser(email=self.validated_data['email'], role=self.validated_data['role'], username=self.validated_data['username'])
-        password = self.validated_data['password']
-        password2 = self.validated_data["password2"]
-        # username = self.validated_data["username"]
-
-        # if username:
-            # user['username'] = username
-
-        if password != password2:
-            raise serializers.ValidationError({'password': 'Passwords are not the same.'})
-        
-        user.set_password(password)
-        user.save()
-
-        return user
-        
-
 # NOT IMPLEMENTED
 class PasswordChangeSerializer(serializers.Serializer):
     current_password = serializers.CharField(style={"input_type": "password"}, required=True)

@@ -10,6 +10,7 @@ import { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/type
 
 export const Register = () => {
   const [username, setUsername] = useState('')
+  const [userId, setUserId] = useState('')
   const [register, {data, isLoading, isError, isSuccess, error}] = useRegisterMutation()
   const navigate = useNavigate()
   // useValidation
@@ -34,8 +35,28 @@ export const Register = () => {
   useEffect(() => {
     let timeoutid: TimeoutId;
     if (isError) {
-      console.log("the error", error)
+      const { data } = error
+      let errorMessage = 'something went wrong'
+      if (data.email) {
+        console.log(data.email.join(''))
+        errorMessage = data.email.join('')
+      }
+      if (data.password) {
+        console.log("password error")
+      }
+
+      // TODO: handle notification async
+      showNotification({
+        appearFrom: 'from-top',
+        duration: 2400,
+        hideDirection: 'to-right',
+        overrideDefaultHideDirection: true,
+        message: errorMessage,
+        position: 'top-right',
+        type: 'danger'
+      })
     }
+
     if (isSuccess) {
       showNotification({
         appearFrom: 'from-top',
@@ -46,7 +67,7 @@ export const Register = () => {
       })
 
       timeoutid = setTimeout(() => {
-        navigate('/login', { replace: true })
+        navigate(`/activate/${data.uid}`, { replace: false })
       }, 1600)
     }
 
@@ -73,13 +94,12 @@ export const Register = () => {
   const handleRegister = async (e: SyntheticEvent) => {
     e.preventDefault()
 
-    const data = await register({
+    await register({
       email,
       password,
       password2: secondPassword,
       username
     })
-    console.log("success register data", data)
   }
 
 

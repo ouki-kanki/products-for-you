@@ -10,6 +10,8 @@ import { Home,
   ProductsPage,
   Login,
   Register,
+  Activation,
+  ActivationSuccess,
   Profile,
   ErrorPage,
   LandingPage,
@@ -51,6 +53,8 @@ export const EcommerceRoutes = () => (
           </Route>
       </Route>
       <Route path='login' element={<Login/>}/>
+      <Route path='activate/:user_id' element={<Activation/>}/>
+      <Route path='activation-success/:uidb64' element={<ActivationSuccess/>}/>
     </Route>
   </Routes>
 )

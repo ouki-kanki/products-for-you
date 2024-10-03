@@ -5,6 +5,7 @@ from decouple import config
 from urllib.parse import quote_plus as urlquote
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR project_root/e-shop
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'corsheaders',
+    'channels',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -64,7 +66,9 @@ ROOT_URLCONF = 'e_shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR.parent / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,10 +82,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'e_shop.wsgi.application'
+ASGI_APPLICATION = 'e_shop.asgi.application'
 
+# --- *** --- CHANNELS CONFIG --- *** ---
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+
+}
 
 DATABASES = {
     'default': {
@@ -94,11 +104,9 @@ DATABASES = {
     }
 }
 
-# *** --- CORS & CSRF CONFIG ---
+# --- *** --- CORS & CSRF CONFIG --- *** ---
 
 # CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', ]
-# CORS_ORIGIN_WHITELIST = ('http://localhost:8000', "http://localhost:5173",)
-
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173", 'http://127.0.0.1:5173', ]
@@ -143,7 +151,6 @@ PASSWORD_HASHERS = [
 ]
 
 # Internationalization
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Istanbul'
@@ -198,7 +205,7 @@ REST_FRAMEWORK = {
 
 # JWT
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=50),
     "SIGNING_KEY": config("SECRET_KEY"),
     "ROTATE_REFRESH_TOKENS": True,
@@ -251,3 +258,15 @@ MAX_PAGE_SIZE_LIMIT = 30
 # REST_AUTH_REGISTER_SERIALIZERS = {
 #     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
 # }
+
+
+#  SMTP SETTINGS
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = config('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_RECEIVERS_LIST = [config('EMAIL_RECEIVER_ONE'),]

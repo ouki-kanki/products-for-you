@@ -16,3 +16,5 @@ export { Cart } from './Cart/Cart'
 export { DeliveryTerms } from './DeliveryTerms/DeliveryTerms'
 export { TermsOfUse } from './TermsOfUse/TermsOfUse'
 export { Checkout } from './Checkout/Checkout';
+export { Activation } from './Activation/Activation';
+export { ActivationSuccess } from './Activation/ActivationSuccess'

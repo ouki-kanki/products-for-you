@@ -24,7 +24,10 @@ interface RegisterData {
 }
 
 interface RegisterReturnData {
-
+  email: string;
+  username: string;
+  role: string;
+  uid: string;
 }
 
 export const authApi = authBaseApi.injectEndpoints({
@@ -80,6 +83,16 @@ export const authApi = authBaseApi.injectEndpoints({
           ...args
         }
       }),
+    }),
+    activateUser: builder.query<void, string>({
+      query: (uidb64) => ({
+        url: `auth/activate-user/${uidb64}`
+      })
+    }),
+    resendEmail: builder.query<void, string>({
+      query: (uid) => ({
+        url: `auth/resend-email/${uid}`
+      })
     })
   })
 })
@@ -89,4 +102,6 @@ export const {
   useRefreshMutation,
   useLogoutMutation,
   useRegisterMutation,
+  useLazyActivateUserQuery,
+  useLazyResendEmailQuery,
 } = authApi

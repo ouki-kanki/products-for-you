@@ -14,9 +14,6 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set(AuthEnum.authorization, `Bearer ${token}`)
     }
-    // headers.set("Referrer-Policy", "unsafe-url")
-    // headers.set('Content-Type', 'application/json')
-
     return headers
   },
   credentials: 'include',

@@ -46,6 +46,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
 
+        # validate special chars pass length etc
+        special_characters = set('$%^&*()@#!~:"<>\'?/`')
+        if not any(char in special_characters for char in password):
+            raise serializers.ValidationError({'password': 'Password must contain at least one special character'})
+
+        if len(password) < 8:
+            raise serializers.ValidationError({'password': 'Password must be more that 8 characters'})
+
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords have to be the same'})
 
