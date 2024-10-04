@@ -1,17 +1,28 @@
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
 from user_control.models import Roles, CustomUser
 
 class MyTokenObtainSerializer(TokenObtainPairSerializer): # noqa
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        if not self.user.is_verified:
+            raise serializers.ValidationError("Account is not activated.Please activate the account")
+        return data
 
     @classmethod
     def get_token(cls, user):
-        print(type(user))
-        print(user.email)
         token = super().get_token(user)
         token['email'] = user.email
         token['username'] = user.username
+
+        # encode uid
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        # token['user_id'] = uid
 
         return token
 

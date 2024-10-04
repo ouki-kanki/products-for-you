@@ -1,17 +1,19 @@
-import { useSelector } from 'react-redux';
-import { getUserId } from '../../auth/authSlice';
-import { useGetUserQuery } from '../usersApiSlice';
+import { useGetUserProfileQuery } from '../../../api/userApi';
+import { userProfileFields } from './userProfileFields';
 
 import styles from './userProfile.module.scss';
 import { Input } from '../../../UI/Forms/Inputs';
 
-
+type Error = {
+  status: number;
+  data: {
+    message: string
+  }
+}
 
 export const UserProfile = () => {
-  const userId = useSelector(getUserId)
-  const userIdstr = userId ? userId.toString() : ''
-
-  const { data, isError, error, isLoading } = useGetUserQuery(userIdstr)
+  const { data, isError, error, isLoading } = useGetUserProfileQuery()
+  const myError = error as Error // TODO: find a better way to type this
 
   if (isLoading) {
     // use a spinner or skeleton
@@ -22,6 +24,27 @@ export const UserProfile = () => {
 
   // TODO: type the error
   if (isError) {
+    // show a form to fill user details
+    if (myError.status === 404) {
+      return (
+        <form>
+          <h1>New User Profile</h1>
+          {userProfileFields.map(field => (
+            <div
+              key={field.id}
+              className={styles.inputContainer}>
+              <label htmlFor={field.name}>{field.label}</label>
+              <Input
+                id={field.id}
+                name={field.name}
+                type={field.type} />
+            </div>
+          ))}
+        </form>
+      )
+    }
+
+
     return (
       <>
         <h2>Something went wrong</h2>

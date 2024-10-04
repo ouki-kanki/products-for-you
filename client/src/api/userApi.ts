@@ -1,6 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../api/baseConfig';
-import { prepareHeaders } from './common';
+import { authBaseApi } from './authBaseApi';
 
 export interface IUserProfile {
   firstName: string;
@@ -14,19 +12,17 @@ export interface IUserProfile {
 }
 
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
-    prepareHeaders
-   }),
-  endpoints: (builder) => ({
-    getProfile: builder.query<IUserProfile, string>({
-      query: (userId) => ({
-        url: `/user-control/profile/${userId}`,
-      })
+export const userApi = authBaseApi.injectEndpoints({
+  endpoints: builder => ({
+    getUserProfile: builder.query<IUserProfile, void>({
+      // query: (userId) => `/user-control/profile/${userId}`,
+      query: () => `/user-control/profile/`,
+      keepUnusedDataFor: 5,
     })
   })
 })
 
-export const { useGetProfileQuery, useLazyGetProfileQuery } = userApi
+export const {
+  useGetUserProfileQuery,
+  useLazyGetUserProfileQuery,
+} = userApi

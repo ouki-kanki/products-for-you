@@ -38,7 +38,6 @@ export const Register = () => {
       const { data } = error
       let errorMessage = 'something went wrong'
       if (data.email) {
-        console.log(data.email.join(''))
         errorMessage = data.email.join('')
       }
       if (data.password) {

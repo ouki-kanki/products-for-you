@@ -48,15 +48,13 @@ const checkoutReducer = (state: ICheckoutState, action: CheckoutAction) => {
 export const Checkout = () => {
   const cart = useSelector((state: RootState) => state.cart)
   const [state, dispatch] = useReducer(checkoutReducer, initialState)
-
   const [ createOrder, { isLoading } ] = useCreateOrderMutation()
-
-  // console.log(cart)
-  // console.log(state)
 
   const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: 'CHANGE', name, value })
   }
+
+  console.log("the state", state)
 
   const handleCheckout = async (e: FormEvent) => {
     e.preventDefault();

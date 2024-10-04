@@ -92,6 +92,8 @@ class UserDetail(models.Model):
     last_name = models.CharField(max_length=255, blank=True)
     address_one = models.CharField(max_length=255, blank=True, default='')
     address_two = models.CharField(max_length=255, blank=True, default='')
+    phone_number = models.CharField(max_length=20, blank=True, default='')
+    cell_phone_number = models.CharField(max_length=20, blank=True, default='')
     city = models.CharField(max_length=255, blank=True, default='')
     country = models.CharField(max_length=255, blank=True, default='')
     image = models.ImageField(max_length=255, upload_to=get_user_image, null=True, blank=True, default=get_default_user_image)

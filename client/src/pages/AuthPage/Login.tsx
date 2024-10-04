@@ -20,7 +20,10 @@ interface LoginData {
 
 type Error = {
   status: string;
-  error: string;
+  // error: string;
+  data: {
+    non_field_errors: string[]
+  }
 }
 
 export const Login = () => {
@@ -44,8 +47,36 @@ const {
   const [login, { data, isLoading, isError, isSuccess: isLoginSuccess, error }] = useLoginMutation()
   const loginFields = getLoginFields(handleEmailChange, handlePasswordChange, email, password, handleInputBlur, emailError, passwordError)
 
-  useEffect(() => {
 
+  const handleErrorNotifications = (error: Error) => {
+    if (error?.data?.non_field_errors) {
+      const message = error.data.non_field_errors[0] as string
+
+      showNotification({
+        appearFrom: 'from-right',
+        hideDirection: 'to-top',
+        overrideDefaultHideDirection: true,
+        duration: 3000,
+        message,
+        position: 'top-right',
+        type: 'danger'
+      })
+
+    } else {
+      const message = `something went wrong status: ${(error as Error).status}`
+      showNotification({
+        appearFrom: 'from-right',
+        hideDirection: 'to-top',
+        overrideDefaultHideDirection: true,
+        duration: 3000,
+        message,
+        position: 'top-right',
+        type: 'danger'
+      })
+    }
+  }
+
+  useEffect(() => {
     let delayId: TimeoutId;
     if (isLoginSuccess) {
       showNotification({
@@ -61,16 +92,7 @@ const {
         navigate('/')
       }, 600);
     } else if (isError) {
-      const message = `something went wrong status: ${(error as Error).status}`
-      showNotification({
-        appearFrom: 'from-right',
-        hideDirection: 'to-top',
-        overrideDefaultHideDirection: true,
-        duration: 3000,
-        message,
-        position: 'top-right',
-        type: 'danger'
-      })
+      handleErrorNotifications(error as Error)
     }
     return () => {
       clearTimeout(delayId)

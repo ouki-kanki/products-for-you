@@ -19,15 +19,19 @@ const testParams = (path, params) => {
 }
 
 
-const foo = (bar) => {
-  const a = 10;
-  const b = 20;
+// const foo = (bar) => {
+//   const a = 10;
+//   const b = 20;
 
-  bar(a, b)
-}
+//   bar(a, b)
+// }
 
 
-foo((a, b) => console.log(a + b) )
+const foo = (a, b) => a + b
+const bar = (a, b, c) => a + b + c
+
+
+// foo((a, b) => console.log(a + b) )
 
 
 

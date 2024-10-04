@@ -4,10 +4,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from django.shortcuts import render
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from django.conf import settings
 
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, action
@@ -24,9 +20,7 @@ import requests
 from .serializers import MyTokenObtainSerializer, RegistrationSerializer
 from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
-from .utils import send_activation_email
-
-from common.util.auth_utils import TokenGenerator
+from .auth_utils import send_activation_email
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -98,7 +92,7 @@ class RegistrationView(APIView):
             response_data = serializer.data
             response_data['uid'] = urlsafe_base64_encode(force_bytes(user.pk))
 
-            # send_activation_email(request, user)
+            send_activation_email(request, user)
 
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -189,26 +183,3 @@ class NotificationTestViewSet(viewsets.ModelViewSet):
     def activate_user(self, request, pk):
         user = self.get_object()
         print("the user inside the action", user)
-
-
-class TestSendToWebSocketServer(APIView):
-    """
-    url: test-activation
-    """
-    def get(self, request, *args, **kwargs): # noqa
-        token = kwargs.get('token')
-        print("the token", token)
-
-        try:
-            response = requests.post(
-                'http://localhost:8765/activate_user',
-                json={'token': token},
-                timeout=5
-            )
-            response.raise_for_status()
-            print("the json from resposnse", response.json())
-            return Response(response.json())
-        except requests.exceptions.RequestException as e:
-            print("request did not receive a response", e)
-            return Response({'error': 'service is not available'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-

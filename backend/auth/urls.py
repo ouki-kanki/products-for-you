@@ -9,7 +9,6 @@ from .views import (
     LogOutView, RegistrationView,
     ActivateUserView, view_activation_template,
     NotificationTestViewSet,
-    TestSendToWebSocketServer,
     ResendEmailView
 )
 
@@ -30,6 +29,4 @@ urlpatterns = [
     path('resend-email/<user_id>', ResendEmailView.as_view(), name='resend_email'),
 
     path('activation-form/', view_activation_template, name='get_activation_form'),
-
-    path('activate-test/<token>', TestSendToWebSocketServer.as_view(), name='activate_test')
 ]
