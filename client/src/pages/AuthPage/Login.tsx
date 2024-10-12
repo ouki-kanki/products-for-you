@@ -22,7 +22,8 @@ type Error = {
   status: string;
   // error: string;
   data: {
-    non_field_errors: string[]
+    non_field_errors: string[];
+    detail: string;
   }
 }
 
@@ -49,6 +50,8 @@ const {
 
 
   const handleErrorNotifications = (error: Error) => {
+    console.log("the error", error.data.detail)
+    let message = 'something went wrong'
     if (error?.data?.non_field_errors) {
       const message = error.data.non_field_errors[0] as string
 
@@ -62,6 +65,13 @@ const {
         type: 'danger'
       })
 
+    } else if (error?.data.detail) {
+      message = error.data.detail
+
+      showNotification({
+        message,
+        type: 'danger'
+      })
     } else {
       const message = `something went wrong status: ${(error as Error).status}`
       showNotification({

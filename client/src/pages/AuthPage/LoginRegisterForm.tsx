@@ -51,7 +51,7 @@ export const LoginRegisterForm = ({
                   ))}
                   <div className={styles.inputContainer}>
                     <div>
-                    <Button type='submit' disabled={!isValid}>
+                    <Button type='submit' disabled={!isValid || isLoading}>
                       {isLoading ? 'Loading...' : `${btnTitle}`}
                     </Button>
                     {children}

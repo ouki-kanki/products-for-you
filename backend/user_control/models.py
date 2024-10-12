@@ -117,7 +117,7 @@ class UserDetail(models.Model):
         return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]
     
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        # super().save(*args, **kwargs)
         if self.image:
             self.image = make_thumbnail(self.image)
         

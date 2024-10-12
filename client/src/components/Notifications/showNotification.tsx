@@ -8,7 +8,7 @@ import { _Notification as Notification } from './_Notification';
  * @param param0
  * @returns
  */
-export const showNotification = ({ message, position = 'bottom-right', type = 'success', duration = 2000, appearFrom = 'from-bottom', hideDirection = 'to-bottom', overrideDefaultHideDirection = false }: NotificationProps) => {
+export const showNotification = ({ message, position = 'bottom-right', type = 'success', duration = 2500, appearFrom = 'from-bottom', hideDirection = 'to-bottom', overrideDefaultHideDirection = false }: NotificationProps) => {
   const container = document.createElement('div')
   document.body.appendChild(container)
 

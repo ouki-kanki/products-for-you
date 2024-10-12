@@ -30,9 +30,12 @@ class PasswordChangeSerializer(serializers.Serializer):
 
 class UserDetailSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
+
     class Meta:
         model = UserDetail
-        exclude = ('id', 'created_at', 'updated_at', 'user')
+        exclude = ('id', 'created_at', 'updated_at')
 
-    def get_email(self, obj):
+    def get_email(self, obj): # noqa
+        if isinstance(obj, dict):
+            return obj.get('email', None)
         return obj.email

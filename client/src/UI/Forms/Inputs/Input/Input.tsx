@@ -9,10 +9,11 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 type Ref = HTMLInputElement
 
 
-// TODO: when there is an array of elements typescript cannot distinguish between the 2 different types of input and gives error about the hasLabel field. find a better way to type the input properly 
+// TODO: when File | null is added no is does not extends properly
+// TODO: when there is an array of elements typescript cannot distinguish between the 2 different types of input and gives error about the hasLabel field. find a better way to type the input properly
 export interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
   placeholder?: string;
-  value?: string;
+  value?: string | File | null;
   variant?: 'primary' | 'secondary' | 'error';
   disabled?: boolean;
   label?: string;
@@ -28,7 +29,7 @@ export interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
 // export type IInput = IInputBase | IInputWithLabel
 
 /**
- * accepts 
+ * accepts
  * placeholder optional
  * value optional
  * variant - primary, secondary, error
@@ -40,10 +41,10 @@ export interface IInputBase extends InputHTMLAttributes<HTMLInputElement>{
 export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant = 'primary', name, type, label, error, ...rest }, ref) => {
   const [isHidden, setIsHidden] = useState(true);
 
-  // TODO: find a more elegand way 
+  // TODO: find a more elegand way
   /**
-   * in situations where the type is not password i want the correct type to return and not 'text' that's why a whole handler is used 
-   * @returns 
+   * in situations where the type is not password i want the correct type to return and not 'text' that's why a whole handler is used
+   * @returns
    */
   const handleType = (type: string) => {
     if (type !== 'password') {
@@ -65,7 +66,7 @@ export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant 
           name={name}
           className={`${styles.input} ${error && styles.error}`}
           placeholder={placeholder}
-          // 1 - password & hidden -> type . 
+          // 1 - password & hidden -> type .
           type={handleType(type as string)}
           value={value}
           ref={ref}
@@ -74,8 +75,8 @@ export const Input = forwardRef<Ref, IInputBase>(({ placeholder, value, variant 
         {type === 'password' && (
           <FontAwesomeIcon
             onClick={() => setIsHidden((prevState) => !prevState)}
-            className={styles.icon} 
-            icon={isHidden ? faEyeSlash : faEye} 
+            className={styles.icon}
+            icon={isHidden ? faEyeSlash : faEye}
             size='1x'/>
           )
         }

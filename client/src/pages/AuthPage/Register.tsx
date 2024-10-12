@@ -35,6 +35,7 @@ export const Register = () => {
   useEffect(() => {
     let timeoutid: TimeoutId;
     if (isError) {
+      // TODO: check the type
       const { data } = error
       let errorMessage = 'something went wrong'
       if (data.email) {
@@ -107,7 +108,7 @@ export const Register = () => {
       title='Register'
       btnTitle='Register'
       handleSubmit={handleRegister}
-      isLoading={false}
+      isLoading={isLoading}
       isValid={isValid}
       fields={registerFields}
     >

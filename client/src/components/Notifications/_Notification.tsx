@@ -7,10 +7,10 @@ type HideDirection = 'to-top' | 'to-right' | 'to-bottom' | 'to-left'
 export interface NotificationProps {
   message: string;
   type?: 'success' | 'caution' | 'danger'
-  position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
-  duration: number,
-  appearFrom: 'from-top' | 'from-right' | 'from-bottom' | 'from-left',
-  hideDirection: HideDirection
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
+  duration?: number,
+  appearFrom?: 'from-top' | 'from-right' | 'from-bottom' | 'from-left',
+  hideDirection?: HideDirection
   overrideDefaultHideDirection?: boolean
 }
 

@@ -1,79 +1,27 @@
-const testParams = (path, params) => {
-  // console.log(params)
-  console.log('yoyoyo', params)
+const a = {
+  a: 'foo',
+  b: 'bar'
+}
 
-  let params_str = ''
-  for (const [key, value] of Object.entries(params)) {
-    if (!params_str) {
-      params_str += `?${key}=${value}`
-    } else {
-      params_str += `&${key}=${value}`
+const b = {
+  a: 'foo',
+  b: 'bar'
+}
+
+const c = {
+  a: 'foort',
+  b: 'bar'
+}
+
+const isObjValuesSame = (a, b) => {
+  let flag = true
+  Object.keys(a).forEach((key) => {
+    if (a[key] !== b[key]) {
+      flag = false
     }
-  }
-
-  console.log(params_str)
-
-
-  const finalPath = `path`
-
-}
-
-
-// const foo = (bar) => {
-//   const a = 10;
-//   const b = 20;
-
-//   bar(a, b)
-// }
-
-
-const foo = (a, b) => a + b
-const bar = (a, b, c) => a + b + c
-
-
-// foo((a, b) => console.log(a + b) )
-
-
-
-// testParams('test', {
-//   name: 'max',
-//   age: 23
-// })
-
-
-
-
-const arr = Array.from(Array(10))
-
-const items = ['item1', 'item-2', 'item-3', 'item-4', 'item-5', 'item-6', 'item-7', 'item-8', 'item-9', 'item-10']
-const num = 4
-const active = 2
-const length = items.length
-
-
-const prevInd = (length, num, activeIndex) => {
-  return [ ...Array(num)]
-    .map(_ => {
-      const temp = num
-      num -= 1 // is copied by value, so no prob
-
-      return (activeIndex - temp + length) % length
   })
+
+  return flag
 }
 
-const postInd = (length, num, activeIndex) => {
-  return [...Array(num)]
-    .map(_ => {
-      const temp = num
-      num -= 1
-
-      return (activeIndex + temp) % length
-    }).reverse()
-}
-
-
-const prev = prevInd(length, num, active)
-const post = postInd(length, num, active)
-
-// console.log(prev)
-// console.log(post)
+console.log(isObjValuesSame(a, c))

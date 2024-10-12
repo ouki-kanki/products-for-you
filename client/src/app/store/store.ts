@@ -13,6 +13,7 @@ import {
   userApi,
   productsApi,
   orderApi,
+  userProfileApi,
   searchApi } from "../../api";
 
 import { cartMiddleware, cartListenerMiddleware } from "./middleware/cartMiddleware";
@@ -29,6 +30,7 @@ export const store = configureStore({
     [authBaseApi.reducerPath]: authBaseApi.reducer,
     auth: authReducer,
     [userApi.reducerPath]: userApi.reducer,
+    [userProfileApi.reducerPath]: userProfileApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
@@ -42,6 +44,7 @@ export const store = configureStore({
       authBaseApi.middleware,
       // authApi.middleware,
       userApi.middleware,
+      userProfileApi.middleware,
       productsApi.middleware,
       orderApi.middleware,
       searchApi.middleware,

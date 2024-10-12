@@ -22,6 +22,7 @@ import { Home,
  } from './pages'
 import { Search } from './pages/Search';
 import { PersistLogin } from './features/auth/PersistLogin';
+import { ProfileNew } from './pages/Profile/ProfileNew/ProfileNew';
 
 
 export const EcommerceRoutes = () => (
@@ -42,14 +43,16 @@ export const EcommerceRoutes = () => (
           <Route path='/products/' element={<ProductsPage/>}/>
           <Route path='/products/:slug' element={<ProductsPage/>}/>
           <Route path='/testproducts/' element={<ProductsPage/>}/>
-          {/* first slug -> category second slug -> item (uses the contructed url field)*/}
+          {/* first slug -> category, second slug -> item (uses the contructed url field. check drf)*/}
           <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
           <Route path='/search/' element={<Search/>}/>
           <Route path='sign-up' element={<Register/>}/>
           <Route path='/delivery-terms' element={<DeliveryTerms/>}/>
           <Route path='/terms-of-use' element={<TermsOfUse/>}/>
           <Route element={<ProtectedRoute/>}>
-            <Route path='profile' element={<Profile/>}/>
+            <Route path='profile' element={<Profile/>}>
+              <Route path='create' element={<ProfileNew/>}/>
+            </Route>
           </Route>
       </Route>
       <Route path='login' element={<Login/>}/>

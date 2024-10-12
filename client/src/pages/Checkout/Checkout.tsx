@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
 import { leftData, rightData } from '../../data/checkoutFields';
 import { useCreateOrderMutation } from '../../api/orderApi';
-
+import { convertCamelToSnake } from '../../utils/converters';
+import { ICartItem } from '../../features/cart/cartSlice';
+import { fieldsReducer } from '../../app/reducers';
 
 interface ICheckoutState {
   firstName: string;
@@ -30,31 +32,15 @@ const initialState: ICheckoutState = {
   zipCode: ''
 }
 
-type CheckoutAction = { type: 'CHANGE'; name: string; value: string };
-
-const checkoutReducer = (state: ICheckoutState, action: CheckoutAction) => {
-  switch(action.type) {
-    case 'CHANGE':
-      return {
-        ...state,
-        [action.name]: action.value
-      }
-    default:
-      return state
-  }
-}
-
 
 export const Checkout = () => {
   const cart = useSelector((state: RootState) => state.cart)
-  const [state, dispatch] = useReducer(checkoutReducer, initialState)
+  const [state, dispatch] = useReducer(fieldsReducer<ICheckoutState>, initialState)
   const [ createOrder, { isLoading } ] = useCreateOrderMutation()
 
   const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: 'CHANGE', name, value })
   }
-
-  console.log("the state", state)
 
   const handleCheckout = async (e: FormEvent) => {
     e.preventDefault();
@@ -63,23 +49,7 @@ export const Checkout = () => {
     if (cart && Object.keys(cart).length > 0) {
       const total = cart.total
       const items = cart.items
-      // console.log(items)
-
-      // TODO: move to util
-      const productsWithSnakeKeys = items.map(item => {
-        return Object.keys(item).reduce((acc, key) => {
-          const snake = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
-          if (snake === 'product_id') {
-            // server for produt_id needs the key 'product_item
-            acc['product_item'] = item[key]
-          } else if (snake === 'variation_name' || snake === 'product_icon') {
-            return acc
-          } else {
-            acc[snake] = item[key]
-          }
-          return acc
-        }, {})
-      })
+      console.log(items)
 
       const payload =  {
           user_id: '',
@@ -89,10 +59,19 @@ export const Checkout = () => {
           billing_address: state.billingAddress,
           order_total: total,
           refund_status: "NOT_REQUESTED",
-          order_item: productsWithSnakeKeys
+          order_item: convertCamelToSnake<ICartItem>({
+            data: items,
+            omitedKeys: ['variation_name', 'product_icon'],
+            customConvertions: [
+              {
+                source: 'product_id',
+                target: 'product_item'
+              }
+            ]
+          })
         }
 
-        // console.log(payload)
+        console.log(payload)
 
         try {
           const data = await createOrder(payload).unwrap()

@@ -25,7 +25,9 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('username',)}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions', 'role')}),
+        ('Permissions', {
+            'fields': ('is_active', 'is_verified', 'is_staff', 'is_superuser', 'user_permissions', 'role')
+        }),
         ('Important dates', {'fields': ('last_login',)}),
         )
 
@@ -65,11 +67,10 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(UserDetail)
 class UserDetailAdmim(admin.ModelAdmin):
     model = UserDetail
-    list_display = ('user', 'first_name', 'last_name', 'created_at')
+    list_display = ('user', 'id', 'first_name', 'last_name', 'created_at')
 
     formfield_overrides = {
-        models.ImageField: { 'widget': CustomAdminFileWidget }
+        models.ImageField: {'widget': CustomAdminFileWidget}
     }
 
     ordering = ('-created_at',)
-# admin.site.register(UserDetail)

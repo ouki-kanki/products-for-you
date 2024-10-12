@@ -3,7 +3,7 @@ import { BASE_URL } from '../api/baseConfig';
 import type { RootState } from '../app/store/store';
 import { AuthEnum } from './enums';
 
-import { convertSnakeToCamel } from '../utils/stringUtils';
+import { convertSnakeToCamel } from '../utils/converters';
 import { ICategory } from '../types';
 
 interface IProductImage {
@@ -105,6 +105,7 @@ export const productsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
+      // TODO: this is invalid, check if token will be needed and corect it
       const token = (getState() as RootState).auth.token
       if (token) {
         headers.set(AuthEnum.authorization, `Bearer ${token}`)

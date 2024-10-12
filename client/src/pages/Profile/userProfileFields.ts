@@ -10,37 +10,37 @@ export const userProfileFields: UserProfileField[] = [
   {
     label: 'First Name',
     id: 'first-name',
-    name: 'first_name',
+    name: 'firstName',
     type: 'text'
   },
   {
     label: 'Last Name',
     id: 'last-name',
-    name: 'last_name',
+    name: 'lastName',
     type: 'text'
   },
   {
     label: 'Address One',
     id: 'address-one',
-    name: 'address_one',
+    name: 'addressOne',
     type: 'text'
   },
   {
     label: 'Address Two',
     id: 'address-two',
-    name: 'address_two',
+    name: 'addressTwo',
     type: 'text',
   },
   {
     label: 'Phone Number',
     id: 'phone-number',
-    name: 'phone_number',
+    name: 'phoneNumber',
     type: 'text'
   },
   {
     label: 'Cell Phone',
     id: 'cell-phone',
-    name: 'cell_phone_number',
+    name: 'cellPhoneNumber',
     type: 'text',
   },
   {

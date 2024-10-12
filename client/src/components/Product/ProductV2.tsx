@@ -5,11 +5,9 @@ import type { WidthType } from '../../UI/Card/Card';
 import { useHover } from '../../hooks/useHover';
 import { useNavigate } from 'react-router-dom';
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faStar } from '@fortawesome/free-regular-svg-icons';
 import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
-
 
 import { Card } from '../../UI/Card/Card';
 import { Button } from '../../UI/Button/Button';
@@ -19,11 +17,9 @@ import kdeImage from '../../assets/kd14_low_res.png'
 import kdeRight from '../../assets/kd14_right.jpg'
 import kdeTop from '../../assets/kd14_top.jpg'
 import kdeBack from '../../assets/kd14_back.jpg'
-
 import kdWhiteYellow from '../../assets/variations/kd14_yel_white.jpg';
 import kdIce from '../../assets/variations/kd14_ice.jpg';
 import kdDeepBlue from '../../assets/variations/kd14_deep_blue.jpg'
-import kdBl from '../../assets/variations/kd14var_bl_or.jpg';
 
 import { IProduct } from '../../api/productsApi';
 

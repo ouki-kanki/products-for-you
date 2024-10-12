@@ -1,0 +1,26 @@
+.profileContainer {
+  padding: .2rem 6rem;
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputContainer {
+  width: 400px;
+  display: flex;
+  // justify-content: space-between;
+  margin-bottom: .6rem;
+  align-items: baseline;
+
+  & label {
+    color: $dark-gray;
+    font-weight: bold;
+    flex: 1;
+  }
+}
+
+.insertBtn {
+  @include btn_blue();
+}
