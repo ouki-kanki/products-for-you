@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
 from .models import CustomUser, UserDetail
-
+from common.validators.field_validators import is_numeric
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,3 +39,19 @@ class UserDetailSerializer(serializers.ModelSerializer):
         if isinstance(obj, dict):
             return obj.get('email', None)
         return obj.email
+
+    def validate(self, data):
+        number_fields = ('phone_number', 'cell_phone_number')
+        for field in number_fields:
+            value = data.get(field, '')
+            if value == '':
+                continue
+            is_numeric(value, field)
+        return data
+
+    # def validate_phone_number(self, value):
+    #     print(value)
+    #     return value
+
+    # def save(self, **kwargs): # noqa
+    #     print("the validated data", self.validated_data)

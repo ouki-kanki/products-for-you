@@ -78,6 +78,7 @@ export const ProfileNew = () => {
 
       const data = await submit(formData).unwrap().catch(err => {
         console.log("the error", err)
+        // TODO: show notification
       })
 
       console.log("the data from userProfile", data)
@@ -85,8 +86,12 @@ export const ProfileNew = () => {
       navigate('/profile')
     }
 
+  // TODO: this is not running
   if (isInsertSuccess) {
-    <Navigate to='../'/>
+    console.log("inside the navigate")
+    return (
+      <Navigate to='../'/>
+    )
   }
 
 

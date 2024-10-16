@@ -10,6 +10,7 @@ from rest_framework.parsers import FormParser, MultiPartParser
 
 from .models import CustomUser as User, UserDetail
 from .serializers import UserSerializer, UserDetailSerializer
+from .mixins import UserUpdateMixin
 
 
 class UsersViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
@@ -34,6 +35,13 @@ class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
     serializer_class = UserDetailSerializer
     permission_classes = [IsAuthenticated]
 
+    # exclude the user
+    # def get_serializer(self, *args, **kwargs):
+    #     serializer_class = self.get_serializer_class()
+    #     serializer_instance = serializer_class(*args, **kwargs)
+    #     # serializer_instance.fields.pop('user')
+    #     return serializer_instance
+
     def get_object(self):
         user = self.request.user.id
         return get_object_or_404(UserDetail, user=user)
@@ -42,7 +50,7 @@ class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
         return self.retrieve(request, *args, **kwargs)
 
 
-class UserProfileInsertView_(generics.CreateAPIView):
+class UserProfileInsertView(generics.CreateAPIView):
     serializer_class = UserDetailSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
@@ -59,44 +67,21 @@ class UserProfileInsertView_(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class UserProfileInsertView(APIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
-
-    def post(self, request, *args, **kwargs):
-        data = request.data.copy()
-        data['user'] = request.user.id
-
-        serializer = UserDetailSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class UserProfileUpdate(generics.UpdateAPIView):
+class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserDetailSerializer
 
-    # def get_queryset(self):
-    #     user = self.request.user.id
-    #     return UserDetail.objects.get(user=user)
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        print("the instance", instance)
 
-    def get_object(self):
-        user = self.request.user.id
-        return UserDetail.objects.get(user=user)
 
-    def patch(self, request, *args, **kwargs):
-        data = request.data.copy()
-        data['user'] = request.user.id
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserDetailSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
-        # if prefetch_related will be used clear the cache
-        if getattr(instance, '_prefetched_objects_cache', None):
-            instance._prefetched_objects_cache = {}
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 

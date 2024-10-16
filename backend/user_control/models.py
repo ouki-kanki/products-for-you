@@ -10,10 +10,6 @@ from datetime import timezone
 from .managers import CustomUserManager, SoftDeleteManager
 from common.util.static_helpers import make_thumbnail
 
-
-from PIL import Image
-from io import BytesIO
-
 Roles = (
     ("admin", "admin"),
     ("assistant", "assistant"),
@@ -105,7 +101,8 @@ class UserDetail(models.Model):
         return self.user.email
 
     def get_image(self):
-        # TODO: implement and test dynamic url 
+        # TODO: implement and test dynamic url
+        print("the image is: ", self.image.url)
         if self.image:
              return 'http://127.0.0.1:8000' + self.image.url
         return 'there is no image'
@@ -114,12 +111,16 @@ class UserDetail(models.Model):
         """
         returns the path of user_icon
         """
-        return str(self.image)[str(self.image).index(f'user_images/{self.pk}/'):]
+        return str(self.image)[str(self.image).index(f'user_images/{self.pk}/')]
     
     def save(self, *args, **kwargs):
-        # super().save(*args, **kwargs)
-        if self.image:
-            self.image = make_thumbnail(self.image)
+        if self.pk:
+            prev_instance = UserDetail.objects.get(pk=self.pk)
+            if self.image and self.image != prev_instance.image:
+                self.image = make_thumbnail(self.image)
+        else:
+            if self.image.url != '/media/user_images/default_user_image.png':
+                self.image = make_thumbnail(self.image)
         
         super().save(*args, **kwargs)
 

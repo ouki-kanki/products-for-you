@@ -5,7 +5,8 @@ from .views import (
     users_detail_view,
     UserProfileView,
     UserProfileInsertView,
-    UserProfileUpdate
+    UserProfileUpdate,
+    UploadProfileImageView
 )
 
 app_name = 'user_control'
@@ -15,4 +16,5 @@ urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='profile'),
     path('profile/insert', UserProfileInsertView.as_view(), name='profile_insert'),
     path('profile/update', UserProfileUpdate.as_view(), name='profile_update'),
+    path('profile/upload-image', UploadProfileImageView.as_view(), name='profile_image_upload'),
 ]

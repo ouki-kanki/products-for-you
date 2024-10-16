@@ -20,21 +20,6 @@ export const userApi = authBaseApi.injectEndpoints({
       query: () => `/user-control/profile/`,
       keepUnusedDataFor: 5,
     }),
-    // *** OBSOLETE **
-    // userProfile api is used in favor of this . this is using authBase.authBase is preparing the content-type. i couldn't find a way to modify the content header
-    // seems that prepareHeaders is called last in the chain
-    submitUserProfile: builder.mutation<void, FormData>({
-      query: (formdata: FormData) => ({
-        url: 'user-control/profile/insert',
-        method: 'POST',
-        headers: {
-          'content-type': ''
-          // 'content-Type': 'multipart/form-data'
-        },
-        body: formdata as FormData,
-        formData: true,
-      })
-    }),
     updateUserProfile: builder.mutation<void, Partial<IUserProfile>>({
       query: (body) => ({
         url: 'user-control/profile/update',
@@ -48,6 +33,5 @@ export const userApi = authBaseApi.injectEndpoints({
 export const {
   useGetUserProfileQuery,
   useLazyGetUserProfileQuery,
-  useSubmitUserProfileMutation,
   useUpdateUserProfileMutation
 } = userApi

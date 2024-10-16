@@ -6,12 +6,16 @@ import { useLazyGetUserProfileQuery } from '../../api/userApi';
 import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
 import { ActionTypesProfile } from '../../app/actions';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
+import { useUploadProfileImageMutation } from '../../api/userProfileApi';
 
 import styles from './profile.module.scss'
 import { Input } from '../../UI/Forms/Inputs';
 import { convertSnakeToCamelV2, convertCamelToSnake } from '../../utils/converters';
 import { haveSameValue } from '../../utils/objUtils';
 import { showNotification } from '../../components/Notifications/showNotification';
+
+import { ProfileImage } from './ProfileImage/ProfileImage';
+import { ApiError, ValidationError } from '../../types';
 
 type Error = {
   status: number;
@@ -34,7 +38,9 @@ const initialState: ProfileState = {
 
 export const Profile = () => {
   const [trigger, { data: profileData, isError, error, isLoading }] = useLazyGetUserProfileQuery()
-  const [updateUserProfile, {data: updateData, isSuccess: isUpdateSuccess, error: updateError, isLoading: udpateLoading}] = useUpdateUserProfileMutation()
+  const [updateUserProfile, {data: updateData, isSuccess: isUpdateSuccess, error: updateError, isError: isUpdateError, isLoading: udpateLoading}] = useUpdateUserProfileMutation()
+  const [uploadProfileImage, { data: uploadImageData, isSuccess: isUploadImageSuccess, isError: isUploadImageError, error: uploadImageError }] = useUploadProfileImageMutation()
+
   const navigate = useNavigate()
   const [isInEdit, setIsInEdit] = useState(false)
   const location: Location = useLocation()
@@ -47,6 +53,21 @@ export const Profile = () => {
       payload: convertSnakeToCamelV2(data) as IUserProfile
     })
   }, [trigger])
+
+  useEffect(() => {
+    if (isUploadImageError) {
+      const apiError = uploadImageError as ApiError
+      const message = apiError.data.detail
+
+      showNotification({
+        message,
+        type: 'danger'
+      })
+    }
+    if (isUploadImageSuccess) {
+      trigger()
+    }
+  }, [isUploadImageError, isUploadImageSuccess, uploadImageError, trigger])
 
   useEffect(() => {
     if (location.pathname === '/profile') {
@@ -69,7 +90,6 @@ export const Profile = () => {
     }
   }, [isInEdit, profileData, state]) // TODO: stringify state and data
 
-
   useEffect(() => {
     if (isError && (error as Error).status === 404) {
       navigate('/profile/create')
@@ -86,14 +106,24 @@ export const Profile = () => {
   }
 
   useEffect(() => {
+    if (isUpdateError) {
+      const error = updateError as ValidationError
+      console.log("the update error", error)
+      // TODO: handle stack notification. have to show all error messages
+      const message = error.data.non_field_errors[0]
+
+      showNotification({
+        message,
+        type: 'danger'
+      })
+    }
     if (isUpdateSuccess) {
-      console.log("the udpated data", updateData)
+      // console.log("the udpated data", updateData)
       showNotification({
         message: 'profile updated successfully'
       })
     }
-  }, [isUpdateSuccess, updateData])
-
+  }, [isUpdateSuccess, updateData, updateError, isUpdateError])
 
   if (isLoading) {
     // use a spinner or skeleton
@@ -118,8 +148,13 @@ export const Profile = () => {
     const submitData = convertCamelToSnake({
       data: filteredData as Partial<IUserProfile>
     })
-
     updateUserProfile(submitData as Partial<IUserProfile>)
+  }
+  // console.log("the data", profileData)
+  if (!profileData) {
+    return (
+      <Outlet/>
+    )
   }
 
   return (
@@ -143,9 +178,14 @@ export const Profile = () => {
           ))}
         </form>
         <div className={styles.right}>
-          {profileData?.image && (
-            <img src={profileData.image} alt='profile image'/>
-          )}
+          <div className={styles.imageContainer}>
+            {profileData?.image && (
+              <ProfileImage
+                handleImageUpLoad={(data) => uploadProfileImage(data)}
+                imageUrl={profileData.image}/>
+            )}
+
+          </div>
           {isInEdit && (
             <div className={styles.btnContainer}>
               <button onClick={handleSubmit}>submit changes</button>
@@ -153,7 +193,8 @@ export const Profile = () => {
           )}
         </div>
       </div>
-      <Outlet/>
+      {/* <Outlet/> */}
+      {/* TODO: Move to its own component */}
     </div>
   )
 }

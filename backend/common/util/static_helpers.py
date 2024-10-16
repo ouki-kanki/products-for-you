@@ -1,4 +1,6 @@
 import os
+
+from django.core.files.base import ContentFile
 from django.utils.html import format_html
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -81,14 +83,16 @@ def make_thumbnail(image, size=(300, 200)):
     """
     takes the imgage and the desired size anr return the resized image
     """
-    img = Image.open(image.path)
+    # img = Image.open(image.path)
+    img = Image.open(image)
     img.convert('RGB')
     img.thumbnail(size)
 
     thumb_io = BytesIO()
     img.save(thumb_io, 'JPEG', quality=85)
 
-    thumbnail = File(thumb_io, name=image.name)
+    thumbnail = ContentFile(thumb_io.getvalue(), name=image.name)
+    # thumbnail = File(thumb_io, name=image.name)
     return thumbnail
 
 

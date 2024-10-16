@@ -12,6 +12,13 @@ export interface IServerErrorV2 {
   data: Record<string, unknown>
 }
 
+export type ApiError = {
+  data: {
+    detail: string;
+    status: number;
+  }
+}
+
 export interface IPayload<T> {
   data: Array<T>,
   status: 'idle' | 'success' | 'error' | 'pending',

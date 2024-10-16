@@ -24,11 +24,19 @@ export const userProfileApi = createApi({
         body: formData as FormData,
         formData: true
       })
+    }),
+    uploadProfileImage: builder.mutation<void, FormData>({
+      query: (formData) => ({
+        url: 'user-control/profile/upload-image',
+        method: 'PATCH',
+        body: formData as FormData,
+        formData: true
+      })
     })
   })
 })
 
-
 export const {
- useCreateUserProfileMutation
+ useCreateUserProfileMutation,
+ useUploadProfileImageMutation
 } = userProfileApi
