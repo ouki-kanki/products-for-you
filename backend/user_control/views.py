@@ -1,9 +1,6 @@
 from django.shortcuts import get_object_or_404
-from django.db import transaction
 
 from rest_framework import viewsets, mixins, status, generics
-from rest_framework.views import APIView
-from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -80,8 +77,6 @@ class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserDetailSerializer
     parser_classes = [MultiPartParser, FormParser]
-
-
 
 
 

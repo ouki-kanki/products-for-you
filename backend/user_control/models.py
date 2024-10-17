@@ -1,3 +1,7 @@
+import hashlib
+
+from django.core.exceptions import SuspiciousFileOperation
+from django.core.files.storage import default_storage
 from django.db import models
 from django.contrib.auth.models import (
     UserManager,
@@ -75,7 +79,8 @@ class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
 
 
 def get_user_image(self, path):
-    return f'user_images/{self.pk}/user_image.png'
+    encoded_id = hashlib.sha256(str(self.pk).encode()).hexdigest()
+    return f'user_images/{encoded_id}/user_image.png'
 
 
 def get_default_user_image():
@@ -112,12 +117,28 @@ class UserDetail(models.Model):
         returns the path of user_icon
         """
         return str(self.image)[str(self.image).index(f'user_images/{self.pk}/')]
+
+    @staticmethod
+    def delete_previous_image(instance):
+        image_instance = getattr(instance, 'image')
+        image_path = image_instance.path
+
+        try:
+            default_storage.delete(image_path)
+        except SuspiciousFileOperation:
+            print("cannot delete")
+        except Exception as e:
+            print("there was an error", e)
     
     def save(self, *args, **kwargs):
         if self.pk:
             prev_instance = UserDetail.objects.get(pk=self.pk)
             if self.image and self.image != prev_instance.image:
-                self.image = make_thumbnail(self.image)
+                self.delete_previous_image(prev_instance)
+                try:
+                    self.image = make_thumbnail(self.image)
+                except ValueError as e:
+                    raise e
         else:
             if self.image.url != '/media/user_images/default_user_image.png':
                 self.image = make_thumbnail(self.image)

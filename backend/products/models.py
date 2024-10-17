@@ -182,17 +182,6 @@ def product_pre_save(sender, instance, *args, **kwargs):
 pre_save.connect(product_pre_save, Product)
 
 
-# NOT IMPLEMENTED
-# NOTE: this is an example of a manager
-class VariationManager(models.Manager):
-    def all(self):
-        # There is no field named "active" this is just for showing the functionality
-        return super(VariationManager, self).filter(active=True)
-
-    def sizes(self):
-        return super(VariationManager, self).filter(variation_option='size')
-
-
 class ProductItem(models.Model):
     """ PRODUCT - VARIANT """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from rest_framework.exceptions import ValidationError
 
 from .models import CustomUser, UserDetail
 from common.validators.field_validators import is_numeric
@@ -49,9 +50,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
             is_numeric(value, field)
         return data
 
-    # def validate_phone_number(self, value):
-    #     print(value)
-    #     return value
+    def validate_image(self, value): # noqa
+        if value and not value.content_type.startswith('image/'):
+            raise ValidationError("file is not an image")
+        return value
 
-    # def save(self, **kwargs): # noqa
-    #     print("the validated data", self.validated_data)

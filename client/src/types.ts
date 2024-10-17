@@ -19,6 +19,13 @@ export type ApiError = {
   }
 }
 
+export type ValidationError = {
+  data: {
+    non_field_errors: string[]
+  },
+  status: number
+}
+
 export interface IPayload<T> {
   data: Array<T>,
   status: 'idle' | 'success' | 'error' | 'pending',

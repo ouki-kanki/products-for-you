@@ -47,6 +47,7 @@ export const ProfileImage = ({ imageUrl, handleImageUpLoad }: ProfileImageProps)
     const formData = new FormData()
     formData.append('image', previewImage.file)
     handleImageUpLoad(formData)
+    handleCloseModal()
   }
 
   return (

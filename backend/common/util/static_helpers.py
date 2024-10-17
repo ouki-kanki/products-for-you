@@ -81,15 +81,16 @@ def render_link_with_image(value):
 
 def make_thumbnail(image, size=(300, 200)):
     """
-    takes the imgage and the desired size anr return the resized image
+    takes the image file and the desired size and returns the resized image
     """
-    # img = Image.open(image.path)
-    img = Image.open(image)
-    img.convert('RGB')
-    img.thumbnail(size)
-
-    thumb_io = BytesIO()
-    img.save(thumb_io, 'JPEG', quality=85)
+    try:
+        img = Image.open(image)
+        img.convert('RGB')
+        img.thumbnail(size)
+        thumb_io = BytesIO()
+        img.save(thumb_io, 'JPEG', quality=85)
+    except OSError as e:
+        raise ValueError(f"cannot convert the thumbnail: {e}")
 
     thumbnail = ContentFile(thumb_io.getvalue(), name=image.name)
     # thumbnail = File(thumb_io, name=image.name)

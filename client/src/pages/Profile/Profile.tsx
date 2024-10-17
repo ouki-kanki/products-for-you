@@ -1,8 +1,9 @@
 import { useEffect, useReducer, useCallback, useState, ChangeEvent } from 'react'
+import { useAppDispatch } from '../../app/store/store';
 import { fieldsReducer } from '../../app/reducers';
 import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
 
-import { useLazyGetUserProfileQuery } from '../../api/userApi';
+import { useLazyGetUserProfileQuery, useGetUserProfileQuery } from '../../api/userApi';
 import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
 import { ActionTypesProfile } from '../../app/actions';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
@@ -16,6 +17,8 @@ import { showNotification } from '../../components/Notifications/showNotificatio
 
 import { ProfileImage } from './ProfileImage/ProfileImage';
 import { ApiError, ValidationError } from '../../types';
+
+import { userApi } from '../../api/userApi';
 
 type Error = {
   status: number;
@@ -37,25 +40,49 @@ const initialState: ProfileState = {
 }
 
 export const Profile = () => {
-  const [trigger, { data: profileData, isError, error, isLoading }] = useLazyGetUserProfileQuery()
+  // const [trigger, { data: profileData, isError, error, isLoading, }] = useLazyGetUserProfileQuery()
+  const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
+
   const [updateUserProfile, {data: updateData, isSuccess: isUpdateSuccess, error: updateError, isError: isUpdateError, isLoading: udpateLoading}] = useUpdateUserProfileMutation()
   const [uploadProfileImage, { data: uploadImageData, isSuccess: isUploadImageSuccess, isError: isUploadImageError, error: uploadImageError }] = useUploadProfileImageMutation()
+
+  const apiDispatch = useAppDispatch()
+  const { usePrefetch } = userApi
+  const { util: { resetApiState, upsertQueryData } } = userApi
+  const prefetchUserProfile = usePrefetch('getUserProfile')
+
 
   const navigate = useNavigate()
   const [isInEdit, setIsInEdit] = useState(false)
   const location: Location = useLocation()
   const [state, dispatch] = useReducer(fieldsReducer, initialState)
 
-  const fetchData = useCallback(async () => {
-    const data = await trigger().unwrap()
-    dispatch({
-      type: ActionTypesProfile.SET_PROFILE_DATA,
-      payload: convertSnakeToCamelV2(data) as IUserProfile
-    })
-  }, [trigger])
+  // let strProfileData = {};
+  // if (profileData) {
+    // strProfileData = JSON.stringify(profileData)
+  // }
+  useEffect(() => {
+    // const data = JSON.parse(strProfileData)
+    if (profileData) {
+      dispatch({
+        type: ActionTypesProfile.SET_PROFILE_DATA,
+        payload: convertSnakeToCamelV2(profileData) as IUserProfile
+      })
+    }
+  }, [profileData])
 
+  // const fetchData = useCallback(async () => {
+  //   const data = await trigger().unwrap()
+  //   dispatch({
+  //     type: ActionTypesProfile.SET_PROFILE_DATA,
+  //     payload: convertSnakeToCamelV2(data) as IUserProfile
+  //   })
+  // }, [trigger])
+
+  // UPLOAD IMAGE
   useEffect(() => {
     if (isUploadImageError) {
+      console.log("the error from upload image", uploadImageError)
       const apiError = uploadImageError as ApiError
       const message = apiError.data.detail
 
@@ -65,15 +92,34 @@ export const Profile = () => {
       })
     }
     if (isUploadImageSuccess) {
-      trigger()
-    }
-  }, [isUploadImageError, isUploadImageSuccess, uploadImageError, trigger])
+      console.log("isndie the success")
+      // prefetchUserProfile()
 
-  useEffect(() => {
-    if (location.pathname === '/profile') {
-      fetchData()
+      apiDispatch(resetApiState())
+      refetch()
+      // fetchData()
+
+      // apiDispatch(userApi.endpoints.getUserProfile.initiate(undefined, {
+      //   // subscribe: false,
+      //   forceRefetch: true
+      // }))
     }
-  }, [location, fetchData])
+  }, [isUploadImageError, isUploadImageSuccess, uploadImageError, apiDispatch, resetApiState, refetch])
+
+
+  const strLocation = JSON.stringify(location)
+  useEffect(() => {
+    const location = JSON.parse(strLocation)
+    if (location.pathname === '/profile') {
+      refetch()
+    }
+  }, [refetch, strLocation])
+
+  // useEffect(() => {
+  //   if (location.pathname === '/profile') {
+  //     fetchData()
+  //   }
+  // }, [location, fetchData])
 
   // if there is a change in fields show saveChanges btn
   useEffect(() => {
@@ -194,7 +240,6 @@ export const Profile = () => {
         </div>
       </div>
       {/* <Outlet/> */}
-      {/* TODO: Move to its own component */}
     </div>
   )
 }

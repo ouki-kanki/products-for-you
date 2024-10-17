@@ -19,9 +19,12 @@ class UserUpdateMixin:
         data['user'] = request.user.id
         instance = self.get_object()
         serializer = self.get_serializer(instance, data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
+        try:
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+        except ValueError as e:
+            print("the error inside the view", e)
+            return Response({'detail': e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
         # if prefetch_related will be used clear cache
         if getattr(instance, '_prefetched_objects_cache', None):
             instance._prefetched_objects_cache = {}
