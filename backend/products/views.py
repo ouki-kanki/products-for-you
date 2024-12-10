@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import (
     generics, viewsets, mixins, permissions, authentication
@@ -17,7 +18,8 @@ from common.util.custom_pagination import CustomPageNumberPagination
 class ProductsAndRelatedVariationsView(generics.ListAPIView):
     """
     endpoint: api/products/latest/
-    description: get products filter by created_at
+    description: get products sort by created_at
+    filter by category using the category id
     """
     serializer_class = ProductSerializer
     pagination_class = CustomPageNumberPagination
@@ -139,5 +141,49 @@ class CategoryListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Category.objects.all().order_by('position', 'id')
+
+
+# NOTE: this combines all the data that is needed for the landing page
+# paginination is not working properly
+
+class CategoryFeaturedListView(generics.ListAPIView):
+    """
+    endpoint: /api/categories/featured
+    description: get the list of featured_categories
+    """
+    serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Category.objects.filter(is_featured=True).order_by('-created_at')
+
+
+class LandingPageView(APIView):
+    def get(self, request, *args, **kwargs): # noqa
+        paginator = CustomPageNumberPagination()
+
+        featured_products = ProductItem.objects.select_related('product__category', 'product') \
+            .filter(is_default=True, product__is_featured=True) \
+            .order_by('-created_at')
+        paginated_featured_products = paginator.paginate_queryset(featured_products, request)
+        featured_products_serializer = ProductVariationSerializer(paginated_featured_products, many=True)
+
+        latest_products = Product.objects.select_related('brand', 'category') \
+            .prefetch_related(
+            'product_variations',
+            'product_variations__variation_option',
+            'product_variations__product_image'
+        ).order_by('-created_at')
+        paginated_latest_products = paginator.paginate_queryset(latest_products, request)
+        print("the paginated latest", paginated_latest_products)
+        latest_products_serializer = ProductSerializer(paginated_latest_products, many=True, context={'request': request})
+
+        featured_categories = Category.objects.filter(is_featured=True)
+        featured_categories_serializer = CategorySerializer(featured_categories, many=True)
+
+        return paginator.get_paginated_response({
+            'featured_products': featured_products_serializer.data,
+            'latest_products': latest_products_serializer.data,
+            'featured_categories': featured_categories_serializer.data
+        })
 
 

@@ -33,12 +33,12 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategoryAndParentCategoriesSerializer(read_only=True)
     selected_variation = serializers.SerializerMethodField()
     brand = serializers.SerializerMethodField()
-    variations = serializers.SerializerMethodField()
+    variation = serializers.SerializerMethodField()
 
     def get_variations(self, obj):
         request = self.context.get('request')
         variations = obj.product_variations.all()
-        # TODO: check the time complexity here (use prefect related)
+        # TODO: check the time complexity here (use prefetch related)
         return [
             {
                 'slug': variation.slug,
@@ -185,6 +185,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         model = ProductItem
         fields = (
             'name',
+            'slug',
             'description',
             'quantity',
             'price',

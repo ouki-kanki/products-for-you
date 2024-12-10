@@ -41,7 +41,7 @@ const filterCategoriesWithNoParent = (categories: ICategory[] | undefined) => {
 
 // MAIN COMPONENT
 const Categories = () => {
-  console.log("categories component mounted")
+  // console.log("categories component mounted")
   const { data: categories , isLoading } = useGetCategoriesQuery()
   const [ currentCategories, setCurrentCategories ] = useState<ICategory[] | undefined>([])
   const { slug } = useParams()

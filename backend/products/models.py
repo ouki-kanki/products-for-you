@@ -33,6 +33,7 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=50, blank=True)
     parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
+    is_featured = models.BooleanField(default=False)
     icon = models.ImageField(upload_to='categories/', blank=True, default='icons/placeholder.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -44,6 +45,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    # TODO: do not allow more than 20 featured categories
+
 
     def gen_thumb(self):
         pass

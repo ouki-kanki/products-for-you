@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 
-export const useDebounce = (callback: (value?: string) => void, delay: number, deps: Array<() => void | string | number>) => {
+export const useDebounce = <T=unknown>(callback: (value?: string) => void, delay: number, deps: Array<T | (() => void) | string | number>) => {
   const debouncedEffect = useCallback(() => {
     const handler = setTimeout(() => {
       // callback.apply(arguments)

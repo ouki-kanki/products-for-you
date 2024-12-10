@@ -81,7 +81,6 @@ export const ProfileNew = () => {
         // TODO: show notification
       })
 
-      console.log("the data from userProfile", data)
       // window.location.reload()
       navigate('/profile')
     }

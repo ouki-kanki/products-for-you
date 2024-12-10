@@ -149,9 +149,9 @@ export const productsApi = createApi({
       }
     }),
 
-    getFeaturedProducts: builder.query<IProductApiResponse, string>({
+    getFeaturedProducts: builder.query<IProductApiResponse, string | void>({
       query: (pageSize) => ({
-        url: `products/featured${pageSize && `?${pageSize}`}`
+        url: `products/featured${pageSize ? `?pagesize=${pageSize}` : '' }`
       })
     }),
 
@@ -195,6 +195,7 @@ export const productsApi = createApi({
 export const {
   useGetLatestProductsQuery,
   useGetFeaturedProductsQuery,
+  useLazyGetFeaturedProductsQuery,
   useGetProductDetailQuery,
   useGetCategoriesQuery,
   useLazyFilterByCategoryQuery,

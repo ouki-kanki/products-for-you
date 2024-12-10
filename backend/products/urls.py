@@ -27,10 +27,7 @@ urlpatterns = [
     path('search_faceted/', product_faceted_search_view, name='product-faceted-search'),
 
 
-
-    # in_use
-
-    # in use from client
+    # NOTE: this is the old api
     path('latest-products-v4/', products_and_related_variations_view),
     path('featured-products', featured_products_view),
     path('product-item-preview-v4/<slug:slug>/', product_preview, name='product-preview'),

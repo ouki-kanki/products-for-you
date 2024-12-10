@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import styles from './landingPage.module.scss';
 import { useGetLatestProductsQuery } from "../../api/productsApi"
+import { FeaturedProducts } from './FeaturedProducts';
 import { FeaturedProduct } from './FeaturedProduct';
+
 import { ProductV2 } from "../../components/Product/ProductV2"
+
+
 
 import { Grid } from "../../UI/Layout/Grid/Grid";
 
@@ -69,7 +73,10 @@ export const LandingPage = () => {
       <div className={styles.latestProductsContainer}>
         {/* <LatestProducts data={latestProducts}/> */}
       </div>
-      {/* <FeaturedProducts/> */}
+      <FeaturedProducts/>
+
+      {/* featured categories */}
+
       {/* TODO: remove this is for testing */}
       {latestProducts && (
         <FeaturedProduct data={latestProducts[4]}/>
