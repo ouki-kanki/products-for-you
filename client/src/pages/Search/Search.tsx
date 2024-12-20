@@ -53,7 +53,7 @@ export const Search = () => {
     facets: paramsStr
   })
 
-  console.log(data)
+  // console.log(data)
 
   useEffect(() => {
     // facets are cached. trigger request when facetslist is changed
@@ -123,6 +123,7 @@ export const Search = () => {
   }
 
   if (isLoading) {
+    // TODO: put a spinner or something
     return <div>Is loading</div>
   }
 

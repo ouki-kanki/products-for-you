@@ -1,5 +1,9 @@
+
+
+
+// old component
 .container {
-  overflow-x: hidden;
+  // overflow-x: hidden;
 
   &> h2 {
     margin-bottom: 2rem;
@@ -7,7 +11,10 @@
 }
 
 .carouselContainer {
+  position: relative;
   margin-bottom: 6rem;
+  left: -20px;
+  // border: 2px solid  #B2BEB5;
 }
 
 .containerWithSlide {
@@ -24,6 +31,13 @@
   > div {
     padding: 10px 50px;
   }
+}
+
+.linkRight {
+  margin-top: 5px;
+  text-align: right;
+  position: relative;
+  left: -180px;
 }
 
 .carousel {
@@ -69,7 +83,7 @@
   flex-wrap: nowrap;
   align-items: center;
   overflow: hidden;
-  position: relative;  
+  position: relative;
   border: 2px solid green;
   // height: 500px;
 }

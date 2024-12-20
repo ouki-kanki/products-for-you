@@ -7,11 +7,9 @@ export const FeaturedProducts = () => {
   // const { data, isLoading, isError, error, isSuccess } = useGetFeaturedProductsQuery()
   const [trigger, { data, isLoading, isError, error}] = useLazyGetFeaturedProductsQuery()
 
-  console.log("the featuer products is now")
-
   useEffect(() => {
     const id = setTimeout(() => {
-      console.log("trigger request")
+      // console.log("trigger request")
       trigger()
     }, 600)
 
@@ -20,7 +18,7 @@ export const FeaturedProducts = () => {
     }
   },[trigger])
 
-  console.log("the featured", data)
+  // console.log("the featured", data)
 
   return (
     <div>

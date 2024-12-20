@@ -1,16 +1,22 @@
 import React from 'react'
 import styles from './latestProducts.module.scss';
+import { NavLink, Link } from 'react-router-dom';
 
-import { ProductV2 } from '../../components/Product/ProductV2';
-import { Iproduct } from '../../types';
-import { useCarousel } from '../../hooks/useCarousel';
-import { ICarouselOptions, ICarouselContainerProps } from '../../hooks/useCarousel/carouselTypes';
 
-import { CarouselRoulete } from '../../hocs/CarouselRoulete';
-import { Carousel } from '../../components/Carousels/Carousel';
-import { CarouselV2 } from '../../components/Carousels/CarouselV2';
-import { SwiperCarouselV1 } from '../../components/Carousels/SwiperCarouselV1';
-import { IProduct } from '../../api/productsApi';
+
+import { ProductCardV3 } from '../../../components/Product/ProductCardV3';
+import { ProductV2 } from '../../../components/Product/ProductV2';
+import { Iproduct } from '../../../types';
+import { useCarousel } from '../../../hooks/useCarousel';
+import { ICarouselOptions, ICarouselContainerProps } from '../../../hooks/useCarousel/carouselTypes';
+
+import { CarouselRoulete } from '../../../hocs/CarouselRoulete';
+import { Carousel } from '../../../components/Carousels/Carousel';
+import { CarouselV2 } from '../../../components/Carousels/CarouselV2';
+import { SwiperCarouselV1 } from '../../../components/Carousels/SwiperCarouselV1';
+import { IProduct } from '../../../api/productsApi';
+
+import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarouselV2';
 
 interface IThumbnail {
   id: number;
@@ -53,7 +59,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
   }
 
   if (data) {
-    // console.log("the data", data[3])
+    console.log("the data", data[4])
   }
   return (
     <div className={styles.container}>
@@ -62,7 +68,23 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
         <>
           <h2>Latest Products</h2>
           <div className={styles.carouselContainer}>
-            <SwiperCarouselV1
+            <SwiperCarouselV2
+            data={data}
+            renderProduct={
+              (product: Iproduct) => (
+                <ProductCardV3
+                  product={product}
+                />
+              )
+            }
+            />
+            <div className={styles.linkRight}>
+              <NavLink
+                to='/search?sort_by=time'
+                // replace=false
+              >more products</NavLink>
+            </div>
+            {/* <SwiperCarouselV1
               data={data}
               renderProduct={
                 (product: IProduct) => (
@@ -81,7 +103,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data, interval 
                   />
                 )
               }>
-            </SwiperCarouselV1>
+            </SwiperCarouselV1> */}
           </div>
         </>
       )}

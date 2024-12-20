@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import styles from './landingPage.module.scss';
 import { useGetLatestProductsQuery } from "../../api/productsApi"
+
 import { FeaturedProducts } from './FeaturedProducts';
 import { FeaturedProduct } from './FeaturedProduct';
 
 import { ProductV2 } from "../../components/Product/ProductV2"
-
+import { LatestProducts } from './LatestProducts/LatestProducts';
 
 
 import { Grid } from "../../UI/Layout/Grid/Grid";
@@ -63,7 +64,7 @@ export const LandingPage = () => {
       </Grid>
   )
   if (latestProducts) {
-    // console.log(latestProducts)
+    // console.log("the latest products", latestProducts)
   }
 
   return (
@@ -71,11 +72,12 @@ export const LandingPage = () => {
       {/* <button onClick={switchView}>switch</button> */}
       {productView === 'products' && renderProducts()}
       <div className={styles.latestProductsContainer}>
-        {/* <LatestProducts data={latestProducts}/> */}
+        <LatestProducts data={latestProducts}/>
       </div>
       <FeaturedProducts/>
 
       {/* featured categories */}
+
 
       {/* TODO: remove this is for testing */}
       {latestProducts && (

@@ -83,11 +83,11 @@ export const ProductV2 = ({
 
   const handleVariationChange = (e: React.MouseEvent<HTMLDivElement>, slug: string) => {
     e.stopPropagation();
-
-    // console.log("the index and product url", slug)
     trigger(slug)
   }
 
+
+  // TODO: repeated functionality on latest products. DRY the
   const handleProductDetail = () => {
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${variationSlug}`, {
       state: constructedUrl
@@ -130,10 +130,7 @@ export const ProductV2 = ({
     }
   }
 
-
-
   return (
-    // <div key={id}>
       <Card
         onMouseEnter={activateHover}
         onMouseLeave={deactivateHover}

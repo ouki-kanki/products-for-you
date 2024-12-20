@@ -33,7 +33,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategoryAndParentCategoriesSerializer(read_only=True)
     selected_variation = serializers.SerializerMethodField()
     brand = serializers.SerializerMethodField()
-    variation = serializers.SerializerMethodField()
+    variations = serializers.SerializerMethodField()
 
     def get_variations(self, obj):
         request = self.context.get('request')
@@ -50,7 +50,7 @@ class ProductSerializer(serializers.ModelSerializer):
             for variation in variations
         ]
 
-    def get_brand(self, obj):
+    def get_brand(self, obj):  # noqa
         return obj.brand.name
 
     def get_selected_variation(self, obj):
@@ -74,7 +74,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'features',
-            'category', # implement this check above
+            'category',  # implement this check above
             'brand',
             'icon',
             'selected_variation',
