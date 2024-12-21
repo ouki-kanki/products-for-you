@@ -2,6 +2,8 @@ import styles from './productCardV3.module.scss'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+import { BaseButton } from '../Buttons/baseButton/BaseButton';
+
 export interface IproductThumbNailV3 {
   isFeatured: boolean;
   url: string
@@ -20,16 +22,16 @@ export interface IproductV3 {
   features: string[];
   icon: string;
   title: string;
+  price: string;
   selectedVariation: {}
   productThumbnails?: []
 }
 
 
-export const ProductCardV3 = ({ product: { constructedUrl, slug, name, ...rest}} : IproductV3) => {
+export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ...rest}} : IproductV3) => {
   const navigate = useNavigate()
   const [variationSlug, setVariationSlug] = useState<string>('')
 
-  console.log('con', constructedUrl)
 
   // TODO: dry this is used in featured and search pages. also need to refactor to use the active variation !
   const handleProductDetail = () => {
@@ -55,6 +57,8 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, ...rest}}
           className={styles.imageMain}
           src={defaultThumb ? defaultThumb : 'placeholder'} alt="" />
       </div>
+      <div className={styles.price}>{price} $</div>
+      <BaseButton>details</BaseButton>
     </div>
   )
 }

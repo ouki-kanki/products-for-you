@@ -1,6 +1,7 @@
 .container {
-  height: 300px;
+  // height: 360px;
   margin: 20px;
+  padding: 20px;
   display: flex;
   // justify-content: center;
   align-items: center;
@@ -41,4 +42,8 @@
 
 .imageMain {
   max-width: 100%;
+}
+
+.price {
+  margin-bottom: 10px;
 }

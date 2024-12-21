@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './landingPage.module.scss';
-import { useGetLatestProductsQuery } from "../../api/productsApi"
+import { useGetLatestProductsQuery, useLazyGetFeaturedProductsQuery } from "../../api/productsApi"
 
 import { FeaturedProducts } from './FeaturedProducts';
 import { FeaturedProduct } from './FeaturedProduct';
+import { ProductList } from '../../components/Product/ProductList/ProductList';
 
 import { ProductV2 } from "../../components/Product/ProductV2"
 import { LatestProducts } from './LatestProducts/LatestProducts';
-
 
 import { Grid } from "../../UI/Layout/Grid/Grid";
 
@@ -42,14 +42,15 @@ export interface IProductV4 {
 
 export const LandingPage = () => {
   const { data: latestProducts, isLoading, isFetching } = useGetLatestProductsQuery('10')
+  const [ fetchFeatured, { data: featuredData }] = useLazyGetFeaturedProductsQuery()
   const [ productView, setProductView ] = useState<string>('landing')
 
-
-  const switchView = () => {
-    setProductView((prevView) => (
-      prevView === 'landing' ? 'products' : 'landing'
-    ))
-  }
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      fetchFeatured('10')
+    }, 200)
+    return () => clearTimeout(timerId)
+  }, [])
 
   const renderProducts = () => (
       <Grid>
@@ -63,21 +64,22 @@ export const LandingPage = () => {
         ))}
       </Grid>
   )
-  if (latestProducts) {
-    // console.log("the latest products", latestProducts)
-  }
 
   return (
     <div className={styles.container}>
-      {/* <button onClick={switchView}>switch</button> */}
       {productView === 'products' && renderProducts()}
       <div className={styles.latestProductsContainer}>
         <LatestProducts data={latestProducts}/>
       </div>
-      <FeaturedProducts/>
+
+      <ProductList
+        data={featuredData}
+        title='Featured Products'
+      />
+
+      {/* <FeaturedProducts data={featuredData}/> */}
 
       {/* featured categories */}
-
 
       {/* TODO: remove this is for testing */}
       {latestProducts && (
