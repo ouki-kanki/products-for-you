@@ -17,19 +17,29 @@ import SubtractIcon from '../../assets/svg_icons/subtract_filled.svg?react'
 export const ProductDetail = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
+
+  // TODO: Change variation inside the detail
+  // it uses the slug to make the request.
+  // get the slug from the other variations inside na array.
+  // it needs the slug and a thumb
+
+  // show the thumbs to the user
+
+  // make a state to store the slug and change the query to use the slug from the state
+
+
   const { data, isLoading } = useGetProductDetailQuery(slug as string)
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
 
-  // TODO: it breaks if there is no default image
-  const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0].url
+  const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0]?.url
 
+  console.log("data inside product detail", data)
 
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)
   }, [featuredImageUrl])
-
 
   const handleSetMainImage = (url: string) => {
     if (url) {
@@ -129,6 +139,8 @@ export const ProductDetail = () => {
     })
   }
 
+  // TODO: change variation
+
   return (
     <div className={styles.container}>
       <div onClick={handleTestNontification} style={{ cursor: 'pointer' }}>test notif</div>
@@ -170,7 +182,6 @@ export const ProductDetail = () => {
                       // type="number"
                       type='string'
                       value={desiredQuantity}
-                      // min={0}
                       // max={data?.quantity}
                       onChange={handleQntChange}
                       onBlur={handleBlur}

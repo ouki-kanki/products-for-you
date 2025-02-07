@@ -9,6 +9,8 @@ interface IFeaturedProductProps {
   data: IProduct
 }
 
+
+// TODO: is this obsolete?
 export const FeaturedProduct = ({ data }: IFeaturedProductProps) => {
   // console.log(data)
   return (

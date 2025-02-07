@@ -13,6 +13,12 @@ interface ILatestProductsProps extends ICarouselContainerProps {
 
 export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
 
+  const renderDefaultThumb = (product: Iproduct) => {
+      const def = product.productThumbnails?.filter((thumb: {isDefault: boolean, url: string }) => thumb.isDefault)
+
+      return def ? def[0]?.url : "no image"
+  }
+
   return (
     <div className={styles.container}>
       {/* <h2>Latest Products</h2> */}
@@ -26,6 +32,11 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
               (product: Iproduct) => (
                 <ProductCardV3
                   product={product}
+                  url={product.constructedUrl}
+                  slug={product.slug}
+                  name={product.name}
+                  price={product.price}
+                  defaultThumb={renderDefaultThumb(product)}
                 />
               )
             }

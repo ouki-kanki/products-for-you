@@ -55,7 +55,7 @@ PyJWT==2.9.0
 pyrsistent==0.19.3
 pytest==7.4.3
 pytest-cov==4.1.0
-pytest-django==4.7.0
+pytest-django==4.7.3
 pytest-factoryboy==2.6.0
 python-dateutil==2.9.0.post0
 python-decouple==3.8

@@ -15,15 +15,25 @@ interface Idata {
   results: Record<string, unknown>[]
 }
 
-interface ILatestProductsProps extends ICarouselContainerProps {
+interface FeaturedProductsProps extends ICarouselContainerProps {
   // data: Iproduct[];
   data: Idata;
   title: string;
   results: Record<string, unknown>[]
 }
 
-export const ProductList: React.FC<ILatestProductsProps> = ({ title, data }) => {
-  console.log("the data yo", data)
+// TODO: THIS IS ONLY FOR FEATURED PRODUCTS
+// refactor the response for featured and latest to have the same structure and make this component generic
+export const ProductList: React.FC<FeaturedProductsProps> = ({ title, data }) => {
+
+  // filter the default image
+  const renderDefaultThumb = (product): string => {
+    // TODO: refactor the response.change the snakecase to camelcase
+    const def = product.product_images?.filter(img => img.is_default)
+    return def[0]?.url
+  }
+
+  // console.log("the data yo", data)
   return (
     <div className={styles.container}>
       { data && data.results.length > 0 && (
@@ -36,6 +46,7 @@ export const ProductList: React.FC<ILatestProductsProps> = ({ title, data }) => 
               (product: Iproduct) => (
                 <ProductCardV3
                   product={product}
+                  defaultThumb={renderDefaultThumb(product)}
                 />
               )
             }

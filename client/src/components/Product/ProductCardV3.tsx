@@ -24,14 +24,16 @@ export interface IproductV3 {
   title: string;
   price: string;
   selectedVariation: {}
-  productThumbnails?: []
+  productThumbnails?: [];
+  defaultThumb?: string;
 }
 
 
-export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ...rest}} : IproductV3) => {
+export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ...rest}, defaultThumb} : IproductV3) => {
   const navigate = useNavigate()
   const [variationSlug, setVariationSlug] = useState<string>('')
 
+  // console.log("the rest", rest)
 
   // TODO: dry this is used in featured and search pages. also need to refactor to use the active variation !
   const handleProductDetail = () => {
@@ -41,10 +43,9 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ..
   }
 
   // filter the default thumbnail
-  const defaultThumb  = rest?.productThumbnails?.filter(thumb => thumb.isDefault)
-    // .reduce((a, item) => item ? item[0].url : null, '')
-    .reduce((a, product: { url: string; isDefault: boolean }) => product.url, '')
-
+  // const defaultThumb  = rest?.productThumbnails?.filter(thumb => thumb.isDefault)
+  //   // .reduce((a, item) => item ? item[0].url : null, '')
+  //   .reduce((a, product: { url: string; isDefault: boolean }) => product.url, '')
 
   return (
     <div

@@ -47,8 +47,9 @@ export const LandingPage = () => {
 
   useEffect(() => {
     const timerId = setTimeout(() => {
+      // TODO: this is not optimal
       fetchFeatured('10')
-    }, 200)
+    }, 1000)
     return () => clearTimeout(timerId)
   }, [])
 
@@ -68,14 +69,18 @@ export const LandingPage = () => {
   return (
     <div className={styles.container}>
       {productView === 'products' && renderProducts()}
+
       <div className={styles.latestProductsContainer}>
         <LatestProducts data={latestProducts}/>
       </div>
 
+      {featuredData ?
       <ProductList
         data={featuredData}
         title='Featured Products'
-      />
+      /> :
+      <div>Couldn't load featured products</div>
+      }
 
       {/* <FeaturedProducts data={featuredData}/> */}
 

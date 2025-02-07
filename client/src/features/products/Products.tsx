@@ -31,8 +31,6 @@ export const Products = () => {
 
   const data = result?.data
 
-  console.log("the data", data)
-
   const handleChangeLayout = (num: number) => {
       switch(num) {
         case 1:
