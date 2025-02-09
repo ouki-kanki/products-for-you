@@ -197,6 +197,7 @@ export const {
   useGetFeaturedProductsQuery,
   useLazyGetFeaturedProductsQuery,
   useGetProductDetailQuery,
+  useLazyGetProductDetailQuery,
   useGetCategoriesQuery,
   useLazyFilterByCategoryQuery,
   useLazyGetProductVariationPreviewQuery,

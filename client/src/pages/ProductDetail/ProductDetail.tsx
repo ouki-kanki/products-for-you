@@ -4,7 +4,7 @@ import { isEmpty } from '../../utils/objUtils'
 
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
-import { useGetProductDetailQuery } from '../../api/productsApi'
+import { useGetProductDetailQuery, useLazyGetProductDetailQuery } from '../../api/productsApi'
 import { showNotification } from '../../components/Notifications/showNotification'
 
 
@@ -18,24 +18,30 @@ export const ProductDetail = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
 
-  // TODO: Change variation inside the detail
-  // it uses the slug to make the request.
-  // get the slug from the other variations inside na array.
-  // it needs the slug and a thumb
-
-  // show the thumbs to the user
-
-  // make a state to store the slug and change the query to use the slug from the state
+  // useLazy and trigger on click with the desired slug
 
 
-  const { data, isLoading } = useGetProductDetailQuery(slug as string)
+  // const { data, isLoading } = useGetProductDetailQuery(slug as string)
+  const [trigger, { data, isLoading }] = useLazyGetProductDetailQuery()
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
+  const [activeSlug, setActiveSlug] = useState(slug || '')
+
+  useEffect(() => {
+    if (activeSlug) {
+      trigger(activeSlug)
+    }
+    // setActiveSlug(slug as string)
+  }, [activeSlug, trigger])
+
 
   const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0]?.url
 
   console.log("data inside product detail", data)
+  // console.log(data?.otherVariationsSlugs)
+  console.log("the active slug", activeSlug)
+
 
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)
@@ -215,6 +221,17 @@ export const ProductDetail = () => {
                   </div>
                   <Link to='/delivery-terms'>Free delivery</Link>
                 </div>
+              </div>
+              <div className={styles.variations}>
+                {data && data?.otherVariationsSlugs?.map(variation => (
+                  <div
+                    className={styles.variationsImageContainer}
+                    onClick={() => setActiveSlug(variation.slug)}
+                    key={variation.slug}
+                    >
+                    <img src={variation.thumbUrl} alt='variation_url' />
+                  </div>
+                ))}
               </div>
             </div>
           </div>

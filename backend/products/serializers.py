@@ -222,12 +222,28 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
     icon = serializers.SerializerMethodField()
     features = serializers.SerializerMethodField()
     categories = serializers.SerializerMethodField()
+    other_variations_slugs = serializers.SerializerMethodField()
     product_thumbnails = ProductThumbNailSerializer(many=True, read_only=True, source='product_image')
     product_images = ProductImageSerializer(many=True, read_only=True, source='product_image')
 
     # noinspection PyMethodMayBeStatic
     def get_features(self, obj):
         return obj.product.features
+
+    def get_other_variations_slugs(self, obj): # noqa
+        slugs_and_thumbs = []
+        request = self.context.get('request')
+
+        for variation in obj.product.product_variations.all():
+            if variation.slug == obj.slug:
+                continue
+
+            slug = variation.slug
+            default_thumb_qs = variation.product_image.filter(is_default=True)
+            thumb_url = request.build_absolute_uri(default_thumb_qs[0].thumbnail.url)
+            slugs_and_thumbs.append({'slug': slug, 'thumb_url': thumb_url})
+
+        return slugs_and_thumbs
 
     # noinspection PyMethodMayBeStatic
     def get_categories(self, obj):
@@ -252,6 +268,7 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
             'id',
             'slug',
             'name',
+            'other_variations_slugs',
             'variation_name',
             'sku',
             'quantity',
