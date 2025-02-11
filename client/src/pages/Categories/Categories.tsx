@@ -64,7 +64,7 @@ const Categories = () => {
 
   const fetchRelatedProducts = (slug: string, categorySlug:string) => {
 
-    // NOTE: state is not used because products route has to not be dependended on the router state. if someone paste the url from somewhere the url has to give the result.
+    // NOTE: state is not used because products route has to not be depended on the router state. if someone paste the url from somewhere the url has to give the result.
     navigate(`/products/${slug}`, { state: { categorySlug:categorySlug }})
   }
 
@@ -74,9 +74,10 @@ const Categories = () => {
 
     // if there no more chilren fetch the related items
     if (currentCategory && currentCategory.children.length === 0) {
+      console.log("current category slu", currentCategory.id)
       fetchRelatedProducts(slug, currentCategory.id)
    } else {
-    // TODO: if there is no else clause after navigate to products the following navigate triggers . check why this happening.doesn't the component unmounts after navigation ?
+    // TODO:  . check why this happening.doesn't the component unmounts after navigation ?
      navigate(`${slug}`)
    }
 

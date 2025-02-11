@@ -33,8 +33,6 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ..
   const navigate = useNavigate()
   const [variationSlug, setVariationSlug] = useState<string>('')
 
-  // console.log("the rest", rest)
-
   // TODO: dry this is used in featured and search pages. also need to refactor to use the active variation !
   const handleProductDetail = () => {
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`, {

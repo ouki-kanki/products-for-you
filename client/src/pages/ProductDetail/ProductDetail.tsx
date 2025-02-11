@@ -18,9 +18,6 @@ export const ProductDetail = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
 
-  // useLazy and trigger on click with the desired slug
-
-
   // const { data, isLoading } = useGetProductDetailQuery(slug as string)
   const [trigger, { data, isLoading }] = useLazyGetProductDetailQuery()
   const [featuredImage, setFeaturedImage] = useState('')
@@ -32,16 +29,11 @@ export const ProductDetail = () => {
     if (activeSlug) {
       trigger(activeSlug)
     }
-    // setActiveSlug(slug as string)
   }, [activeSlug, trigger])
-
 
   const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0]?.url
 
   console.log("data inside product detail", data)
-  // console.log(data?.otherVariationsSlugs)
-  console.log("the active slug", activeSlug)
-
 
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)

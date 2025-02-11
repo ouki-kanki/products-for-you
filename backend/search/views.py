@@ -1,3 +1,4 @@
+import json
 from pprint import pprint
 from django.db.models import F
 from django.conf import settings
@@ -8,7 +9,7 @@ from rest_framework.views import APIView
 
 from elasticsearch_dsl import (
     Q, Search, FacetedSearch, TermsFacet,
-    DateHistogramFacet, RangeFacet
+    DateHistogramFacet, RangeFacet, NestedFacet
 )
 from elasticsearch_dsl.query import Match, Term
 
@@ -32,8 +33,13 @@ class ProductsFacetedSearch(FacetedSearch):
     serializer = SearchProductItemSerializer
     index = 'productitem'
 
+    def __init__(self, query, filters, sort, category=None):
+        self.category = category
+        super().__init__(query, filters, sort)
+
     facets = {
         'name': TermsFacet(field='name'),
+        # 'categories': TermsFacet(field='categories.keyword'),
         'price': RangeFacet(field='price', ranges=[
             ('0 - 100', (0.01, 100)),
             ('100 - 2000', (100, 2000)),
@@ -44,7 +50,6 @@ class ProductsFacetedSearch(FacetedSearch):
     def search(self):
         """ add facets """
         s = super().search()
-        print("inside the overriden search")
         q = Q(
             'multi_match',
             query=self.query,
@@ -56,10 +61,17 @@ class ProductsFacetedSearch(FacetedSearch):
             fuzziness='AUTO'
         )
 
+        print("inside the over", self._query)
+        print("the category insidne teh over", self.category)
+
         price_filter = F({'range': {'price': {'gte': 100, 'lte': 2000}}})
         # s.filter(price_filter)
         # s.filter('range', **{'price': {'from': 100, "to": 1000}})
         # s.filter('match', **{'name': 'Air Jordan'})
+
+        if self.category:
+            s = s.filter('match', **{'categories': self.category[0]})
+
         s.query(q)
         return s
 
@@ -74,10 +86,16 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
         sort_by = request.query_params.get('sort_by')
         name = request.query_params.getlist('name')
         price = request.query_params.getlist('price')
+        category = request.query_params.getlist('category')
+
+        # print("the category", category)
+        # print("the price filter", price)
+
 
         filters = {
             'name': name,
-            'price': price
+            'price': price,
+            # 'categories': category
         }
 
         query_list = request.GET.urlencode()
@@ -107,11 +125,11 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             if sort_by:
                 sort_term = [sort_hash.get(sort_by, ''),]
 
-            print("filter: ", filters)
             fc = ProductsFacetedSearch(
                 query=search_str,
                 filters=filters,
-                sort=sort_term
+                sort=sort_term,
+                category=category
             )
 
             fc = fc[start:end]
@@ -138,6 +156,14 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
                 posts = paginator.page(paginator.num_pages)
 
             serializer = self.serializer(posts, context={'request': request}, many=True)
+
+            # print("serializer data", json.dumps(serializer.data, indent=4))
+
+            data = serializer.data
+
+            # if category:
+            #     filtered_data = [item for item in data if category[0] in item['categories']]
+            #     print(json.dumps(filtered_data, indent=4))
 
             paged_response_with_facets = {
                 'next': next_link,

@@ -15,7 +15,6 @@ from order.views import OrderCreateView
 
 app_name = 'api'
 urlpatterns = [
-
     path('products/latest/', ProductsAndRelatedVariationsView.as_view(), name='latest-products'),
     path('products/featured/', FeaturedProductsListView.as_view(), name='featured-products'),
     path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),

@@ -5,6 +5,8 @@ export const useListSearchParams = (omitValues?: string[]) => {
   const [searchParams] = useSearchParams()
   const params = new URLSearchParams()
 
+  // console.log("searchparams", searchParams)
+
   // omit the values and construt the new URL obj
   for (const [key, value] of searchParams) {
     if (omitValues && omitValues?.length > 0 && omitValues?.includes(key)) {

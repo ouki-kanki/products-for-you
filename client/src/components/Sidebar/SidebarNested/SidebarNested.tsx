@@ -22,6 +22,8 @@ export const SidebarNested = ({nestedFields}) => {
     // }))
   }
 
+  console.log("the nested fields", nestedFields)
+
   return (
     Object.keys(nestedFields).map((field, i) => (
       <div

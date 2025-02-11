@@ -36,6 +36,7 @@ type QueryParams = {
   page_size?: number;
   sort_by?: string;
   facets?: string;
+  category?: string;
   // facets: Record<string, string>
 }
 
@@ -50,6 +51,7 @@ export const searchApi = createApi({
       query: ({
         query,
         page,
+        category, // not used for now
         page_size,
         sort_by,
         facets
@@ -60,6 +62,7 @@ export const searchApi = createApi({
             search: query,
             page,
             page_size,
+            category,
             sort_by,
             // ...facets
         }

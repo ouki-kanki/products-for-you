@@ -37,17 +37,19 @@ export const Search = () => {
   const [ searchParams, setSearchParams ] = useSearchParams()
   const classes = useClassLister(styles)
   const dispatch = useDispatch()
+  // const [category, setCategory] = useState('shoes')
 
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
   const { sortValue, setSortValue } = useSort('time')
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
 
-  // console.log("the facets srt -> ", paramsStr)
+  console.log("the facets srt -> ", paramsStr)
 
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
     page,
+    // category,
     page_size: page_size,
     sort_by: sortValue || '',
     facets: paramsStr
@@ -77,19 +79,26 @@ export const Search = () => {
         const valuesstr = value.join(',')
 
         setSearchParams(searchParams => {
-          // if there are no values for the certain facet
+          // if there are no values for the certain facet delete the facet
           if (activeFacets[key].length === 0) {
             searchParams.delete(key)
           } else {
             searchParams.set(key, valuesstr) // append to prev
           }
-
           return searchParams
         })
 
       })
     }
   }, [activeFacetsStr, setSearchParams])
+
+  // TESTING
+  const handleAddCategoryFilter = (category: string) => {
+    setSearchParams(searchParams => {
+      searchParams.set('category', category)
+      return searchParams
+    })
+  }
 
   let facets_for_dep = ''
   if (!isEmpty(facets)) {
@@ -105,6 +114,10 @@ export const Search = () => {
       }))
     }
   }, [facets_for_dep, dispatch])
+
+  // add fitler by category to query string
+
+
 
   const handleChangeLayout = (num: number) => {
       switch(num) {
@@ -156,6 +169,8 @@ export const Search = () => {
             </select>
         </div>
       </div>
+
+      <button onClick={() => handleAddCategoryFilter('shoes')}>yoyo</button>
 
       <div className={`${styles.content} ${styles[layout]}`}>
         {data && data.results.map((product, id) => (
