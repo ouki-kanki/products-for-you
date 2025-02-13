@@ -40,7 +40,7 @@ class CategoryAdminForm(forms.ModelForm):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'slug', 'parent_category', 'has_related_products', 'created_at')
+    list_display = ('name', 'product_icon', 'is_featured', 'slug', 'parent_category', 'has_related_products', 'created_at')
     readonly_fields = ('product_icon',)
     actions = ('delete_categories',)
     form = CategoryAdminForm

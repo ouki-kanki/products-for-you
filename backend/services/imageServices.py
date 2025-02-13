@@ -21,10 +21,10 @@ def generate_thumbnail_v2(instance, image_field, suffix, size=(300, 200)):
     """
     if not getattr(instance, image_field):
         return
-    
+
     original_image = Image.open(getattr(instance, image_field))
     image = original_image.convert("RGB")    
-    image.thumbnail(size, Image.ANTIALIAS)
+    image.thumbnail(size, Image.LANCZOS)
     temp_thumb = BytesIO()
     image.save(temp_thumb, "PNG")
     temp_thumb.seek(0)

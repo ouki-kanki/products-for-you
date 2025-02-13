@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import styles from './landingPage.module.scss';
 import { useGetLatestProductsQuery, useLazyGetFeaturedProductsQuery } from "../../api/productsApi"
 
-import { FeaturedProducts } from './FeaturedProducts';
 import { FeaturedProduct } from './FeaturedProduct';
-import { ProductList } from '../../components/Product/ProductList/ProductList';
+import { FeaturedProducts } from './FeaturedProducts/FeaturedPoroducts';
+import { FeaturedCategories } from './FeaturedCategories/FeaturedCategories';
 
 import { ProductV2 } from "../../components/Product/ProductV2"
 import { LatestProducts } from './LatestProducts/LatestProducts';
@@ -70,12 +70,12 @@ export const LandingPage = () => {
     <div className={styles.container}>
       {productView === 'products' && renderProducts()}
 
-      <div className={styles.latestProductsContainer}>
+      <div className={styles.sectionContainer}>
         <LatestProducts data={latestProducts}/>
       </div>
 
       {featuredData ?
-      <ProductList
+      <FeaturedProducts
         data={featuredData}
         title='Featured Products'
       /> :
@@ -85,6 +85,7 @@ export const LandingPage = () => {
       {/* <FeaturedProducts data={featuredData}/> */}
 
       {/* featured categories */}
+      <FeaturedCategories/>
 
       {/* TODO: remove this is for testing */}
       {latestProducts && (

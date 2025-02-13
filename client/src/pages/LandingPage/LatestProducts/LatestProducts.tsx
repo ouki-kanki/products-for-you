@@ -28,7 +28,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
           <div className={styles.carouselContainer}>
             <SwiperCarouselV2
             data={data}
-            renderProduct={
+            renderCard={
               (product: Iproduct) => (
                 <ProductCardV3
                   product={product}

@@ -37,10 +37,10 @@ interface IItem {
 
 interface ISwipperCarouselV1Props {
   data: Array<Iproduct>;
-  renderProduct: (product: IItem) => ReactNode
+  renderCard: (item: IItem) => ReactNode
 }
 
-export const SwiperCarouselV2 = ({ data,  renderProduct}: ISwipperCarouselV1Props ) => {
+export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props ) => {
   const [ windowWidth ] = useWindowSize()
   const [numberOfVisible, setNumberOfVisible] = useState(3)
 
@@ -81,8 +81,8 @@ export const SwiperCarouselV2 = ({ data,  renderProduct}: ISwipperCarouselV1Prop
         // onSwiper={(swiper) => console.log(swiper)}
       >
         {
-          data.map((product, index) => (
-            <SwiperSlide key={index}>{renderProduct(product)}</SwiperSlide>
+          data && data.map((item, index) => (
+            <SwiperSlide key={index}>{renderCard(item)}</SwiperSlide>
           ))
         }
         {/* {

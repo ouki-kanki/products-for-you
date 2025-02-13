@@ -1,0 +1,53 @@
+.container {
+
+}
+
+.carouselContainer {
+  .container {
+    // height: 360px;
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    // background-color: pink;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    cursor: pointer;
+    user-select: none;
+    // border: $blue-light-active;
+  }
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+// TODO: dry, this used inside category.module.scss
+.imageContainer {
+  height: 300px;
+  aspect-ratio: 1 / 1.3;
+  filter: $drop-shadow-image;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    &isHovered {
+    }
+  }
+}
+
+.more {
+  // @include border_lime__bold;
+  text-align: right;
+  position: relative;
+  left: -180px;
+}
+
+.carouselContainer {
+  // @include border_green__bold;
+}

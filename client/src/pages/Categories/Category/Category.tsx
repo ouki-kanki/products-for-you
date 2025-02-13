@@ -14,8 +14,6 @@ export interface CategoryCard {
 }
 
 
-
-
 export const Category = ({ id, title, image, alt, handleCategoryClick }: CategoryCard) => {
   const { activateHover, deactivateHover, isHovered } = useHover()
 

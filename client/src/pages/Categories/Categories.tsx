@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './categories.module.scss'
 import { useGetCategoriesQuery } from '../../api/productsApi';
 import { useLazyFilterByCategoryQuery } from '../../api/productsApi';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, createSearchParams } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -57,10 +57,11 @@ const Categories = () => {
   }, [categories, slug])
 
 
-  console.log("categories", categories)
+  // console.log("categories", categories)
 
   const navigate = useNavigate()
   const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
+
 
   const fetchRelatedProducts = (slug: string, categorySlug:string) => {
 
@@ -75,9 +76,17 @@ const Categories = () => {
     // if there no more chilren fetch the related items
     if (currentCategory && currentCategory.children.length === 0) {
       console.log("current category slu", currentCategory.id)
-      fetchRelatedProducts(slug, currentCategory.id)
+      console.log("the slug of category", slug)
+      // fetchRelatedProducts(slug, currentCategory.id)
+      navigate({
+        // to: '/search',
+        pathname: '/search',
+        search: createSearchParams({
+          category: slug
+        }).toString()
+      })
    } else {
-    // TODO:  . check why this happening.doesn't the component unmounts after navigation ?
+    // this is used when there are children categories to jump to the child
      navigate(`${slug}`)
    }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './productList.module.scss';
+import styles from './featuredProducts.module.scss';
 import { NavLink } from 'react-router-dom';
 
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3';
@@ -24,7 +24,7 @@ interface FeaturedProductsProps extends ICarouselContainerProps {
 
 // TODO: THIS IS ONLY FOR FEATURED PRODUCTS
 // refactor the response for featured and latest to have the same structure and make this component generic
-export const ProductList: React.FC<FeaturedProductsProps> = ({ title, data }) => {
+export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ title, data }) => {
 
   // filter the default image
   const renderDefaultThumb = (product): string => {
@@ -42,7 +42,7 @@ export const ProductList: React.FC<FeaturedProductsProps> = ({ title, data }) =>
           <div className={styles.carouselContainer}>
             <SwiperCarouselV2
             data={data.results}
-            renderProduct={
+            renderCard={
               (product: Iproduct) => (
                 <ProductCardV3
                   product={product}

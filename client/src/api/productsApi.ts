@@ -77,6 +77,9 @@ interface IProductApiResponse {
   results: IProduct[];
 }
 
+type CategoryProps = {
+  featured?: string;
+}
 
 
 const flatAndConvertToCamel = (products) => {
@@ -174,10 +177,10 @@ export const productsApi = createApi({
         return response
        })
     }),
-
-    getCategories: builder.query<ICategory[], void>({
-      query: () => ({
-        url: `categories/`
+    // TODO: jsdoc. inform that featured can be fetch from here as an option
+    getCategories: builder.query<ICategory[], CategoryProps>({
+      query: (featured: string) => ({
+        url: featured ? `categories/${featured}` : 'categories/'
       }),
       onQueryStarted: (q) => console.log("Categories query -started--")
     }),
@@ -199,6 +202,7 @@ export const {
   useGetProductDetailQuery,
   useLazyGetProductDetailQuery,
   useGetCategoriesQuery,
+  useLazyGetCategoriesQuery,
   useLazyFilterByCategoryQuery,
   useLazyGetProductVariationPreviewQuery,
   useFilterByCategoryQuery
