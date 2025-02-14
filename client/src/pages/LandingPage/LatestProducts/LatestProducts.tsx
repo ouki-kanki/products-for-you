@@ -21,7 +21,6 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
 
   return (
     <div className={styles.container}>
-      {/* <h2>Latest Products</h2> */}
       { data && data.length > 0 && (
         <>
           <h2>Latest Products</h2>
@@ -44,7 +43,6 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
             <div className={styles.linkRight}>
               <NavLink
                 to='/search?sort_by=time'
-                // replace=false
               >more products</NavLink>
             </div>
           </div>

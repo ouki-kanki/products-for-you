@@ -10,4 +10,7 @@ def create_product_tag(name):
         tag = "".join(vowels_removed[:3] if len(vowels_removed) >= 3 else vowels_removed[:2])
     
     return tag.upper()
-    
+
+
+def replace_space_with_dash(value) -> str:
+    return "-".join(value.split())

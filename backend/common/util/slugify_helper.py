@@ -4,14 +4,14 @@ import random
 import string
 
 
-def __lower_random(number_of_letters):
+def lower_random(number_of_letters):
     '''
     return a random sequence of letters of a desired number
     '''
     return "".join(random.choice(string.ascii_lowercase) for _ in range(number_of_letters)) 
 
 
-def slugify_unique(sender, instance, source: str) -> None:
+def slugify_unique(sender, instance, source: str) -> str:
     """
     takes the model, the instance and the source (eg: instance.name) that will be used for slug,
     if the slug exists it will append a random hash to end of slug
@@ -24,6 +24,6 @@ def slugify_unique(sender, instance, source: str) -> None:
     qs = sender.objects.filter(slug=slug).exclude(id=instance.id)
 
     if qs.exists():
-        slug = f'{slug}-{__lower_random(4)}-{__lower_random(4)}'
+        slug = f'{slug}-{lower_random(4)}-{lower_random(4)}'
 
-    instance.slug = slug
+    return slug

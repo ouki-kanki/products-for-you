@@ -10,6 +10,9 @@
 
 .swiper {
 height: 460px; // change the height of the scroller
+  .swiper-button-next {
+    color: red;
+  }
 }
 
 .dummyItem {

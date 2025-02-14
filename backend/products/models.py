@@ -1,6 +1,7 @@
 import os
+import uuid
 from io import IOBase
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import pre_save, post_save
 from django.utils.html import format_html, html_safe, mark_safe
 from django.utils.text import slugify
@@ -13,11 +14,13 @@ from django.core.files.storage import default_storage
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from common.util.string_utils import replace_space_with_dash
+
 from common.util.static_helpers import (
     upload_icon, upload_product_item_image,
     upload_product_thumb, upload_category_icon
 )
-from common.util.slugify_helper import slugify_unique
+from common.util.slugify_helper import slugify_unique, lower_random
 from services.imageServices import (
     generate_thumbnail_v2,
     remove_background,
@@ -191,7 +194,7 @@ class ProductItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     variation_name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
-    sku = models.CharField(max_length=255)
+    sku = models.CharField(max_length=255, blank=True, unique=True)
     quantity = models.PositiveIntegerField()
     detailed_description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -252,11 +255,8 @@ class ProductItem(models.Model):
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
 
-
-@receiver(pre_save, sender=ProductItem)
+@receiver(pre_save, sender=ProductItem) # noqa
 def product_item_pre_save(sender, instance, *args, **kwargs):
-    # TODO: this has to trigger after save for the variation to exist
-
     # if this instance is default remove is_default from other instances
     if instance.is_default:
         other_default_variations = ProductItem.objects.filter(product=instance.product, is_default=True) \
@@ -265,10 +265,55 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
         if other_default_variations:
             other_default_variations.update(is_default=False)
 
-    # create a unique slug using the instance sku
-    # TODO: make slug to use variation atrributes
-    if instance.slug == "" or instance.slug is None:
-        slugify_unique(sender, instance, instance.sku)
+@receiver(post_save, sender=ProductItem) # noqa
+def product_item_post_save(sender, instance, created, **kwargs):
+    # if created and (instance.slug is None or instance.slug == ''):
+
+    def generate_slug_and_sku():
+        need_generate = False
+        if instance.slug is None or instance.slug == '':
+            # variation_values = '-'.join([variation.value[:3] for variation in variation_options_qs])
+            slug = slugify(instance.variation_name)
+
+            instance_with_same_slug = sender.objects.filter(slug=slug).exclude(id=instance.id)
+            if instance_with_same_slug.exists():
+                slug = f'{slug}-{lower_random(4)}-{lower_random(4)}'
+            instance.slug = slug
+            need_generate = True
+
+        if instance.sku is None or instance.sku == '':
+            options_qs = instance.variation_option.all()
+            variation_values = '- '.join(option.value[:3] for option in options_qs)
+
+            random_number = uuid.uuid4().hex[:8]
+            # TODO: if the product name is multiple words use the first letters from each word
+            sku = f'{instance.product.category.name[:3]}-{instance.product_name[:3]}-{variation_values}-{random_number}'
+            sku = replace_space_with_dash(sku)
+            instance.sku = sku
+            need_generate = True
+
+        if need_generate:
+            instance.save()
+
+    transaction.on_commit(generate_slug_and_sku)
+
+#
+#     if instance.slug == "" or instance.slug is None:
+#         # slug = slugify_unique(sender, instance, instance.variation_name)
+#         # qs = instance.variation_option.all()
+#         # variations_string = '-'.join(qs)
+#         # name = instance.product.name
+#         # slug = f'{variations_string}-{name}'
+#         print("hte id", instance.pk)
+#         print(instance.variation_name)
+#         if instance.pk is None:
+#             # slug = instance.variation_name
+#             instance.slug = 'test'
+
+    # if instance.sku == "" or instance.sku is None:
+    #     qs = instance.variation_option.all()
+
+    #     instance.sku = sku
 
 
 class ProductImage(models.Model):

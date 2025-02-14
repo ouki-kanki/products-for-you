@@ -56,18 +56,10 @@ const Categories = () => {
 
   }, [categories, slug])
 
-
   // console.log("categories", categories)
 
   const navigate = useNavigate()
   const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
-
-
-  const fetchRelatedProducts = (slug: string, categorySlug:string) => {
-
-    // NOTE: state is not used because products route has to not be depended on the router state. if someone paste the url from somewhere the url has to give the result.
-    navigate(`/products/${slug}`, { state: { categorySlug:categorySlug }})
-  }
 
   const handleClickCategory = (slug: string) => {
     const currentCategory = currentCategories && currentCategories.find(cat => cat.slug === slug)
@@ -75,9 +67,6 @@ const Categories = () => {
 
     // if there no more chilren fetch the related items
     if (currentCategory && currentCategory.children.length === 0) {
-      console.log("current category slu", currentCategory.id)
-      console.log("the slug of category", slug)
-      // fetchRelatedProducts(slug, currentCategory.id)
       navigate({
         // to: '/search',
         pathname: '/search',
