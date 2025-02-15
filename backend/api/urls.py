@@ -8,6 +8,7 @@ from products.views import (
     ProductPreview, CategoryListView, CategoryFeaturedListView,
     ProductListByCategoryView, GetDefaultVariationsView,
     ProductListByCategoryBySlug,
+    PromotedProductItemsListApiView,
     LandingPageView
 )
 from order.views import OrderCreateView
@@ -17,6 +18,8 @@ app_name = 'api'
 urlpatterns = [
     path('products/latest/', ProductsAndRelatedVariationsView.as_view(), name='latest-products'),
     path('products/featured/', FeaturedProductsListView.as_view(), name='featured-products'),
+    path('products/promoted/', PromotedProductItemsListApiView.as_view(), name='promoted-products'),
+    path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),
     path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),
     path('products/product-detail/<slug:slug>/', ProductDetailViewV4.as_view(), name='product-detail'),
     path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-detail'),

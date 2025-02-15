@@ -202,7 +202,7 @@ class ProductItem(models.Model):
     variation_option = models.ManyToManyField('variations.VariationOptions')  # to avoid circular imports
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    discount = models.ManyToManyField("products.Discount", verbose_name="product_discount")
+    # discount = models.ManyToManyField("products.Discount", verbose_name="product_discount")
     limited_number_of_items_threshold = models.PositiveIntegerField(default=3,
                                                                     help_text='below and including this number'
                                                                               ' number of items"')
@@ -392,6 +392,7 @@ def product_image_post_save(sender, instance, *args, **kwargs):
         remove_background(instance.image, output_path)
 
 
+# *** OBSOLETE ***
 class Discount(models.Model):
     """
     many to many relation with the variant of products

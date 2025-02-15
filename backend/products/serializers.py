@@ -1,11 +1,12 @@
 from django.utils.text import slugify
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 
+from promotion.serializers import ProductOnPromotionSerializer
 from variations.serializers import VariationOptionsSerializer
 from .models import (
     Product, ProductItem, Category, ProductImage
 )
-from rest_framework.reverse import reverse
 
 from .utils import get_list_of_parent_categories, representation_categories_to_list
 
@@ -106,6 +107,7 @@ class ProductItemSerializer(serializers.ModelSerializer):
     variation_details = serializers.SerializerMethodField()
     constructed_url = serializers.SerializerMethodField()
     product_thumbnails = ProductThumbNailSerializer(many=True, read_only=True, source='product_image')
+    promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
 
     # noinspection PyMethodMayBeStatic
     def get_constructed_url(self, obj):
@@ -129,7 +131,8 @@ class ProductItemSerializer(serializers.ModelSerializer):
             'product_thumbnails',
             'variation_details',
             'slug',
-            'constructed_url'
+            'constructed_url',
+            'promotions'
         )
 
 

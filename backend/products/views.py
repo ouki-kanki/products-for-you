@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Prefetch
+from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,6 +8,7 @@ from rest_framework import (
     generics, viewsets, mixins, permissions, authentication
 )
 
+from promotion.models import ProductsOnPromotion
 from .models import Product, ProductItem, Category, ProductImage
 from .serializers import (
     ProductSerializer, ProductVariationSerializer, ProductItemDetailSerializer,
@@ -28,6 +30,8 @@ class ProductsAndRelatedVariationsView(generics.ListAPIView):
         category = self.request.query_params.get('category_id')
         queryset = Product.objects.select_related('brand', 'category') \
             .prefetch_related(
+            'product_variations__product_inventory',
+            'product_variations__product_inventory__promotion_id',
             'product_variations',
             'product_variations__variation_option',
             'product_variations__product_image'
@@ -157,6 +161,27 @@ class CategoryFeaturedListView(generics.ListAPIView):
         return Category.objects.filter(is_featured=True).order_by('-created_at')
 
 
+class PromotedProductItemsListApiView(generics.ListAPIView):
+    serializer_class = ProductItemSerializer
+
+    def get_queryset(self):
+        current_date = timezone.now().date()
+        promotion_qs = ProductsOnPromotion.objects.filter(
+            Q(promotion_id__is_active=True) |
+            Q(promotion_id__is_scheduled=True,
+              promotion_id__promo_start__lte=current_date,
+              promotion_id__promo_end__gte=current_date)
+
+        ).prefetch_related('promotion_id')
+
+        return ProductItem.objects.filter(
+            product_inventory__in=promotion_qs
+        ) .prefetch_related(
+            Prefetch('product_inventory', queryset=promotion_qs, to_attr='active_promotions')
+        ).distinct()
+
+
+# *** THIS IS NOT USED ***
 class LandingPageView(APIView):
     def get(self, request, *args, **kwargs): # noqa
         paginator = CustomPageNumberPagination()

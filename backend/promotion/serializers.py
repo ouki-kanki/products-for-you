@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from promotion.models import PromoType, Coupon, Promotion
+from promotion.models import PromoType, Coupon, Promotion, ProductsOnPromotion
 
 
 class PromoTypeSerializer(serializers.ModelSerializer):
@@ -37,3 +37,24 @@ class PromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promotion
         fields = '__all__'
+
+
+# is used on the productItems serializer products/serializers to fetch the promotions for each productItem
+class ProductOnPromotionSerializer(serializers.ModelSerializer):
+    promo_start = serializers.DateField(source='promotion_id.promo_start')
+    promo_end = serializers.DateField(source='promotion_id.promo_end')
+    promotion_name = serializers.CharField(source='promotion_id.name')
+    is_active = serializers.BooleanField(source='promotion_id.is_active')
+    is_scheduled =serializers.BooleanField(source='promotion_id.is_scheduled')
+    promo_reduction = serializers.IntegerField(source='promotion_id.promo_reduction')
+
+    class Meta:
+        model = ProductsOnPromotion
+        fields = ('promotion_name',
+                  'promo_price',
+                  'promo_start',
+                  'promo_end',
+                  'is_active',
+                  'is_scheduled',
+                  'promo_reduction')
+

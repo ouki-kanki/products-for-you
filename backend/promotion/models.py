@@ -2,6 +2,7 @@ from math import ceil
 from decimal import Decimal
 
 from django.db import models, transaction
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
@@ -84,6 +85,8 @@ class Promotion(models.Model):
     def save(self, *args, **kwargs):
         if not self.id and not self.slug:
             slugify_unique(Promotion, self, self.name)
+
+
 
         super(Promotion, self).save(*args, **kwargs)
 

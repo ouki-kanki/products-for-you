@@ -11,6 +11,7 @@ def lower_random(number_of_letters):
     return "".join(random.choice(string.ascii_lowercase) for _ in range(number_of_letters)) 
 
 
+
 def slugify_unique(sender, instance, source: str) -> str:
     """
     takes the model, the instance and the source (eg: instance.name) that will be used for slug,

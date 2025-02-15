@@ -3,9 +3,11 @@ from django import forms
 from django.contrib import admin, messages
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django import forms
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.html import strip_tags, format_html
 from django.urls import reverse
@@ -20,6 +22,7 @@ from .models import (
     Discount,
     ProductImage
 )
+from promotion.models import ProductsOnPromotion
 from common.util.static_helpers import render_icon
 from widgets.custom_admin_widgets import CustomAdminFileWidget
 
@@ -211,6 +214,13 @@ class ProductImageInline(admin.TabularInline):
         return render_icon(obj, 'thumbnail')
 
 
+class PromotionsInline(admin.TabularInline):
+    model = ProductsOnPromotion
+    extra = 0
+    verbose_name_plural = 'Active Promotions'
+    # fk_name = 'product_item_id'
+
+
 class ProductItemForm(forms.ModelForm):
     class Meta:
         model = ProductItem
@@ -231,12 +241,27 @@ class ProductItemAdmin(admin.ModelAdmin):
     list_display = (
         '__str__', 'slug', 'id', 'get_default_image',
         'product', 'quantity_formated', 'get_category',
+        'active_promotion',
         'limited_number_of_items_threshold',
     )
     list_select_related = ('product', )
     list_filter = ('product', 'quantity')
-    inlines = [ProductImageInline, ]
+    inlines = [ProductImageInline, PromotionsInline]
     form = ProductItemForm
+
+    def active_promotion(self, obj): # noqa
+        current_date = timezone.now().date()
+        active_promotions = obj.product_inventory.filter(
+            Q(promotion_id__is_active=True) |
+            Q(promotion_id__is_scheduled=True,
+              promotion_id__promo_start__lte=current_date,
+              promotion_id__promo_end__gte=current_date)
+        )
+
+        active_promotions = [item.promotion_id.name for item in active_promotions]
+        active_promotions = ', '.join(active_promotions) if active_promotions else '-'
+        print(active_promotions)
+        return active_promotions
 
 
     @staticmethod
