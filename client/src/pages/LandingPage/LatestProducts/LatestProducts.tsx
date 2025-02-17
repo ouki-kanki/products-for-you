@@ -13,6 +13,7 @@ interface ILatestProductsProps extends ICarouselContainerProps {
 
 export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
 
+
   const renderDefaultThumb = (product: Iproduct) => {
       const def = product.productThumbnails?.filter((thumb: {isDefault: boolean, url: string }) => thumb.isDefault)
 

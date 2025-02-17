@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react'
 import styles from './landingPage.module.scss';
-import { useGetLatestProductsQuery, useLazyGetFeaturedProductsQuery } from "../../api/productsApi"
+import { useGetLatestProductsQuery,
+         useGetFeaturedProductsQuery,
+         useGetPromotedProductsQuery,
+         useGetCategoriesQuery
+         } from "../../api/productsApi"
 
 import { FeaturedProduct } from './FeaturedProduct';
 import { FeaturedProducts } from './FeaturedProducts/FeaturedPoroducts';
@@ -8,15 +11,18 @@ import { FeaturedCategories } from './FeaturedCategories/FeaturedCategories';
 
 import { ProductV2 } from "../../components/Product/ProductV2"
 import { LatestProducts } from './LatestProducts/LatestProducts';
+import { PromotedProducts } from './PromotedProducts/PromotedProducts';
+
 
 import { Grid } from "../../UI/Layout/Grid/Grid";
 
-// TODO: move from here
+// TODO: move the types from here
 interface IVariationItem {
   variationName: string;
   value: string;
 }
 
+// TODO: check productsApi for similar type, need to dry
 interface IVariation {
   id: number;
   quantity: number;
@@ -25,6 +31,7 @@ interface IVariation {
   variationDetails: IVariationItem[];
 }
 
+// TODO: move from here to types
 export interface IProductV4 {
   name: string;
   description: string;
@@ -41,56 +48,44 @@ export interface IProductV4 {
 
 
 export const LandingPage = () => {
-  const { data: latestProducts, isLoading, isFetching } = useGetLatestProductsQuery('10')
-  const [ fetchFeatured, { data: featuredData }] = useLazyGetFeaturedProductsQuery()
-  const [ productView, setProductView ] = useState<string>('landing')
+  const { data: latestProducts, isLoading: isLoadingLatest, isError: isErrorLatest} = useGetLatestProductsQuery('10')
+  const { data: featuredProducts, isLoading: isLoadingFeatured, isError: errorFeatured} = useGetFeaturedProductsQuery(undefined, { skip: !latestProducts })
+  const { data: promotedProducts, isLoading: isLoadingPromoted, isError: isErrorPromoted} = useGetPromotedProductsQuery(undefined, { skip: !featuredProducts })
+  const { data: featuredCategories, isLoading: isLoadingCategories, isError: isErrorCategories} = useGetCategoriesQuery('featured', { skip: !promotedProducts })
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      // TODO: this is not optimal
-      fetchFeatured('10')
-    }, 1000)
-    return () => clearTimeout(timerId)
-  }, [])
-
-  const renderProducts = () => (
-      <Grid>
-        {data && data.map(({ name, features, id, price}) => (
-          <ProductV2
-            name={name}
-            price={price}
-            features={features}
-            id={id}
-            key={id}/>
-        ))}
-      </Grid>
-  )
+  // console.log("latest", latestProducts)
+  // console.log("featured", featuredProducts)
+  // console.log("promoted", promotedProducts)
+  // console.log("categories", featuredCategories)
 
   return (
     <div className={styles.container}>
-      {productView === 'products' && renderProducts()}
+      {/* {productView === 'products' && renderProducts()} */}
 
       <div className={styles.sectionContainer}>
         <LatestProducts data={latestProducts}/>
       </div>
 
-      {featuredData ?
+      {featuredProducts ?
       <FeaturedProducts
-        data={featuredData}
+        data={featuredProducts}
         title='Featured Products'
       /> :
       <div>Couldn't load featured products</div>
       }
 
-      {/* <FeaturedProducts data={featuredData}/> */}
+      <FeaturedCategories
+        data={featuredCategories}
+        isLoading={isLoadingCategories}
+        isError={isErrorCategories}
+        />
 
-      {/* featured categories */}
-      <FeaturedCategories/>
+      <PromotedProducts data={promotedProducts} isLoading={isLoadingPromoted}/>
 
       {/* TODO: remove this is for testing */}
-      {latestProducts && (
+      {/* {latestProducts && (
         <FeaturedProduct data={latestProducts[4]}/>
-      )}
+      )} */}
     </div>
   )
 }

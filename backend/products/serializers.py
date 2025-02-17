@@ -103,6 +103,7 @@ class ProductThumbNailSerializer(serializers.ModelSerializer):
         }
 
 
+# This is used on products serializer to fetch the details of the current variation
 class ProductItemSerializer(serializers.ModelSerializer):
     variation_details = serializers.SerializerMethodField()
     constructed_url = serializers.SerializerMethodField()
@@ -134,6 +135,17 @@ class ProductItemSerializer(serializers.ModelSerializer):
             'constructed_url',
             'promotions'
         )
+
+
+# used to fetch the productvariations
+class ProductItemExtendedSerializer(ProductItemSerializer):
+    name = serializers.SerializerMethodField()
+
+    def get_name(self, obj): # noqa
+        return obj.product.name
+
+    class Meta(ProductItemSerializer.Meta):
+        fields = ProductItemSerializer.Meta.fields + ('name',)
 
 
 class ProductAndCategoriesSerializer(serializers.ModelSerializer):

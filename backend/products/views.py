@@ -12,7 +12,7 @@ from promotion.models import ProductsOnPromotion
 from .models import Product, ProductItem, Category, ProductImage
 from .serializers import (
     ProductSerializer, ProductVariationSerializer, ProductItemDetailSerializer,
-    ProductItemSerializer, CategorySerializer, ProductImageSerializer
+    ProductItemSerializer, ProductItemExtendedSerializer, CategorySerializer, ProductImageSerializer
 )
 from common.util.custom_pagination import CustomPageNumberPagination
 
@@ -162,7 +162,7 @@ class CategoryFeaturedListView(generics.ListAPIView):
 
 
 class PromotedProductItemsListApiView(generics.ListAPIView):
-    serializer_class = ProductItemSerializer
+    serializer_class = ProductItemExtendedSerializer
 
     def get_queryset(self):
         current_date = timezone.now().date()

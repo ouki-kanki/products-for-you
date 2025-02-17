@@ -6,84 +6,22 @@ import { AuthEnum } from './enums';
 import { convertSnakeToCamel } from '../utils/converters';
 import { ICategory } from '../types';
 
-interface IProductImage {
-  id: number;
-  image: string;
-  is_featured: boolean;
+import type { IProduct,
+              IproductVariationPreview,
+              IproductItem,
+              IproductDetail
+             } from './types';
+
+interface IProductPaginatedResponse {
+count: number;
+next: string | null;
+previous: string | null;
+results: IProduct[];
 }
 
-interface ICurrentVariation {
-  variation_name: string;
-  value: string;
-}
-
-interface IVariation {
-  slug: string;
-  productUrl: string;
-  thumb: string;
-}
-
-interface IProductThumbnailorImage {
-  isDefault: boolean;
-  url: string
-}
-
-export interface IProduct {
-  name: string;
-  quantity: number;
-  price: string;
-  features: string[];
-  product_images: IProductImage[];
-  current_variation: ICurrentVariation[];
-  category: string[];
-  description: string;
-  variations: IVariation[];
-  productThumbnails: IProductThumbnailorImage[];
-  slug: string;
-  constructedUrl: string;
-  id: number;
-}
-
-export interface IproductVariationPreview {
-  quantity: number;
-  price: string;
-  productThumbnails: IProductThumbnailorImage[];
-  variationDetails: ICurrentVariation[];
-  slug: string;
-  constructedUrl: string;
-}
-
-// TODO: DRY THIS there are simiral properties
-export interface IproductDetail {
-  id: number;
-  slug: string;
-  name: string;
-  variationName: string
-  sku: string;
-  price: number;
-  quantity: string;
-  detailedDescription: string;
-  features: string[];
-  icon: string;
-  categories: string[];
-  productThumbnails: IProductThumbnailorImage[];
-  productImages: IProductThumbnailorImage[]
-}
-
-interface IProductApiResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: IProduct[];
-}
-
-type CategoryProps = {
-  featured?: string;
-}
-
-
-const flatAndConvertToCamel = (products) => {
+const flatAndConvertToCamel = (products: IProduct[]) => {
     return products.map((product: IProduct) => {
+    // TODO: correct type
     convertSnakeToCamel(product)
     const { selectedVariation, ...resultNoSelectedVariation } = product
     const { variationDetails, ...selectedVariationNodetails } = selectedVariation
@@ -122,7 +60,7 @@ export const productsApi = createApi({
         url: `products/latest${pageSize && `?${pageSize}`}`
       }),
       // TODO: fis the typsecript errors , have to change the types
-      transformResponse: (response: IProductApiResponse, meta, arg): IProduct[] | undefined => {
+      transformResponse: (response: IProductPaginatedResponse, meta, arg): IProduct[] | undefined => {
         // TODO: grab the paginator from here
         const results = response.results
 
@@ -157,7 +95,15 @@ export const productsApi = createApi({
         url: `products/featured${pageSize ? `?pagesize=${pageSize}` : '' }`
       })
     }),
-
+    getPromotedProducts: builder.query<IproductItem, void>({
+      query: () => ({
+        url: `products/promoted`
+      }),
+      transformResponse: (response) => {
+        convertSnakeToCamel(response)
+        return response
+      }
+    }),
     getProductDetail: builder.query<IproductDetail, string | null>({
       query: (slug) => ({
         url: `products/product-detail/${slug}`
@@ -178,7 +124,7 @@ export const productsApi = createApi({
        })
     }),
     // TODO: jsdoc. inform that featured can be fetch from here as an option
-    getCategories: builder.query<ICategory[], CategoryProps>({
+    getCategories: builder.query<ICategory[], string>({
       query: (featured: string) => ({
         url: featured ? `categories/${featured}` : 'categories/'
       }),
@@ -199,6 +145,8 @@ export const {
   useGetLatestProductsQuery,
   useGetFeaturedProductsQuery,
   useLazyGetFeaturedProductsQuery,
+  useGetPromotedProductsQuery,
+  useLazyGetPromotedProductsQuery,
   useGetProductDetailQuery,
   useLazyGetProductDetailQuery,
   useGetCategoriesQuery,
