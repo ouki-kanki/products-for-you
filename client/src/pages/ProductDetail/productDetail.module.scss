@@ -4,7 +4,7 @@ $breakpoint-large: 1024px;
 
 
 .container {
- overflow: hidden;
+//  overflow: hidden;
 
 }
 
@@ -74,10 +74,42 @@ $breakpoint-large: 1024px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+
+    .salesContainer {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: 30px;
+      padding: 10px;
+      background: linear-gradient(45deg, yellow, orange, white);
+      top: -40px;
+      right: 0;
+      font-weight: bold;
+    }
 
     .description {
       margin-top: 2rem;
       max-width: 600px;
+    }
+
+    .promoContainer {
+      display: flex;
+
+      div:first-child {
+        margin-right: 10px;
+        font-weight: 500;
+        position: relative;
+      }
+
+      div:first-child::before {
+        @include strikethrough_diagonal();
+
+      }
+
+
     }
 
     .priceContainer {

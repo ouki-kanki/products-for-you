@@ -24,4 +24,12 @@ const isObjValuesSame = (a, b) => {
   return flag
 }
 
-console.log(isObjValuesSame(a, c))
+// console.log(isObjValuesSame(a, c))
+
+const arr = []
+
+console.log(Boolean(arr))
+
+if (arr) {
+  console.log("this is a")
+}

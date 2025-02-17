@@ -240,6 +240,7 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
     other_variations_slugs = serializers.SerializerMethodField()
     product_thumbnails = ProductThumbNailSerializer(many=True, read_only=True, source='product_image')
     product_images = ProductImageSerializer(many=True, read_only=True, source='product_image')
+    promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
 
     # noinspection PyMethodMayBeStatic
     def get_features(self, obj):
@@ -293,7 +294,8 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
             'icon',
             'categories',
             'product_thumbnails',
-            'product_images'
+            'product_images',
+            'promotions'
         )
 
 

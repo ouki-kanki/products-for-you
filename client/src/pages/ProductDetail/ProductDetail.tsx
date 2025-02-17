@@ -33,7 +33,19 @@ export const ProductDetail = () => {
 
   const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0]?.url
 
-  console.log("data inside product detail", data)
+  // console.log("data inside product detail", data)
+  let promotion = data?.promotions && data.promotions.length > 0 ?
+                    data.promotions[0] :
+                    null
+
+
+  const validatePromotion = (promotion) => {
+    return promotion?.isActive ? promotion : null
+  }
+
+  promotion = validatePromotion(promotion)
+
+  console.log("the promotion", promotion)
 
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)
@@ -137,6 +149,8 @@ export const ProductDetail = () => {
     })
   }
 
+
+
   // TODO: change variation
 
   return (
@@ -161,6 +175,9 @@ export const ProductDetail = () => {
               </div>
             </div>
             <div className={styles.rightContainer}>
+              {promotion && (
+                <div className={styles.salesContainer}>Now on sale!</div>
+              )}
               <div className={styles.upper}>
                 <h2>{data.variationName}</h2>
                 <div className={styles.description}>
@@ -168,7 +185,16 @@ export const ProductDetail = () => {
                 </div>
                 <div className={styles.priceContainer}>
                   <div>Price</div>
-                  <div>${data.price}</div>
+                  <div className={styles.priceContainer}>
+                    {promotion ? (
+                      <div className={styles.promoContainer}>
+                        <div>{data.price}$</div>
+                        <div>{promotion.promoPrice}$</div>
+                      </div>
+                    ):
+                      <div>{data.price}$</div>
+                    }
+                  </div>
                 </div>
                 <div className={styles.available}>
                   {Number(data?.quantity) > 0 ? 'Available' : 'Not Available'}
