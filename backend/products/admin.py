@@ -20,7 +20,8 @@ from .models import (
     Category, 
     Brand, 
     Discount,
-    ProductImage
+    ProductImage,
+    FeaturedItem
 )
 from promotion.models import ProductsOnPromotion
 from common.util.static_helpers import render_icon
@@ -89,6 +90,33 @@ class CategoryAdmin(admin.ModelAdmin):
 # Register your models here.
 
 
+# INLINES
+
+
+class FeaturedItemInlineForm(forms.ModelForm):
+    class Meta:
+        model = FeaturedItem
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print("the primary key", self.instance.pk)
+        if not self.instance.pk:
+            last_position_obj = FeaturedItem.objects.order_by('-position').first()
+            print(last_position_obj.position)
+            last_position = last_position_obj.position
+            if last_position:
+                self.fields['position'].initial = last_position + 1
+            else:
+                self.fields['position'].initial = 1
+
+
+class FeaturedItemInline(admin.TabularInline):
+    model = FeaturedItem
+    extra = 1
+    form = FeaturedItemInlineForm
+
+
 class ProductItemInline(admin.TabularInline):
     model = ProductItem
     readonly_fields = ['variation_link']
@@ -106,7 +134,7 @@ class ProductItemInline(admin.TabularInline):
 
 
 class ProductForm(forms.ModelForm):
-    features = FeaturesField() # NOTE: this corresponds to the name of the field in the database
+    features = FeaturesField()  # NOTE: this corresponds to the name of the field in the database
     
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
@@ -117,16 +145,20 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = "__all__"
 
+    class Media:
+        js = ('js/toggle_featured.js',)
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'product_icon', 'slug', 'brand', 'is_featured', 'created_at',)
     list_filter = ('is_featured', )
-    inlines = [ProductItemInline]
+    # inlines = [ProductItemInline, FeaturedItemInline]
+    inlines = [FeaturedItemInline, ProductItemInline]
     actions = ('delete_products', )
     form = ProductForm
     message = "Warning.There are no variations for this product.please provide at least one variation"
-    no_featured_warning = "Warning. please provide a featured variation"
+    no_featured_warning = "Warning. please provide a default variation"
 
     formfield_overrides = {models.ImageField: {'widget': CustomAdminFileWidget},}
 
@@ -143,13 +175,51 @@ class ProductAdmin(admin.ModelAdmin):
 
     def product_icon(self, obj):
         return render_icon(obj, 'icon')
-    
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        product_instance = form.instance
+
+        if form.instance.is_featured:
+            new_position = None
+            for formset in formsets:
+                if formset.model == FeaturedItem:
+                    for form in formset.forms:
+                        new_position_raw = request.POST.get(form.add_prefix('position'))
+                        new_position = int(new_position_raw) if new_position_raw else None
+
+            try:
+                featured_item = FeaturedItem.objects.get(product=product_instance)
+                old_position = featured_item.position
+                print("the old position ", old_position)
+                print("the new position", new_position)
+                if old_position != new_position:
+                    print("isndie the update method")
+                    # super().save_related(request, form, formsets, change)
+                    featured_item.position = new_position
+                    featured_item.save()
+            except FeaturedItem.DoesNotExist:
+                print("insdie the create method")
+                # super().save_related(request, form, formsets, change)
+                FeaturedItem.objects.create(
+                    product=product_instance,
+                    position=new_position
+                )
+
+        else:
+            try:
+                featured_item = FeaturedItem.objects.get(product=product_instance)
+                featured_item.delete()
+            except FeaturedItem.DoesNotExist:
+                pass
+        # super().save_related(request, form, formsets, change)
+
     def save_model(self, request: Any, obj: Any, form: Any, change: Any) -> None:
-        super().save_model(request, obj, form, change) 
+        super().save_model(request, obj, form, change)
 
         if not obj.product_variations.exists():
             self.message_user(request, self.message, level=messages.WARNING)
-        super().save_model(request, obj, form, change) 
+        # super().save_model(request, obj, form, change)
 
     @staticmethod
     def delete_products(self, request, queryset):
@@ -157,6 +227,11 @@ class ProductAdmin(admin.ModelAdmin):
             if obj.icon:
                 delete_image_from_filesystem(obj, 'icon')
         queryset.delete()
+
+
+@admin.register(FeaturedItem)
+class FeaturedItemAdmin(admin.ModelAdmin):
+    list_display = ('product', 'position',)
 
 
 @admin.register(Discount)

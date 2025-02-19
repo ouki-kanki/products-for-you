@@ -59,6 +59,8 @@ export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props )
   }, [windowWidth])
 
 
+  // console.log("the data", data)
+
   return (
     <div className={styles.container}>
       <Swiper

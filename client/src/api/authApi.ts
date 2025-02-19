@@ -68,8 +68,7 @@ export const authApi = authBaseApi.injectEndpoints({
           }))
 
         } catch (error) {
-          console.log(error)
-          // TODO: show notification
+          // console.log(error)
         }
       }
     }),

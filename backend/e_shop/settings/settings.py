@@ -164,9 +164,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # NOTE: points inside e_shop directory
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 
 # User uploaded files

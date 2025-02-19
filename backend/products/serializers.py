@@ -173,6 +173,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     category = ProductAndCategoriesSerializer(source='product')
     description = serializers.SerializerMethodField()
     features = serializers.SerializerMethodField()
+    promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
 
 
     def get_name(self, obj): # noqa
@@ -207,7 +208,9 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             'features',
             'product_images',
             'current_variation',
-            'category')
+            'category',
+            'promotions'
+        )
 
 
 class ProductImageSerializer(serializers.ModelSerializer):

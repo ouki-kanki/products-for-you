@@ -189,6 +189,20 @@ def product_pre_save(sender, instance, *args, **kwargs):
 pre_save.connect(product_pre_save, Product)
 
 
+class FeaturedItem(models.Model):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='featured_item')
+    position = models.PositiveIntegerField(unique=True)
+
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         last_featured = FeaturedItem.objects.order_by('-position').first()
+    #         if last_featured:
+    #             self.position = last_featured.position + 1
+    #         else:
+    #             self.position = 1
+    #     super().save(*args, **kwargs)
+
+
 class ProductItem(models.Model):
     """ PRODUCT - VARIANT """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')

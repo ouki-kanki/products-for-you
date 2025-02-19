@@ -29,11 +29,10 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ title, data 
   // filter the default image
   const renderDefaultThumb = (product): string => {
     // TODO: refactor the response.change the snakecase to camelcase
-    const def = product.product_images?.filter(img => img.is_default)
+    const def = product.productImages?.filter(img => img.isDefault)
     return def[0]?.url
   }
 
-  // console.log("the data yo", data)
   return (
     <div className={styles.container}>
       { data && data.results.length > 0 && (

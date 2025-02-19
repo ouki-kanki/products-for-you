@@ -15,8 +15,6 @@ interface PromotedProductProps {
 
 // TODO: this is the same as the latest products .refactor
 export const PromotedProducts: React.FC<PromotedProductProps> = ({ data, isLoading, isError }) => {
-  console.log("the promoted data", data)
-
   const renderDefaultThumb = (product: Iproduct) => {
     const def = product.productThumbnails?.filter((thumb: {isDefault: boolean, url: string }) => thumb.isDefault)
 

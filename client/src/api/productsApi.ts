@@ -93,7 +93,11 @@ export const productsApi = createApi({
     getFeaturedProducts: builder.query<IProductApiResponse, string | void>({
       query: (pageSize) => ({
         url: `products/featured${pageSize ? `?pagesize=${pageSize}` : '' }`
-      })
+      }),
+      transformResponse: (response) => {
+        convertSnakeToCamel(response)
+        return response;
+      }
     }),
     getPromotedProducts: builder.query<IproductItem, void>({
       query: () => ({
