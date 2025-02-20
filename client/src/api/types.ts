@@ -1,3 +1,4 @@
+
 export interface IProductImage {
   id: number;
   image: string;
@@ -59,6 +60,10 @@ export interface IproductVariationPreview {
 export interface IproductItem extends IproductVariationPreview {
   promotions: Ipromotion[];
   name: string;
+}
+
+export interface IfeaturedItem extends IproductItem {
+  featured_position: number;
 }
 
 

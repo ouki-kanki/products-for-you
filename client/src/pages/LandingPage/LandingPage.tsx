@@ -69,7 +69,6 @@ export const LandingPage = () => {
       {featuredProducts ?
       <FeaturedProducts
         data={featuredProducts}
-        title='Featured Products'
       /> :
       <div>Couldn't load featured products</div>
       }

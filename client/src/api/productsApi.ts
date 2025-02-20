@@ -9,7 +9,8 @@ import { ICategory } from '../types';
 import type { IProduct,
               IproductVariationPreview,
               IproductItem,
-              IproductDetail
+              IproductDetail,
+              IfeaturedItem
              } from './types';
 
 interface IProductPaginatedResponse {
@@ -18,6 +19,7 @@ next: string | null;
 previous: string | null;
 results: IProduct[];
 }
+
 
 const flatAndConvertToCamel = (products: IProduct[]) => {
     return products.map((product: IProduct) => {
@@ -90,13 +92,17 @@ export const productsApi = createApi({
       }
     }),
 
-    getFeaturedProducts: builder.query<IProductApiResponse, string | void>({
+    getFeaturedProducts: builder.query<IfeaturedItem, string | void>({
       query: (pageSize) => ({
         url: `products/featured${pageSize ? `?pagesize=${pageSize}` : '' }`
       }),
       transformResponse: (response) => {
         convertSnakeToCamel(response)
-        return response;
+        const responseCopy = JSON.parse(JSON.stringify(response))
+        responseCopy.results.sort((a, b) => a.featuredPosition - b.featuredPosition)
+        console.log("after", responseCopy)
+
+        return responseCopy;
       }
     }),
     getPromotedProducts: builder.query<IproductItem, void>({

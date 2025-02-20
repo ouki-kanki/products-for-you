@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState} from 'react'
 import styles from './featuredProducts.module.scss';
 import { NavLink } from 'react-router-dom';
 
@@ -22,9 +22,10 @@ interface FeaturedProductsProps extends ICarouselContainerProps {
   results: Record<string, unknown>[]
 }
 
-// TODO: THIS IS ONLY FOR FEATURED PRODUCTS
+// TODO: THIS IS ONLY FOR FEATURED PRODUCTS DRY THIS
 // refactor the response for featured and latest to have the same structure and make this component generic
-export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ title, data }) => {
+export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ data }) => {
+  const [featuredProducts, setFeaturedProducts] = useState(data)
 
   // filter the default image
   const renderDefaultThumb = (product): string => {
@@ -37,7 +38,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ title, data 
     <div className={styles.container}>
       { data && data.results.length > 0 && (
         <>
-          <h2>{title}</h2>
+          <h2>Featured Products</h2>
           <div className={styles.carouselContainer}>
             <SwiperCarouselV2
             data={data.results}

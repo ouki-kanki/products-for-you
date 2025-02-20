@@ -33,3 +33,20 @@ console.log(Boolean(arr))
 if (arr) {
   console.log("this is a")
 }
+
+const items = [
+  {
+    position: 2
+  },
+  {
+    position: 3
+  },
+  {
+    position: 1
+  }
+]
+
+
+items.sort((a, b) => a.position - b.position)
+
+console.log(items)
