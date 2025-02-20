@@ -63,6 +63,7 @@ class FeaturedProductsListView(generics.ListAPIView):
     that is flagged as default, sort creation_time
     """
 
+    # TODO: this fetches the default variation, i want to be able to fetch featured variations
     queryset = ProductItem.objects.select_related('product__category', 'product') \
         .filter(is_default=True, product__is_featured=True) \
         .order_by('-created_at')

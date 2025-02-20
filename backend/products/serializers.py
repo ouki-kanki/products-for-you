@@ -174,7 +174,11 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     description = serializers.SerializerMethodField()
     features = serializers.SerializerMethodField()
     promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
+    featured_position = serializers.SerializerMethodField()
 
+    def get_featured_position(self, obj): # noqa
+        featured_item = getattr(obj.product, 'featured_item', None)
+        return featured_item.position if featured_item else None
 
     def get_name(self, obj): # noqa
         return obj.product.name
@@ -209,7 +213,8 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             'product_images',
             'current_variation',
             'category',
-            'promotions'
+            'promotions',
+            'featured_position'
         )
 
 

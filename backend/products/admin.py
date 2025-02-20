@@ -2,8 +2,8 @@ from typing import Any
 from django import forms
 from django.contrib import admin, messages
 from django.conf import settings
-from django.db import models
-from django.db.models import Q
+from django.db import models, transaction
+from django.db.models import Q, F
 from django import forms
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
@@ -229,9 +229,53 @@ class ProductAdmin(admin.ModelAdmin):
         queryset.delete()
 
 
+class FeaturedItemForm(forms.ModelForm):
+    class Meta:
+        model = FeaturedItem
+        fields = '__all__'
+
+    def validate_unique(self):
+        pass
+
+
 @admin.register(FeaturedItem)
 class FeaturedItemAdmin(admin.ModelAdmin):
+    form = FeaturedItemForm
     list_display = ('product', 'position',)
+    ordering = ('position',)
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        if extra_context:
+            extra_context['custom_message'] = format_html(
+                '<div>yoyoyoyo</div>'
+            )
+        return super().change_view(request, object_id, form_url, extra_context)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            old_position = FeaturedItem.objects.get(pk=obj.pk).position
+            new_position = obj.position
+
+            try:
+                # find a position that does not exist to use to avoid the constrain error
+                item_with_same_position = FeaturedItem.objects.get(position=new_position)
+                last_position_used = FeaturedItem.objects.order_by('-position').first().position
+                setattr(item_with_same_position, 'position', last_position_used + 1)
+                item_with_same_position.save()
+
+                # save the current instance with the new position
+                super().save_model(request, obj, form, change)
+                # save the instance with the same position and now use the old_position to do the swap
+                setattr(item_with_same_position, 'position', old_position)
+                item_with_same_position.save()
+                return
+            except FeaturedItem.DoesNotExist:
+                pass
+
+        super().save_model(request, obj, form, change)
+
+
 
 
 @admin.register(Discount)
