@@ -43,7 +43,7 @@ export const ProductV2 = ({
   price,
   features,
   slug,
-  productThumbnails,
+  productImages,
   quantity,
   description,
   variations,
@@ -59,7 +59,7 @@ export const ProductV2 = ({
   const [variationSlug, setVariationSlug] = useState<string>('')
   const [ trigger, result, lastPromiseInfo ] = useLazyGetProductVariationPreviewQuery()
 
-  const strProductThumbnails = JSON.stringify(productThumbnails)
+  const strProductImages = JSON.stringify(productImages)
   const strVariationResult = result.data && JSON.stringify(result.data)
 
   useEffect(() => {
@@ -77,9 +77,9 @@ export const ProductV2 = ({
     setVariationPrice(price)
 
     // TODO: this is bad practice, have to find a more elegant solution
-    setVariationProductsThumbnails(JSON.parse(strProductThumbnails))
+    setVariationProductsThumbnails(JSON.parse(strProductImages))
     setVariationSlug(slug)
-  }, [quantity, price, strProductThumbnails, slug])
+  }, [quantity, price, strProductImages, slug])
 
   const handleVariationChange = (e: React.MouseEvent<HTMLDivElement>, slug: string) => {
     e.stopPropagation();

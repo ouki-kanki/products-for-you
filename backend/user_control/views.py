@@ -1,12 +1,15 @@
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 
-from rest_framework import viewsets, mixins, status, generics
+from rest_framework import viewsets, mixins, status, generics, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 
 from .models import CustomUser as User, UserDetail
+from products.models import ProductItem, FavoriteProductItem
 from .serializers import UserSerializer, UserDetailSerializer
+from products.serializers import FavoriteProductItemSerializer, ProductItemSerializer
 from .mixins import UserUpdateMixin
 
 
@@ -79,4 +82,54 @@ class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
 
+class FavoriteProductItemListView(generics.ListAPIView):
+    serializer_class = ProductItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = ProductItem.objects.filter(favorite_by__user=user)
+
+        return qs
+
+
+class FavoriteProductItemAddView(generics.CreateAPIView):
+    serializer_class = FavoriteProductItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        slug = self.request.data.slug
+
+        try:
+            product_item = ProductItem.objects.get(slug=slug)
+            try:
+                serializer.save(user=user, product_item=product_item)
+            except IntegrityError:
+                return Response({
+                    "message": "Product is already in your favorites list"
+                })
+        except ProductItem.DoesNotExist:
+            return Response({
+                "detail": "Product not found",
+            }, status=status.HTTP_404_NOT_FOUND)
+
+
+class FavoriteProductItemDeleteView(generics.DestroyAPIView):
+    serializer_class = FavoriteProductItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        slug = request.data.slug
+        try:
+            favorite_product_item = FavoriteProductItem.objects.get(product_item__slug=slug, user=user)
+            favorite_product_item.delete()
+            return Response({
+                "detail": "favorite item deleted"
+            }, status=status.HTTP_204_NO_CONTENT)
+        except FavoriteProductItem.DoesNotExist:
+            return Response({
+                'detail': "favorite product not found"
+            }, status=status.HTTP_404_NOT_FOUND)
 

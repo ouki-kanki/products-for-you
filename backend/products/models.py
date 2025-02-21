@@ -426,12 +426,15 @@ class Discount(models.Model):
         return f"{self.code} - {self.discount_value}%"
 
 
-class Favorite(models.Model):
+class FavoriteProductItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorite_by')
+    product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='favorite_by')
+
+    class Meta:
+        unique_together = ('user', 'product_item')
 
     def __str__(self):
-        return f"{self.user.email} - {self.product.product_id.name}"
+        return f"{self.user.email} - {self.product_item.product.name}"
 
 
 class ProductReview(models.Model):

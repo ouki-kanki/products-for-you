@@ -100,7 +100,6 @@ export const productsApi = createApi({
         convertSnakeToCamel(response)
         const responseCopy = JSON.parse(JSON.stringify(response))
         responseCopy.results.sort((a, b) => a.featuredPosition - b.featuredPosition)
-        console.log("after", responseCopy)
 
         return responseCopy;
       }
@@ -138,8 +137,9 @@ export const productsApi = createApi({
       query: (featured: string) => ({
         url: featured ? `categories/${featured}` : 'categories/'
       }),
-      onQueryStarted: (q) => console.log("Categories query -started--")
-    }),
+      onQueryStarted: (q) => {
+        // console.log("Categories query -started--")
+    }}),
     filterByCategory: builder.query<IProductApiResponse, string>({
       query: (slug) => ({
         url: `products/category/${slug}`

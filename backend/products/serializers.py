@@ -5,7 +5,7 @@ from rest_framework.reverse import reverse
 from promotion.serializers import ProductOnPromotionSerializer
 from variations.serializers import VariationOptionsSerializer
 from .models import (
-    Product, ProductItem, Category, ProductImage
+    Product, ProductItem, Category, ProductImage, FavoriteProductItem
 )
 
 from .utils import get_list_of_parent_categories, representation_categories_to_list
@@ -331,3 +331,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name', 'slug', 'icon', 'children', 'my_parent_category')
+
+
+class FavoriteProductItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteProductItem
+        fields = '__all__'

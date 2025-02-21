@@ -62,10 +62,11 @@ class FeaturedProductsListView(generics.ListAPIView):
     description: get productItems filter by is_default.gives the variation for each products
     that is flagged as default, sort creation_time
     """
-
     # TODO: this fetches the default variation, i want to be able to fetch featured variations
+    # i want the first featured to be shown on the top of the landing page
+    # TODO: prefetch related on featured_item
     queryset = ProductItem.objects.select_related('product__category', 'product') \
-        .filter(is_default=True, product__is_featured=True) \
+        .filter(is_default=True, product__is_featured=True,) \
         .order_by('-created_at')
 
     serializer_class = ProductVariationSerializer

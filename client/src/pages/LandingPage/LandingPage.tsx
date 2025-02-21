@@ -49,18 +49,24 @@ export interface IProductV4 {
 
 export const LandingPage = () => {
   const { data: latestProducts, isLoading: isLoadingLatest, isError: isErrorLatest} = useGetLatestProductsQuery('10')
-  const { data: featuredProducts, isLoading: isLoadingFeatured, isError: errorFeatured} = useGetFeaturedProductsQuery(undefined, { skip: !latestProducts })
+  const { data: featuredProducts, isLoading: isLoadingFeatured, isError: isErrorFeatured} = useGetFeaturedProductsQuery(undefined, { skip: !latestProducts })
   const { data: promotedProducts, isLoading: isLoadingPromoted, isError: isErrorPromoted} = useGetPromotedProductsQuery(undefined, { skip: !featuredProducts })
   const { data: featuredCategories, isLoading: isLoadingCategories, isError: isErrorCategories} = useGetCategoriesQuery('featured', { skip: !promotedProducts })
 
   // console.log("latest", latestProducts)
-  // console.log("featured", featuredProducts)
+  // console.log("featured", featuredProducts, isLoadingFeatured, isErrorFeatured)
   // console.log("promoted", promotedProducts)
   // console.log("categories", featuredCategories)
 
   return (
     <div className={styles.container}>
       {/* {productView === 'products' && renderProducts()} */}
+
+      <FeaturedProduct
+        data={featuredProducts?.results}
+        isLoading={isLoadingFeatured}
+        isError={isErrorFeatured}
+        />
 
       <div className={styles.sectionContainer}>
         <LatestProducts data={latestProducts}/>
@@ -81,10 +87,6 @@ export const LandingPage = () => {
 
       <PromotedProducts data={promotedProducts} isLoading={isLoadingPromoted}/>
 
-      {/* TODO: remove this is for testing */}
-      {/* {latestProducts && (
-        <FeaturedProduct data={latestProducts[4]}/>
-      )} */}
     </div>
   )
 }
