@@ -1,6 +1,7 @@
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.reverse import reverse
+from rest_framework.validators import UniqueTogetherValidator
 
 from promotion.serializers import ProductOnPromotionSerializer
 from variations.serializers import VariationOptionsSerializer
@@ -334,6 +335,17 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class FavoriteProductItemSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = FavoriteProductItem
         fields = '__all__'
+
+        validators = [
+            UniqueTogetherValidator,
+        ]
+
+
+
+
+
+

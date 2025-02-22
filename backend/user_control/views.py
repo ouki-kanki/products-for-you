@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets, mixins, status, generics, permissions
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -97,22 +98,35 @@ class FavoriteProductItemAddView(generics.CreateAPIView):
     serializer_class = FavoriteProductItemSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        user = self.request.user
-        slug = self.request.data.slug
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        data['user'] = request.user.id
+
+        slug = request.data.get('slug')
 
         try:
             product_item = ProductItem.objects.get(slug=slug)
-            try:
-                serializer.save(user=user, product_item=product_item)
-            except IntegrityError:
-                return Response({
-                    "message": "Product is already in your favorites list"
-                })
+            data['product_item'] = product_item.pk
         except ProductItem.DoesNotExist:
             return Response({
-                "detail": "Product not found",
+                "detail": "product not found"
             }, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        try:
+            serializer.save()
+        except IntegrityError:
+            raise ValidationError({
+                'detail': "product is already in the favorites list"
+            })
 
 
 class FavoriteProductItemDeleteView(generics.DestroyAPIView):
@@ -121,7 +135,7 @@ class FavoriteProductItemDeleteView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        slug = request.data.slug
+        slug = request.data.get('slug')
         try:
             favorite_product_item = FavoriteProductItem.objects.get(product_item__slug=slug, user=user)
             favorite_product_item.delete()
