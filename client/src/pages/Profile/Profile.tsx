@@ -3,7 +3,7 @@ import { useAppDispatch } from '../../app/store/store';
 import { fieldsReducer } from '../../app/reducers';
 import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
 
-import { useLazyGetUserProfileQuery, useGetUserProfileQuery } from '../../api/userApi';
+import { useGetUserProfileQuery, useGetFavoriteProductsQuery } from '../../api/userApi';
 import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
 import { ActionTypesProfile } from '../../app/actions';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
@@ -42,6 +42,7 @@ const initialState: ProfileState = {
 export const Profile = () => {
   // const [trigger, { data: profileData, isError, error, isLoading, }] = useLazyGetUserProfileQuery()
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
+  const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData })
 
   const [updateUserProfile, {data: updateData, isSuccess: isUpdateSuccess, error: updateError, isError: isUpdateError, isLoading: udpateLoading}] = useUpdateUserProfileMutation()
   const [uploadProfileImage, { data: uploadImageData, isSuccess: isUploadImageSuccess, isError: isUploadImageError, error: uploadImageError }] = useUploadProfileImageMutation()
@@ -51,11 +52,13 @@ export const Profile = () => {
   const { util: { resetApiState, upsertQueryData } } = userApi
   const prefetchUserProfile = usePrefetch('getUserProfile')
 
-
   const navigate = useNavigate()
   const [isInEdit, setIsInEdit] = useState(false)
   const location: Location = useLocation()
   const [state, dispatch] = useReducer(fieldsReducer, initialState)
+
+  console.log("the favorite products", favoriteProduts)
+
 
   // let strProfileData = {};
   // if (profileData) {

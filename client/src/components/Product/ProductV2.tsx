@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faStar } from '@fortawesome/free-regular-svg-icons';
-import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faStar as faSolidStar, faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 
 import { Card } from '../../UI/Card/Card';
 import { Button } from '../../UI/Button/Button';
@@ -37,7 +37,7 @@ interface IProductV2Props extends IProduct {
   shadow?: boolean
 }
 
-
+// TODO: getProductVariationPreview has to be moved from here. has to go to the parent
 export const ProductV2 = ({
   name: title,
   price,
@@ -48,6 +48,8 @@ export const ProductV2 = ({
   description,
   variations,
   constructedUrl,
+  handleFavorite,
+  isFavorite,
   shadow = true,
   width = 'fluid' }: IProductV2Props) => {
   const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
@@ -99,6 +101,8 @@ export const ProductV2 = ({
     setCurrentImage(url)
   }
 
+  // render the variation images on the right of the panel
+  // TODO: click the variation is broken
   const renderVariations = () => {
     if (variations && variations.length > 0) {
       return (
@@ -138,8 +142,9 @@ export const ProductV2 = ({
         shadow={shadow}
         >
         <FontAwesomeIcon
+          onClick={handleFavorite}
           className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`}
-          icon={faHeart}
+          icon={isFavorite ? faSolidHeart : faHeart}
           size='2x'/>
         <div
           className={styles.productContainer}

@@ -177,6 +177,13 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
     featured_position = serializers.SerializerMethodField()
 
+    def get_is_favorite(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return
+        print("the request inside the serializer", request)
+        return True
+
     def get_featured_position(self, obj): # noqa
         featured_item = getattr(obj.product, 'featured_item', None)
         return featured_item.position if featured_item else None
@@ -200,6 +207,12 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         list_of_categories = [category for category in obj_of_categories['category']]
         ret['category'] = list_of_categories
 
+        request = self.context.get('request')
+        # only add the field if the user is auth to show the favorite products
+        print("the request", request.user)
+        if request and request.user.is_authenticated:
+            is_favorite = FavoriteProductItem.objects.filter(user=request.user, product_item=instance).exists()
+            ret['is_favorite'] = is_favorite
         return ret
 
     class Meta:
@@ -215,7 +228,8 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             'current_variation',
             'category',
             'promotions',
-            'featured_position'
+            'featured_position',
+            # 'is_favorite'
         )
 
 

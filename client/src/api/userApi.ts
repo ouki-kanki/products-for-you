@@ -11,6 +11,10 @@ export interface IUserProfileBase {
   image: string;
 }
 
+interface IFavoriteProduct {
+  name: string;
+}
+
 export type IUserProfile = IUserProfileBase & Record<string, string>
 
 export const userApi = authBaseApi.injectEndpoints({
@@ -24,6 +28,23 @@ export const userApi = authBaseApi.injectEndpoints({
         method: 'PATCH',
         body
       })
+    }),
+    getFavoriteProducts: builder.query<IFavoriteProduct[], void>({
+      query: () => `user-control/favorite-products`,
+    }),
+    addFavoriteProduct: builder.mutation<void, { slug: string}>({
+      query: (body) => ({
+        url: 'user-control/favorite-products/add',
+        method: 'POST',
+        body
+      })
+    }),
+    deleteFavoriteProduct: builder.mutation<void, { slug: string}>({
+      query: (body) => ({
+        url: 'user-control/favorite-products/remove',
+        method: 'DELETE',
+        body
+      })
     })
   })
 })
@@ -31,5 +52,8 @@ export const userApi = authBaseApi.injectEndpoints({
 export const {
   useGetUserProfileQuery,
   useLazyGetUserProfileQuery,
-  useUpdateUserProfileMutation
+  useUpdateUserProfileMutation,
+  useGetFavoriteProductsQuery,
+  useAddFavoriteProductMutation,
+  useDeleteFavoriteProductMutation
 } = userApi

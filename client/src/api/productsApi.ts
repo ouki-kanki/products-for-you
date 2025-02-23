@@ -43,18 +43,19 @@ const flatAndConvertToCamel = (products: IProduct[]) => {
 // TODO: categories falls under /products/categories
 // have to create a different api for categories and change the url to just /categories/
 
+// TODO: userapi uses baseAuthApi .have to check if i can use it here to dry the code
 export const productsApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      // TODO: this is invalid, check if token will be needed and corect it
-      const token = (getState() as RootState).auth.token
+      const token = (getState() as RootState).auth.userTokens.accessToken
       if (token) {
         headers.set(AuthEnum.authorization, `Bearer ${token}`)
       }
       return headers
-    }
+    },
+    // credentials: 'include'
   }),
   endpoints: (builder) => ({
     getLatestProducts: builder.query<IProduct[] | undefined, string>({
