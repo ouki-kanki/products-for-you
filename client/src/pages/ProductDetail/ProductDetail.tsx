@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
 import { useGetProductDetailQuery, useLazyGetProductDetailQuery } from '../../api/productsApi'
 import { showNotification } from '../../components/Notifications/showNotification'
-
+import { FavoritesBtn } from '../../components/Buttons/FavoritesBtn/FavoritesBtn'
+import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
 
 import styles from './productDetail.module.scss'
 import ReturnIcon from '../../assets/svg_icons/return_icon.svg?react'
@@ -16,6 +17,7 @@ import SubtractIcon from '../../assets/svg_icons/subtract_filled.svg?react'
 
 export const ProductDetail = () => {
   const dispatch = useDispatch()
+  const { handleFavorite } = useHandleFavoriteItem()
   const { slug } = useParams()
 
   // const { data, isLoading } = useGetProductDetailQuery(slug as string)
@@ -24,6 +26,7 @@ export const ProductDetail = () => {
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
   const [activeSlug, setActiveSlug] = useState(slug || '')
+
 
   useEffect(() => {
     if (activeSlug) {
@@ -44,8 +47,6 @@ export const ProductDetail = () => {
   }
 
   promotion = validatePromotion(promotion)
-
-  console.log("the promotion", promotion)
 
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)
@@ -175,6 +176,10 @@ export const ProductDetail = () => {
               </div>
             </div>
             <div className={styles.rightContainer}>
+              <FavoritesBtn
+                handleFavorite={() => handleFavorite(data.slug, data.isFavorite ?? false)}
+                isFavorite={data.isFavorite ?? false}
+              />
               {promotion && (
                 <div className={styles.salesContainer}>Now on sale!</div>
               )}

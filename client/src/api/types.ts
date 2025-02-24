@@ -81,6 +81,7 @@ export interface IproductDetail {
   icon: string;
   categories: string[];
   productThumbnails: IProductThumbnailorImage[];
-  productImages: IProductThumbnailorImage[]
+  productImages: IProductThumbnailorImage[];
+  isFavorite?: boolean;
 }
 

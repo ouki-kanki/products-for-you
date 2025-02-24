@@ -6,12 +6,13 @@ import { useHover } from '../../hooks/useHover';
 import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faStar } from '@fortawesome/free-regular-svg-icons';
-import { faPlus, faStar as faSolidStar, faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-regular-svg-icons';
+import { faPlus, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
 
 import { Card } from '../../UI/Card/Card';
 import { Button } from '../../UI/Button/Button';
 import { QuantityIndicator } from '../../UI/Indicators/QuantityIndicator';
+import { FavoritesBtn } from '../Buttons/FavoritesBtn/FavoritesBtn';
 
 import kdeImage from '../../assets/kd14_low_res.png'
 import kdeRight from '../../assets/kd14_right.jpg'
@@ -141,11 +142,10 @@ export const ProductV2 = ({
         width={width}
         shadow={shadow}
         >
-        <FontAwesomeIcon
-          onClick={handleFavorite}
-          className={`${styles.heartIcon} ${isTempHovered && styles.heartIconScale}`}
-          icon={isFavorite ? faSolidHeart : faHeart}
-          size='2x'/>
+        <FavoritesBtn
+          handleFavorite={handleFavorite}
+          isFavorite={isFavorite}
+        />
         <div
           className={styles.productContainer}
           onClick={handleProductDetail}

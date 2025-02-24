@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from django.apps import apps
 
 
 def get_list_of_parent_categories(category, init_list):
@@ -26,3 +27,17 @@ def representation_categories_to_list(repr_data):
     list_of_categories = get_list_of_parent_categories(category, [])
     repr_data['category'] = list_of_categories
     return repr_data
+
+
+def add_favorite_product_to_ret(ret, request, instance):
+    """
+    if the user is authenticated show if the product is favorite in the returning json
+    """
+    user = request.user
+    if user and user.is_authenticated:
+        favorite_product_item = apps.get_model('products', 'FavoriteProductItem')
+        is_favorite = favorite_product_item.objects.filter(user=user, product_item=instance).exists()
+        ret['is_favorite'] = is_favorite
+    return ret
+
+

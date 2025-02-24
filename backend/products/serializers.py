@@ -9,8 +9,10 @@ from .models import (
     Product, ProductItem, Category, ProductImage, FavoriteProductItem
 )
 
-from .utils import get_list_of_parent_categories, representation_categories_to_list
-
+from .utils import (
+    get_list_of_parent_categories, representation_categories_to_list,
+    add_favorite_product_to_ret
+)
 
 class CategoryAndParentCategoriesSerializer(serializers.Serializer):  # noqa
     '''
@@ -206,13 +208,14 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         obj_of_categories = ret['category']
         list_of_categories = [category for category in obj_of_categories['category']]
         ret['category'] = list_of_categories
-
         request = self.context.get('request')
-        # only add the field if the user is auth to show the favorite products
-        print("the request", request.user)
-        if request and request.user.is_authenticated:
-            is_favorite = FavoriteProductItem.objects.filter(user=request.user, product_item=instance).exists()
-            ret['is_favorite'] = is_favorite
+        # user = request.user
+
+        ret = add_favorite_product_to_ret(ret, request, instance)
+
+        # if request and request.user.is_authenticated:
+        #     is_favorite = FavoriteProductItem.objects.filter(user=request.user, product_item=instance).exists()
+        #     ret['is_favorite'] = is_favorite
         return ret
 
     class Meta:
@@ -300,6 +303,14 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
             if request:
                 return request.build_absolute_uri(product.icon.url)
         return None
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        request = self.context.get('request')
+
+        ret = add_favorite_product_to_ret(ret, request, instance)
+
+        return ret
 
     class Meta:
         model = ProductItem
