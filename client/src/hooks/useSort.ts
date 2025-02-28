@@ -1,34 +1,31 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
-
+import { useNavigate, useLocation, useSearchParams, useLoaderData } from 'react-router-dom'
 
 export const useSort = (initValue: string) => {
-  const [sortValue, setSortValue] = useState(initValue)
   const [searchParams,  setSearchParams] = useSearchParams()
 
-  // const sortValue = searchParams.get('sort_by')
-
-
-  // get all the list of querystrings
   const paramsObj = {}
   for (let [key, value] of searchParams.entries()) {
     // TODO: fix the types
     paramsObj[key] = value
   }
 
-  // if there is short_by replace it if not create it
-  paramsObj['sort_by'] = sortValue
-  const obj_of_dep = JSON.stringify(paramsObj)
+  const sortValue = paramsObj['sort_by']
 
-  useEffect(() => {
-    const obj = JSON.parse(obj_of_dep)
-    setSearchParams(obj)
-    // TODO: check if setSearchParams is memoized
-  }, [obj_of_dep, setSearchParams])
 
+  const handleChangeSort = (value: string) => {
+    setSearchParams(prevParams => {
+      const newParams = new URLSearchParams(prevParams)
+      newParams.set('sort_by', value)
+
+      return newParams
+    })
+  }
 
   return {
     sortValue,
-    setSortValue,
+    handleChangeSort
   }
 }
+
+

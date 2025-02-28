@@ -23,7 +23,7 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
   const { layout } = props
   const navigate = useNavigate()
   const classes = useClassLister(styles)
-  const category = props.categories[props.categories.length -1]
+  const category = props.categories ? props.categories[props.categories?.length -1] : ''
   const { slug, name } = props
 
   const handleProductDetail = (categorySlug: string, productItemSlug: string) => {

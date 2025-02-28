@@ -1,0 +1,11 @@
+.container {
+  h2 {
+    margin-bottom: $titleBottomMargin-m;
+  }
+}
+
+.favoriteProductsContainer {
+  display: flex;
+  height: 100px;
+  padding: 10px 0;
+}

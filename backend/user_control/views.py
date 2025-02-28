@@ -10,8 +10,9 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from .models import CustomUser as User, UserDetail
 from products.models import ProductItem, FavoriteProductItem
 from .serializers import UserSerializer, UserDetailSerializer
-from products.serializers import FavoriteProductItemSerializer, ProductItemSerializer
+from products.serializers import FavoriteProductItemSerializer, ProductItemExtendedSerializer
 from .mixins import UserUpdateMixin
+from common.util.custom_pagination import CustomPageNumberPagination
 
 
 class UsersViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
@@ -84,12 +85,29 @@ class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
 
 
 class FavoriteProductItemListView(generics.ListAPIView):
-    serializer_class = ProductItemSerializer
+    serializer_class = ProductItemExtendedSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
         user = self.request.user
         qs = ProductItem.objects.filter(favorite_by__user=user)
+        sort_by = self.request.query_params.get('sort_by')
+
+        print("the sort value", sort_by)
+
+        sort_values = {
+            'name': 'product__name',
+            '-name': '-product__name',
+            'time': 'created_at',
+            '-time': '-created_at'
+        }
+
+        if sort_by:
+            try:
+                qs = qs.order_by(sort_values.get(sort_by))
+            except Exception as e:
+                print("cannot order")
 
         return qs
 

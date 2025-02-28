@@ -1,6 +1,7 @@
-const thumbs = []
+const obj = {
+  a: 3
+}
 
-const str = JSON.stringify(thumbs)
-console.log(str)
-console.log(typeof str)
-console.log(JSON.parse(str))
+obj.isFavorite = true
+
+console.log(obj)

@@ -5,6 +5,7 @@
 .mainContainer {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 4rem;
 }
 
 .inputContainer {
@@ -32,4 +33,8 @@
 
 .insertBtn {
   @include btn_blue();
+}
+
+.favoriteProductsContainer {
+  max-width: 750px;
 }

@@ -39,12 +39,19 @@ export const Search = () => {
   const dispatch = useDispatch()
   // const [category, setCategory] = useState('shoes')
 
+  // console.log("the search params", searchParams)
+
+  // if the user changes the sort use the hook
+
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
-  const { sortValue, setSortValue } = useSort('time')
+  const { sortValue, handleChangeSort } = useSort('time')
+  // const sortValue = 'time'
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
 
-  console.log("the facets srt -> ", paramsStr)
+  console.log("the sort value", sortValue)
+
+  // console.log("the facets srt -> ", paramsStr)
 
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
@@ -56,12 +63,13 @@ export const Search = () => {
   })
 
   // console.log(data)
-
   useEffect(() => {
     // facets are cached. trigger request when facetslist is changed
     refetch()
   }, [paramsStr, refetch])
 
+
+  console.log("the data", data)
 
   const facets = data?.facets
   const activeFacets = useSelector((state: RootState) => state.filters.activeFacets)
@@ -86,7 +94,7 @@ export const Search = () => {
             searchParams.set(key, valuesstr) // append to prev
           }
           return searchParams
-        })
+        }, { replace: false })
 
       })
     }
@@ -156,7 +164,7 @@ export const Search = () => {
           <label htmlFor="sort_by">Sort by</label>
           <select
               value={sortValue || ''}
-              onChange={(e) => setSortValue(e.target.value)}
+              onChange={(e) => handleChangeSort(e.target.value)}
               name="sort_by"
               id="sort_by"
               >
@@ -180,6 +188,7 @@ export const Search = () => {
             { ...product }/>
         ))}
       </div>
+
 
       <div className={styles.paginationContainer}>
         <div

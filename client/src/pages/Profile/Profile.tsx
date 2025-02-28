@@ -17,6 +17,8 @@ import { showNotification } from '../../components/Notifications/showNotificatio
 
 import { ProfileImage } from './ProfileImage/ProfileImage';
 import { ApiError, ValidationError } from '../../types';
+import { FavoriteProducts } from './FavoriteProducts/FavoriteProducts';
+
 
 import { userApi } from '../../api/userApi';
 
@@ -57,13 +59,7 @@ export const Profile = () => {
   const location: Location = useLocation()
   const [state, dispatch] = useReducer(fieldsReducer, initialState)
 
-  console.log("the favorite products", favoriteProduts)
 
-
-  // let strProfileData = {};
-  // if (profileData) {
-    // strProfileData = JSON.stringify(profileData)
-  // }
   useEffect(() => {
     // const data = JSON.parse(strProfileData)
     if (profileData) {
@@ -241,6 +237,13 @@ export const Profile = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className={styles.favoriteProductsContainer}>
+        <FavoriteProducts
+          data={favoriteProduts}
+          isLoading={isFavoriteProductsLoading}
+          isError={isFavoriteProductsError}
+        />
       </div>
       {/* <Outlet/> */}
     </div>
