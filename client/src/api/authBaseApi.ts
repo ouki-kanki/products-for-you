@@ -28,7 +28,7 @@ export const refreshBaseQuery = fetchBaseQuery({
 })
 
 
-const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOptions) => {
+export const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
 
   if (result?.error?.status === 403 || result?.error?.status === 401) {

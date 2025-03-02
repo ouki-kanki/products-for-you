@@ -26,6 +26,7 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
   const category = props.categories ? props.categories[props.categories?.length -1] : ''
   const { slug, name } = props
 
+  // TODO: the same is used elsewhere . move to a common place (used in the orders component)
   const handleProductDetail = (categorySlug: string, productItemSlug: string) => {
     const constructedUrl = `${categorySlug}/${name}/`
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${productItemSlug}`, {

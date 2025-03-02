@@ -22,9 +22,7 @@ const queryObj = {
 export const FavoriteProducts = withLoadingAndError(({ data }: IfavoriteProductsProps) => {
   const { handleNavigate, prepareLink, page, page_size } = usePagination(queryObj)
 
-  // console.log("the data", data)
-
-  if (data.length === 0) {
+  if (data.results.length === 0) {
     return (
       <div>there no favorite products</div>
     )
@@ -32,11 +30,12 @@ export const FavoriteProducts = withLoadingAndError(({ data }: IfavoriteProducts
 
   return (
     <div className={styles.container}>
-      <h2>Favorite Products</h2>
       {data && data.results.map(product => (
-        <div className={styles.favoriteProductsContainer}>
+        <div
+          className={styles.favoriteProductsContainer}
+          key={product.slug}
+          >
           <ProductPreview1
-            key={product.slug}
             name={product.name}
             slug={product.slug}
             price={product.price}

@@ -3,6 +3,7 @@ import { AuthEnum } from './enums';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from './baseConfig';
 
+// TODO: check if this is obsolete
 export const userProfileApi = createApi({
   reducerPath: 'userProfile',
   baseQuery: fetchBaseQuery({

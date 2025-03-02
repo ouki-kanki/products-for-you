@@ -1,5 +1,5 @@
 .profileContainer {
-  padding: .2rem 6rem;
+  // padding: .2rem 6rem;
 }
 
 .mainContainer {
@@ -37,4 +37,18 @@
 
 .favoriteProductsContainer {
   max-width: 750px;
+  margin-bottom: 2rem;
+}
+
+.underline {
+  width: fit-content;
+  margin-bottom: 2rem;
+  &::after {
+    content: '';
+    display: block;
+    width: 50%;
+    height: 2px;
+    background-color: #ddd;
+    margin-top: 3px;
+  }
 }

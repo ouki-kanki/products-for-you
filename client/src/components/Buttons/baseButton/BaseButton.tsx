@@ -7,12 +7,14 @@ interface ButtonProps {
 
 
 // TODO: add some methods to change the color and size with the provided props
-export const BaseButton = ({ children, size = 'md' }: PropsWithChildren<ButtonProps>) => {
+export const BaseButton = ({ children, size = 'md', onClick }: PropsWithChildren<ButtonProps>) => {
 
 
   //TODO: add sizes
 
   return (
-    <div className={`${styles.button} ${styles[`${size}`]}`}>{children}</div>
+    <div
+      onClick={onClick}
+      className={`${styles.button} ${styles[`${size}`]}`}>{children}</div>
   )
 }

@@ -1,4 +1,6 @@
 import { authBaseApi } from './authBaseApi';
+import { convertSnakeToCamelV2, convertSnakeToCamel } from '../utils/converters';
+import type { Iorder } from './types';
 
 export interface IUserProfileBase {
   firstName: string;
@@ -6,6 +8,7 @@ export interface IUserProfileBase {
   email: string;
   addressOne: string;
   addressTwo: string;
+  postCode: string;
   city: string;
   country: string;
   image: string;
@@ -15,12 +18,23 @@ interface IFavoriteProduct {
   name: string;
 }
 
+export interface IorderPaginatedResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  num_of_pages: number;
+  results: Array<Iorder>
+}
+
 export type IUserProfile = IUserProfileBase & Record<string, string>
 
 export const userApi = authBaseApi.injectEndpoints({
   endpoints: builder => ({
     getUserProfile: builder.query<IUserProfile, void>({
       query: () => `/user-control/profile/`,
+      transformResponse: (response, meta, arg) => {
+          return convertSnakeToCamelV2(response)
+      },
     }),
     updateUserProfile: builder.mutation<void, Partial<IUserProfile>>({
       query: (body) => ({
@@ -28,6 +42,14 @@ export const userApi = authBaseApi.injectEndpoints({
         method: 'PATCH',
         body
       })
+    }),
+    getOrders: builder.query<Iorder, void>({
+      query: () => `user-control/orders`,
+      transformResponse: (res: IorderPaginatedResponse) => {
+        // TODO: this mutates the response. change the method to not do this inplace
+        convertSnakeToCamel(res)
+        return res
+      }
     }),
     getFavoriteProducts: builder.query<IFavoriteProduct[], void>({
       query: () => `user-control/favorite-products`,
@@ -55,5 +77,6 @@ export const {
   useUpdateUserProfileMutation,
   useGetFavoriteProductsQuery,
   useAddFavoriteProductMutation,
-  useDeleteFavoriteProductMutation
+  useDeleteFavoriteProductMutation,
+  useGetOrdersQuery
 } = userApi

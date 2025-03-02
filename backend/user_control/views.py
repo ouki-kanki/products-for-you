@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import FieldError
 
 from rest_framework import viewsets, mixins, status, generics, permissions
 from rest_framework.exceptions import ValidationError
@@ -8,9 +9,11 @@ from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 
 from .models import CustomUser as User, UserDetail
-from products.models import ProductItem, FavoriteProductItem
 from .serializers import UserSerializer, UserDetailSerializer
+from products.models import ProductItem, FavoriteProductItem
 from products.serializers import FavoriteProductItemSerializer, ProductItemExtendedSerializer
+from order.serializers import ShopOrderSerializerForClient
+from order.models import ShopOrder
 from .mixins import UserUpdateMixin
 from common.util.custom_pagination import CustomPageNumberPagination
 
@@ -36,13 +39,6 @@ users_detail_view = UsersViewSet.as_view({
 class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
     serializer_class = UserDetailSerializer
     permission_classes = [IsAuthenticated]
-
-    # exclude the user
-    # def get_serializer(self, *args, **kwargs):
-    #     serializer_class = self.get_serializer_class()
-    #     serializer_instance = serializer_class(*args, **kwargs)
-    #     # serializer_instance.fields.pop('user')
-    #     return serializer_instance
 
     def get_object(self):
         user = self.request.user.id
@@ -75,7 +71,6 @@ class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         instance = serializer.save()
-        print("the instance", instance)
 
 
 class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
@@ -91,10 +86,10 @@ class FavoriteProductItemListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
+
+        print("the user inside favorites", user)
         qs = ProductItem.objects.filter(favorite_by__user=user)
         sort_by = self.request.query_params.get('sort_by')
-
-        print("the sort value", sort_by)
 
         sort_values = {
             'name': 'product__name',
@@ -106,7 +101,7 @@ class FavoriteProductItemListView(generics.ListAPIView):
         if sort_by:
             try:
                 qs = qs.order_by(sort_values.get(sort_by))
-            except Exception as e:
+            except FieldError as e:
                 print("cannot order")
 
         return qs
@@ -165,3 +160,21 @@ class FavoriteProductItemDeleteView(generics.DestroyAPIView):
                 'detail': "favorite product not found"
             }, status=status.HTTP_404_NOT_FOUND)
 
+
+class OrdersListApiView(generics.ListAPIView):
+    serializer_class = ShopOrderSerializerForClient
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = CustomPageNumberPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = ShopOrder.objects.filter(user_id=user).order_by('-order_date')
+        sort_by = self.request.query_params.get('sort_by')
+
+        if sort_by:
+            try:
+                qs = qs.order_by(sort_by)
+            except FieldError as e:
+                print("cannot order")
+
+        return qs

@@ -1,4 +1,4 @@
-
+// TOOD: this does not handle arrays inside the object
 export const convertSnakeToCamelV2 = (obj: Record<string, unknown>): Record<string, unknown> => {
   return Object.entries(obj).reduce((acc, [key, value]) => {
     const camelKey = key.replace(/_([a-zA-Z0-9])/g, (_, match) => match.toUpperCase())

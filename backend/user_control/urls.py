@@ -9,8 +9,10 @@ from .views import (
     UploadProfileImageView,
     FavoriteProductItemListView,
     FavoriteProductItemAddView,
-    FavoriteProductItemDeleteView
+    FavoriteProductItemDeleteView,
+    OrdersListApiView
 )
+
 
 app_name = 'user_control'
 urlpatterns = [
@@ -23,4 +25,5 @@ urlpatterns = [
     path('favorite-products/', FavoriteProductItemListView.as_view(), name='favorite_product_list'),
     path('favorite-products/add', FavoriteProductItemAddView.as_view(), name='favorite_product_add'),
     path('favorite-products/remove', FavoriteProductItemDeleteView.as_view(), name='favorite_product_remove'),
+    path('orders/', OrdersListApiView.as_view(), name='orders'),
 ]

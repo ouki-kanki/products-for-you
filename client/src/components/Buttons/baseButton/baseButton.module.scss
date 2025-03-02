@@ -43,3 +43,22 @@ $gradient_blue_light: #747474;
 .md {
   width: 110px;
 }
+
+.sm {
+  width: 70px;
+  padding: 0 10px;
+  font-size: .8rem;
+
+  .button:not([disabled]):focus {
+    box-shadow: 0 0 .05rem rgba(0, 0, 0, 0.5), -.025rem -.025rem .2rem rgba(46, 119, 158, 0.5), .025rem .025rem .2rem rgba(65, 66, 67, 0.5);
+  }
+
+  .button:not([disabled]):hover {
+    box-shadow: 0 0 .15rem rgba(0, 0, 0, 0.5), -.025rem -.025rem .5rem rgba(109, 121, 127, 0.5), .025rem .025rem .2rem rgba(160, 163, 164, 0.5);
+  }
+
+  .button:not([disabled]):active {
+    box-shadow: none;
+  }
+
+}

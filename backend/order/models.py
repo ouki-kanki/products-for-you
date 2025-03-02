@@ -29,6 +29,7 @@ class OrderStatus(models.Model):
     def __str__(self):
         return self.status
 
+
 # Create your models here.
 class ShopOrder(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order', blank=True, null=True)
@@ -45,6 +46,7 @@ class ShopOrder(models.Model):
     order_status = models.ForeignKey(OrderStatus, on_delete=models.PROTECT, default=1)
     # TODO: maybe this has to be a property
     order_total = models.DecimalField(max_digits=6, decimal_places=2)
+
     class RefundChoices(models.TextChoices):
         NOT_REQUESTED = 'fl', 'False'
         REQUESTED = 'rq', 'requested'

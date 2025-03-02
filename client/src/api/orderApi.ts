@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from './baseConfig';
 import { showNotification } from '../components/Notifications/showNotification';
+import { baseQueryWithReauth } from './authBaseApi';
+
 
 export interface ICartProduct {
   product_item: string;
@@ -21,7 +23,8 @@ export interface IOrder {
 
 export const orderApi = createApi({
   reducerPath: 'orderApi',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL}),
+  // baseQuery: fetchBaseQuery({ baseUrl: BASE_URL}),
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     createOrder: builder.mutation<Record | void, IOrder>({
       query: (payload) => ({

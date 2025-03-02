@@ -23,10 +23,12 @@ class ShopOrderItemInline(admin.TabularInline):  # or admin.StackedInline for a 
 class OrderStatusAdmin(admin.ModelAdmin):
     list_display = ('status',)
 
+
 @admin.register(ShopOrder)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('user_email', 'order_date_formated', 'order_status_colored', 'user_name',)
     inlines = [ShopOrderItemInline]
+    list_filter = ('user_id__email', )
 
     def order_date_formated(self, obj):
         return obj.order_date_formated

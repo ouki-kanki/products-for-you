@@ -85,3 +85,18 @@ export interface IproductDetail {
   isFavorite?: boolean;
 }
 
+interface IorderItem {
+  price: string;
+  quantity: number;
+  sku: string;
+  slug: string;
+  thumbnail: string;
+}
+
+export interface Iorder {
+  orderDate: string;
+  shippingAddress: string;
+  billingAddress: string;
+  orderTotal: string;
+  orderItem: IorderItem[]
+}
