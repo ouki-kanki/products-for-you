@@ -20,6 +20,13 @@ previous: string | null;
 results: IProduct[];
 }
 
+interface IsimilarProductsParams {
+  slug: string;
+  category: string;
+  tag?: string;
+  brand?: string
+}
+
 
 const flatAndConvertToCamel = (products: IProduct[]) => {
     return products.map((product: IProduct) => {
@@ -123,7 +130,12 @@ export const productsApi = createApi({
         return response
       })
     }),
-
+    getSimilarProducts: builder.query<IproductItem, IsimilarProductsParams>({
+      query: (params) => ({
+        url: 'products/similar',
+        params
+      })
+    }),
     getProductVariationPreview: builder.query<IproductVariationPreview, string | null>({
        query: (slug) => ({
         url: `products/product-preview/${slug}`
@@ -164,5 +176,6 @@ export const {
   useLazyGetCategoriesQuery,
   useLazyFilterByCategoryQuery,
   useLazyGetProductVariationPreviewQuery,
-  useFilterByCategoryQuery
+  useFilterByCategoryQuery,
+  useLazyGetSimilarProductsQuery
 } = productsApi

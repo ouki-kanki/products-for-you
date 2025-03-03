@@ -178,6 +178,15 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     features = serializers.SerializerMethodField()
     promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
     featured_position = serializers.SerializerMethodField()
+    constructed_url = serializers.SerializerMethodField()
+
+    # TODO: the same on productItemSerializer.dry
+    def get_constructed_url(self, obj): # noqa
+        category_slug = slugify(obj.product.category.name)
+        product_slug = slugify(obj.product.name)
+        # variation_slug = slugify(obj.slug)
+
+        return f"{category_slug}/{product_slug}/"
 
     def get_is_favorite(self, obj):
         request = self.context.get('request')
@@ -232,6 +241,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             'category',
             'promotions',
             'featured_position',
+            'constructed_url'
             # 'is_favorite'
         )
 

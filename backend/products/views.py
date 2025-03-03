@@ -5,7 +5,7 @@ from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import (
-    generics, viewsets, mixins, permissions, authentication
+    generics, viewsets, mixins, permissions, authentication, status
 )
 
 from promotion.models import ProductsOnPromotion
@@ -181,6 +181,40 @@ class PromotedProductItemsListApiView(generics.ListAPIView):
         ) .prefetch_related(
             Prefetch('product_inventory', queryset=promotion_qs, to_attr='active_promotions')
         ).distinct()
+
+
+class GetSimilarProductsView(generics.ListAPIView):
+    serializer_class = ProductVariationSerializer
+
+    def get_queryset(self):
+        slug = self.request.query_params.get('slug')
+        category = self.request.query_params.get('category')
+        brand = self.request.query_params.get('brand')
+
+        if not category:
+            return ProductItem.objects.none()
+
+        qs = ProductItem.objects.select_related('product__category', 'product')\
+            .filter(product__category__name=category)
+
+        if slug:
+            product = Product.objects.prefetch_related('product_variations')\
+                .get(product_variations__slug=slug)
+            qs = qs.exclude(product=product)\
+                .order_by('?')[:4]
+        return qs
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+
+        if not queryset.exists():
+            return Response({
+                'message': 'similar products not found',
+            }, status=status.HTTP_204_NO_CONTENT)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 
 # *** THIS IS NOT USED ***

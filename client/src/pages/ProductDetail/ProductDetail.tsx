@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
-import { useParams, useLocation, Link } from 'react-router-dom'
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
 import { isEmpty } from '../../utils/objUtils'
 
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
 import { useGetProductDetailQuery, useLazyGetProductDetailQuery } from '../../api/productsApi'
+import { useLazyGetSimilarProductsQuery } from '../../api/productsApi'
+
+import { SimilarProducts } from '../../components/Product/SimilarProducts/SimilarProducts'
 import { showNotification } from '../../components/Notifications/showNotification'
 import { FavoritesBtn } from '../../components/Buttons/FavoritesBtn/FavoritesBtn'
 import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
@@ -19,20 +22,36 @@ export const ProductDetail = () => {
   const dispatch = useDispatch()
   const { handleFavorite } = useHandleFavoriteItem()
   const { slug } = useParams()
+  const navigate = useNavigate()
 
   // const { data, isLoading } = useGetProductDetailQuery(slug as string)
   const [trigger, { data, isLoading }] = useLazyGetProductDetailQuery()
+  const [triggerSimilarProducts, { data: similarProductsData, isLoading: isSimilarProductsLoading, isError: isSimilarProductsError }] = useLazyGetSimilarProductsQuery()
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
-  const [activeSlug, setActiveSlug] = useState(slug || '')
+  // const [activeSlug, setActiveSlug] = useState(slug || '')
 
+  // console.log("the active slug", activeSlug)
+  console.log("the slug", slug)
 
   useEffect(() => {
-    if (activeSlug) {
-      trigger(activeSlug)
+    if (slug) {
+      trigger(slug)
     }
-  }, [activeSlug, trigger])
+  }, [slug, trigger])
+
+  // fetch similar products
+  const category = data?.categories[data?.categories.length - 1]
+  useEffect(() => {
+    // only fetch when the productdata is here
+    if (category) {
+      triggerSimilarProducts({
+        slug: slug as string,
+        category: category as string
+      })
+    }
+  }, [slug, category, triggerSimilarProducts])
 
   const featuredImageUrl = data?.productImages?.filter(image => image.isDefault)[0]?.url
 
@@ -60,7 +79,6 @@ export const ProductDetail = () => {
 
   const handleIncrement = () => {
     if (!isEmpty(data)) {
-      console.log(desiredQuantity)
       if (desiredQuantity === '') {
         setDesiredQuantity(1)
       }
@@ -79,7 +97,7 @@ export const ProductDetail = () => {
       return
     }
 
-    if (desiredQuantity <= 0) {
+    if (desiredQuantity <= 1) {
       return
     }
 
@@ -121,6 +139,13 @@ export const ProductDetail = () => {
         dispatch(deactivateCartUpdate())
       }, 700)
     }
+  }
+
+  const handleNavigateToVariation = (slug: string) => {
+    // TODO: build the path on the back. there is allready a method to do that on product serializers
+    const category = data?.categories[data.categories.length - 1]
+    const path = `/products/${encodeURIComponent(category as string)}/${slug}`
+    navigate(path)
   }
 
   const handleNavigateToImage = () => {
@@ -175,6 +200,7 @@ export const ProductDetail = () => {
                 ))}
               </div>
             </div>
+
             <div className={styles.rightContainer}>
               <FavoritesBtn
                 handleFavorite={() => handleFavorite(data.slug, data.isFavorite ?? false)}
@@ -249,7 +275,7 @@ export const ProductDetail = () => {
                 {data && data?.otherVariationsSlugs?.map(variation => (
                   <div
                     className={styles.variationsImageContainer}
-                    onClick={() => setActiveSlug(variation.slug)}
+                    onClick={() => handleNavigateToVariation(variation.slug)}
                     key={variation.slug}
                     >
                     <img src={variation.thumbUrl} alt='variation_url' />
@@ -259,6 +285,15 @@ export const ProductDetail = () => {
             </div>
           </div>
       )}
+
+      <div className={styles.sectionTwo}>
+        <h2>You may like</h2>
+        <SimilarProducts
+          data={similarProductsData}
+          isLoading={isSimilarProductsLoading}
+          isError={isSimilarProductsError}
+        />
+      </div>
     </div>
   )
 }

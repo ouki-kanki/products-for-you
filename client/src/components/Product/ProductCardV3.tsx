@@ -52,11 +52,6 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ..
     })
   }
 
-  // filter the default thumbnail
-  // const defaultThumb  = rest?.productThumbnails?.filter(thumb => thumb.isDefault)
-  //   // .reduce((a, item) => item ? item[0].url : null, '')
-  //   .reduce((a, product: { url: string; isDefault: boolean }) => product.url, '')
-
   return (
     <div
       className={styles.container}

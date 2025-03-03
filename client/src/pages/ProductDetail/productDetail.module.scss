@@ -12,6 +12,7 @@ $breakpoint-large: 1024px;
   // @include border_green();
   display: flex;
   display: flex;
+  margin-bottom: 40px;
 
   .leftContainer {
     // @include border_lime();
@@ -351,5 +352,11 @@ $breakpoint-large: 1024px;
       @include border_lime__bold();
       text-align: left;
     }
+  }
+}
+
+.sectionTwo {
+  h2 {
+    margin-bottom: 40px;
   }
 }

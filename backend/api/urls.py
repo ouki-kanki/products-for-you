@@ -9,7 +9,8 @@ from products.views import (
     ProductListByCategoryView, GetDefaultVariationsView,
     ProductListByCategoryBySlug,
     PromotedProductItemsListApiView,
-    LandingPageView
+    LandingPageView,
+    GetSimilarProductsView
 )
 from order.views import OrderCreateView
 
@@ -20,7 +21,7 @@ urlpatterns = [
     path('products/featured/', FeaturedProductsListView.as_view(), name='featured-products'),
     path('products/promoted/', PromotedProductItemsListApiView.as_view(), name='promoted-products'),
     path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),
-    path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),
+    path('products/similar/', GetSimilarProductsView.as_view(), name='get-similar-products'),
     path('products/product-detail/<slug:slug>/', ProductDetailViewV4.as_view(), name='product-detail'),
     path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-detail'),
     path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category-id'),
