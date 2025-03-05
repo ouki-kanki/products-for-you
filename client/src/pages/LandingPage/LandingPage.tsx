@@ -13,7 +13,6 @@ import { ProductV2 } from "../../components/Product/ProductV2"
 import { LatestProducts } from './LatestProducts/LatestProducts';
 import { PromotedProducts } from './PromotedProducts/PromotedProducts';
 
-
 import { Grid } from "../../UI/Layout/Grid/Grid";
 
 // TODO: move the types from here
@@ -61,7 +60,6 @@ export const LandingPage = () => {
   return (
     <div className={styles.container}>
       {/* {productView === 'products' && renderProducts()} */}
-
       <FeaturedProduct
         data={featuredProducts?.results}
         isLoading={isLoadingFeatured}

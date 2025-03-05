@@ -3,6 +3,7 @@ import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
 
 import { IProduct } from '../../api/productsApi'
 import { ProductV2 } from '../../components/Product/ProductV2'
+import { withLoadingAndError } from '../../hocs/LoadingError/withLoadingAndError'
 
 interface IFeaturedProductProps {
   data: IProduct;
@@ -11,24 +12,15 @@ interface IFeaturedProductProps {
 }
 
 
-export const FeaturedProduct = ({ data, isLoading, isError }: IFeaturedProductProps) => {
+export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductProps) => {
   const { handleFavorite } = useHandleFavoriteItem()
-  if (isLoading) {
-    return <div>Loading</div>
-  }
-
-  if (isError) {
-    return <div>Could not load featured Item</div>
-  }
-  // TODO: check if the isFavorite field exists from the incoming data and if exist set the state
-
-
-
 
   if (data && data.length > 0) {
 
-    // selects the firts item. the first item has position 1
+    // selects the first item from featured products. the first item has position 1
     const featuredItem = data[0]
+
+    console.log("the variations", data[0])
 
     return (
       <div className={styles.container}>
@@ -53,4 +45,4 @@ export const FeaturedProduct = ({ data, isLoading, isError }: IFeaturedProductPr
       </div>
     )
   }
-}
+})

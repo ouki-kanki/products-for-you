@@ -85,13 +85,15 @@ export const ProductV2 = ({
   }, [quantity, price, strProductImages, slug])
 
   const handleVariationChange = (e: React.MouseEvent<HTMLDivElement>, slug: string) => {
-    e.stopPropagation();
+    console.log("yyoyoyo")
+    e.stopPropagation()
+    console.log("inside change variation", slug)
     trigger(slug)
   }
 
-
   // TODO: repeated functionality on latest products. DRY the
   const handleProductDetail = () => {
+    console.log("inside product detail")
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${variationSlug}`, {
       state: constructedUrl
     })
@@ -111,9 +113,10 @@ export const ProductV2 = ({
           {variations.map((variation, index) => (
             <div
               className={styles.varImageContainer}
-              key={index}
-              onClick={(e) => handleVariationChange(e, variation.slug)}>
-              <img src={variation.thumb} alt="variation image" />
+              onClick={(e) => handleVariationChange(e, variation.slug)}
+              key={index}>
+              <img
+                src={variation.thumb} alt="variation image" />
             </div>))}
         </div>
       )

@@ -39,6 +39,7 @@ class ProductsFacetedSearch(FacetedSearch):
 
     facets = {
         'name': TermsFacet(field='name'),
+        'brand': TermsFacet(field='brand'),
         # 'categories': TermsFacet(field='categories.keyword'),
         'price': RangeFacet(field='price', ranges=[
             ('0 - 100', (0.01, 100)),
@@ -87,14 +88,16 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
         name = request.query_params.getlist('name')
         price = request.query_params.getlist('price')
         category = request.query_params.getlist('category')
+        brand = request.query_params.getlist('brand')
 
+        print("the brand filter", brand)
         # print("the category", category)
         # print("the price filter", price)
-
 
         filters = {
             'name': name,
             'price': price,
+            'brand': brand
             # 'categories': category
         }
 
@@ -222,7 +225,7 @@ class ProductItemSuggestView(APIView):
                 ''.join(option._source.slug_suggest.input) for option in response.suggest.slug_suggestion[0].options
                 if response.suggest.slug_suggestion[0].options] # noqa
 
-            print("suggestions from slug", suggestions)
+            # print("suggestions from slug", suggestions)
             suggestions += [
                 ''.join(option._source.slug_suggest.input) for option in response.suggest.cat_suggestion[0].options
                 if response.suggest.cat_suggestion[0].options] # noqa

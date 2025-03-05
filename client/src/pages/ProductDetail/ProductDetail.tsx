@@ -33,7 +33,6 @@ export const ProductDetail = () => {
   // const [activeSlug, setActiveSlug] = useState(slug || '')
 
   // console.log("the active slug", activeSlug)
-  console.log("the slug", slug)
 
   useEffect(() => {
     if (slug) {
@@ -286,14 +285,16 @@ export const ProductDetail = () => {
           </div>
       )}
 
-      <div className={styles.sectionTwo}>
-        <h2>You may like</h2>
-        <SimilarProducts
-          data={similarProductsData}
-          isLoading={isSimilarProductsLoading}
-          isError={isSimilarProductsError}
-        />
-      </div>
+        {similarProductsData && similarProductsData.length > 0 && (
+          <div className={styles.sectionTwo}>
+            <h2>You may like</h2>
+            <SimilarProducts
+              data={similarProductsData}
+              isLoading={isSimilarProductsLoading}
+              isError={isSimilarProductsError}
+            />
+        </div>
+        )}
     </div>
   )
 }

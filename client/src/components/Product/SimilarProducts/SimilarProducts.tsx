@@ -3,14 +3,20 @@ import { ProductCardV3 } from '../ProductCardV3'
 import styles from './similarProducts.module.scss'
 import { withLoadingAndError } from '../../../hocs/LoadingError/withLoadingAndError'
 import type { IproductItem } from '../../../api/types'
-
+import { useScrollToTop } from '../../../hooks/useScrollToTop'
 
 interface ISimilarProductProps {
   data: IproductItem[]
 }
 
 export const SimilarProducts = withLoadingAndError(({ data }: ISimilarProductProps) => {
-  console.log("the data", data)
+  const scrollToTop = useScrollToTop()
+
+  const handleDetailsClicked = async () => {
+    console.log("clicked sroll to top")
+    await scrollToTop()
+    console.log("after the promise")
+  }
 
   return (
     <div className={styles.container}>
@@ -22,6 +28,8 @@ export const SimilarProducts = withLoadingAndError(({ data }: ISimilarProductPro
           <ProductCardV3
             price='20'
             defaultThumb={product.product_images[0]?.url}
+            handleClick={handleDetailsClicked}
+            isAsyncClicked
             product={{
               name: product.name,
               constructedUrl: product.constructed_url,

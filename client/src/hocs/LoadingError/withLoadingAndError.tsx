@@ -1,3 +1,5 @@
+import { Spinner } from "../../components/Spinner/Spinner";
+
 interface IWithLoadingAndError {
   isLoading: boolean;
   isError: boolean;
@@ -11,7 +13,7 @@ export const withLoadingAndError = (WrappedComponent: React.ComponentType) => {
   return ({ isLoading, isError, error, ...rest }: IWithLoadingAndError) => {
     if (isLoading) {
       return (
-        <div>IsLoading</div>
+        <Spinner/>
       )
     }
 

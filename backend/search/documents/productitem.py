@@ -33,6 +33,13 @@ class ProductItemDocument(Document):
         }
     )
 
+    brand = fields.KeywordField(
+        fields={
+            'raw': fields.TextField(analyzer=edge_ngram_completion),
+            'suggest': fields.CompletionField()
+        }
+    )
+
     thumb = fields.TextField()
     image = fields.TextField()
     description = fields.TextField()
@@ -66,6 +73,9 @@ class ProductItemDocument(Document):
 
     def prepare_name(self, instance): # noqa
         return instance.product.name
+
+    def prepare_brand(self, instance): # noqa
+        return instance.product.brand.name
 
     def prepare_thumb(self, instance): # noqa
         qs = instance.product_image.filter(is_default=True)

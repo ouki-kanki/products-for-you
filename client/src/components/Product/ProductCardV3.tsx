@@ -37,16 +37,34 @@ export interface IproductV3 {
   productThumbnails?: [];
   defaultThumb?: string;
   promotion?: Ipromotion;
+  AsyncHandleClick?: () => Promise<void>;
+  isAsyncClicked: boolean;
 }
 
-
-export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ...rest}, defaultThumb} : IproductV3) => {
+/**
+ *
+ * @param param0
+ * @param isAsyncClicked - click the container will navitate the user if some functionality is needed
+ * before navigation mark this to true and use handleClick handler
+ * @returns
+ */
+export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ...rest}, defaultThumb, handleClick, isAsyncClicked=false } : IproductV3) => {
   const navigate = useNavigate()
   const [variationSlug, setVariationSlug] = useState<string>('')
   const promotion = rest.promotions ? rest.promotions[0] : null
 
   // TODO: dry this is used in featured and search pages. also need to refactor to use the active variation !
-  const handleProductDetail = () => {
+  const handleProductDetail = async () => {
+    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`, {
+      state: constructedUrl
+    })
+  }
+
+  const handleProductDetailAsync = async () => {
+    console.log("inside async clicked", isAsyncClicked)
+    // NOTE: do something before navigate to the new page
+    // used to sroll the user to the top inside similar products and then navigate
+    await handleClick()
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`, {
       state: constructedUrl
     })
@@ -55,7 +73,7 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ..
   return (
     <div
       className={styles.container}
-      onClick={handleProductDetail}
+      onClick={isAsyncClicked ?  handleProductDetailAsync : handleProductDetail}
       >
       <div className={styles.title}>{name}</div>
       {promotion && (

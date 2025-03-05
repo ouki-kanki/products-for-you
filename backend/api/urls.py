@@ -23,7 +23,7 @@ urlpatterns = [
     path('products/default/', GetDefaultVariationsView.as_view(), name='default-product-items'),
     path('products/similar/', GetSimilarProductsView.as_view(), name='get-similar-products'),
     path('products/product-detail/<slug:slug>/', ProductDetailViewV4.as_view(), name='product-detail'),
-    path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-detail'),
+    path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-preview'),
     path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category-id'),
     path('products/category/<slug:slug>', ProductListByCategoryBySlug.as_view(), name='products-by-category-id'),
     path('products/promotions/', include('promotion.urls')),

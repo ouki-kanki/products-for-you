@@ -112,7 +112,6 @@ class Brand(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     icon = models.ImageField(upload_to='brands/', blank=True, default='icons/placeholder.jpg')
-    # TODO: add icon, upload to /brands
 
     def __str__(self):
         return self.name

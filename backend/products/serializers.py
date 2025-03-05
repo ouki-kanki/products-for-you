@@ -179,6 +179,29 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     promotions = ProductOnPromotionSerializer(many=True, read_only=True, source='product_inventory')
     featured_position = serializers.SerializerMethodField()
     constructed_url = serializers.SerializerMethodField()
+    variations = serializers.SerializerMethodField()
+
+    def get_variations(self, obj):
+        request = self.context.get('request')
+        variations = obj.product.product_variations.exclude(slug=obj.slug)
+
+        if variations.exists():
+            print("the variations", variations)
+
+            # TODO: dry the same login on productSerializer
+            return [
+                {
+                    'slug': variation.slug,
+                    'product_url': request.build_absolute_uri(reverse('api:product-preview', args=[variation.slug])),
+                    'thumb': request.build_absolute_uri(variation.product_image.filter(is_default=True)
+                                                        .first().thumbnail.url
+                                                        ) if variation.product_image.filter(is_default=True).exists()
+                    else None
+                }
+                for variation in variations
+            ]
+        else:
+            return None
 
     # TODO: the same on productItemSerializer.dry
     def get_constructed_url(self, obj): # noqa
@@ -241,7 +264,8 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             'category',
             'promotions',
             'featured_position',
-            'constructed_url'
+            'constructed_url',
+            'variations'
             # 'is_favorite'
         )
 

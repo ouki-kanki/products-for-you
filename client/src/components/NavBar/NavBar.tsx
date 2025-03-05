@@ -116,6 +116,11 @@ export const NavBar = () => {
     }
   }
 
+  const handleOpenCart = () => {
+    // dispatch(showCartModal())
+    navigate('/cart')
+  }
+
   return (
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       {/* LEFT SIDE */}
@@ -141,7 +146,7 @@ export const NavBar = () => {
         <div className={styles.buttonsContainer}>
           <div
             className={`${styles.icons} ${styles.cartIconContainer} ${isCartUpdating && styles.activeCartBtn}`}
-            onClick={() => dispatch(showCartModal())}>
+            onClick={handleOpenCart}>
               <img src={cartIcon} alt="cart button" />
               {numberOfproductInCart > 0 && (
                 <div className={styles.cartNotification}>
