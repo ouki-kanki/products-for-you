@@ -1,0 +1,44 @@
+.paginationContainer {
+  display: flex;
+
+  & > div, a {
+    padding: 10px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgb(192, 149, 210);
+  }
+
+  .disabled {
+    user-select: none;
+    color: $button-disabled;
+    cursor: default;
+  }
+
+  .isActive {
+    color: rgb(62, 82, 86);
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 5px;
+      width: 5px;
+      background-color: $dark-gray;
+      border-radius: 50%;
+      left: -50px;
+      animation: slide .5s forwards;
+      transform: translate(0, 12px);
+    }
+
+    @keyframes slide {
+      100% { left: 5px; }
+    }
+
+    // font-weight: bold;
+  }
+}
+
+

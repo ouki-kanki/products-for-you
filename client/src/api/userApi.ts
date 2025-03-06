@@ -26,6 +26,11 @@ export interface IorderPaginatedResponse {
   results: Array<Iorder>
 }
 
+type orderParams = {
+  page?: number;
+  page_size?: number;
+}
+
 export type IUserProfile = IUserProfileBase & Record<string, string>
 
 export const userApi = authBaseApi.injectEndpoints({
@@ -43,8 +48,14 @@ export const userApi = authBaseApi.injectEndpoints({
         body
       })
     }),
-    getOrders: builder.query<Iorder, void>({
-      query: () => `user-control/orders`,
+    getOrders: builder.query<Iorder, orderParams>({
+      query: ({ page = 1, page_size = 10 } = {}) => ({
+        url: 'user-control/orders',
+        params: {
+          page,
+          page_size
+        }
+      }),
       transformResponse: (res: IorderPaginatedResponse) => {
         // TODO: this mutates the response. change the method to not do this inplace
         convertSnakeToCamel(res)

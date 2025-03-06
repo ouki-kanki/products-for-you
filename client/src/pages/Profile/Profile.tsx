@@ -8,7 +8,6 @@ import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
 import { ActionTypesProfile } from '../../app/actions';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
 import { useUploadProfileImageMutation } from '../../api/userProfileApi';
-import { useGetOrdersQuery } from '../../api/userApi';
 
 import styles from './profile.module.scss'
 import { Input } from '../../UI/Forms/Inputs';
@@ -21,7 +20,6 @@ import { ApiError, ValidationError } from '../../types';
 import { userApi } from '../../api/userApi';
 
 import { FavoriteProducts } from './FavoriteProducts/FavoriteProducts';
-import { Orders } from './Orders/Orders';
 import { useClassLister } from '../../hooks/useClassLister';
 
 
@@ -51,7 +49,7 @@ export const Profile = () => {
   const classes = useClassLister(styles)
 
   // TODO: the type fo the error inside withLoadingAndError is wrong. the error it seems to be an object and not a string
-  const { data: ordersData, isError: isOrdersError, isLoading: isOrdersLoading, error: ordersError } = useGetOrdersQuery(undefined, { skip: !favoriteProduts })
+
 
   const [updateUserProfile, {data: updateData, isSuccess: isUpdateSuccess, error: updateError, isError: isUpdateError, isLoading: udpateLoading}] = useUpdateUserProfileMutation()
   const [uploadProfileImage, { data: uploadImageData, isSuccess: isUploadImageSuccess, isError: isUploadImageError, error: uploadImageError }] = useUploadProfileImageMutation()
@@ -238,17 +236,6 @@ export const Profile = () => {
           isError={isFavoriteProductsError}
         />
       </div>
-
-      <div className={styles.ordersContainer}>
-        <h2 className={styles.underline}>My orders</h2>
-        <Orders
-          isLoading={isOrdersLoading}
-          isError={isOrdersError}
-          error={ordersError}
-          data={ordersData}
-        />
-      </div>
-
       {/* <Outlet/> */}
     </div>
   )

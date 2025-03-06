@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'order.apps.OrderConfig',
     'variations.apps.VariationsConfig',
     'promotion',
+    'payments',
 
 
     # third party apps

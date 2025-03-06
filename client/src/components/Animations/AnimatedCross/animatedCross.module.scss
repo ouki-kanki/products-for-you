@@ -1,0 +1,65 @@
+$width: 22px;
+$height: 4px;
+
+.hitbox {
+  display: block;
+  height: $width;
+  width: $width;
+  background-color: transparent;
+}
+
+.symbol {
+  position: relative;
+  width: $width;
+  height: $height;
+  border-radius: calc($height / 2);
+  background-color: $dark-gray;
+
+  &::after {
+    content: '';
+    position: absolute;
+    // top: 50%;
+    // left: 50%;
+    width: $width;
+    height: $height;
+    background-color: $dark-gray;
+    border-radius: calc($height / 2);
+    // transform: translate(0) rotate(90deg);
+    // transform: ;
+    // transform: translate(-50%, -50%) rotate(0deg);
+    transform-origin: center;
+    // transform: translate(-50%);
+    // animation: rotateLine .5s backwards;
+  }
+}
+
+.symbol.minus::after {
+  animation: rotateLine .5s forwards;
+}
+
+.symbol.plus::after {
+  animation: rotateLineReverse .5s forwards;
+}
+
+
+@keyframes rotateLine {
+  0% {
+    // transform: translate(- calc($width / 2)) rotate(90deg);
+    transform: translate(0) rotate(90deg);
+  }
+  100% {
+    // transform: translate(- calc($width / 2)) rotate(0deg);  /* End, the line is vertical */
+    transform: translate(0) rotate(0deg);  /* End, the line is vertical */
+  }
+}
+
+@keyframes rotateLineReverse {
+  0% {
+    // transform: translate(- calc($width / 2)) rotate(0deg);
+    transform: translate(0) rotate(0deg);
+  }
+  100% {
+    // transform: translate(- calc($width / 2)) rotate(90deg);  /* End, the line is vertical */
+    transform: translate(0) rotate(90deg);  /* End, the line is vertical */
+  }
+}

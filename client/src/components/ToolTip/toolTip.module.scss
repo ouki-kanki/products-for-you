@@ -1,0 +1,65 @@
+.toolTipContainer {
+  // @include border_lime__bold;
+  // width: fit-content;
+  display: inline-block;
+  position: relative;
+}
+
+
+$arrow-grey: #777;
+
+.toolTip {
+  position: absolute;
+  border: 1px solid $dark-gray;
+  background-color: #777;
+  color: white;
+  display: flex;
+  z-index: 1000;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 5px 5px 5px 0;
+  width: 200px;
+  top: -140%;
+  left: 100%;
+  transform: scale(0);
+  transform-origin: 0 130%;
+  transition: transform 0.2s ease-in;
+
+  &::after {
+    position: absolute;
+    content: '';
+    // background-color: #777;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #777 transparent transparent #777;
+    transform: translateY(-100%) rotate(45);
+    transform-origin: bottom left;
+    // border-bottom: 1px solid $dark-gray;
+    // border-left: 1px solid $dark-gray;
+    // width: 10px;
+    // height: 10px;
+    left: -1px;
+    top: 100%;
+  }
+
+  &.visible {
+    transform: scale(1);
+  }
+
+  &.bottom-right {
+    top: 140%;
+    transform-origin: -20% -100%;
+    &::after {
+      // border-color: transparent transparent transparent #777;
+      border-color: transparent  transparent $arrow-grey $arrow-grey;
+      transform: translateY(-35px) rotate(0);
+      transform-origin: top left;
+    }
+  }
+
+}
+
+
+// on other positions change the transform origin, top, left and the after element

@@ -11,14 +11,17 @@ import { SearchForm } from '../../UI/Forms';
 import { Button } from '../../UI/Button/Button';
 import cartIcon from '../../assets/svg_icons/cart.svg';
 import bellIcon from '../../assets/svg_icons/bell.svg'
-import BackIcon from '../../assets/svg_icons/back_icon.svg?react'
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useSroll } from '../../hooks/useScroll';
+import { AnimatedCross } from '../Animations/AnimatedCross/AnimatedCross';
 
 
 import { useAuth } from '../../hooks/useAuth';
 import { useLogoutMutation } from '../../api/authApi';
 import { useLazyGetUserProfileQuery } from '../../api/userApi';
 import { showNotification } from '../Notifications/showNotification';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 export const NavBar = () => {
@@ -125,9 +128,13 @@ export const NavBar = () => {
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
       {/* LEFT SIDE */}
       <div className={styles.leftContainer}>
-        <div onClick={handleSideBarVis}>
-          <BackIcon className={styles.backIcon}/>
-        </div>
+        <AnimatedCross
+          onClick={handleSideBarVis}
+          isHidden={isSideBarHidden}
+        />
+        {/* <div onClick={handleSideBarVis}> */}
+          {/* <FontAwesomeIcon icon={isSideBarHidden ? faPlus : faMinus}/> */}
+        {/* </div> */}
         {pathname !== '/' && (
           <Link
             to='/'

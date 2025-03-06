@@ -1,6 +1,10 @@
 export const useScrollToTop = () => {
   const srollToTop = () => {
     return new Promise((resolve, reject) => {
+      if (window.scrollY === 0) {
+        return resolve(true)
+      }
+
       window.scrollTo({
         top: 0,
         behavior: 'smooth'

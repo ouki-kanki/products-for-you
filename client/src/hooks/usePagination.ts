@@ -1,5 +1,6 @@
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
-
+import { isEmpty } from '../utils/objUtils'
+import { useScrollToTop } from './useScrollToTop'
 
 interface returnParams<T> {
   page: number;
@@ -12,9 +13,13 @@ interface returnParams<T> {
 const _prepareLink = (path: string) => (page: number, page_size: number, queryStringObj): string => {
   let queryStr = ''
 
+  // console.log("is empty", isEmpty(queryStringObj))
+
   // add all the custom querystrings if there are any
-  for (const [key, value] of Object.entries(queryStringObj)) {
-    !queryStr ? queryStr += `?${key}=${value}` : queryStr += `&${key}=${value}`
+  if (! isEmpty(queryStringObj)) {
+    for (const [key, value] of Object.entries(queryStringObj)) {
+      !queryStr ? queryStr += `?${key}=${value}` : queryStr += `&${key}=${value}`
+    }
   }
 
   queryStr += !queryStr ? '?' : '&'
@@ -37,6 +42,8 @@ export const usePagination = <T>(queryStringObj: T) => {
   const page = parseInt(searchParams.get('page') || '1')
   const page_size = parseInt(searchParams.get('page_size') || '10')
   const { pathname } = useLocation()
+  const scrollToTop = useScrollToTop()
+
 
   const preparedLinkWithPath = _prepareLink(pathname)
 
@@ -44,8 +51,9 @@ export const usePagination = <T>(queryStringObj: T) => {
    *
    * @param page
    */
-  const handleNavigate = (page: number): void => {
+  const handleNavigate = async (page: number): void => {
     const path = preparedLinkWithPath(page, page_size, queryStringObj)
+    await scrollToTop()
     navigate(path)
   }
 

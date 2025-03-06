@@ -215,12 +215,9 @@ export const Search = () => {
       <div>
         <h2>sort by</h2>
         <div style={{ display: 'flex' }}>
-
         </div>
       </div>
-
       <br />
-
 
       <div className={styles.sampleContainer}>
             <div className={classes('sample', 'sample_prime')}></div>

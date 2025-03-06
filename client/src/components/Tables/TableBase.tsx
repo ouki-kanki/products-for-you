@@ -21,9 +21,8 @@ export const TableBase = ({ data, titles, children, renderRow }: ItableProps) =>
       </thead>
 
       <tbody className={styles.bodyContainer}>
-        {console.log("the data inside", data)}
-        {data && data.length > 0 && data.map(item => (
-          <tr className={classes('row')}>{renderRow(item)}</tr>
+        {data && data.length > 0 && data.map((item, index) => (
+          <tr key={index} className={classes('row')}>{renderRow(item)}</tr>
           ))}
       </tbody>
     </table>

@@ -186,8 +186,6 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         variations = obj.product.product_variations.exclude(slug=obj.slug)
 
         if variations.exists():
-            print("the variations", variations)
-
             # TODO: dry the same login on productSerializer
             return [
                 {

@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import styles from "./Sidebar.module.scss";
 import type { RootState } from '../../app/store/store';
+import { useClassLister } from '../../hooks/useClassLister';
 
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
@@ -12,17 +14,20 @@ import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 
 export const Sidebar = () => {
+  const [rotation, setRotation] = useState('')
   const navigate = useNavigate()
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const { facets, sideBarFieldName } = useSelector((state: RootState) => state.filters)
   const { isScrollingDown } = useSroll()
-
+  const classes = useClassLister(styles)
 
   const navContainerStyles = `
     ${styles.sidebarContainer}
     ${isSideBarHidden ? styles.hidden : ''}
     ${isScrollingDown ? styles.scrolledDown : ''}
   `
+
+
 
   return (
     <div className={navContainerStyles}>

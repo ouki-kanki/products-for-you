@@ -18,7 +18,8 @@ import { Home,
   ProductDetail,
   DeliveryTerms,
   TermsOfUse,
-  Checkout
+  Checkout,
+  Orders
  } from './pages'
 import { Search } from './pages/Search';
 import { PersistLogin } from './features/auth/PersistLogin';
@@ -46,6 +47,9 @@ export const EcommerceRoutes = () => (
           {/* first slug -> category, second slug -> item (uses the contructed url field. check drf)*/}
           <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
           <Route path='/search/' element={<Search/>}/>
+          <Route element={<ProtectedRoute/>}>
+            <Route path='/orders/' element={<Orders/>}/>
+          </Route>
           <Route path='sign-up' element={<Register/>}/>
           <Route path='/delivery-terms' element={<DeliveryTerms/>}/>
           <Route path='/terms-of-use' element={<TermsOfUse/>}/>

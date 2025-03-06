@@ -16,7 +16,6 @@
   // @include border_green();
 }
 
-
 .leftContainer, .rightContainer {
   display: flex;
 }
@@ -24,6 +23,10 @@
 .leftContainer {
   margin-left: .3rem;
   align-items: center;
+
+  &:first-child {
+    cursor: pointer;
+  }
 }
 
 .searchContainer {
@@ -198,3 +201,9 @@ $notification-height: 30px;
     box-shadow: none;
   }
 }
+
+$width: 22px;
+$height: 4px;
+
+
+
