@@ -27,8 +27,6 @@ export const Sidebar = () => {
     ${isScrollingDown ? styles.scrolledDown : ''}
   `
 
-
-
   return (
     <div className={navContainerStyles}>
       <div

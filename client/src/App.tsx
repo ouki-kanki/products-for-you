@@ -1,13 +1,9 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import styles from './app.module.scss'
-
 import type { IUiConfig } from './types';
 
-import { selectUsers } from './app/store/store'
-import { useAppSelector } from './hooks'
-import { fetchUsers } from './features/users/usersSlice_old'
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
-import { showSidebar, hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
+import { hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 
 import { EcommerceRoutes } from './routes';
 import { Sidebar } from './components/Sidebar/Sidebar'
@@ -16,26 +12,21 @@ import { CartModal } from './pages'
 import { useDebounce } from './hooks/useDebounce';
 
 import { useDispatch } from 'react-redux';
-import { initCart } from './features/cart/cartSlice';
+import { sendInitCartToMiddleware, initCart } from './features/cart/cartSlice';
 
 import type { ICredentials } from './types';
 
 
 function App() {
-  const [count, setCount] = useState(0)
   const dispatch = useDispatch()
-  const users = useAppSelector(selectUsers)
 
   useEffect(() => {
-    console.log("__INIT__CART__")
-
-    // TODO: move this to the middleware
     try {
       const strCartFromStorage = localStorage.getItem('cart')
       const cartFromStorage = JSON.parse(strCartFromStorage as string)
       const items = cartFromStorage.items
-      const total = cartFromStorage.items.reduce((a, item: ICartItem) => a += (item.price * item.quantity), 0)
-      const numberOfItems = cartFromStorage.items.length
+      const total = cartFromStorage.total
+      const numberOfItems = cartFromStorage.numberOfItems
 
       dispatch(initCart({
         items,
@@ -43,7 +34,6 @@ function App() {
         numberOfItems
       }))
     } catch (error) {
-      // TODO: handle the error
       console.log(error)
     }
 
@@ -63,20 +53,9 @@ function App() {
     }
   ] = useLazyGetProductsQuery()
 
-  // TODO : remove the following logic from the app and put it to another file . create a custom hook useKeepLoggedIn
-  const handleSetCredentials = useCallback((creds: ICredentials) => {
-    const { userId, token } = creds
 
-    const data = {
-      userId: Number(userId),
-      token
-    }
-
-    // TODO : use the new auth
-    // dispatch(setCredentials(data))
-  }, [dispatch])
-
-
+  // TODO: this only serves to hide the sidebar. clean the code
+  // TODO: move this to another file
   const handleUiConfig = useCallback((config: IUiConfig) => {
     const { isSidebarHidden } = config
     // console.log("the sidebar data from local" , isSidebarHidden)
@@ -86,16 +65,13 @@ function App() {
     }
   }, [dispatch])
 
-  const debouncedHandleSetToken = useCallback(() => {
-    const token = localStorage.getItem('token')
-    const userId = localStorage.getItem('user_id');
+  // TODO: change the name, this was obsolete
+  const debouncedHideSidebar = useCallback(() => {
     const isSidebarHidden = localStorage.getItem('is_sidebar_hidden');
-
     handleUiConfig({ isSidebarHidden })
-    handleSetCredentials({ userId, token })
-  }, [handleSetCredentials, handleUiConfig])
+  }, [handleUiConfig])
 
-  useDebounce(debouncedHandleSetToken, 500, [debouncedHandleSetToken])
+  useDebounce(debouncedHideSidebar, 200, [debouncedHideSidebar])
 
   if (isLoading) {
     return (

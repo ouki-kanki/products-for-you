@@ -115,11 +115,7 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
     # noinspection PyMethodMayBeStatic
     def get_constructed_url(self, obj):
-        category_slug = slugify(obj.product.category.name)
-        product_slug = slugify(obj.product.name)
-        # variation_slug = slugify(obj.slug)
-
-        return f"{category_slug}/{product_slug}/"
+        return obj.build_url_path
 
     # noinspection PyMethodMayBeStatic
     def get_variation_details(self, obj):
@@ -186,7 +182,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         variations = obj.product.product_variations.exclude(slug=obj.slug)
 
         if variations.exists():
-            # TODO: dry the same login on productSerializer
+            # TODO: dry the same logic on productSerializer
             return [
                 {
                     'slug': variation.slug,

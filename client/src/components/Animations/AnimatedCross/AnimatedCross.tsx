@@ -23,8 +23,6 @@ export const AnimatedCross = ({onClick, isHidden}: IAnimatedCrossProps) => {
     // when component load do not animate the + symbol
     // rotation will be an empty string
     setRotation((rotation) => {
-
-      console.log("the rotation", rotation)
       if (!rotation) {
         return 'minus'
       } else if (rotation === 'minus') {
@@ -33,9 +31,7 @@ export const AnimatedCross = ({onClick, isHidden}: IAnimatedCrossProps) => {
         return 'minus'
       }
     })
-    // setIsRotating((isRotating) => !isRotating)
   }
-
 
   return (
     <div

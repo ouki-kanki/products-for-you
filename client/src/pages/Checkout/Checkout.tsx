@@ -1,5 +1,5 @@
 import { useReducer, ChangeEvent, FormEvent, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import styles from './checkout.module.scss';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
@@ -12,7 +12,6 @@ import { showNotification } from '../../components/Notifications/showNotificatio
 
 import { IUserProfile, useGetUserProfileQuery } from '../../api/userApi';
 import { ActionTypesProfile } from '../../app/actions';
-
 interface ICheckoutState {
   firstName: string;
   lastName: string;
@@ -39,6 +38,7 @@ const initialState: ICheckoutState = {
 
 export const Checkout = () => {
   const { data: profileData, refetch, isError: isProfileError, error: profileError, isLoading: isProfileLoading } = useGetUserProfileQuery()
+  const [searchParams] = useSearchParams()
 
   // console.log('checjout profile data', profileData)
   const cart = useSelector((state: RootState) => state.cart)
@@ -48,11 +48,21 @@ export const Checkout = () => {
   const profileDataStr = JSON.stringify(profileData)
 
   useEffect(() => {
+    const paymentCanceled = searchParams.get('canceled')
+
+    if (paymentCanceled) {
+      showNotification({
+        message: 'payment was canceled',
+        type: 'danger'
+      })
+    }
+  }, [searchParams])
+
+  useEffect(() => {
     // NOTE: the key for email form server is diff
     // also i use address one to fill the shipping address .
     if (profileDataStr) {
       const data = JSON.parse(profileDataStr)
-      console.log(profileData)
       const payload = {
         ...data,
         userEmail: data.email,

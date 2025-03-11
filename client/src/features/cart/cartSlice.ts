@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { AppDispatch, RootState } from "../../app/store/store";
 export interface ICartItem {
   variationName: string;
@@ -7,7 +7,7 @@ export interface ICartItem {
   productIcon: string;
   productId: number;
   quantity: number;
-  price: string;
+  price: string | number;
 }
 
 export interface ICart {
@@ -15,13 +15,15 @@ export interface ICart {
   total: number;
   numberOfItems: number;
   isUpdating: boolean;
+  isSynced: boolean;
 }
 
 const initialState: ICart = {
   items: [],
   total: 0,
   numberOfItems: 0,
-  isUpdating: false
+  isUpdating: false,
+  isSynced: false
 }
 
 
@@ -39,7 +41,7 @@ export const cartSlice = createSlice({
       } else {
         itemsFromState.push(item)
       }
-      
+
       const total = state.total += (parseFloat(item.price) * item.quantity)
       const numberOfItems = state.items.length
 
@@ -64,7 +66,7 @@ export const cartSlice = createSlice({
       const { productId, quantity = 1 } = action.payload
       const itemIndex = items.findIndex(product => product.productId === productId)
 
-      // TODO: Change the total price 
+      // TODO: Change the total price
       if (itemIndex !== -1) {
         items[itemIndex].quantity += quantity
         const price = items[itemIndex].price
@@ -75,7 +77,7 @@ export const cartSlice = createSlice({
       const { items, total } = state
       const { productId, quantity = 1 } = action.payload
       const itemIndex = items.findIndex(product => product.productId === productId)
-      
+
       if (itemIndex !== -1) {
         items[itemIndex].quantity -= quantity
         const { price } = items[itemIndex]
@@ -88,14 +90,18 @@ export const cartSlice = createSlice({
     deactivateCartUpdate: (state) => {
       state.isUpdating = false
     },
+    setIsSynced: (state, action: PayloadAction<boolean>) => {
+      state.isSynced = action.payload
+    },
     clearCart: (state) => {
-      localStorage.setItem('cart', '')
       return {
         items: [],
         total: 0,
         numberOfItems: 0
       }
     },
+    checkout: (state) => state, // used to sync the database on the middleware
+    sendInitCartToMiddleware: (state) => state, // used to sync with database
     initCart: (state, action: PayloadAction<{ items: ICartItem[], total: number, numberOfItems: number }>) => {
       const { items, total, numberOfItems } = action.payload
 
@@ -106,9 +112,7 @@ export const cartSlice = createSlice({
   }
 })
 
-
-
-export const { addItem, removeItem, clearCart, initCart, activateCartUpdate, deactivateCartUpdate, addQuantity, subtractQuantity } = cartSlice.actions
+export const { addItem, removeItem, clearCart, initCart, activateCartUpdate, deactivateCartUpdate, addQuantity, subtractQuantity, checkout, sendInitCartToMiddleware, setIsSynced } = cartSlice.actions
 export default cartSlice.reducer
 
 // export const addQuantityAsync = createAsyncThunk('cart/addQuantityAndSaveToStorage', async ({ productId, quantity}: IQuantityPayload, {dispatch, getState}: { dispatch: AppDispatch, getState: () => RootState }) => {

@@ -16,12 +16,8 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
   const { handleFavorite } = useHandleFavoriteItem()
 
   if (data && data.length > 0) {
-
     // selects the first item from featured products. the first item has position 1
     const featuredItem = data[0]
-
-    console.log("the variations", data[0])
-
     return (
       <div className={styles.container}>
         <h2>Featured Product</h2>

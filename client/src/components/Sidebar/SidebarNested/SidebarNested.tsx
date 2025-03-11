@@ -14,12 +14,6 @@ export const SidebarNested = ({nestedFields}) => {
       propertyName: e.target.name,
       isActive: e.target.checked
     }))
-
-    // dispatch(toggleFacet({
-    //   facetName,
-    //   propertyName: e.target.name,
-    //   isActive: e.target.checked
-    // }))
   }
 
   return (

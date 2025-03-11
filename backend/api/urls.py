@@ -27,16 +27,16 @@ urlpatterns = [
     path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category-id'),
     path('products/category/<slug:slug>', ProductListByCategoryBySlug.as_view(), name='products-by-category-id'),
     path('products/promotions/', include('promotion.urls')),
-
     path('categories/', CategoryListView.as_view(), name='categories'),
     path('categories/featured', CategoryFeaturedListView.as_view(), name='categories'),
+
     path('orders/create', OrderCreateView.as_view(), name='order-create'),
+    path('cart/', include('shopping_cart.urls')),
+    path('/payment/', include('payments.urls')),
 
     path('auth/', include('auth.urls')),
     path('user-control/', include('user_control.urls')),
     path('search/', include('search.urls')),
-
-    path('landing-page/', LandingPageView.as_view(), name='landing_page'),  # not used
 
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('schema/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

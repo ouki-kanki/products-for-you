@@ -55,7 +55,6 @@ export const Orders = () => {
         {ordersData && ordersData.results.map((order, index) => (
             <div
             key={index}
-            className={styles.mainContainer}
               >
               <div className={styles.orderContainer}>
                 <div className={styles.itemContainer}>

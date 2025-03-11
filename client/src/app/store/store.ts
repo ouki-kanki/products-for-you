@@ -14,6 +14,7 @@ import {
   productsApi,
   orderApi,
   userProfileApi,
+  cartApi,
   searchApi } from "../../api";
 
 import { cartMiddleware, cartListenerMiddleware } from "./middleware/cartMiddleware";
@@ -34,6 +35,7 @@ export const store = configureStore({
     [productsApi.reducerPath]: productsApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
   },
   middleware: (getDefaultMiddleware) => (
     getDefaultMiddleware().prepend(
@@ -48,6 +50,7 @@ export const store = configureStore({
       productsApi.middleware,
       orderApi.middleware,
       searchApi.middleware,
+      cartApi.middleware,
       cartMiddleware
     ])
   )

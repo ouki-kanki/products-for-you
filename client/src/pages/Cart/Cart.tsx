@@ -1,15 +1,19 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import styles from './cart.module.scss';
 import type { RootState } from '../../app/store/store';
-import { removeItem, addQuantity, subtractQuantity, clearCart } from '../../features/cart/cartSlice';
+import { removeItem, addQuantity, subtractQuantity, clearCart, checkout } from '../../features/cart/cartSlice';
 
+import { ModalCentered } from '../../components/Modal/ModalCentered/ModalCentered';
 import RemoveIcon from '../../assets/svg_icons/remove.svg?react'
 import AddIcon from '../../assets/svg_icons/add_filled.svg?react'
 import SubtractIcon from '../../assets/svg_icons/subtract_filled.svg?react'
-
+import { BaseButton } from '../../components/Buttons/baseButton/BaseButton';
+import { isEmpty } from '../../utils/objUtils';
 
 export const Cart = () => {
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false)
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart)
   const total = cart.total
@@ -28,6 +32,35 @@ export const Cart = () => {
     dispatch(subtractQuantity({ productId: id }))
   }
 
+  const handleGotoCheckout = () => {
+    // dispatch checkout aciton
+    // navigate to checkout
+    dispatch(checkout())
+    navigate('/checkout')
+
+  }
+
+  const handleClearBtnClick = () => {
+    setIsClearModalOpen(true)
+  }
+
+  const handleCloseclearModal = () => {
+    setIsClearModalOpen(false)
+  }
+
+  const handleClearCart = () => {
+    dispatch(clearCart())
+    setIsClearModalOpen(false)
+    // TOOD: clear the cart from database if the user is looged in
+  }
+
+  console.log("the cart", cart)
+  if (isEmpty(cart)) {
+    return (
+      <div>there are no items in your cart</div>
+    )
+  }
+
   return (
     <div className={styles.container}>
       <h2>Your Items</h2>
@@ -40,7 +73,7 @@ export const Cart = () => {
           <div>Total</div>
           <div></div>
         </div>
-        {cart && cart.items.map(({ productIcon, price, quantity, variationName, productId, constructedUrl, slug }) => (
+        {cart && cart?.items.map(({ productIcon, price, quantity, variationName, productId, constructedUrl, slug }) => (
           <div className={styles.row} key={productId}>
             <div>
               <div className={styles.iconContainer} onClick={() => handleNavigateToProduct(constructedUrl, slug)}>
@@ -93,14 +126,34 @@ export const Cart = () => {
             </div>
             <div className={styles.BtnContainer}>
               <button
-                onClick={() => dispatch(clearCart())}
+                onClick={handleClearBtnClick}
                 className={styles.clearBtn}>clear</button>
-              <Link to='/checkout' className={styles.orderBtn}>Go to order</Link>
+              <div
+                className={styles.orderBtn}
+                onClick={handleGotoCheckout}
+                >Go to checkout</div>
             </div>
           </div>
         </div>
       </div>
-
+      <ModalCentered
+        isOpen={isClearModalOpen}
+        onClose={handleCloseclearModal}
+      >
+        <div className={styles.clearModalContainer}>
+          <h3>Are you sure you want to clear the cart?</h3>
+          <div className={styles.btnContainer}>
+            <BaseButton
+              type='danger'
+              size='sm'
+              onClick={handleCloseclearModal}
+              >No</BaseButton>
+            <BaseButton
+              onClick={handleClearCart}
+              size='sm'>Yes</BaseButton>
+          </div>
+        </div>
+      </ModalCentered>
     </div>
   )
 }

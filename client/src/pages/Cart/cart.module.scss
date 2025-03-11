@@ -160,14 +160,16 @@
 .BtnContainer {
   display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
 
   .orderBtn {
-    margin-top: 20px;
+    // margin-top: 20px;
     @include btn_blue();
+    padding: 15px;
   }
 
   .clearBtn {
-    margin-top: 20px;
+    // margin-top: 20px;
     margin-right: 5px;
     @include btn_secondary;
     font-size: 1rem;
@@ -199,3 +201,13 @@
   }
 }
 
+.clearModalContainer {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+
+  .btnContainer {
+    margin-top: 20px;
+    text-align: end;
+  }
+}

@@ -46,13 +46,7 @@ export const Search = () => {
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
   const { sortValue, handleChangeSort } = useSort('time')
-  // const sortValue = 'time'
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
-
-  console.log("the sort value", sortValue)
-
-  // console.log("the facets srt -> ", paramsStr)
-
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
     page,
@@ -62,14 +56,10 @@ export const Search = () => {
     facets: paramsStr
   })
 
-  // console.log(data)
   useEffect(() => {
     // facets are cached. trigger request when facetslist is changed
     refetch()
   }, [paramsStr, refetch])
-
-
-  console.log("the data", data)
 
   const facets = data?.facets
   const activeFacets = useSelector((state: RootState) => state.filters.activeFacets)

@@ -249,8 +249,12 @@ class ProductItem(models.Model):
             return 'limited quantity'
         return 'not available'
 
-    # TODO override save method to prevent diff productitems to have the same
-    # TODO type of variations ex: jordan color-blue, size=large
+    @property
+    def build_url_path(self):
+        category_slug = slugify(self.product.category.name)
+        product_slug = slugify(self.product.name)
+
+        return f"{category_slug}/{product_slug}"
 
     def __str__(self):
         qs = self.variation_option.all()
@@ -303,24 +307,6 @@ def product_item_post_save(sender, instance, created, **kwargs):
             instance.save()
 
     transaction.on_commit(generate_slug_and_sku)
-
-#
-#     if instance.slug == "" or instance.slug is None:
-#         # slug = slugify_unique(sender, instance, instance.variation_name)
-#         # qs = instance.variation_option.all()
-#         # variations_string = '-'.join(qs)
-#         # name = instance.product.name
-#         # slug = f'{variations_string}-{name}'
-#         print("hte id", instance.pk)
-#         print(instance.variation_name)
-#         if instance.pk is None:
-#             # slug = instance.variation_name
-#             instance.slug = 'test'
-
-    # if instance.sku == "" or instance.sku is None:
-    #     qs = instance.variation_option.all()
-
-    #     instance.sku = sku
 
 
 class ProductImage(models.Model):

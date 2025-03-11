@@ -7,8 +7,14 @@ import {
   clearCart,
   initCart,
   addQuantity,
-  subtractQuantity } from "../../../features/cart/cartSlice"
+  subtractQuantity,
+  checkout,
+  sendInitCartToMiddleware,
+  setIsSynced} from "../../../features/cart/cartSlice"
 
+import type { ICartItem } from '../../../features/cart/cartSlice';
+import { cartApi } from '../../../api/cartApi';
+import { convertSnakeToCamelV2 } from '../../../utils/converters';
 
 export const cartMiddleware = ({ dispatch, getState }) => next => action => {
   if (initCart.match(action)) {
@@ -19,18 +25,110 @@ export const cartMiddleware = ({ dispatch, getState }) => next => action => {
   return next(action)
 }
 
-
 type CartStartListening = TypedStartListening<RootState, AppDispatch>
 export const cartListenerMiddleware = createListenerMiddleware()
 const startCartListening = cartListenerMiddleware.startListening as CartStartListening
 
 startCartListening({
-  matcher: isAnyOf(addItem, removeItem, addQuantity, subtractQuantity, clearCart),
+  matcher: isAnyOf(addItem, removeItem, addQuantity, subtractQuantity, clearCart, checkout, sendInitCartToMiddleware),
   effect: async (action, listenerApi) => {
-    console.log(listenerApi.getState())
+    const dispatch = listenerApi.dispatch
     const { cart } = listenerApi.getState()
+
+    if (action.type === sendInitCartToMiddleware.type) {
+      const { auth: { userInfo: { user_id }, userTokens}} = listenerApi.getState()
+      if (!user_id) {
+        // TODO: load from session
+        return
+      }
+        // check if there is cart on localstorage
+
+      let cartFromLocale;
+      try {
+        const cartFromStorageStr = localStorage.getItem('cart')
+        cartFromLocale = JSON.parse(cartFromStorageStr as string)
+      } catch (err) {
+        console.log(err)
+      }
+
+      // *** run only if there is no cart in the localstorage ***
+      if (!cartFromLocale || cartFromLocale.items.length === 0) {
+        console.log("isnie take from db ")
+        try {
+          const res = await dispatch(cartApi.endpoints.getCart.initiate(user_id)).unwrap();
+          const items = res.cart.items
+          const convertedItems = []
+          for (let item of items) {
+            item = { ...item }
+            for (const [key, value] of Object.entries(item)) {
+              // TODO: check where the constructedUrl is used and change the name to urlPath
+              // then remove this logic
+              if (key === 'url_path') {
+                item['constructedUrl'] = value
+                delete item[key]
+              }
+              if (key === 'id') {
+                item['productId'] = value
+                delete item[key]
+              }
+            }
+            item = convertSnakeToCamelV2(item)
+            convertedItems.push(item)
+          }
+
+          const { total } = res.cart
+          const numberOfItems = items.length
+          const cart = {
+            items: convertedItems,
+            total,
+            numberOfItems
+          }
+
+          // localStorage.setItem('cart', JSON.stringify(cart))
+          dispatch(initCart(cart))
+
+        } catch  (err){
+          console.log(err)
+        }
+
+      }
+        // TOOD: make the route to get the cart protected, if the user does not have token do not fetch the cart
+    }
+
     localStorage.setItem('cart', JSON.stringify(cart))
+
+    if (action.type === checkout.type) {
+      // set cart to database
+      try {
+        const items = [ ...cart.items ]
+        const cartItems = items.map(({ constructedUrl, productIcon, slug, variationName, productId, ...rest}) => ({ ...rest, product_item: productId }))
+
+        const res = await dispatch(cartApi.endpoints.createCart.initiate({
+          items: cartItems
+        })).unwrap();
+        console.log("the res from createcart", res)
+      } catch (error) {
+        console.log("the error", error)
+        return
+      }
+    }
+
+    if (action.type === clearCart.type) {
+      console.log("inside clear cart")
+      localStorage.setItem('cart', '')
+
+      try {
+        const res = await dispatch(cartApi.endpoints.deleteCart.initiate())
+        console.log("cart delete on db")
+      } catch (err) {
+        console.log("clear cart from db er", err)
+        return
+      }
+    }
   }
 })
 
-
+// exalted
+// tx - rgb(117, 117, 11)
+// db - rgb(125, 174, 0)
+// bg - rgb(227, 245, 87)

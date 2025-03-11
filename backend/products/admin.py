@@ -276,8 +276,6 @@ class FeaturedItemAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-
-
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('code', 'discount_value', 'discount_type', 'is_active', 'created_at', )

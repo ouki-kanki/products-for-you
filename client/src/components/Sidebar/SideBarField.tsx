@@ -31,6 +31,7 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
   const rawPath = location.pathname
   const lastElementOfPath = rawPath.slice(-1)
 
+
   // open sidebar nested fields according to the path
   let path = ''
   if (lastElementOfPath === '/') {
@@ -59,7 +60,7 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
         </span>
       </NavLink>
       {/* TODO: extract to its own component */}
-      {path === name.toLowerCase() && path == title.toLowerCase() && (
+      {path === name.toLowerCase() && title.toLowerCase() === 'products' && (
         <div className={styles.nestedFieldContainer}>
           {!isEmpty(facets) && (
               <SidebarNested nestedFields={facets}/>

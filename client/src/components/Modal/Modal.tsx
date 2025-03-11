@@ -7,7 +7,7 @@ interface IModal {
   onClose: () => void
 }
 
-// TODO this used the dialog component check if it's compatible with the majority of the browsers & if it's mobile friendly
+// TODO this is using the dialog component check if it's compatible with the majority of the browsers & if it's mobile friendly
 export const Modal = ({ children, isOpen }: IModal) => {
   const modalRef = useRef<HTMLDialogElement | null>(null)
   const [isModalOpen, setModalOpen] = useState(isOpen)
