@@ -32,6 +32,7 @@ export const cartApi = createApi({
       }
       return headers
     },
+    credentials: 'include'
   }),
   endpoints: (builder) => ({
     createCart: builder.mutation<ICartResponse, ICartItem[]>({
@@ -39,6 +40,18 @@ export const cartApi = createApi({
         url: 'add',
         method: 'POST',
         body: payload
+      })
+    }),
+    createSessionCart: builder.mutation<ICartResponse, ICartItem[]>({
+      query: (payload) => ({
+        url: 'add-session-cart',
+        method: 'POST',
+        body: payload
+      })
+    }),
+    getSessionCart: builder.query<ICart, void>({
+      query: () => ({
+        url: 'get-session-cart'
       })
     }),
     getCart: builder.query<ICart, string>({

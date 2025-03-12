@@ -8,6 +8,12 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CartItemGuestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ('product_item', 'price', 'quantity')
+
+
 class CartItemForCartSerializer(CartItemSerializer):
     variation_name = serializers.SerializerMethodField()
     slug = serializers.SerializerMethodField()

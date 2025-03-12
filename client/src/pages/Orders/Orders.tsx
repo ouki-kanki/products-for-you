@@ -18,9 +18,6 @@ export const Orders = () => {
   const classes = useClassLister(styles)
 
   const { prepareLink, handleNavigate, page, page_size } = usePagination({})
-
-  console.log("the page and pagesize", page, page_size)
-
   const { data: ordersData, isError: isOrdersError, isLoading: isOrdersLoading, error: ordersError } = useGetOrdersQuery({ page, page_size })
 
   if (ordersData?.results.length === 0) {
@@ -43,8 +40,6 @@ export const Orders = () => {
     'price',
     ''
   ]
-
-  console.log("the data", ordersData)
 
   return (
     <div className={styles.mainContainer}>

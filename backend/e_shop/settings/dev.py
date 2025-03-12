@@ -6,6 +6,8 @@ from decouple import config
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+SESSION_COOKIE_SECURE = False
+
 DATABASES.update({
     'test': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

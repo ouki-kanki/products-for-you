@@ -54,7 +54,6 @@ export const Cart = () => {
     // TOOD: clear the cart from database if the user is looged in
   }
 
-  console.log("the cart", cart)
   if (isEmpty(cart)) {
     return (
       <div>there are no items in your cart</div>

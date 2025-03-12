@@ -66,6 +66,8 @@ export const ProductDetail = () => {
 
   promotion = validatePromotion(promotion)
 
+  console.log('prmotion', promotion)
+
   useEffect(() => {
     setFeaturedImage(featuredImageUrl as string)
   }, [featuredImageUrl])
@@ -128,7 +130,7 @@ export const ProductDetail = () => {
         productIcon: data.productThumbnails[0].url,
         slug: data.slug,
         constructedUrl: location?.state ? location.state : 'not_provided',
-        price: data.price,
+        price: promotion ? promotion.promoPrice : data.price,
         productId: data.id,
         quantity: desiredQuantity
       }))

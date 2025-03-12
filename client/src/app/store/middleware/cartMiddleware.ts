@@ -34,15 +34,22 @@ startCartListening({
   effect: async (action, listenerApi) => {
     const dispatch = listenerApi.dispatch
     const { cart } = listenerApi.getState()
+    const { auth: { userInfo: { user_id }, userTokens}} = listenerApi.getState()
 
     if (action.type === sendInitCartToMiddleware.type) {
-      const { auth: { userInfo: { user_id }, userTokens}} = listenerApi.getState()
       if (!user_id) {
+        console.log("isndie the listern")
         // TODO: load from session
+        try {
+          const res = await dispatch(cartApi.endpoints.getSessionCart.initiate()).unwrap()
+          console.log(res)
+        } catch (err) {
+          console.log(err)
+        }
         return
       }
-        // check if there is cart on localstorage
 
+      // check if there is cart on localstorage
       let cartFromLocale;
       try {
         const cartFromStorageStr = localStorage.getItem('cart')
@@ -84,9 +91,7 @@ startCartListening({
             numberOfItems
           }
 
-          // localStorage.setItem('cart', JSON.stringify(cart))
           dispatch(initCart(cart))
-
         } catch  (err){
           console.log(err)
         }
@@ -102,6 +107,14 @@ startCartListening({
       try {
         const items = [ ...cart.items ]
         const cartItems = items.map(({ constructedUrl, productIcon, slug, variationName, productId, ...rest}) => ({ ...rest, product_item: productId }))
+
+        if (!user_id) {
+          const res = await dispatch(cartApi.endpoints.createSessionCart.initiate({
+            items: cartItems
+          })).unwrap()
+          console.log("the res from guest create", res)
+          return
+        }
 
         const res = await dispatch(cartApi.endpoints.createCart.initiate({
           items: cartItems
