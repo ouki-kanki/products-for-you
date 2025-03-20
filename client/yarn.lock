@@ -498,6 +498,18 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
+"@stripe/react-stripe-js@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-3.4.0.tgz#4d931975bba1f792aec451a75d31bcbfbe83f921"
+  integrity sha512-5m0vProlV2qyB7qXHSn25Ao79BjgJW/oiv2ynJ645dpdjeR7fyeb+KSrA4Esk7jqy+aKmdyn70TAIN0BVgh0MA==
+  dependencies:
+    prop-types "^15.7.2"
+
+"@stripe/stripe-js@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-6.0.0.tgz#7a2a244c133885f1694059f1f7b34536846517e7"
+  integrity sha512-Q8dbgLhXqtSCGflO8KaEQxM6/b3nHyPnX45300jxjUxS1acnBV5x7VRpWw0GDYgxAElIhlarPw0txXdeMzMC7Q==
+
 "@svgr/babel-plugin-add-jsx-attribute@8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-8.0.0.tgz#4001f5d5dd87fa13303e36ee106e3ff3a7eb8b22"
@@ -1667,7 +1679,7 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prop-types@^15.8.1:
+prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==

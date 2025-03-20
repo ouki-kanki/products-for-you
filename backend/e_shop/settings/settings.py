@@ -29,6 +29,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
+    'channels',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_elasticsearch_dsl_drf',
+    'django_elasticsearch_dsl',
+    'import_export',
+
+
+    # third party apps
     'user_control.apps.UserControlConfig',
     'products.apps.ProductsConfig',
     'shopping_cart.apps.ShoppingCartConfig',
@@ -36,18 +47,7 @@ INSTALLED_APPS = [
     'variations.apps.VariationsConfig',
     'promotion',
     'payments',
-
-
-    # third party apps
-    'corsheaders',
-    'channels',
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
-    # 'rest_framework.authtoken',
-    'django_elasticsearch_dsl_drf',
-    'django_elasticsearch_dsl',
-    'import_export'
+    'inventory'
 ]
 
 MIDDLEWARE = [
@@ -272,3 +272,7 @@ EMAIL_USE_SSL = False
 EMAIL_HOST_USER = config('EMAIL_HOST')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_RECEIVERS_LIST = [config('EMAIL_RECEIVER_ONE'),]
+
+
+# stores configuration
+DEFAULT_STORE_CITY = 'ATH'

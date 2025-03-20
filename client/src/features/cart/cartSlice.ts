@@ -1,22 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { AppDispatch, RootState } from "../../app/store/store";
-export interface ICartItem {
-  variationName: string;
-  slug: string;
-  constructedUrl: string;
-  productIcon: string;
-  productId: number;
-  quantity: number;
-  price: string | number;
-}
-
-export interface ICart {
-  items: ICartItem[];
-  total: number;
-  numberOfItems: number;
-  isUpdating: boolean;
-  isSynced: boolean;
-}
+import type { ICart, ICartItem } from "../../types/cartPayments";
 
 const initialState: ICart = {
   items: [],
@@ -25,7 +8,6 @@ const initialState: ICart = {
   isUpdating: false,
   isSynced: false
 }
-
 
 export const cartSlice = createSlice({
   name: 'cart',

@@ -178,10 +178,6 @@ class CreateGuestCartView(APIView, CartMixin):
 class GetSessionCartApiView(APIView):
 
     def get(self, request): # noqa
-        print(request.COOKIES)
-        session_id = request.COOKIES.get('sessionid')
-        print(request.session)
-        print(request.session.items())
         try:
             cart = request.session.get('cart', [])
 

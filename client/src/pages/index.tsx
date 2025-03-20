@@ -19,3 +19,4 @@ export { Checkout } from './Checkout/Checkout';
 export { Activation } from './Activation/Activation';
 export { ActivationSuccess } from './Activation/ActivationSuccess'
 export { Orders } from './Orders/Orders';
+export { ShippingCosts } from './Checkout/ShippingCosts/ShippingCosts'

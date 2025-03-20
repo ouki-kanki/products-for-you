@@ -196,6 +196,11 @@ class FeaturedItem(models.Model):
         return f'{self.product}-{self.position}'
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+
+
 class ProductItem(models.Model):
     """ PRODUCT - VARIANT """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
@@ -207,9 +212,9 @@ class ProductItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_default = models.BooleanField(default=False)
     variation_option = models.ManyToManyField('variations.VariationOptions')  # to avoid circular imports
+    tags = models.ManyToManyField(Tag, related_name='product_items', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    # discount = models.ManyToManyField("products.Discount", verbose_name="product_discount")
     limited_number_of_items_threshold = models.PositiveIntegerField(default=3,
                                                                     help_text='below and including this number'
                                                                               ' number of items"')
@@ -309,6 +314,22 @@ def product_item_post_save(sender, instance, created, **kwargs):
     transaction.on_commit(generate_slug_and_sku)
 
 
+class ProductDetail(models.Model):
+    product_item = models.OneToOneField(ProductItem, on_delete=models.CASCADE, related_name='product_details')
+    width = models.DecimalField(max_digits=5, decimal_places=1, help_text="measurement in cm")
+    height = models.DecimalField(max_digits=5, decimal_places=1, help_text="measurement in cm")
+    length = models.DecimalField(max_digits=5, decimal_places=1, help_text="measurement in cm")
+    weight = models.IntegerField(null=True, help_text="weight in grams")
+
+    @property
+    def volume(self):
+        return self.length * self.width * self.height
+
+    def __str__(self):
+        # TODO: change if it causes performance problems
+        return f"details for product {self.product_item.product.name}"
+
+
 class ProductImage(models.Model):
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='product_image')
     image = models.ImageField(upload_to=upload_product_item_image)
@@ -385,6 +406,9 @@ def product_image_post_save(sender, instance, *args, **kwargs):
         remove_background(instance.image, output_path)
 
 
+
+
+
 # *** OBSOLETE ***
 class Discount(models.Model):
     """
@@ -436,10 +460,6 @@ class ProductReview(models.Model):
 
 
 # NOT IMPLEMENTED
-class Stock(models.Model):
-    product = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='stock')
-    stock = models.PositiveSmallIntegerField()
-    items_sold = models.PositiveSmallIntegerField()
 
 
 class Banner(models.Model):

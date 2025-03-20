@@ -1,0 +1,102 @@
+.innerContainer {
+  display: flex;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+}
+
+.section {
+  // @include border_lime__bold;
+  flex-grow: 1;
+  margin-right: 40px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  label {
+    margin-right: 20px;
+    min-width: 100px;
+  }
+
+  & > div {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 10px 0;
+  }
+}
+
+.left {
+  & > div {
+    // display: flex;
+  }
+}
+
+//TODO: convert to mixin
+.input {
+  // @include border_green__bold;
+  height: $btn_height;
+  width: 100%;
+  max-width: 350px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: 1px solid  #dcdcdc;
+  font-size: medium;
+  font-weight: bold;
+  transition: border .1s ease-out;
+
+  &:hover {
+    border: 3px solid #a7a7a7;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $search_color_primary;
+    font-size: medium;
+    font-weight: bold;
+  }
+}
+
+.right {
+  h2 {
+    // TODO: fix the layout and remove h2 from markup
+    opacity: 0;
+  }
+}
+
+.cardElementContainer {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  max-width: 400px;
+}
+
+.action {
+  margin-top: 20px;
+  // @include border_green;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btnBack {
+  @include btn_secondary();
+  margin-right: 15px;
+  padding: 13px;
+}
+
+.checkoutBtn {
+  @include btn_blue();
+  padding: 15px;
+}
+
+.backContainer {
+  margin-right: 10px;
+}
+

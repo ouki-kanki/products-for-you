@@ -46,7 +46,6 @@ class OrderAdmin(admin.ModelAdmin):
 
         return mark_safe(f'<span style="color: {color};">{obj.order_status}</span>')
 
-    
     order_status_colored.short_description = 'order status'
 
 

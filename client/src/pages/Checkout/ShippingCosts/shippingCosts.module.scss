@@ -1,0 +1,16 @@
+.planContainer {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  width: fit-content;
+  max-width: 800px;
+  column-gap: 10px;
+
+  .row {
+    display: contents;
+
+    .value {
+      justify-self: start;
+      // margin-right: 5px;
+    }
+  }
+}

@@ -1,4 +1,6 @@
 // TOOD: this does not handle arrays inside the object
+import { isEmpty } from "./objUtils"
+
 export const convertSnakeToCamelV2 = (obj: Record<string, unknown>): Record<string, unknown> => {
   return Object.entries(obj).reduce((acc, [key, value]) => {
     const camelKey = key.replace(/_([a-zA-Z0-9])/g, (_, match) => match.toUpperCase())
@@ -6,6 +8,7 @@ export const convertSnakeToCamelV2 = (obj: Record<string, unknown>): Record<stri
     return acc
   }, {} as Record<string, unknown>)
 }
+
 
 /**
  * accepts an object, converts keys from snakecase to camelcase recursively.the convertion happens inplace
@@ -32,6 +35,16 @@ export const convertSnakeToCamel = (obj: Record<string, unknown>): void => {
       delete obj[key]
     }
   }
+}
+
+/** data has to be copied. this mutates the objects */
+export const convertSnakeToCamelArray = (data: Array<Record<string, unknown>>): Array<Record<string, unknown>> => {
+  return data.map(item => {
+    if (!isEmpty(item)) {
+      convertSnakeToCamel(item)
+    }
+    return item
+  })
 }
 
 interface customConvertion {

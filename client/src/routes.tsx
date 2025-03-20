@@ -19,7 +19,8 @@ import { Home,
   DeliveryTerms,
   TermsOfUse,
   Checkout,
-  Orders
+  Orders,
+  ShippingCosts
  } from './pages'
 import { Search } from './pages/Search';
 import { PersistLogin } from './features/auth/PersistLogin';
@@ -34,12 +35,13 @@ export const EcommerceRoutes = () => (
           <Route index element={<LandingPage/>}/>
           <Route path='/categories' element={<Categories/>}/>
           <Route path='/categories/:slug/*' element={<Categories/>}/>
-          {/* <Route path='/cart' element={<Cart/>}/> */}
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/account' element={<Account/>}/>
           <Route path='/cart' element={<Cart/>}/>
-          <Route path='/checkout' element={<Checkout/>}/>
+          <Route path='/checkout' element={<Checkout/>}>
+            <Route path='payment' element={<ShippingCosts/>}/>
+          </Route>
           <Route path='/settings' element={<Settings/>}/>
           <Route path='/products/' element={<ProductsPage/>}/>
           <Route path='/products/:slug' element={<ProductsPage/>}/>

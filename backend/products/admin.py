@@ -15,13 +15,14 @@ from django.urls import reverse
 from services.imageServices import delete_image_from_filesystem
 
 from .models import (
-    Product, 
-    ProductItem, 
-    Category, 
-    Brand, 
+    Product,
+    ProductItem,
+    Category,
+    Brand,
     Discount,
     ProductImage,
-    FeaturedItem
+    FeaturedItem,
+    ProductDetail
 )
 from promotion.models import ProductsOnPromotion
 from common.util.static_helpers import render_icon
@@ -353,6 +354,11 @@ class ProductItemForm(forms.ModelForm):
     #     return cleaned_data
 
 
+class ProductDetailInline(admin.TabularInline):
+    model = ProductDetail
+    extra = 0
+
+
 @admin.register(ProductItem)
 class ProductItemAdmin(admin.ModelAdmin):
     list_display = (
@@ -363,7 +369,7 @@ class ProductItemAdmin(admin.ModelAdmin):
     )
     list_select_related = ('product', )
     list_filter = ('product', 'quantity')
-    inlines = [ProductImageInline, PromotionsInline]
+    inlines = [ProductImageInline, PromotionsInline, ProductDetailInline]
     form = ProductItemForm
 
     def active_promotion(self, obj): # noqa
@@ -379,7 +385,6 @@ class ProductItemAdmin(admin.ModelAdmin):
         active_promotions = ', '.join(active_promotions) if active_promotions else '-'
         print(active_promotions)
         return active_promotions
-
 
     @staticmethod
     def format_qnt(quantity, color):
@@ -411,5 +416,9 @@ class ProductItemAdmin(admin.ModelAdmin):
     get_default_image.short_description = 'Image'
 
 
-admin.site.register((Brand),)
+@admin.register(ProductDetail)
+class ProductDetailsAdmin(admin.ModelAdmin):
+    pass
 
+
+admin.site.register(Brand,)

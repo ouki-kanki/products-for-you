@@ -13,6 +13,7 @@ import {
   userApi,
   productsApi,
   orderApi,
+  paymentApi,
   userProfileApi,
   cartApi,
   searchApi } from "../../api";
@@ -36,6 +37,7 @@ export const store = configureStore({
     [searchApi.reducerPath]: searchApi.reducer,
     [orderApi.reducerPath]: orderApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
   },
   middleware: (getDefaultMiddleware) => (
     getDefaultMiddleware().prepend(
@@ -51,7 +53,8 @@ export const store = configureStore({
       orderApi.middleware,
       searchApi.middleware,
       cartApi.middleware,
-      cartMiddleware
+      cartMiddleware,
+      paymentApi.middleware
     ])
   )
 })

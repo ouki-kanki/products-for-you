@@ -32,7 +32,7 @@ urlpatterns = [
 
     path('orders/create', OrderCreateView.as_view(), name='order-create'),
     path('cart/', include('shopping_cart.urls')),
-    path('/payment/', include('payments.urls')),
+    path('payment/', include('payments.urls')),
 
     path('auth/', include('auth.urls')),
     path('user-control/', include('user_control.urls')),
