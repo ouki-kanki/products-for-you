@@ -200,6 +200,9 @@ class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.slug
+
 
 class ProductItem(models.Model):
     """ PRODUCT - VARIANT """
@@ -212,6 +215,7 @@ class ProductItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_default = models.BooleanField(default=False)
     variation_option = models.ManyToManyField('variations.VariationOptions')  # to avoid circular imports
+    generate_tags = models.BooleanField(default=False, help_text='this will gather info about the product and will try to create assosiated tags')
     tags = models.ManyToManyField(Tag, related_name='product_items', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -271,6 +275,26 @@ class ProductItem(models.Model):
     def __unicode__(self):
         return f"sku - {self.sku} - {self.price} - {self.quantity}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.pk and self.generate_tags:
+            tag_names = set()
+
+            if self.product.category:
+                tag_names.add(self.product.category.name.strip())
+
+            for variation in self.variation_option.all():
+                tag_names.add(variation)
+
+            for tag_name in tag_names:
+                tag, _ = Tag.objects.get_or_create(name=tag_name, slug=slugify(tag_name))
+                self.tags.add(tag)
+            
+            self.generate_tags = False
+            super().save(*args, **kwargs)
+
+
 @receiver(pre_save, sender=ProductItem) # noqa
 def product_item_pre_save(sender, instance, *args, **kwargs):
     # if this instance is default remove is_default from other instances
@@ -284,6 +308,14 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
 @receiver(post_save, sender=ProductItem) # noqa
 def product_item_post_save(sender, instance, created, **kwargs):
     # if created and (instance.slug is None or instance.slug == ''):
+    if instance.generate_tags:
+        tag_names = set()
+
+        if instance.product.category:
+            tag_names.add(instance.product.category.name.strip())
+
+
+
 
     def generate_slug_and_sku():
         need_generate = False
