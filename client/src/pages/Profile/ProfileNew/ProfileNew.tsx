@@ -1,4 +1,4 @@
-import { useReducer, useEffect, ChangeEvent } from 'react'
+import { useReducer, ChangeEvent } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import styles from './profileNew.module.scss'
 import { Input } from '../../../UI/Forms/Inputs'

@@ -31,6 +31,8 @@ export const enum ActionTypes {
 }
 
 // TODO: this is used for validation state & for password state.maybe decouple password actions
+// NOTE: this is done on useValidationV2
+// TODO: mark this file obsolete and change the login form to use the new hook
 export type IValidationAction =
   | { type: ActionTypes.SET_EMAIL,  payload: string}
   | { type: ActionTypes.SET_EMAIL_ERROR,  payload: string | null}

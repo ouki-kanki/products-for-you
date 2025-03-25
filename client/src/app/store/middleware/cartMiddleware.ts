@@ -39,7 +39,6 @@ startCartListening({
 
     if (action.type === sendInitCartToMiddleware.type) {
       if (!user_id) {
-        console.log("isndie the listern")
         // TODO: load from session
         try {
           const res = await dispatch(cartApi.endpoints.getSessionCart.initiate()).unwrap()

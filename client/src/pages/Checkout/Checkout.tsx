@@ -11,7 +11,7 @@ import type { ShippingPlan } from '../../types/cartPayments';
 
 
 import { fieldsReducer } from '../../app/reducers';
-
+import { passWordValidator, notEmptyValidator } from '../../hooks/validation/validators';
 
 import { showNotification } from '../../components/Notifications/showNotification';
 import { CheckoutCostsTable } from './CheckoutCostsTable/CheckoutCostsTable';
@@ -29,6 +29,8 @@ import type { Stripe, StripeCardElement, } from '@stripe/stripe-js';
 import type { ICheckoutState } from '../../types/cartPayments';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
 
+import { useValidationV2 } from '../../hooks/validation/useValidationV2';
+import { BaseInput } from '../../components/Inputs/BaseInput/BaseInput';
 
 const initialState: ICheckoutState = {
   firstName: '',
@@ -134,8 +136,6 @@ export const Checkout = () => {
     const total = cart.total
     const items = cart.items
 
-    console.log("the items inside the cart", items)
-
     const payload =  {
         user_id: '',
         ref_code: "not_provided",
@@ -239,13 +239,38 @@ export const Checkout = () => {
       console.log(error.status)
       console.log("the error on order", error)
 
+    }
   }
-      }
 
-  // TODO: useValidation
+  const { fields, errors, registerField, changeField, touchField } = useValidationV2({
+    password: [passWordValidator, notEmptyValidator]
+  })
+
+  useEffect(() => {
+    registerField("password")
+  }, [registerField])
+
+  console.log("the errors", errors)
+
   return (
     <div className={styles.container}>
       <div>
+        <BaseInput/>
+
+        <div>
+          <label htmlFor="pass">passoword</label>
+          <input
+            name='pass'
+            type="text"
+            value={fields.password?.value || ""}
+            onChange={(e) => changeField("password", e.target.value)}
+            onBlur={() => touchField("password")}
+            />
+            {errors.password && errors.password.map(error => (
+              <div style={{color: 'tomato'}}>{error}</div>
+            ))}
+        </div>
+
         <h1>Checkout</h1>
         <CheckoutCostsTable
           cart={cart}

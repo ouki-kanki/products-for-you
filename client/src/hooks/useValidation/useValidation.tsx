@@ -16,8 +16,6 @@ interface PasswordState {
   isTouched: boolean;
 }
 
-type GenericState<T> = T
-
 const  validationReducer: Reducer<IValidationState, IValidationAction> = (state , action): IValidationState => {
   // TODO if i destructure payload it throws errors when used inside the reducer
   const { type } = action
@@ -90,13 +88,6 @@ export const useValidation = (mode: Mode = 'login') => {
     isPasswordValid: false,
     isTouched: false, // NOT USED
   }))
-
-  // console.log("valid state", state)
-  // console.log("firstpass state", firstPasswordState)
-  // console.log("second pass state", secondPasswordState)
-  // console.log("firstpass state", firstPasswordState.password)
-  // console.log("secondpass state", secondPasswordState.password)
-  // console.log("second pass valid", secondPasswordState.isPasswordValid)
 
   useEffect(() => {
     // debugger;

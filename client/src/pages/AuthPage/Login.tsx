@@ -1,4 +1,4 @@
-import { useRef, useEffect, SyntheticEvent } from 'react';
+import { useEffect, SyntheticEvent } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { showNotification } from '../../components/Notifications/showNotification';
 import { useNavigate } from 'react-router-dom';
@@ -50,7 +50,6 @@ const {
 
 
   const handleErrorNotifications = (error: Error) => {
-    console.log("the error", error.data.detail)
     let message = 'something went wrong'
     if (error?.data?.non_field_errors) {
       const message = error.data.non_field_errors[0] as string
