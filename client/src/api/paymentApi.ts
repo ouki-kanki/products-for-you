@@ -5,25 +5,15 @@ import { BASE_URL } from "./baseConfig";
 import { convertSnakeToCamelArray } from "../utils/converters";
 
 import type { IshippingData } from "../types/cartPayments";
-import type { ShippingPlan } from "../types/cartPayments";
+import type { ShippingPlan, IShippingCosts } from "../types/cartPayments";
 
 
 interface IPaymentResponse {
-  clientSecret: string;
+  client_secret: string;
 }
 
 interface IPaymentData {
-  amount: number;
-}
-
-interface Ishipping {
-  type: string
-  amount: number
-}
-
-interface IShippingCosts {
-  plans: Array<ShippingPlan>;
-  taxRate: number;
+  planId: string;
 }
 
 export const paymentApi = createApi({
@@ -37,6 +27,7 @@ export const paymentApi = createApi({
       }
       return headers
     },
+    credentials: 'include'
   }),
   endpoints: (builder) => ({
     calculateShippingCosts: builder.mutation<IShippingCosts, IshippingData>({

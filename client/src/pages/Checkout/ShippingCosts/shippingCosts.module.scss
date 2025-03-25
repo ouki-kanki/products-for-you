@@ -5,6 +5,10 @@
   max-width: 800px;
   column-gap: 10px;
 
+  input {
+    cursor: pointer;
+  }
+
   .row {
     display: contents;
 
@@ -12,5 +16,6 @@
       justify-self: start;
       // margin-right: 5px;
     }
+
   }
 }

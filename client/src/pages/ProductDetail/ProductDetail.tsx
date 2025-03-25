@@ -34,6 +34,9 @@ export const ProductDetail = () => {
 
   // console.log("the active slug", activeSlug)
 
+  console.log("the detai", data)
+
+
   useEffect(() => {
     if (slug) {
       trigger(slug)
@@ -131,7 +134,7 @@ export const ProductDetail = () => {
         slug: data.slug,
         constructedUrl: location?.state ? location.state : 'not_provided',
         price: promotion ? promotion.promoPrice : data.price,
-        productId: data.id,
+        productId: data.uuid,
         quantity: desiredQuantity
       }))
 

@@ -8,17 +8,32 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CartItemGuestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ('product_item', 'price', 'quantity')
+class CartItemGuestSerializer(serializers.Serializer): # noqa
+    uuid = serializers.UUIDField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    quantity = serializers.IntegerField()
+
+
+class CartGuestSerializer(serializers.Serializer): # noqa
+    items = CartItemGuestSerializer(many=True)
+    total = serializers.SerializerMethodField()
+
+    def get_total(self, obj): # noqa
+        return str(sum(item['price'] * item['quantity'] for item in obj['items']))
 
 
 class CartItemForCartSerializer(CartItemSerializer):
+    """
+    used when the front fetches the cart
+    """
     variation_name = serializers.SerializerMethodField()
     slug = serializers.SerializerMethodField()
     product_icon = serializers.SerializerMethodField()
     url_path = serializers.SerializerMethodField()
+    uuid = serializers.SerializerMethodField()
+
+    def get_uuid(self, obj): # noqa
+        return obj.product_item.uuid
 
     def get_url_path(self, obj): # noqa
         return obj.product_item.build_url_path
@@ -41,7 +56,7 @@ class CartItemForCartSerializer(CartItemSerializer):
 
     class Meta(CartItemSerializer.Meta):
         fields = (
-            'id',
+            'uuid',
             'variation_name',
             'quantity',
             'price',

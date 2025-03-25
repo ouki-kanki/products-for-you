@@ -1,18 +1,31 @@
 from django.db import models
+from django.utils.html import format_html
+
 from user_control.models import CustomUser as User
 from products.models import ProductItem
 import uuid
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
-    session_id = models.UUIDField(default=uuid.uuid4)
+    class Status(models.TextChoices):
+        ACTIVE = 'A', 'active'
+        ABANDONED = 'AB', 'abandoned'
+        ORDERED = 'O', 'ordered'
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
+    session_id = models.UUIDField(default=uuid.uuid4)
+    status = models.CharField(max_length=2, choices=Status.choices, default=Status.ACTIVE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    # when the user completes the payment
-    completed = models.BooleanField(default=False)
-    # sub_total = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
+    @property
+    def colored_status(self):
+        if self.status == self.Status.ACTIVE:
+            return format_html('<span style="color: mediumspringgreen">active</span>')
+        if self.status == self.Status.ABANDONED:
+            return format_html('<span style="color: tomato">abandoned</span>')
+        if self.status == self.Status.ORDERED:
+            return format_html('<span style="color: mediumaquamarine">ordered</span>')
 
     @property
     def num_of_items(self):
@@ -35,8 +48,6 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='cart_items')
-
-
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)

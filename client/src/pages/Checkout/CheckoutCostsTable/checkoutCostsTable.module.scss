@@ -1,0 +1,53 @@
+.productsContainer {
+  margin-bottom: 30px;
+}
+
+.productRow {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.productsHeader {
+  background-color: $blue-light-primary;
+  padding: 10px 10px 10px 0;
+  color: #ddd;
+  font-weight: bold;
+
+  div {
+    // @include border_green;
+    flex: 1;
+  }
+}
+
+// TODO: find a better name for the selectors
+.itemRow {
+  padding: 3px 3px 2px;
+  padding-left: 0;
+  align-items: center;
+  // align-items: baseline;
+  box-shadow: $box-shadow-transparent-black;
+
+  div {
+    // @include border_green;
+    flex: 1;
+    // @include border_green__bolder;
+  }
+}
+
+.icon {
+  height: 40px;
+  width: 40px;
+  // overflow: hidden;
+  // @include border_orange;
+  display: flex;
+  align-items: baseline;
+  position: relative;
+
+
+   img {
+    // @include border_greenl();
+    max-width: 100%;
+    object-fit: contain;
+   }
+}

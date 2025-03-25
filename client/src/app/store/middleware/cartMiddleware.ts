@@ -1,5 +1,6 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import type { RootState, AppDispatch } from './../../store';
+import type { CartItemForServer } from '../../../types/cartPayments';
 import type { TypedStartListening, TypedAddListener } from '@reduxjs/toolkit';
 import {
   addItem,
@@ -55,12 +56,13 @@ startCartListening({
         const cartFromStorageStr = localStorage.getItem('cart')
         cartFromLocale = JSON.parse(cartFromStorageStr as string)
       } catch (err) {
-        console.log(err)
+        // console.log(err)
+        return
       }
 
       // *** run only if there is no cart in the localstorage ***
       if (!cartFromLocale || cartFromLocale.items.length === 0) {
-        console.log("isnie take from db ")
+        console.log("fetch cart from db... ")
         try {
           const res = await dispatch(cartApi.endpoints.getCart.initiate(user_id)).unwrap();
           const items = res.cart.items
@@ -74,7 +76,7 @@ startCartListening({
                 item['constructedUrl'] = value
                 delete item[key]
               }
-              if (key === 'id') {
+              if (key === 'uuid') {
                 item['productId'] = value
                 delete item[key]
               }
@@ -106,20 +108,21 @@ startCartListening({
       // set cart to database
       try {
         const items = [ ...cart.items ]
-        const cartItems = items.map(({ constructedUrl, productIcon, slug, variationName, productId, ...rest}) => ({ ...rest, product_item: productId }))
+        const cartItems = items.map(({ constructedUrl, productIcon, slug, variationName, productId, ...rest}) => ({ ...rest, uuid: productId }))
 
         if (!user_id) {
           const res = await dispatch(cartApi.endpoints.createSessionCart.initiate({
-            items: cartItems
+            items: cartItems as CartItemForServer[]
           })).unwrap()
           console.log("the res from guest create", res)
-          return
+        } else {
+          // if the user is logged_in
+          const res = await dispatch(cartApi.endpoints.createCart.initiate({
+            items: cartItems
+          })).unwrap();
+          console.log("the res from createcart", res)
         }
 
-        const res = await dispatch(cartApi.endpoints.createCart.initiate({
-          items: cartItems
-        })).unwrap();
-        console.log("the res from createcart", res)
       } catch (error) {
         console.log("the error", error)
         return

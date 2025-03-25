@@ -321,7 +321,7 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
         list_of_categories = get_list_of_parent_categories(category, [])
         return list_of_categories
 
-    def get_name(self, obj):
+    def get_name(self, obj): # noqa
         return obj.product.name
 
     def get_icon(self, obj):
@@ -343,7 +343,7 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductItem
         fields = (
-            'id',
+            'uuid',
             'slug',
             'name',
             'other_variations_slugs',

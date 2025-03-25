@@ -7,24 +7,18 @@ class ShippingPlanOptionSerializer(serializers.ModelSerializer):
     NOTE: read only
     """
     estimated_delivery_time = serializers.SerializerMethodField()
-    # plan_name = serializers.SerializerMethodField()
-    # company_name = serializers.SerializerMethodField()
     plan_name = serializers.CharField(source='plan.name', read_only=True)
+    plan_option_id = serializers.UUIDField(source='uuid', read_only=True)
     company_name = serializers.CharField(source='plan.company.name', read_only=True)
 
     class Meta:
         model = ShippingPlanOption
         fields = [
             'plan_name',
+            'plan_option_id',
             'company_name',
             'estimated_delivery_time'
         ]
-
-    # def get_plan_name(self, obj): # noqa
-    #     return obj.plan.name
-    #
-    # def get_company_name(self, obj): # noqa
-    #     return obj.plan.company.name
 
     def get_estimated_delivery_time(self,obj): # noqa
         if obj.min_estimated_delivery_time and obj.max_estimated_delivery_time:

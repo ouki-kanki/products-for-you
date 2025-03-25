@@ -3,10 +3,8 @@ import uuid
 from io import IOBase
 from django.db import models, transaction
 from django.db.models.signals import pre_save, post_save
-from django.utils.html import format_html, html_safe, mark_safe
 from django.utils.text import slugify
 from django.urls import reverse
-from django.core.validators import MaxValueValidator
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
@@ -15,10 +13,9 @@ from django.core.exceptions import SuspiciousFileOperation
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from common.util.string_utils import replace_space_with_dash
-
 from common.util.static_helpers import (
-    upload_icon, upload_product_item_image,
-    upload_product_thumb, upload_category_icon
+    upload_product_item_image,
+    upload_product_thumb
 )
 from common.util.slugify_helper import slugify_unique, lower_random
 from services.imageServices import (
@@ -50,14 +47,6 @@ class Category(models.Model):
         return self.name
 
     # TODO: do not allow more than 20 featured categories
-
-
-    def gen_thumb(self):
-        pass
-        # icon = generate_thumbnailV2(self, 'icon', self.name)
-        # self.icon = icon
-        # if isinstance(icon, IOBase):
-            # icon.close()
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -207,6 +196,7 @@ class Tag(models.Model):
 class ProductItem(models.Model):
     """ PRODUCT - VARIANT """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     variation_name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
     sku = models.CharField(max_length=255, blank=True, unique=True)

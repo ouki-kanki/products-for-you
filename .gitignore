@@ -147,6 +147,7 @@ dmypy.json
 
 sandbox/
 sandbox.py
+start_app_v2.sh
 
 # static files - media files
 **/media/

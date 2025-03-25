@@ -1,3 +1,7 @@
+.form {
+  margin-top: 40px;
+}
+
 .innerContainer {
   display: flex;
 
@@ -20,8 +24,7 @@
     min-width: 100px;
   }
 
-  & > div {
-
+  & > div, h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;

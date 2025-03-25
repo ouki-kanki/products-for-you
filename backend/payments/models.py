@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -60,6 +61,7 @@ class ShippingPlan(models.Model):
 
 
 class ShippingPlanOption(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     plan = models.ForeignKey(ShippingPlan, on_delete=models.CASCADE, related_name='shipping_option')
     origin = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='origin')
     destination = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='destination')

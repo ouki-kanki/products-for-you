@@ -118,3 +118,12 @@ export const convertCamelToSnakeArr = <T>({ data, omitedKeys, customConvertions 
   })
 }
 
+
+/**
+ * omit the values that are not needed by the server
+ * @param items - cart items from locale storage
+ * @returns
+ */
+export const prepareCartItems = (items: ICartItem[]) => {
+  return items && items.map(({ price, productId, quantity }) => ({ price, productId, quantity}))
+}

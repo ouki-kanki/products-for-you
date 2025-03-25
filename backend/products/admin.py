@@ -195,12 +195,10 @@ class ProductAdmin(admin.ModelAdmin):
                 print("the old position ", old_position)
                 print("the new position", new_position)
                 if old_position != new_position:
-                    print("isndie the update method")
                     # super().save_related(request, form, formsets, change)
                     featured_item.position = new_position
                     featured_item.save()
             except FeaturedItem.DoesNotExist:
-                print("insdie the create method")
                 # super().save_related(request, form, formsets, change)
                 FeaturedItem.objects.create(
                     product=product_instance,
@@ -249,7 +247,7 @@ class FeaturedItemAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
         if extra_context:
             extra_context['custom_message'] = format_html(
-                '<div>yoyoyoyo</div>'
+                '<div>__test__</div>'
             )
         return super().change_view(request, object_id, form_url, extra_context)
 
@@ -344,16 +342,6 @@ class ProductItemForm(forms.ModelForm):
         model = ProductItem
         fields = '__all__'
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     product_item = self.instance
-    #
-    #     if not product_item.product_image.filter(is_default=True).exists():
-    #         raise forms.ValidationError('at least one image has to be default')
-    #
-    #     return cleaned_data
-
-
 class ProductDetailInline(admin.TabularInline):
     model = ProductDetail
     extra = 0
@@ -390,7 +378,7 @@ class ProductItemAdmin(admin.ModelAdmin):
     def format_qnt(quantity, color):
         return mark_safe(f'<span style="color: {color};">{quantity}</span>')
 
-    @admin.display(description="yoyo", ordering='quantity')
+    @admin.display(description="__test__", ordering='quantity')
     def quantity_formated(self, obj):  # noqa
         quantity = obj.quantity
         if quantity == 0:

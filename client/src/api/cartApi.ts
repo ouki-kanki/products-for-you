@@ -3,22 +3,22 @@ import { baseQueryWithReauth } from "./authBaseApi";
 import { AuthEnum } from "./enums";
 import { RootState } from "../app/store/store";
 import { BASE_URL } from "./baseConfig";
+import type { CartItemForServer } from "../types/cartPayments";
 
 interface ICartResponse {
   message: string;
 }
 
 // TODO: check if the type exists
-interface ICartItem {
-  price: string;
-  product_item: number;
-  quantity: number;
 
-}
 
 interface ICart {
-  cart_item: ICartItem[];
+  items: ICartItem[];
   total: number;
+}
+
+interface SessionCart {
+  items: CartItemForServer[];
 }
 
 export const cartApi = createApi({
@@ -35,14 +35,14 @@ export const cartApi = createApi({
     credentials: 'include'
   }),
   endpoints: (builder) => ({
-    createCart: builder.mutation<ICartResponse, ICartItem[]>({
+    createCart: builder.mutation<ICartResponse, CartItemForServer[]>({
       query: (payload) => ({
         url: 'add',
         method: 'POST',
         body: payload
       })
     }),
-    createSessionCart: builder.mutation<ICartResponse, ICartItem[]>({
+    createSessionCart: builder.mutation<ICartResponse, SessionCart>({
       query: (payload) => ({
         url: 'add-session-cart',
         method: 'POST',

@@ -60,6 +60,8 @@ export const Cart = () => {
     )
   }
 
+  console.log("the cart")
+
   return (
     <div className={styles.container}>
       <h2>Your Items</h2>

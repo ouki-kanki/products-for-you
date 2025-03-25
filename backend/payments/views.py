@@ -1,6 +1,6 @@
-
+from decimal import Decimal
 from django.conf import settings
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,6 +9,9 @@ from common.exceptions import exceptions
 
 from products.models import ProductItem
 from inventory.models import Store
+from shopping_cart.models import Cart
+from shopping_cart.serializers import CartSerializer
+
 from .models import ShippingPlanOption, Location
 from .serializers import ShippingPlanOptionSerializer
 from .utils import shipping
@@ -34,7 +37,7 @@ class CalculateShippingCostsView(APIView):
                 'message': 'cart is empty'
             })
 
-        # NOTE: for now i will use the default store, in the feature when multiple stores are added the logic will change
+        # TODO: support multiple stores
         origin_instance = Store.objects.get(is_default=True)
         origin_city = origin_instance.city if isinstance(origin_instance, Store) else settings.DEFAULT_STORE_CITY
 
@@ -63,14 +66,19 @@ class CalculateShippingCostsView(APIView):
 
         # preload all the details
         for item in items:
-            product_id = item.get('productId')
-            product_item = ProductItem.objects.select_related('product_details').get(id=product_id)
-            volume = product_item.product_details.volume
-            weight = product_item.product_details.weight
-            item_volumes.append({
-                'volume': volume,
-                'weight': weight
-            })
+            try:
+                product_id = item.get('productId')
+                product_item = ProductItem.objects.select_related('product_details').get(uuid=product_id)
+                volume = product_item.product_details.volume
+                weight = product_item.product_details.weight
+                item_volumes.append({
+                    'volume': volume,
+                    'weight': weight
+                })
+            except ProductItem.DoesNotExist:
+                return Response({
+                    "message": 'item in cart not found'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         plans = []
         for shipping_option in shipping_options:
@@ -104,16 +112,34 @@ class CalculateShippingCostsView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+# TODO: gather the type from the fron to give option for paypal or other means
+# TODO: store the amounts in cents in the shipping plan options
 class CreatePaymentIntentAPIView(APIView):
     def post(self, request): # noqa
 
-        # take the items from the client
-        # take the cart from the database or the cart from the session
+        user = request.user
+        if request.user.is_authenticated:
+            cart = Cart.objects.get(user=user)
+            sub_total = cart.sub_total
+        else:
+            cart = request.session.get('cart', [])
+            sub_total = cart.get('total')
 
+        # take plan uuid  from the front and find the plan find the location and add to the total cost
+        plan_option_id = request.data.get('planId')
+        plan = get_object_or_404(ShippingPlanOption, uuid=plan_option_id)
+        tax_rate = plan.destination.tax_rate.rate
+        shipping_costs = plan.base_cost
+        if plan.extra_fee:
+            shipping_costs += plan.extra_fee
+
+        total = Decimal(sub_total) * (1 + tax_rate / 100) + shipping_costs
+
+        # stripe needs cents
+        total = int(round(total, 2) * 100)
         try:
-            amount_in_cents = request.data.get('amount') * 100
             payment_intent = stripe.PaymentIntent.create(
-                amount=amount_in_cents,
+                amount=total,
                 currency='usd',
                 payment_method_types=['card']
             )
@@ -122,40 +148,5 @@ class CreatePaymentIntentAPIView(APIView):
             })
         except Exception as e:
             return exceptions.generic_exception(e)
-
-
-# *** session view OBSOLETE ***
-class StripeCheckoutAPIView(APIView):
-    def post(self, request): # noqa
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                line_items= [
-                    {
-                        'price': 'test',
-                        'quantity': 1
-
-                    },
-                ],
-                payment_method_types=[
-                    'card',
-                    'acss_debit'
-                ],
-                mode='payment',
-                success_url=settings.SITE_URL + '/payment-success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=settings.SITE_URL + '/checkout?canceled=true'
-            )
-
-            return redirect(checkout_session.url)
-        except stripe.error.CardError as e:
-            body = e.json_body
-            error = body.get('error', {})
-            return Response({
-                'message': 'your card was declined',
-                'error': error.get('message')
-            }, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({
-                'message': 'could not complete payment',
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

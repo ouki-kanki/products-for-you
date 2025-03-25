@@ -12,19 +12,23 @@ export interface ICheckoutState {
 
 export interface ShippingPlan {
   planName: string;
+  planOptionId: string;
   cost: number;
   companyName: string;
   estimatedDeliveryTime?: string;
 }
 
-export interface ICartItem {
+export interface CartItemForServer {
+  uuid: number;
+  quantity: number;
+  price: string;
+}
+
+export interface ICartItem extends CartItemForServer {
   variationName: string;
   slug: string;
   constructedUrl: string;
   productIcon: string;
-  productId: number;
-  quantity: number;
-  price: string | number;
 }
 
 export interface ICart {
@@ -39,5 +43,10 @@ export interface IshippingData {
   city: string;
   zipCode: string;
   coutry?: string;
-  items: ICartItem[]
+  items: CartItemForServer[]
+}
+
+export interface IShippingCosts {
+  plans: Array<ShippingPlan>;
+  taxRate: number;
 }

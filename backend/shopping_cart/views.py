@@ -1,42 +1,21 @@
 from pprint import pprint
-from decimal import Decimal, InvalidOperation
+from decimal import InvalidOperation
+from datetime import timedelta
 
 from django.db import transaction
 from django.utils.timezone import now
 
-from rest_framework import status, generics, permissions
+from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.views import APIView
 
-from promotion.models import ProductsOnPromotion
 from .models import Cart, CartItem
 from products.models import ProductItem
-from .serializers import CartSerializer, CartItemSerializer, CartItemGuestSerializer
+from .serializers import CartSerializer, CartItemSerializer, CartGuestSerializer
+from .mixins import CartMixin
 
 from common.exceptions import exceptions
-
-class CartMixin:
-    def validate_items(self):
-        pass
-
-    @staticmethod
-    def return_price_or_promo_price(cart_item):
-        """
-        check if the promotion is active for the item and return the price
-        """
-        product_item_id = cart_item.get('product_item')
-        product_item = ProductItem.objects.get(id=product_item_id)
-        price = product_item.price
-
-        promotion = ProductsOnPromotion.objects.filter(
-            product_item_id=product_item_id,
-            promotion_id__is_active=True,
-            promotion_id__promo_start__lte=now(),
-            promotion_id__promo_end__gte=now()
-        ).first()
-
-        return promotion.promo_price if promotion else price
 
 
 class GetUserCartApiView(APIView):
@@ -49,7 +28,7 @@ class GetUserCartApiView(APIView):
                 'could not find user'
             }, status=status.HTTP_404_NOT_FOUND)
         try:
-            cart = Cart.objects.get(user=user)
+            cart = Cart.objects.get(user=user, status=Cart.Status.ACTIVE)
             serializer = CartSerializer(cart, context={"request": request})
             print("the data form serializer", serializer.data)
             return Response({
@@ -66,7 +45,7 @@ class GetUserCartApiView(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class CartItemCreateView(APIView, CartMixin):
+class CartCreateView(APIView, CartMixin):
     permission_classes = [permissions.IsAuthenticated]
 
     @transaction.atomic
@@ -74,9 +53,8 @@ class CartItemCreateView(APIView, CartMixin):
         user = request.user
         items = request.data.get('items', [])
 
-        pprint(items)
+        # pprint(items)
         # TODO: handle when the user is guest
-        # if the user is not loogged in create a session
 
         if not items:
             return Response({
@@ -84,17 +62,29 @@ class CartItemCreateView(APIView, CartMixin):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            cart, created = Cart.objects.get_or_create(user=user)
+            cart, created = Cart.objects.get_or_create(user=user, status=Cart.Status.ACTIVE)
 
-            # clear the old items to sync with the front
-            # TODO: think of a more efficient way to do this
-            cart.cart_items.all().delete()
+            if not created:
+                cart.status = Cart.Status.ABANDONED
+                cart.save()
+
+            cart = Cart.objects.create(user=user, status=Cart.Status.ACTIVE)
+
+            # delete carts that abandoned from more than 30 days
+            Cart.objects.filter(status=Cart.Status.ABANDONED, modified_at=now() - timedelta(days=30))
 
             for item in items:
+                # NOTE: checks if the promotion is active and calculates the price
                 price = self.return_price_or_promo_price(item)
 
+                # get the id of the item
+                uuid = item.get('uuid')
+                product_item = ProductItem.objects.get(uuid=uuid)
+
+                product_item_id = ProductItem.objects.filter(uuid=uuid).values_list('id', flat=True).first()
+
                 serializer_data = {
-                    "product_item": item.get('product_item'),
+                    "product_item": product_item_id,
                     "cart_id": cart.id,
                     "price": price,
                     "quantity": item.get('quantity')
@@ -107,8 +97,7 @@ class CartItemCreateView(APIView, CartMixin):
                     price = serializer.validated_data['price']
                     cart_id = serializer.validated_data['cart_id']
 
-                    # TODO: check  if there is coupon and adjust the price
-
+                    # get_or_create prevents the duplicates
                     cart_item, cart_item_created = CartItem.objects.get_or_create(
                         cart_id=cart_id,
                         product_item=product_item,
@@ -119,28 +108,19 @@ class CartItemCreateView(APIView, CartMixin):
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response({
-                "message": "cart updated"
-            }, status=status.HTTP_200_OK)
+                "message": "cart created"
+            }, status=status.HTTP_201_CREATED)
         except ProductItem.DoesNotExist:
             return Response({
                 "message": 'product does not exist'
             }, status=status.HTTP_400_BAD_REQUEST)
-
-        except Cart.DoesNotExist:
-            return Response({
-                "message": 'cart does not exist'
-            }, status=status.HTTP_400_BAD_REQUEST)
-
         except InvalidOperation:
             return Response({
                 "message": 'price is wrong format'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
-            print("the exception", e)
-            return Response({
-                'message': 'something went wrong'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return exceptions.generic_exception(e)
 
 
 class CreateGuestCartView(APIView, CartMixin):
@@ -154,17 +134,14 @@ class CreateGuestCartView(APIView, CartMixin):
             }, status=status.HTTP_404_NOT_FOUND)
 
         for item in items:
+            # NOTE: validates the promo price
             price = self.return_price_or_promo_price(item)
             item['price'] = price
 
         try:
-            serializer = CartItemGuestSerializer(data=items, many=True)
+            serializer = CartGuestSerializer(data={"items": items})
 
             if serializer.is_valid():
-
-                print(serializer.data)
-                # if 'cart' not in request.session:
-                #     request.session['cart'] = []
                 request.session['cart'] = serializer.data
                 # request.session.modified = True
 

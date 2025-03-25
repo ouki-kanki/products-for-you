@@ -69,7 +69,7 @@ export interface IfeaturedItem extends IproductItem {
 
 // TODO: DRY THIS there are simiral properties
 export interface IproductDetail {
-  id: number;
+  uuid: number;
   slug: string;
   name: string;
   variationName: string

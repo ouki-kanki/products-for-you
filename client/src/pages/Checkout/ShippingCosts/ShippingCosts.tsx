@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useOutletContext,useNavigate } from "react-router-dom"
+import { useOutletContext,useNavigate, useLocation } from "react-router-dom"
 import styles from './shippingCosts.module.scss'
 import type { ShippingPlan } from '../../../types/cartPayments'
 
@@ -12,10 +12,10 @@ export const ShippingCosts = () => {
   const { plans, handleShippingPlan } = useOutletContext<ContextProps>()
   const [selectedPlan, setSelectedPlan] = useState<ShippingPlan | null>(null)
 
-  // TODO: can save the plans in local storate and use redux to persist the data on reload
+  // TODO: can save the plans in local storage and use redux to persist the data on reload
   useEffect(() => {
     if (!plans || plans.length === 0) {
-      navigate('/checkout/')
+      navigate('/checkout')
     }
   }, [plans, navigate])
 
@@ -45,14 +45,14 @@ export const ShippingCosts = () => {
 
   return (
     <div>
-      <h2>Available Shipping Plans</h2>
+      <h3>Available Shipping Plans</h3>
       <div className={styles.planContainer}>
         {plans.map((plan, index) => (
           <div className={styles.row} key={index}>
             <div className={styles.value}>{plan.companyName}</div>
             <div className={styles.value}>{plan.planName}</div>
             <div className={styles.value}>{plan.estimatedDeliveryTime}</div>
-            <div className={styles.value}>{plan.cost}$</div>
+            <div className={styles.value}>${plan.cost}</div>
             <input
               type='radio'
               checked={selectedPlan?.planName === plan.planName}
