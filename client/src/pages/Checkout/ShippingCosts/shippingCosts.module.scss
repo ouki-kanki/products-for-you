@@ -1,7 +1,31 @@
+// .planContainer {
+//   display: grid;
+//   grid-template-columns: repeat(5, auto);
+//   width: fit-content;
+//   max-width: 800px;
+//   column-gap: 10px;
+
+//   input {
+//     cursor: pointer;
+//   }
+
+//   .row {
+//     display: contents;
+
+//     .value {
+//       justify-self: start;
+//       // margin-right: 5px;
+//     }
+
+//   }
+// }
+
 .planContainer {
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  width: fit-content;
+  display: flex;
+  flex-wrap: wrap; // Adjusts layout if content exceeds width
+  justify-content: space-between; // Ensures consistent spacing
+  align-items: center;
+  width: 800px; // Fixed or dynamic width
   max-width: 800px;
   column-gap: 10px;
 
@@ -10,12 +34,35 @@
   }
 
   .row {
-    display: contents;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 
     .value {
+      flex: 1;
+      // flex-basis: content;
       justify-self: start;
-      // margin-right: 5px;
     }
 
+    .value:nth-child(1) {
+      flex-basis: 50px;
+      flex: 0.2;
+    }
+
+    .value:nth-child(2) {
+      flex: .2;
+    }
+
+    .value:nth-child(3) {
+      flex: .3;
+    }
+
+    .value:nth-child(4) {
+      flex: 0.03;
+    }
   }
+}
+
+.otherOptionsTitle {
+  margin-top: 10px;
 }

@@ -125,5 +125,5 @@ export const convertCamelToSnakeArr = <T>({ data, omitedKeys, customConvertions 
  * @returns
  */
 export const prepareCartItems = (items: ICartItem[]) => {
-  return items && items.map(({ price, productId, quantity }) => ({ price, productId, quantity}))
+  return items && items.map(({ price, productId, quantity }) => ({ price, uuid: productId, quantity}))
 }

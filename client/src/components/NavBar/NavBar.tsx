@@ -72,12 +72,11 @@ export const NavBar = () => {
     }, 50)
   }, [lastScrollValue])
 
-  // TODO: does the warning that navigate is missing from deps gives problems ?
   const handleBack = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape") {
       navigate(-1) // this is like legacy history?
     }
-  }, [])
+  }, [navigate])
 
 
   useEffect(() => {

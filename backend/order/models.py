@@ -2,8 +2,10 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
 
-from shopping_cart.models import CartItem
+from shopping_cart.models import CartItem, Cart
 from products.models import ProductItem
+from payments.models import ShippingPlanOption
+
 
 from user_control.models import CustomUser as User
 
@@ -32,20 +34,24 @@ class OrderStatus(models.Model):
 
 # Create your models here.
 class ShopOrder(models.Model):
+    class ShippingMethod(models.TextChoices):
+        PICK_UP = 'P', 'pick-up'
+        DELIVERY = 'D', 'delivery'
+
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order', blank=True, null=True)
     ref_code = models.CharField(blank=True)
     order_date = models.DateTimeField(editable=False)
     modified = models.DateTimeField(blank=True)
-
-    # NOT IMPLEMENTED !!
-    # user_payment = models.ForeignKey('USEr_PAYMENT', on_delete=models.CASCADE, related_name='order_payment')
-    # NOT IMPLEMENTED !!
     phoneNumber = models.CharField(max_length=255)
     shipping_address = models.CharField(max_length=255)
     billing_address = models.CharField(max_length=255)
     order_status = models.ForeignKey(OrderStatus, on_delete=models.PROTECT, default=1)
     # TODO: maybe this has to be a property
     order_total = models.DecimalField(max_digits=6, decimal_places=2)
+    stripe_payment_id = models.CharField(max_length=255, blank=True, default='')
+    cart = models.ForeignKey(Cart, on_delete=models.PROTECT, blank=True, null=True)
+    shipping_plan = models.ForeignKey(ShippingPlanOption, on_delete=models.PROTECT, related_name='orders', null=True, blank=True)
+    shipping_method = models.CharField(max_length=1, choices=ShippingMethod.choices, default=ShippingMethod.DELIVERY)
 
     class RefundChoices(models.TextChoices):
         NOT_REQUESTED = 'fl', 'False'
@@ -61,7 +67,7 @@ class ShopOrder(models.Model):
         if self.user_id:
             email = self.user_id.email
             return email if email else 'not provided'
-        return 'no user provided'
+        return 'guest_user'
 
     def user_name(self):
         if self.user_id:
@@ -77,12 +83,6 @@ class ShopOrder(models.Model):
     @property
     def date_modified_formated(self):
         return self.modified.strftime("%Y-%m-%d%H:%M:%S") if self.modified else 'no modification detected'
-
-    # -- not implemented
-    def calculate_final_price(self):
-        if self.ref_code:
-            pass
-        pass
 
 
 def shop_order_pre_save(sender, instance, *args, **kwargs):

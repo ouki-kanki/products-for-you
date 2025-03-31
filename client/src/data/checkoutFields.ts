@@ -23,15 +23,15 @@ export const leftData = [
     type: 'text',
     name: 'billingAddress'
   },
-]
-
-export const rightData = [
   {
     label: 'Phonenumber',
     id: 'phone-number',
     name: 'phoneNumber',
     type: 'text'
   },
+]
+
+export const rightData = [
   {
     label: 'Email',
     id: 'email',
@@ -42,6 +42,18 @@ export const rightData = [
     label: 'City',
     id: 'city',
     name: 'city',
+    type: 'text'
+  },
+  {
+    label: 'State',
+    id: 'state',
+    name: 'state',
+    type: 'text'
+  },
+  {
+    label: 'Country',
+    id: 'country',
+    name: 'country',
     type: 'text'
   },
   {

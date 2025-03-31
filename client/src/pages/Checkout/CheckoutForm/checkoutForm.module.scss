@@ -1,5 +1,9 @@
 .form {
   margin-top: 40px;
+
+  & > h3 {
+    margin-bottom: 20px;
+  }
 }
 
 .innerContainer {
@@ -15,26 +19,14 @@
   flex-grow: 1;
   margin-right: 40px;
 
-  h2 {
-    margin-bottom: 20px;
-  }
-
-  label {
-    margin-right: 20px;
-    min-width: 100px;
-  }
-
-  & > div, h3 {
+  // field
+  & > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 10px 10px 0;
-  }
-}
-
-.left {
-  & > div {
-    // display: flex;
+    padding: 10px 10px 0px 0;
+    margin-bottom: 5px;
+    // @include border_green;
   }
 }
 
@@ -67,10 +59,7 @@
 }
 
 .right {
-  h2 {
-    // TODO: fix the layout and remove h2 from markup
-    opacity: 0;
-  }
+
 }
 
 .cardElementContainer {

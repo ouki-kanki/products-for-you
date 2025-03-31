@@ -7,25 +7,27 @@ interface ContextProps {
   plans: Array<ShippingPlan>
 }
 
+const enum Plans  {
+  PICKUP_FROM_STORE = 'pickup from store'
+}
+
+// TODO: its not clear that the
 export const ShippingCosts = () => {
   const navigate = useNavigate()
   const { plans, handleShippingPlan } = useOutletContext<ContextProps>()
   const [selectedPlan, setSelectedPlan] = useState<ShippingPlan | null>(null)
 
-  // TODO: can save the plans in local storage and use redux to persist the data on reload
+
+  console.log("the plans", plans)
+
   useEffect(() => {
     if (!plans || plans.length === 0) {
       navigate('/checkout')
     }
   }, [plans, navigate])
 
-  if (!plans || plans?.length === 0) {
-    return (
-      <div>couldn't find any shippings plans</div>
-    )
-  }
 
-  const strPlans = JSON.stringify(plans)
+  const strPlans = plans && plans.length> 0 ? JSON.stringify(plans) : null
   useEffect(() => {
     if (strPlans) {
       const plans = JSON.parse(strPlans)
@@ -38,16 +40,49 @@ export const ShippingCosts = () => {
     handleShippingPlan(selectedPlan)
   }, [selectedPlan, handleShippingPlan])
 
-  const handlePlanChange = (name) => {
-    const plan = plans.find(plan => plan.planName === name)
-    setSelectedPlan(plan)
+  const handlePlanChange = (name: string) => {
+    if (name === Plans.PICKUP_FROM_STORE) {
+      const pickupPlan = plans.find(plan => plan.planName === Plans.PICKUP_FROM_STORE)
+      setSelectedPlan(pickupPlan)
+
+    } else {
+      const plan = plans?.find(plan => plan.planName === name)
+      setSelectedPlan(plan)
+    }
   }
+
+  const renderPickupPlan = (plans) => {
+    const pickupPlan = plans?.find(plan => plan.planName === Plans.PICKUP_FROM_STORE)
+    if (!pickupPlan) {
+      return
+    }
+
+    return (
+      <>
+        <h3 className={styles.otherOptionsTitle}>Other options</h3>
+        <div className={styles.planContainer}>
+          <div className={styles.row}>
+            <div className={styles.value}>{pickupPlan.planName}</div>
+            <div className={styles.value}></div>
+            <div className={styles.value}></div>
+            <div className={styles.value}>{pickupPlan.cost}</div>
+            <input
+              type='radio'
+              checked={selectedPlan?.planName === Plans.PICKUP_FROM_STORE}
+              onChange={() => handlePlanChange(Plans.PICKUP_FROM_STORE)}
+              />
+          </div>
+        </div>
+      </>
+    )
+  }
+
 
   return (
     <div>
       <h3>Available Shipping Plans</h3>
       <div className={styles.planContainer}>
-        {plans.map((plan, index) => (
+        {plans?.filter(plan => plan.planName !== Plans.PICKUP_FROM_STORE).map((plan, index) => (
           <div className={styles.row} key={index}>
             <div className={styles.value}>{plan.companyName}</div>
             <div className={styles.value}>{plan.planName}</div>
@@ -61,6 +96,7 @@ export const ShippingCosts = () => {
           </div>
         ))}
       </div>
+      {renderPickupPlan(plans)}
     </div>
   )
 }

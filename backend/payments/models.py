@@ -41,12 +41,13 @@ PRICING_STRATEGY_CHOICES = (
 
 
 class ShippingPlan(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name='plan')
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name='plan', blank=True, null=True)
     name = models.CharField(max_length=255, help_text="standard express etc")
     pricing_strategy = models.CharField(
         max_length=1,
         choices=PRICING_STRATEGY_CHOICES,
-        help_text="charging strategy"
+        help_text="charging strategy",
+        blank=True
     )
     dimensional_factor = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     cost_per_kg = models.DecimalField(
@@ -57,7 +58,7 @@ class ShippingPlan(models.Model):
     )
 
     def __str__(self):
-        return f"{self.company.name} - {self.name}"
+        return f"{self.company.name + ' - ' if self.company else ''}{self.name}"
 
 
 class ShippingPlanOption(models.Model):

@@ -1,13 +1,14 @@
-import { useCallback, useReducer } from "react";
+import { useCallback, useReducer, useEffect, useMemo } from "react";
 import { notEmptyValidator } from "./validators";
 
 const enum ActionType {
   REGISTER = "REGISTER",
   CHANGE = "CHANGE",
-  TOUCH = "TOUCH"
+  TOUCH = "TOUCH",
+  VALIDATE_FORM = "VALIDATE_FORM"
 }
 
-interface Field {
+export interface Field {
   isTouched: boolean;
   value: string;
   required: boolean;
@@ -15,7 +16,8 @@ interface Field {
 
 interface ValidationState {
   fields: Record<string, Field>;
-  errors: Record<string, string[] | null>
+  errors: Record<string, string[] | null>;
+  isFormValid: boolean;
 }
 
 export type Validator = (value: string) => string | null
@@ -24,11 +26,13 @@ type ValidationAction =
   | { type: ActionType.REGISTER, payload: { name: string, validators?: Validator[] } }
   | { type: ActionType.CHANGE, payload: { name: string, value: string, validators?: Validator[] } }
   | { type: ActionType.TOUCH, payload: { name: string, validators?: Validator[] }}
+  | { type: ActionType.VALIDATE_FORM, payload: boolean}
 
 
   const initialState: ValidationState = {
     fields: {},
-    errors: {}
+    errors: {},
+    isFormValid: false
   }
 
   const validationReducer = (state: ValidationState, { type, payload }: ValidationAction): ValidationState => {
@@ -49,7 +53,7 @@ type ValidationAction =
       }
       case ActionType.CHANGE: {
         let validationErrors: Record<string, string[] | null>;
-        if (state.fields[payload.name]?.isTouched && payload.validators && payload.validators.length > 0) {
+        if (payload?.validators && payload.validators?.length > 0) {
           const errrorsArray = payload.validators.map(validator => validator(payload.value))
                                                     .filter(error => error !== null) as string[]
           validationErrors = {
@@ -71,10 +75,9 @@ type ValidationAction =
         }
       }
       case ActionType.TOUCH: {
-        console.log("inside is touched")
         let validationErrors;
         if (payload.validators && payload.validators.length > 0) {
-          const errorsArray = payload.validators.map(validator => validator(state.fields[payload.name].value))
+          const errorsArray = payload.validators.map(validator => validator(state.fields[payload.name]?.value))
                                                   .filter(error => error !== null) as string[]
           validationErrors = {
             ...state.errors,
@@ -93,6 +96,11 @@ type ValidationAction =
           ...(validationErrors && {errors: validationErrors})
         }
       }
+      case ActionType.VALIDATE_FORM:
+        return {
+          ...state,
+          isFormValid: payload
+        }
     }
   }
 
@@ -104,7 +112,28 @@ type ValidationAction =
 export const useValidationV2 = (validators: Record<string, Validator[]>) => {
   const [state, dispatch] = useReducer(validationReducer, initialState)
 
-  console.log("the state inside validation", state)
+  const strState = JSON.stringify(state)
+
+  useEffect(() => {
+    const parsedState: ValidationState = JSON.parse(strState)
+    let isFormValid = true
+    const { fields, errors } = parsedState
+
+    Object.values(fields).forEach(field => {
+      if (field.required && field.value === '' || !field.isTouched) {
+        isFormValid = false
+      }
+    })
+
+    Object.values(errors).forEach(error => {
+      if (error && error.length > 0) {
+        isFormValid = false
+      }
+    })
+
+    dispatch({ type: ActionType.VALIDATE_FORM, payload: isFormValid })
+
+  }, [strState])
 
   const registerField = useCallback((name: string) => {
     dispatch({ type: ActionType.REGISTER, payload: {name, validators: validators[name]} })
@@ -131,6 +160,7 @@ export const useValidationV2 = (validators: Record<string, Validator[]>) => {
   return {
     fields: state.fields,
     errors: state.errors,
+    isFormValid: state.isFormValid,
     registerField,
     changeField,
     touchField

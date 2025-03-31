@@ -5,36 +5,28 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { CheckoutBtnMode } from '../../../enums';
 
 import { BaseButton } from '../../../components/Buttons/baseButton/BaseButton';
+import { BaseInput } from '../../../components/Inputs/BaseInput/BaseInput';
+
 import { Stripe, StripeCardElement } from '@stripe/stripe-js';
+import type { Field } from '../../../hooks/validation/useValidationV2';
+
+import { cardElementOptions } from './checkoutFormConfig';
+import type { Location } from '../../../types/cartPayments';
 
 interface ICheckoutForm {
   mode: CheckoutBtnMode
+  fields: Record<string, Field>;
+  errors: Record<string, string[]>
+  handleValidationBlur: (name: string) => void;
   handleBack: React.MouseEvent<HTMLButtonElement>;
   isLoading: boolean;
-  paymentCallback: (cardElement: StripeCardElement, stripe: Stripe) => void
+  paymentCallback: (cardElement: StripeCardElement, stripe: Stripe) => void;
+  isFormValid: boolean;
+  extraShippingDetailsValue: string
+  locations: Location[]
 }
 
-// stripe.com/docs/js
-const cardElementOptions = {
-  style: {
-    base: {
-      color: 'hotpink',
-      // "::placeholder": {
-      //   // color: 'pink'
-      // }
-    },
-    invalid: {
-      // iconColor: 'tomato'
-    },
-    complete: {
-
-    }
-  },
-  hidePostalCode: true
-}
-
-
-export const CheckoutForm = ({ handleCheckout, handleChange, handleBack, profileState, isLoading, mode, paymentCallback}:
+export const CheckoutForm = ({ handleCheckout, handleChange, handleValidationBlur, handleBack, fields, extraShippingDetailsValue, errors, isLoading, isFormValid, mode, paymentCallback}:
   ICheckoutForm) => {
     const stripe = useStripe()
     const elements = useElements()
@@ -49,38 +41,37 @@ export const CheckoutForm = ({ handleCheckout, handleChange, handleBack, profile
     return (
       <div>
         <form className={`${styles.form}`} onSubmit={handleCheckout}>
+          <h3>Shipping Details</h3>
           <div className={styles.innerContainer}>
             <div className={`${styles.left} ${styles.section}`}>
-              <h3>Sheeping Details</h3>
               {leftData.map((field, id) => (
                 <div key={id}>
-                  <label htmlFor={field.id}>{field.label}</label>
-                  <input
-                    className={styles.input}
-                    type={field.type}
-                    id={field.id}
+                  <BaseInput
+                    label={field.label}
                     name={field.name}
+                    type='input'
                     onChange={handleChange}
-                    value={profileState[field.name]}
-                    // required
-                    />
+                    value={fields[field.name]?.value || ''}
+                    required={fields[field.name]?.required}
+                    errors={errors[field.name]}
+                    onBlur={() => handleValidationBlur(field.name)}
+                  />
                 </div>
               ))}
             </div>
 
             <div className={`${styles.right} ${styles.section}`}>
-              <h2>__placeholder__</h2>
               {rightData.map((field, id) => (
                 <div key={id}>
-                  <label htmlFor={field.id}>{field.label}</label>
-                  <input
-                    className={styles.input}
-                    type={field.type}
-                    id={field.id}
-                    name={field.name}
-                    onChange={handleChange}
-                    value={profileState[field.name]}
-                    // required
+                    <BaseInput
+                      label={field.label}
+                      name={field.name}
+                      type='input'
+                      onChange={handleChange}
+                      value={fields[field.name]?.value || ''}
+                      required={fields[field.name]?.required}
+                      errors={errors[field.name]}
+                      onBlur={() => handleValidationBlur(field.name)}
                     />
                 </div>
               ))}
@@ -91,6 +82,16 @@ export const CheckoutForm = ({ handleCheckout, handleChange, handleBack, profile
                 <CardElement options={cardElementOptions}/>
               </div>
             )}
+            <BaseInput
+              type='text-area'
+              value={extraShippingDetailsValue}
+              name='extraShippingDetails'
+              onChange={handleChange}
+              rows={4}
+              cols={50}
+              onBlur={() => handleValidationBlur('extraShippingDetails')}
+              label='extra details for shipping'
+            />
             <div className={styles.action}>
               <div className={styles.backContainer}>
                 <BaseButton
@@ -100,9 +101,8 @@ export const CheckoutForm = ({ handleCheckout, handleChange, handleBack, profile
                 >back</BaseButton>
               </div>
               <BaseButton
-                // className={styles.checkoutBtn}
-                // btn_type='success'
                 isLoading={isLoading}
+                disabled={!isFormValid}
                 type='submit'
                 >{mode}</BaseButton>
           </div>

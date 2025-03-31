@@ -178,7 +178,6 @@ export const useValidation = (mode: Mode = 'login') => {
     }
   }
 
-  // --- HANDLERS ----
   const handleEmailChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: ActionTypes.SET_EMAIL, payload: value })
     emailValidator(value)

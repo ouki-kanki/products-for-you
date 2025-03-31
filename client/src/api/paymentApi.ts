@@ -5,7 +5,7 @@ import { BASE_URL } from "./baseConfig";
 import { convertSnakeToCamelArray } from "../utils/converters";
 
 import type { IshippingData } from "../types/cartPayments";
-import type { ShippingPlan, IShippingCosts } from "../types/cartPayments";
+import type { ShippingPlan, IShippingCosts, Location } from "../types/cartPayments";
 
 
 interface IPaymentResponse {
@@ -30,6 +30,15 @@ export const paymentApi = createApi({
     credentials: 'include'
   }),
   endpoints: (builder) => ({
+    getLocationList: builder.query<Location, void>({
+      query: () => ({
+        url: 'get-locations'
+      }),
+      transformResponse: (res) => {
+        console.log(res.message)
+        return res.message
+      }
+    }),
     calculateShippingCosts: builder.mutation<IShippingCosts, IshippingData>({
       query: (payload) => ({
         url: 'calculate-shipping-costs',
@@ -38,6 +47,7 @@ export const paymentApi = createApi({
       }),
       transformResponse: (res) => {
         const plans = [ ...res.plans ]
+        console.log("the plans", plans)
         const camelPlans = convertSnakeToCamelArray(plans)
         return {
           taxRate: res.tax_rate,
@@ -55,4 +65,8 @@ export const paymentApi = createApi({
   })
 })
 
-export const { useCreatePaymentIntentMutation, useCalculateShippingCostsMutation } = paymentApi
+export const {
+  useCreatePaymentIntentMutation,
+  useCalculateShippingCostsMutation,
+  useGetLocationListQuery
+} = paymentApi

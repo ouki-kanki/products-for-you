@@ -25,3 +25,10 @@ class SanitizedJSONField(JSONField):
     def get_db_prep_save(self, value: dict, connection):
         """Sanitize the value for saving using the passed sanitizer."""
         return json.dumps(self._sanitizer_method(value))
+
+
+def strip_zero_decimals_from_str(value):
+    """
+    clear 0 decimals or return the value
+    """
+    return value.rstrip('0').rstrip('.') if '.' in value else value

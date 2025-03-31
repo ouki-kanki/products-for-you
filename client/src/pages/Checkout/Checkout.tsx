@@ -1,67 +1,97 @@
-import { useReducer, ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { useMemo } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useSearchParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import styles from './checkout.module.scss';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
-import { useCreateOrderMutation } from '../../api/orderApi';
 import { convertCamelToSnakeArr, prepareCartItems } from '../../utils/converters';
 
 import type { ICartItem, IShippingCosts } from '../../types/cartPayments';
 import type { ShippingPlan } from '../../types/cartPayments';
 
-
-import { fieldsReducer } from '../../app/reducers';
-import { passWordValidator, notEmptyValidator } from '../../hooks/validation/validators';
+import { passWordValidator, notEmptyValidator, emailValidator } from '../../hooks/validation/validators';
 
 import { showNotification } from '../../components/Notifications/showNotification';
 import { CheckoutCostsTable } from './CheckoutCostsTable/CheckoutCostsTable';
 import { CheckoutForm } from './CheckoutForm/CheckoutForm';
 
-
+import { useCreatePaymentIntentMutation, useGetLocationListQuery } from '../../api/paymentApi';
 import { useGetUserProfileQuery } from '../../api/userApi';
-import { ActionTypesProfile } from '../../app/actions';
+import { useCreateOrderMutation } from '../../api/orderApi';
 
-import { useCreatePaymentIntentMutation, useCalculateShippingCostsMutation } from '../../api/paymentApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
 import type { Stripe, StripeCardElement, } from '@stripe/stripe-js';
-import type { ICheckoutState } from '../../types/cartPayments';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
+import { useElements } from '@stripe/react-stripe-js';
 
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
-import { BaseInput } from '../../components/Inputs/BaseInput/BaseInput';
-
-const initialState: ICheckoutState = {
-  firstName: '',
-  lastName: '',
-  shippingAddress: '',
-  billingAddress: '',
-  phoneNumber: '',
-  userEmail: '',
-  city: '',
-  zipCode: ''
-}
+import { useCalculateShippingCosts } from './hooks/useCalculateShippingCosts';
+import { isEmpty } from '../../utils/objUtils';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY as string)
 
 export const Checkout = () => {
   const location = useLocation()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
-  const [cardElement, setCardElement] = useState<StripeCardElement | null>(null)
-  const [stripeRef, setStipeRef] = useState<Stripe | null>(null)
   const [shippingPlan, setShippingPlan] = useState<ShippingPlan | null>(null)
-  const [searchParams] = useSearchParams()
+  const [extraShippingDetails, setExtraShippingDetails] = useState('')
+  const userId = useSelector<RootState>(state => state.auth.userInfo.user_id)
   const [mode, setMode] = useState<CheckoutBtnMode.calculateShipping | CheckoutBtnMode.proccedToPayment>(CheckoutBtnMode.calculateShipping)
+
+  const { calculateShipping, isShippingCostsLoading, isShippingCostsSuccess, shippingCostsData } = useCalculateShippingCosts()
 
   const { data: profileData, refetch, isError: isProfileError, error: profileError, isLoading: isProfileLoading } = useGetUserProfileQuery()
   const [createPaymentIntent, {data: paymentData, isSuccess: isPaymentIntentSuccess, error: paymentIntentError, isError: isPaymentIntentError, isLoading: isPaymentIntentLoading}] = useCreatePaymentIntentMutation()
-  const [calculateShippingCosts, {data: shippingCostsData, isSuccess: isShippingCostsSuccess, error: shippingCostsError, isError: isShippingCostsError, isLoading: isShippingCostsLoading}] = useCalculateShippingCostsMutation()
   const [ createOrder, { isLoading: isCreateOrderLoading } ] = useCreateOrderMutation()
 
+  const [stripeRef, setStipeRef] = useState<Stripe | null>(null)
+  const [cardElement, setCardElement] = useState<StripeCardElement | null>(null)
+
+
+  useEffect(() => {
+    if (isProfileError && userId) {
+      showNotification({
+        message: 'could not load profile data',
+        type: 'danger'
+      })
+    }
+  }, [isProfileError, userId])
+
   const cart = useSelector((state: RootState) => state.cart)
-  const [profileState, dispatch] = useReducer(fieldsReducer<ICheckoutState>, initialState)
+
+
+  // *** VALIDATION ***
+  const { fields: validatedFields, errors: validationErrors, isFormValid, registerField, changeField, touchField } = useValidationV2({
+    password: [passWordValidator, notEmptyValidator],
+    firstName: [notEmptyValidator],
+    userEmail: [emailValidator, notEmptyValidator],
+    shippingAddress: [notEmptyValidator],
+    billingAddress: [notEmptyValidator],
+    phoneNumber: [notEmptyValidator, passWordValidator],
+    city: [notEmptyValidator],
+    state: [notEmptyValidator],
+    country: [notEmptyValidator],
+    zipCode: [notEmptyValidator],
+  })
+
+  // for field registration
+  const fields = useMemo(() => [
+    "firstName", 'lastName', 'shippingAddress', 'billingAddress',
+    'phoneNumber', 'userEmail', 'city', 'state', 'country', 'zipCode',
+  ], [])
+
+  useEffect(() => {
+    fields.forEach(field => registerField(field))
+  }, [registerField, fields])
+
+  const handleBlur = (name: string): void => {
+    touchField(name)
+  }
+
   const profileDataStr = JSON.stringify(profileData)
 
   useEffect(() => {
@@ -86,7 +116,7 @@ export const Checkout = () => {
 
   useEffect(() => {
     // NOTE: the key for email form server is diff
-    // also i use address one to fill the shipping address .
+    // address one is used  to fill the shipping address .
     if (profileDataStr) {
       const data = JSON.parse(profileDataStr)
       const payload = {
@@ -95,21 +125,26 @@ export const Checkout = () => {
         shippingAddress: data?.addressOne
       }
 
-      dispatch({
-        type: ActionTypesProfile.SET_PROFILE_DATA,
-        payload
+      fields.forEach(field => {
+        changeField(field, payload[field])
       })
+
     }
   }, [profileDataStr])
 
-  const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: 'CHANGE', name, value })
+  const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // do not run extradetails through validator
+    if (name === 'extraShippingDetails') {
+      setExtraShippingDetails(value)
+    }
+    changeField(name, value)
   }
+
+  // 4242 4242 4242 4242  11/27 345
 
   const handleBack = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (location.pathname === '/checkout') {
-      console.log("inside the back in checkout")
       navigate('/cart')
     } else {
       navigate(-1)
@@ -123,6 +158,7 @@ export const Checkout = () => {
 
   const handleShippingPlan = (plan: ShippingPlan) => setShippingPlan(plan)
 
+  // *** CHECKOUT ***
   const handleCheckout = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -136,50 +172,16 @@ export const Checkout = () => {
     const total = cart.total
     const items = cart.items
 
-    const payload =  {
-        user_id: '',
-        ref_code: "not_provided",
-        phoneNumber: profileState.phoneNumber,
-        shipping_address: profileState.shippingAddress,
-        billing_address: profileState.billingAddress,
-        order_total: total,
-        refund_status: "NOT_REQUESTED",
-        order_item: convertCamelToSnakeArr<ICartItem>({
-          data: items,
-          omitedKeys: ['variation_name', 'product_icon'],
-          customConvertions: [
-            {
-              source: 'product_id',
-              target: 'product_item'
-            }
-          ]
-      })
-    }
-
     if (mode === CheckoutBtnMode.calculateShipping) {
-      // omit the fields that are not needed
-      const filteredItems = prepareCartItems(items)
-      // send request (items, country, city, shipping address, zip)
-      try {
-        const res = await calculateShippingCosts({
-          city: profileState.city,
-          zipCode: profileState.zipCode,
-          items: filteredItems
-        })
-
-
-        navigate('payment')
-      } catch (err) {
-        console.log("shiipig cost error", err)
-      }
+      calculateShipping(items, validatedFields)
       return
     }
 
     try {
-
+      // when the user clicks procced to payment
       const { planOptionId } = shippingPlan as ShippingPlan
       const { client_secret } = await createPaymentIntent({ planId: planOptionId }).unwrap()
-      const { firstName, lastName, userEmail, city, shippingAddress, zipCode } = profileState
+      const { firstName, lastName, userEmail, city, state, country, shippingAddress, billingAddress, zipCode, phoneNumber } = validatedFields
 
       console.log("the client secret", client_secret)
 
@@ -187,54 +189,77 @@ export const Checkout = () => {
         type: 'card',
         card: cardElement as StripeCardElement,
         billing_details: {
-          name: `${firstName} ${lastName}`,
-          email: userEmail,
+          name: `${firstName.value} ${lastName.value}`,
+          email: userEmail.value,
+          phone: phoneNumber.value,
           address: {
-            city,
-            line1: shippingAddress,
+            city: city.value,
+            line1: billingAddress.value,
+            line2: shippingAddress.value,
             state: 'atica',
-            postal_code: zipCode
-          }
+            postal_code: zipCode.value
+          },
         }
       })
 
       console.log("the payment", paymentMethodReq)
 
-      if (paymentMethodReq && client_secret) {
-        // cofirm the payment
-        const confirmedCardPayment = await stripeRef?.confirmCardPayment(client_secret, {
-          payment_method: paymentMethodReq.paymentMethod?.id as string,
+      if (isEmpty(paymentMethodReq as Record<string, unknown>) || !client_secret) {
+        showNotification({
+          message: 'could not procceed to payment',
+          type: 'danger'
         })
+        return
+      }
 
-        console.log("confirmed payment", confirmedCardPayment)
+      console.log("the payment request", paymentMethodReq)
 
-        const copyCart = { ...cart, items: prepareCartItems([...cart.items])}
-        console.log("the prepared cart", copyCart)
+      // cofirm the payment
+      const confirmedCardPayment = await stripeRef?.confirmCardPayment(client_secret, {
+        payment_method: paymentMethodReq.paymentMethod?.id as string,
+      })
 
+      console.log("confirmed payment", confirmedCardPayment)
 
-        if (confirmedCardPayment?.paymentIntent?.status === PaymentIntentStatus.SUCCESS) {
-          const payload = {
-            cart,
-            paymentId: confirmedCardPayment.paymentIntent.id,
-            userDetails: {
-              firstName,
-              lastName: lastName,
-              email: userEmail,
-              address: {
-                city,
-                shippingAddress: shippingAddress,
-                state: 'atica',
-                postalCode: zipCode
-              }
-            }
-          }
+      const copyCart = { ...cart, items: prepareCartItems([...cart.items])}
+      console.log("the prepared cart", copyCart)
 
-          const data = await createOrder(payload).unwrap()
-          if (data) {
-            console.log("data from sserver from created order", data)
+      // TODO: show what went wrong with the payment. take info form stripe obj
+      if (confirmedCardPayment?.paymentIntent?.status !== PaymentIntentStatus.SUCCESS) {
+        showNotification({
+          message: 'payment could not completed',
+          type: 'danger'
+        })
+        return
+      }
+
+      const payload = {
+        cart: copyCart,
+        paymentId: confirmedCardPayment.paymentIntent.id,
+        shippingPlanId: planOptionId,
+        userDetails: {
+          userId: userId as string || null,
+          email: validatedFields.userEmail.value,
+          firstName: validatedFields.firstName.value,
+          lastName: validatedFields.lastName.value,
+          phoneNumber: validatedFields.phoneNumber.value,
+          extraShippingDetails: extraShippingDetails,
+          address: {
+            shippingAddress: shippingAddress.value,
+            billingAddress: validatedFields.billingAddress.value,
+            city: validatedFields.city.value,
+            state: validatedFields.state.value,
+            country: validatedFields.country.value,
+            postalCode: validatedFields.zipCode.value
           }
         }
       }
+
+      const data = await createOrder(payload).unwrap()
+      if (data) {
+        console.log("data from sserver from created order", data)
+      }
+
     } catch (error) {
       console.log(error.status)
       console.log("the error on order", error)
@@ -242,35 +267,10 @@ export const Checkout = () => {
     }
   }
 
-  const { fields, errors, registerField, changeField, touchField } = useValidationV2({
-    password: [passWordValidator, notEmptyValidator]
-  })
-
-  useEffect(() => {
-    registerField("password")
-  }, [registerField])
-
-  console.log("the errors", errors)
 
   return (
     <div className={styles.container}>
       <div>
-        <BaseInput/>
-
-        <div>
-          <label htmlFor="pass">passoword</label>
-          <input
-            name='pass'
-            type="text"
-            value={fields.password?.value || ""}
-            onChange={(e) => changeField("password", e.target.value)}
-            onBlur={() => touchField("password")}
-            />
-            {errors.password && errors.password.map(error => (
-              <div style={{color: 'tomato'}}>{error}</div>
-            ))}
-        </div>
-
         <h1>Checkout</h1>
         <CheckoutCostsTable
           cart={cart}
@@ -285,10 +285,14 @@ export const Checkout = () => {
             handleCheckout={handleCheckout}
             handleBack={handleBack}
             handleChange={handleChange}
-            profileState={profileState}
+            fields={validatedFields}
+            extraShippingDetailsValue={extraShippingDetails}
+            errors={validationErrors}
             mode={mode}
+            handleValidationBlur={handleBlur}
             isLoading={isPaymentIntentLoading || isShippingCostsLoading}
             paymentCallback={(cardElement, stripe) => handlePaymentCallback(cardElement, stripe)}
+            isFormValid={isFormValid}
           />
       </Elements>
     </div>

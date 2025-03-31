@@ -1,5 +1,14 @@
 from rest_framework import serializers
-from .models import ShippingPlanOption
+from .models import ShippingPlanOption, Location
+
+
+class LocationListSerializer(serializers.ModelSerializer):
+    """
+    return the name and the abbreviation to calculate shipping cost etc
+    """
+    class Meta:
+        model = Location
+        fields = ('name', 'abbreviation')
 
 
 class ShippingPlanOptionSerializer(serializers.ModelSerializer):
@@ -10,6 +19,7 @@ class ShippingPlanOptionSerializer(serializers.ModelSerializer):
     plan_name = serializers.CharField(source='plan.name', read_only=True)
     plan_option_id = serializers.UUIDField(source='uuid', read_only=True)
     company_name = serializers.CharField(source='plan.company.name', read_only=True)
+    tax_rate = serializers.DecimalField(source='destination.tax_rate.rate', max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = ShippingPlanOption
@@ -17,7 +27,8 @@ class ShippingPlanOptionSerializer(serializers.ModelSerializer):
             'plan_name',
             'plan_option_id',
             'company_name',
-            'estimated_delivery_time'
+            'estimated_delivery_time',
+            'tax_rate',
         ]
 
     def get_estimated_delivery_time(self,obj): # noqa

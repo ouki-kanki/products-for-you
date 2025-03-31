@@ -16,6 +16,7 @@ export interface ShippingPlan {
   cost: number;
   companyName: string;
   estimatedDeliveryTime?: string;
+  taxRate: string;
 }
 
 export interface CartItemForServer {
@@ -48,5 +49,9 @@ export interface IshippingData {
 
 export interface IShippingCosts {
   plans: Array<ShippingPlan>;
-  taxRate: number;
+}
+
+export interface Location {
+  name: string;
+  abbreviaton: string
 }

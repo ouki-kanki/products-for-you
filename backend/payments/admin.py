@@ -87,7 +87,7 @@ class ShippingPlanOptionAdminForm(forms.ModelForm):
 @admin.register(ShippingPlanOption)
 class ShippingPlanOptionAdmin(admin.ModelAdmin):
     form = ShippingPlanOptionAdminForm
-    list_display = ('plan', 'origin', 'destination', 'formated_threshold',)
+    list_display = ('plan', 'origin', 'destination', 'formated_threshold', 'uuid')
 
     fieldsets = (
         (None, {

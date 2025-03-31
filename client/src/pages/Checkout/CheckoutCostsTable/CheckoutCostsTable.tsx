@@ -9,6 +9,7 @@ interface CheckoutCostsTableProps {
 }
 
 export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: CheckoutCostsTableProps) => {
+  console.log("the type of tax rate", typeof shippingPlan?.taxRate, shippingPlan?.cost)
   return (
     <div className={styles.productsContainer}>
     <div className={`${styles.productRow} ${styles.productsHeader}`}>
@@ -30,7 +31,7 @@ export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: Ch
         <div>${product.price}</div>
       </div>
     ))}
-    {shippingPlan && (
+    {shippingPlan?.cost > 0 && (
       <div className={`${styles.productRow} ${styles.itemRow}`}>
         <div></div>
         <div></div>
@@ -43,7 +44,7 @@ export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: Ch
         <div></div>
         <div></div>
         <div>tax rate</div>
-        <div>${shippingCostsData.taxRate}</div>
+        <div>${shippingPlan?.taxRate}</div>
       </div>
     )}
     {shippingCostsData && shippingPlan && (
@@ -51,7 +52,7 @@ export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: Ch
         <div></div>
         <div></div>
         <div>total cost</div>
-        <div>${cart.total * (1 + shippingCostsData.taxRate / 100) + shippingPlan.cost}</div>
+        <div>${cart.total * (1 + Number(shippingPlan?.taxRate) / 100) + shippingPlan.cost}</div>
       </div>
     )}
   </div>

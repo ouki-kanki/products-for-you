@@ -33,6 +33,15 @@ $gradient_blue_light: #747474;
   &.danger {
     background: none;
     background-color: tomato;
+
+  }
+
+  &.disabled {
+    background-color: #ddd;
+
+    .children {
+      color: white;
+    }
   }
 
   .children {

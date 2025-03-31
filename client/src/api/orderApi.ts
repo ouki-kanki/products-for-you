@@ -1,32 +1,43 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { showNotification } from '../components/Notifications/showNotification';
 import { baseQueryWithReauth } from './authBaseApi';
-import type { ICart } from '../types/cartPayments';
 
-export interface ICartProduct {
-  product_item: string;
-  price: number;
+interface CartItem {
+  price: string;
+  productId: string;
   quantity: number;
 }
 
-interface Address {
-  city: string;
+interface CartOrder {
+  isSynced: boolean;
+  isUpdating: boolean;
+  items: CartItem[];
+}
+
+interface AddressOrder {
   shippingAddress: string;
+  billingAddress: string;
+  city: string;
   state: string;
+  country: string;
   postalCode: string;
 }
 
-interface UserDetails {
+interface UserDetailsOrder {
+  userId: string | null;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  address: Address
+  phoneNumber: string;
+  extraShippingDetails?: string;
+  address: AddressOrder
 }
 
 interface Order {
-  cart: ICart;
+  cart: CartOrder;
   paymentId: string;
-  userDetails: UserDetails
+  shippingPlanId: string;
+  userDetails: UserDetailsOrder;
 }
 
 interface OrderResponse {

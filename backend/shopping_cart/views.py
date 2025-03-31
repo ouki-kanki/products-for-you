@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from .models import Cart, CartItem
 from products.models import ProductItem
 from .serializers import CartSerializer, CartItemSerializer, CartGuestSerializer
-from .mixins import CartMixin
+from .mixins import CartMixin, CartLockMixin
 
 from common.exceptions import exceptions
 
@@ -45,7 +45,7 @@ class GetUserCartApiView(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class CartCreateView(APIView, CartMixin):
+class CartCreateView(APIView, CartMixin, CartLockMixin):
     permission_classes = [permissions.IsAuthenticated]
 
     @transaction.atomic
@@ -65,6 +65,12 @@ class CartCreateView(APIView, CartMixin):
             cart, created = Cart.objects.get_or_create(user=user, status=Cart.Status.ACTIVE)
 
             if not created:
+                is_locked = self.cart_is_locked(cart)
+                if is_locked:
+                    return Response({
+                        "message": "cart is locked please wait"
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
                 cart.status = Cart.Status.ABANDONED
                 cart.save()
 
