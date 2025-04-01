@@ -4,7 +4,7 @@ import { useSearchParams, useNavigate, Outlet, useLocation } from 'react-router-
 import styles from './checkout.module.scss';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
-import { convertCamelToSnakeArr, prepareCartItems } from '../../utils/converters';
+import { convertCamelToSnakeArr, convertCamelToSnake, prepareCartItems } from '../../utils/converters';
 
 import type { ICartItem, IShippingCosts } from '../../types/cartPayments';
 import type { ShippingPlan } from '../../types/cartPayments';
@@ -22,7 +22,7 @@ import { useCreateOrderMutation } from '../../api/orderApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-import type { Stripe, StripeCardElement, } from '@stripe/stripe-js';
+import type { Stripe, StripeCardElement, StripeError, } from '@stripe/stripe-js';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
 import { useElements } from '@stripe/react-stripe-js';
 
@@ -202,7 +202,17 @@ export const Checkout = () => {
         }
       })
 
+
+
       console.log("the payment", paymentMethodReq)
+
+      if (!isEmpty(paymentMethodReq?.error as StripeError)) {
+        showNotification({
+          message: paymentMethodReq?.error.message as string,
+          type: 'danger'
+        })
+        return
+      }
 
       if (isEmpty(paymentMethodReq as Record<string, unknown>) || !client_secret) {
         showNotification({
@@ -255,7 +265,10 @@ export const Checkout = () => {
         }
       }
 
-      const data = await createOrder(payload).unwrap()
+      const clean_payload = convertCamelToSnake({data: payload})
+      console.log("the clean payload", clean_payload)
+
+      const data = await createOrder(clean_payload).unwrap()
       if (data) {
         console.log("data from sserver from created order", data)
       }
@@ -263,7 +276,12 @@ export const Checkout = () => {
     } catch (error) {
       console.log(error.status)
       console.log("the error on order", error)
-
+      if (error.status === 401) {
+        showNotification({
+          message: 'please login again',
+          type: 'danger'
+        })
+      }
     }
   }
 

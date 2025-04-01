@@ -109,6 +109,13 @@ export const convertCamelToSnake = ({ data, omitedKeys, customConvertions }: Con
  * @returns
  */
 export const convertCamelToSnakeArr = <T>({ data, omitedKeys, customConvertions }: ConvertCamelToSnakeArr<T>) => {
+  if (! Array.isArray(data)) {
+    throw new TypeError("data is not an array")
+  }
+
+  if (data.length === 0) {
+    throw new RangeError('array cannot be empty for the conversion to occure')
+  }
   return data.map(item => {
     return convertCamelToSnake({
       data: item,

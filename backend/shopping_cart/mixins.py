@@ -1,30 +1,52 @@
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
+
 from products.models import ProductItem
 from promotion.models import ProductsOnPromotion
+from shopping_cart.serializers import CartSerializer
 from .models import Cart
+
+from common.exceptions.exceptions import generic_exception
 from common.util.santizers import strip_zero_decimals_from_str
+
 
 
 class CartMixin:
 
     @staticmethod
     def sanitize_cart(cart):
-        keys_to_omit = [
-            'numberOfItems',
-            'isUpdating',
-            'isSynced',
-            'locked'
+        keys_to_keep = [
+            'items',
+            'total'
+        ]
+
+        item_keys_to_keep = [
+            'uuid',
+            'price',
+            'quantity'
         ]
 
         clean_cart = {
             key: value for key, value in cart.items()
-            if key not in keys_to_omit
+            if key in keys_to_keep
         }
+
+        clean_cart['items'] = [
+            {key: value for key, value in item.items()
+             if key in item_keys_to_keep} for item in clean_cart.get('items', [])
+        ]
+
+        items = clean_cart.get('items')
+
+        for item in items:
+            # need to convert uuid to string for the comparison
+            for key, value in item.items():
+                if key == 'uuid':
+                    item[key] = str(value)
 
         clean_cart['total'] = strip_zero_decimals_from_str(str(cart.get('total')))
 
-        for item in cart['items']:
+        for item in clean_cart['items']:
             item['price'] = strip_zero_decimals_from_str(str(item['price']))
 
         return clean_cart
@@ -32,14 +54,23 @@ class CartMixin:
     @staticmethod
     def get_cart(request):
         """
-        returns the cart from db or the session
+        returns the cart from db or the session as a dict
         """
-        if request.user.is_authenticated:
-            user = request.user
-            cart = get_object_or_404(Cart, user=user, status=Cart.Status.ACTIVE)
-        else:
-            cart = request.session.get('cart', None)
-        return cart
+        try:
+            if request.user.is_authenticated:
+                user = request.user
+                cart = get_object_or_404(Cart, user=user, status=Cart.Status.ACTIVE)
+                items = cart.cart_items.all()
+                id = cart.id
+
+                serializer = CartSerializer(cart, context={"request": request})
+
+                return serializer.data
+            else:
+                cart = request.session.get('cart', None)
+            return cart
+        except Exception as e:
+            return generic_exception(e)
 
     @staticmethod
     def return_price_or_promo_price(cart_item):

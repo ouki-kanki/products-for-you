@@ -9,7 +9,6 @@ interface CheckoutCostsTableProps {
 }
 
 export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: CheckoutCostsTableProps) => {
-  console.log("the type of tax rate", typeof shippingPlan?.taxRate, shippingPlan?.cost)
   return (
     <div className={styles.productsContainer}>
     <div className={`${styles.productRow} ${styles.productsHeader}`}>

@@ -14,6 +14,7 @@ class CartItemGuestSerializer(serializers.Serializer): # noqa
     quantity = serializers.IntegerField()
 
 
+
 class CartGuestSerializer(serializers.Serializer): # noqa
     items = CartItemGuestSerializer(many=True)
     total = serializers.SerializerMethodField()
@@ -72,7 +73,9 @@ class CartSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['items'].context.update(self.context)
+
+        if 'items' in self.fields and hasattr(self.fields['items'], 'context'):
+            self.fields['items'].context.update(self.context)
 
     def get_total(self, obj): # noqa
         items = obj.cart_items.all()

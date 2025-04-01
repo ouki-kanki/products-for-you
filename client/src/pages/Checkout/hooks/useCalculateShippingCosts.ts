@@ -26,6 +26,13 @@ export const useCalculateShippingCosts = () => {
 
       navigate('payment')
     } catch (err) {
+      console.log(err)
+      if (err.status === 401) {
+        showNotification({
+          message: 'please login again',
+          'type': 'danger'
+        })
+      }
       showNotification({
         message: 'could not calculate the shipping costs',
         type: 'danger'

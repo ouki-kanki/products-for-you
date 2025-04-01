@@ -50,6 +50,7 @@ class ShopOrder(models.Model):
     order_total = models.DecimalField(max_digits=6, decimal_places=2)
     stripe_payment_id = models.CharField(max_length=255, blank=True, default='')
     cart = models.ForeignKey(Cart, on_delete=models.PROTECT, blank=True, null=True)
+    session_cart = models.JSONField(blank=True, null=True)
     shipping_plan = models.ForeignKey(ShippingPlanOption, on_delete=models.PROTECT, related_name='orders', null=True, blank=True)
     shipping_method = models.CharField(max_length=1, choices=ShippingMethod.choices, default=ShippingMethod.DELIVERY)
 

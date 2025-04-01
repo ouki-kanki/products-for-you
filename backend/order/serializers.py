@@ -21,6 +21,10 @@ class ShopOrderItemSerializer(serializers.ModelSerializer):
 
 
 class ShopOrderSerializer(serializers.ModelSerializer):
+    """
+    read only
+    TODO: clean the create method  is obsolete
+    """
     # order_status = OrderStatusSerializer()
     order_item = ShopOrderItemSerializer(many=True)
 
@@ -36,17 +40,18 @@ class ShopOrderSerializer(serializers.ModelSerializer):
         return product_item_instance, quantity_from_cart 
 
     def create(self, validated_data):
-        order_items_data = validated_data.pop('order_item', [])
+        order_items = validated_data.pop('order_item', [])
         request = self.context.get('request')
 
-        order_total = sum(item['quantity'] * item['price'] for item in order_items_data)
+        # order_total = sum(item['quantity'] * item['price'] for item in order_items_data)
         order_status_value = OrderStatus.objects.get(status='PLACED')
         validated_data['order_status'] = order_status_value
-        validated_data['order_total'] = order_total
-        validated_data['user_id'] = request.user if request.user else None
 
-        for order_item_data in order_items_data:
-            product_item_instance, quantity_from_cart = self.get_item_instance_and_quantity(order_item_data)
+        for order_item in order_items:
+            """
+            check if the quantity is valid and subtrack the items
+            """
+            product_item_instance, quantity_from_cart = self.get_item_instance_and_quantity(order_item)
 
             if product_item_instance.quantity < quantity_from_cart:
                 raise serializers.ValidationError({
@@ -56,14 +61,14 @@ class ShopOrderSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             order = ShopOrder.objects.create(**validated_data)
 
-            for order_item_data in order_items_data:
+            for order_item in order_items:
                 # json gives the id but django hydrates the result with the instance of the related product_item
-                product_item_instance, quantity_from_cart = self.get_item_instance_and_quantity(order_item_data)
+                product_item_instance, quantity_from_cart = self.get_item_instance_and_quantity(order_item)
 
                 product_item_instance.quantity -= quantity_from_cart
                 product_item_instance.save()
 
-                ShopOrderitem.objects.create(order=order, **order_item_data)
+                ShopOrderitem.objects.create(order=order, **order_item)
 
             return order
 
@@ -102,6 +107,10 @@ class ShopOrderItemSerializerForClient(serializers.ModelSerializer):
 
 
 class ShopOrderSerializerForClient(ShopOrderSerializer):
+    """
+    used to list the orders in the user profile ?
+    TODO: check if the above is correct
+    """
     order_item = ShopOrderItemSerializerForClient(many=True)
     order_status = serializers.SerializerMethodField()
 

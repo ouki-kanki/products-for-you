@@ -171,6 +171,7 @@ class CreatePaymentIntentAPIView(APIView, CartLockMixin):
         # take plan uuid  from the front and find the plan find the location and add to the total cost
         plan_option_id = request.data.get('planId')
         plan = get_object_or_404(ShippingPlanOption, uuid=plan_option_id)
+        
         tax_rate = plan.destination.tax_rate.rate
         shipping_costs = plan.base_cost
         if plan.extra_fee:
