@@ -1,52 +1,29 @@
-from _decimal import Decimal
+from decimal import Decimal
+import json
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status, serializers
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from payments.models import ShippingPlanOption
 from products.models import ProductItem
 from shopping_cart.models import Cart
-from shopping_cart.mixins import CartMixin, CartLockMixin
+from shopping_cart.mixins import CartMixin, CartLockMixin, OrderMixin
 from .models import ShopOrder
 from .serializers import ShopOrderSerializer
 from common.exceptions.exceptions import generic_exception
+from common.services import email_service
 
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-class OrderCreateView(generics.CreateAPIView, CartMixin, CartLockMixin):
-    queryset = ShopOrder.objects.all()
-    serializer_class = ShopOrderSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+class OrderCreateView(APIView, CartMixin, CartLockMixin, OrderMixin):
 
-    @staticmethod
-    def create_order_items(cart):
-        """
-        prepare the order_items from the cart data
-        """
-        order_items = []
-        order_item = {}
-        if isinstance(cart, dict):
-            for item in cart.get('items', []):
-                uuid = item.get('uuid')
-                product_item = get_object_or_404(ProductItem, uuid=uuid)
-
-                order_item['product_item'] = product_item.id
-                order_item['quantity'] = item.get('quantity')
-                order_item['price'] = item.get('price')
-
-                order_items.append(order_item)
-        else:
-            raise TypeError('cart has to be a dict')
-
-        return order_items
-
-    def create(self, request, *args, **kwargs):
-        # TODO: fetch the cart from database or session and check again
+    def post(self, request):
         payment_intent_id = request.data.get('payment_id')
         shipping_plan_id = request.data.get('shipping_plan_id')
         cart_from_checkout = request.data.get('cart')
@@ -77,6 +54,7 @@ class OrderCreateView(generics.CreateAPIView, CartMixin, CartLockMixin):
             try:
                 sanitized_client_cart = self.sanitize_cart(cart_from_checkout)
                 sanitized_server_cart = self.sanitize_cart(cart)
+
             except (TypeError, ValueError) as e:
                 self.unlock_cart(request, cart)
                 return Response({
@@ -88,47 +66,64 @@ class OrderCreateView(generics.CreateAPIView, CartMixin, CartLockMixin):
                     "message": 'there was an error in the cart'
                 }, status=status.HTTP_400_BAD_REQUEST)
 
-            # TODO: clear the cart from the session
-
-            self.unlock_cart(request, cart)
-
             payload = request.data
             user_details = payload.get("user_details")
             address = user_details.get("address")
+            user_email = user_details.get("email")
             shipping_plan = ShippingPlanOption.objects.get(uuid=shipping_plan_id)
 
-            # create the order_items list
             order_items = self.create_order_items(cart)
+            cart_instance_id = self.get_cart_instance_id(request)
 
             clean_data = {
                 "user_id": user_details.get("userId", "guest"),
                 "order_item": order_items,
                 "phoneNumber": user_details.get("phoneNumber"),
+                "user_email": user_email,
                 "shipping_address": address.get("shippingAddress"),
                 "billing_address": address.get("billingAddress"),
+                "extra_shipping_details": user_details.get("extraShippingDetails"),
                 "order_total": str(Decimal(total_amount) / 100),
                 "stripe_payment_id": payment_intent_id,
                 "shipping_plan": shipping_plan.id,
-                "cart": cart if request.user.is_authenticated else None,
+                "cart": cart_instance_id if request.user.is_authenticated else None,
+                # "cart": sanitized_server_cart if request.user.is_authenticated else None,
                 "session_cart": None if request.user.is_authenticated else cart
-            }
+                }
 
-            print("the clean data", clean_data)
-
-            serializer = self.get_serializer(data=clean_data)
+            serializer = ShopOrderSerializer(data=clean_data)
             try:
                 serializer.is_valid(raise_exception=True)
-            except serializers.ValidationError as e:
-                print("inside the exception", serializer.errors)
+                serializer.save()
+
+                if request.user.is_authenticated:
+                    session_cart = request.session.get('cart')
+                    if session_cart:
+                        del request.session['cart']
+                        request.session.modified = True
+                    cart = get_object_or_404(Cart, user=request.user, status=Cart.Status.ACTIVE)
+                    self.unlock_cart(request, cart)
+
+                    cart.status = cart.Status.ORDERED
+                    cart.save()
+                else:
+                    cart = request.session.get('cart', None)
+                    if cart:
+                        del request.session['cart']
+
+                order = serializer.instance
+
+                email_service.send_order_completion_email(request, user_email)
+
                 return Response({
-                    "message": 'cannot create order'
+                    "message": 'thank you for shopping from us.we will send you the comfirmation email shortafter',
+                    "order_total": str(order.order_total)
+                }, status=status.HTTP_201_CREATED)
+            except serializers.ValidationError as e:
+                print("validation order error", e)
+                return Response({
+                    "message": str(e)
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-            self.perform_create(serializer)
-
-            return Response({
-                "message": 'your order was created, you will receive an email shortly after'
-            }, status=status.HTTP_201_CREATED)
 
         except stripe.error.StripeError as e:
             self.unlock_cart(request, cart)
@@ -138,23 +133,6 @@ class OrderCreateView(generics.CreateAPIView, CartMixin, CartLockMixin):
         except Exception as e:
             self.unlock_cart(request, cart)
             return generic_exception(e)
-
-    def perform_create(self, serializer):
-        # make the order_status = CREATED
-        order = serializer.save()
-        request = self.request
-
-        if request.user.is_authenticated:
-            # only if on successful order creation mark the cart as completed
-            cart = get_object_or_404(Cart, user=request.user, status=Cart.Status.ACTIVE)
-            cart.status = cart.Status.ORDERED
-        else:
-            cart = request.session.get('cart', None)
-            if cart:
-                # only if the creation of order was success delete the cart of the session
-                del request.session['cart']
-
-
 
 
 order_create_view = OrderCreateView.as_view()

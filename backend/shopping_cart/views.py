@@ -74,7 +74,7 @@ class CartCreateView(APIView, CartMixin, CartLockMixin):
                 cart.status = Cart.Status.ABANDONED
                 cart.save()
 
-            cart = Cart.objects.create(user=user, status=Cart.Status.ACTIVE)
+                cart = Cart.objects.create(user=user, status=Cart.Status.ACTIVE)
 
             # delete carts that abandoned from more than 30 days
             Cart.objects.filter(status=Cart.Status.ABANDONED, modified_at=now() - timedelta(days=30))

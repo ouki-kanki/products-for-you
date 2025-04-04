@@ -20,7 +20,8 @@ import { Home,
   TermsOfUse,
   Checkout,
   Orders,
-  ShippingCosts
+  ShippingCosts,
+  OrderSuccess
  } from './pages'
 import { Search } from './pages/Search';
 import { PersistLogin } from './features/auth/PersistLogin';
@@ -42,6 +43,7 @@ export const EcommerceRoutes = () => (
           <Route path='/checkout' element={<Checkout/>}>
             <Route path='payment' element={<ShippingCosts/>}/>
           </Route>
+          <Route path='/order-success' element={<OrderSuccess/>}/>
           <Route path='/settings' element={<Settings/>}/>
           <Route path='/products/' element={<ProductsPage/>}/>
           <Route path='/products/:slug' element={<ProductsPage/>}/>

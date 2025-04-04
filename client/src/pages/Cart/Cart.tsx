@@ -33,8 +33,7 @@ export const Cart = () => {
   }
 
   const handleGotoCheckout = () => {
-    // dispatch checkout aciton
-    // navigate to checkout
+    // cart middleware will handle saving the cart to database
     dispatch(checkout())
     navigate('/checkout')
 

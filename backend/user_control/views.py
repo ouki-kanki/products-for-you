@@ -168,7 +168,7 @@ class OrdersListApiView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        qs = ShopOrder.objects.filter(user_id=user).order_by('-order_date')
+        qs = ShopOrder.objects.filter(user_id=user).order_by('-created_at')
         sort_by = self.request.query_params.get('sort_by')
 
         if sort_by:

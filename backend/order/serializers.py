@@ -1,8 +1,6 @@
 from datetime import datetime
 from django.db import transaction
 from rest_framework import serializers
-from rest_framework.response import Response
-from rest_framework import status
 
 from .models import ShopOrder, ShopOrderitem, OrderStatus
 
@@ -21,16 +19,32 @@ class ShopOrderItemSerializer(serializers.ModelSerializer):
 
 
 class ShopOrderSerializer(serializers.ModelSerializer):
-    """
-    read only
-    TODO: clean the create method  is obsolete
-    """
     # order_status = OrderStatusSerializer()
     order_item = ShopOrderItemSerializer(many=True)
+    user_email = serializers.EmailField(write_only=True)
+    stripe_payment_id = serializers.CharField(write_only=True)
+    extra_shipping_details = serializers.CharField(write_only=True, allow_blank=True)
+    session_cart = serializers.JSONField(write_only=True, allow_null=True)
+    # order_total = serializers.DecimalField(max_digits=10, decimal_places=2, coerce_to_string=True)
+    # order_total = serializers.SerializerMethodField()
+
+
+    # def get_order_total(self, obj): # noqa
+    #     return str(obj.order_total)
 
     class Meta:
         model = ShopOrder
-        fields = ('user_id', 'order_date', 'modified', 'phoneNumber', 'shipping_address', 'billing_address', 'order_total', 'order_item')
+        fields = ('user_id',
+                  'phoneNumber',
+                  'shipping_address', 'billing_address',
+                  'user_email', 'stripe_payment_id',
+                  'extra_shipping_details',
+                  'order_total', 'session_cart', 'cart',
+                  'order_item')
+        read_only_fields = (
+            'created_at',
+        )
+
 
     @staticmethod
     def get_item_instance_and_quantity(order_item_data):
@@ -117,18 +131,18 @@ class ShopOrderSerializerForClient(ShopOrderSerializer):
     class Meta:
         model = ShopOrder
         fields = tuple(field for field in ShopOrderSerializer.Meta.fields
-                       if field not in ('user_id', 'phoneNumber', 'modified',)) + ('order_status',)
+                       if field not in ('user_id', 'phoneNumber', 'updated_at',)) + ('order_status',)
 
     def get_order_status(self, obj): # noqa
         return obj.order_status.status
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        order_date = ret.get('order_date')
+        order_date = ret.get('created_at')
 
         if order_date:
             order_date = datetime.fromisoformat(order_date).strftime("%d-%m-%Y %H:%M:%S")
-            ret['order_date'] = order_date
+            ret['created_at'] = order_date
         return ret
 
 

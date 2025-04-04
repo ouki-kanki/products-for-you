@@ -10,7 +10,6 @@ from common.exceptions.exceptions import generic_exception
 from common.util.santizers import strip_zero_decimals_from_str
 
 
-
 class CartMixin:
 
     @staticmethod
@@ -37,19 +36,22 @@ class CartMixin:
         ]
 
         items = clean_cart.get('items')
+        sorted_items = sorted(items, key=lambda item: item.get('uuid'))
 
-        for item in items:
-            # need to convert uuid to string for the comparison
-            for key, value in item.items():
-                if key == 'uuid':
-                    item[key] = str(value)
-
+        # sort the items for the comparison between the client and server cart to work
+        clean_cart['items'] = sorted_items
         clean_cart['total'] = strip_zero_decimals_from_str(str(cart.get('total')))
 
         for item in clean_cart['items']:
             item['price'] = strip_zero_decimals_from_str(str(item['price']))
 
         return clean_cart
+
+    @staticmethod
+    def get_cart_instance_id(request):
+        if request.user.is_authenticated:
+            cart = get_object_or_404(Cart, user=request.user, status=Cart.Status.ACTIVE)
+            return cart.id
 
     @staticmethod
     def get_cart(request):
@@ -131,3 +133,29 @@ class CartLockMixin:
             cart.save()
         else:
             raise TypeError('unknown cart type')
+
+
+class OrderMixin:
+
+    @staticmethod
+    def create_order_items(cart):
+        """
+        prepare the order_items
+        """
+        order_items = []
+        if isinstance(cart, dict):
+            for item in cart.get('items', []):
+                order_item = {}
+                uuid = item.get('uuid')
+                product_item = get_object_or_404(ProductItem, uuid=uuid)
+
+                order_item['product_item'] = product_item.id
+                order_item['quantity'] = item.get('quantity')
+                order_item['price'] = item.get('price')
+
+                order_items.append(order_item)
+        else:
+            raise TypeError('cart has to be a dict')
+
+        return order_items
+

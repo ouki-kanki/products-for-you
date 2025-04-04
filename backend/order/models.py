@@ -40,19 +40,20 @@ class ShopOrder(models.Model):
 
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order', blank=True, null=True)
     ref_code = models.CharField(blank=True)
-    order_date = models.DateTimeField(editable=False)
-    modified = models.DateTimeField(blank=True)
     phoneNumber = models.CharField(max_length=255)
     shipping_address = models.CharField(max_length=255)
+    user_email = models.EmailField()
     billing_address = models.CharField(max_length=255)
+    extra_shipping_details = models.TextField(blank=True)
     order_status = models.ForeignKey(OrderStatus, on_delete=models.PROTECT, default=1)
-    # TODO: maybe this has to be a property
     order_total = models.DecimalField(max_digits=6, decimal_places=2)
     stripe_payment_id = models.CharField(max_length=255, blank=True, default='')
     cart = models.ForeignKey(Cart, on_delete=models.PROTECT, blank=True, null=True)
     session_cart = models.JSONField(blank=True, null=True)
     shipping_plan = models.ForeignKey(ShippingPlanOption, on_delete=models.PROTECT, related_name='orders', null=True, blank=True)
     shipping_method = models.CharField(max_length=1, choices=ShippingMethod.choices, default=ShippingMethod.DELIVERY)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class RefundChoices(models.TextChoices):
         NOT_REQUESTED = 'fl', 'False'
@@ -64,12 +65,6 @@ class ShopOrder(models.Model):
         default=RefundChoices.NOT_REQUESTED
     )
 
-    def user_email(self):
-        if self.user_id:
-            email = self.user_id.email
-            return email if email else 'not provided'
-        return 'guest_user'
-
     def user_name(self):
         if self.user_id:
             user_name = self.user_id.username 
@@ -79,19 +74,14 @@ class ShopOrder(models.Model):
     
     @property
     def order_date_formated(self):
-        return self.order_date.strftime("%d-%m-%Y -- %H:%M:%S")
+        return self.created_at.strftime("%d-%m-%Y -- %H:%M:%S")
     
     @property
     def date_modified_formated(self):
-        return self.modified.strftime("%Y-%m-%d%H:%M:%S") if self.modified else 'no modification detected'
+        return self.updated_at.strftime("%Y-%m-%d%H:%M:%S") if self.modified else 'no modification detected'
 
-
-def shop_order_pre_save(sender, instance, *args, **kwargs):
-    if not instance.id:
-        instance.order_date = timezone.now()
-    instance.modified = timezone.now()
-
-pre_save.connect(shop_order_pre_save, sender=ShopOrder)
+    def __str__(self):
+        return self.shipping_address
 
 
 class ShopOrderitem(models.Model):
@@ -115,3 +105,6 @@ class ShopOrderitem(models.Model):
     def variation_name(self):
         variation = self.product_item.variation_name
         return variation if variation else 'not provided'
+
+    def __str__(self):
+        return self.product_item.product_name

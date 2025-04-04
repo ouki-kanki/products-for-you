@@ -13,7 +13,7 @@ class Cart(models.Model):
         ORDERED = 'O', 'ordered'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
-    session_id = models.UUIDField(default=uuid.uuid4)
+    # session_id = models.UUIDField(default=uuid.uuid4)
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.ACTIVE)
     locked = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

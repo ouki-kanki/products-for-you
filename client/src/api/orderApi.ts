@@ -55,12 +55,6 @@ export const orderApi = createApi({
         body: payload,
         headers: {}
       }),
-      transformResponse: (res) => {
-        console.log("create order res from api",res)
-        showNotification({
-          message: 'order created'
-        })
-      }
     })
   })
 })

@@ -1,6 +1,7 @@
 import uuid
 from decimal import Decimal
 from django.conf import settings
+from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
@@ -159,14 +160,26 @@ class CreatePaymentIntentAPIView(APIView, CartLockMixin):
     def post(self, request): # noqa
 
         user = request.user
-        if request.user.is_authenticated:
-            cart = get_object_or_404(Cart, user=user, status=Cart.Status.ACTIVE)
-            sub_total = cart.sub_total
-        else:
-            cart = request.session.get('cart', [])
-            sub_total = cart.get('total')
+        try:
+            if request.user.is_authenticated:
+                cart = get_object_or_404(Cart, user=user, status=Cart.Status.ACTIVE)
+                sub_total = cart.sub_total
+            else:
+                cart = request.session.get('cart', {})
+                if not cart:
+                    return Response({
+                        "message": 'cart is missing'
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                sub_total = cart.get('total')
 
-        self.lock_cart(request, cart)
+            self.lock_cart(request, cart)
+
+        except Http404:
+            return Response({
+                "message": 'there is a problem in the cart'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return exceptions.generic_exception(e)
 
         # take plan uuid  from the front and find the plan find the location and add to the total cost
         plan_option_id = request.data.get('planId')

@@ -34,7 +34,7 @@ class CartItemForCartSerializer(CartItemSerializer):
     uuid = serializers.SerializerMethodField()
 
     def get_uuid(self, obj): # noqa
-        return obj.product_item.uuid
+        return str(obj.product_item.uuid)
 
     def get_url_path(self, obj): # noqa
         return obj.product_item.build_url_path
@@ -87,4 +87,4 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ('items', 'session_id', 'total')
+        fields = ('items', 'total')

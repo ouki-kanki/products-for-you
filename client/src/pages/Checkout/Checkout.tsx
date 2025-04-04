@@ -41,6 +41,7 @@ export const Checkout = () => {
   const [extraShippingDetails, setExtraShippingDetails] = useState('')
   const userId = useSelector<RootState>(state => state.auth.userInfo.user_id)
   const [mode, setMode] = useState<CheckoutBtnMode.calculateShipping | CheckoutBtnMode.proccedToPayment>(CheckoutBtnMode.calculateShipping)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { calculateShipping, isShippingCostsLoading, isShippingCostsSuccess, shippingCostsData } = useCalculateShippingCosts()
 
@@ -179,6 +180,7 @@ export const Checkout = () => {
 
     try {
       // when the user clicks procced to payment
+      setIsLoading(true)
       const { planOptionId } = shippingPlan as ShippingPlan
       const { client_secret } = await createPaymentIntent({ planId: planOptionId }).unwrap()
       const { firstName, lastName, userEmail, city, state, country, shippingAddress, billingAddress, zipCode, phoneNumber } = validatedFields
@@ -204,9 +206,10 @@ export const Checkout = () => {
 
 
 
-      console.log("the payment", paymentMethodReq)
+      // console.log("the payment", paymentMethodReq)
 
       if (!isEmpty(paymentMethodReq?.error as StripeError)) {
+        setIsLoading(false)
         showNotification({
           message: paymentMethodReq?.error.message as string,
           type: 'danger'
@@ -215,6 +218,7 @@ export const Checkout = () => {
       }
 
       if (isEmpty(paymentMethodReq as Record<string, unknown>) || !client_secret) {
+        setIsLoading(false)
         showNotification({
           message: 'could not procceed to payment',
           type: 'danger'
@@ -236,6 +240,7 @@ export const Checkout = () => {
 
       // TODO: show what went wrong with the payment. take info form stripe obj
       if (confirmedCardPayment?.paymentIntent?.status !== PaymentIntentStatus.SUCCESS) {
+        setIsLoading(false)
         showNotification({
           message: 'payment could not completed',
           type: 'danger'
@@ -266,15 +271,21 @@ export const Checkout = () => {
       }
 
       const clean_payload = convertCamelToSnake({data: payload})
-      console.log("the clean payload", clean_payload)
+      // console.log("the clean payload", clean_payload)
 
       const data = await createOrder(clean_payload).unwrap()
       if (data) {
         console.log("data from sserver from created order", data)
+        setIsLoading(false)
+        showNotification({
+          message: 'order created'
+        })
+
+        navigate('/order-success', {replace:true})
       }
 
     } catch (error) {
-      console.log(error.status)
+      setIsLoading(false)
       console.log("the error on order", error)
       if (error.status === 401) {
         showNotification({
@@ -282,6 +293,17 @@ export const Checkout = () => {
           type: 'danger'
         })
       }
+      else if (error?.data?.message) {
+        showNotification({
+          message: error.data.message,
+          type: 'danger'
+        })
+      } else {
+        showNotification({
+          "message": 'something went wrong'
+        })
+      }
+
     }
   }
 
@@ -308,7 +330,7 @@ export const Checkout = () => {
             errors={validationErrors}
             mode={mode}
             handleValidationBlur={handleBlur}
-            isLoading={isPaymentIntentLoading || isShippingCostsLoading}
+            isLoading={isPaymentIntentLoading || isShippingCostsLoading || isLoading}
             paymentCallback={(cardElement, stripe) => handlePaymentCallback(cardElement, stripe)}
             isFormValid={isFormValid}
           />

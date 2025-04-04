@@ -20,3 +20,4 @@ export { Activation } from './Activation/Activation';
 export { ActivationSuccess } from './Activation/ActivationSuccess'
 export { Orders } from './Orders/Orders';
 export { ShippingCosts } from './Checkout/ShippingCosts/ShippingCosts'
+export { OrderSuccess } from './Orders/OrderSuccess/OrderSuccess';

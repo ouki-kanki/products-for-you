@@ -1,5 +1,6 @@
 import hashlib
 
+import uuid as uuid
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.storage import default_storage
 from django.db import models
@@ -43,6 +44,7 @@ class SoftDeleteModel(models.Model):
 
 
 class CustomUser(AbstractBaseUser, SoftDeleteModel, PermissionsMixin):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     email = models.EmailField(blank=True, default='', unique=True)
     username = models.CharField(max_length=255, blank=True, default='')
     is_active = models.BooleanField(default=True)
@@ -87,6 +89,7 @@ def get_default_user_image():
     return 'user_images/default_user_image.png'
 
 
+# TODO: make address foreign key change the addresses to billing and shipping address
 class UserDetail(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, blank=True)
