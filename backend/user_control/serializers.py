@@ -34,7 +34,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserDetail
-        exclude = ('id', 'created_at', 'updated_at')
+        exclude = ('id', 'created_at', 'updated_at', 'user')
 
     def get_email(self, obj): # noqa
         if isinstance(obj, dict):

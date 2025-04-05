@@ -119,12 +119,12 @@ const {
     }
 
     const data = await login({ email, password }).unwrap() as LoginData
-    const { username, email: userEmail, user_id : userId } = jwtDecode<JwtPayload>(data.access)
+    const { username, email: userEmail, uuid } = jwtDecode<JwtPayload>(data.access)
     const user = username ? username : userEmail
 
     dispatch(setCredentials({
       user,
-      userId,
+      userId: uuid,
       accessToken: data.access,
     }))
   }

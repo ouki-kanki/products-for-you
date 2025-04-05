@@ -4,7 +4,7 @@ import { RootState } from "../../app/store/store";
 
 interface UserInfo {
   user: string | null;
-  user_id: number;
+  user_id: string;
 }
 
 interface UserTokens {
@@ -13,7 +13,7 @@ interface UserTokens {
 
 interface Credentials extends UserTokens {
   user: string,
-  userId: number
+  userId: string;
 }
 
 interface AuthError {

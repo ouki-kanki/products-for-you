@@ -15,7 +15,7 @@ import { showNotification } from '../../components/Notifications/showNotificatio
 import { CheckoutCostsTable } from './CheckoutCostsTable/CheckoutCostsTable';
 import { CheckoutForm } from './CheckoutForm/CheckoutForm';
 
-import { useCreatePaymentIntentMutation, useGetLocationListQuery } from '../../api/paymentApi';
+import { useCreatePaymentIntentMutation } from '../../api/paymentApi';
 import { useGetUserProfileQuery } from '../../api/userApi';
 import { useCreateOrderMutation } from '../../api/orderApi';
 
@@ -24,7 +24,6 @@ import { Elements } from '@stripe/react-stripe-js';
 
 import type { Stripe, StripeCardElement, StripeError, } from '@stripe/stripe-js';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
-import { useElements } from '@stripe/react-stripe-js';
 
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { useCalculateShippingCosts } from './hooks/useCalculateShippingCosts';
@@ -85,6 +84,7 @@ export const Checkout = () => {
     'phoneNumber', 'userEmail', 'city', 'state', 'country', 'zipCode',
   ], [])
 
+
   useEffect(() => {
     fields.forEach(field => registerField(field))
   }, [registerField, fields])
@@ -93,7 +93,6 @@ export const Checkout = () => {
     touchField(name)
   }
 
-  const profileDataStr = JSON.stringify(profileData)
 
   useEffect(() => {
     const paymentCanceled = searchParams.get('canceled')
@@ -112,8 +111,10 @@ export const Checkout = () => {
     } else {
       setMode(CheckoutBtnMode.calculateShipping)
     }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
+
+  const profileDataStr = JSON.stringify(profileData)
 
   useEffect(() => {
     // NOTE: the key for email form server is diff
@@ -126,6 +127,7 @@ export const Checkout = () => {
         shippingAddress: data?.addressOne
       }
 
+      // load profile data to the validation
       fields.forEach(field => {
         changeField(field, payload[field])
       })

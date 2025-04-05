@@ -11,6 +11,7 @@ from payments.models import ShippingPlanOption
 from products.models import ProductItem
 from shopping_cart.models import Cart
 from shopping_cart.mixins import CartMixin, CartLockMixin, OrderMixin
+from user_control.models import CustomUser
 from .models import ShopOrder
 from .serializers import ShopOrderSerializer
 from common.exceptions.exceptions import generic_exception
@@ -74,9 +75,15 @@ class OrderCreateView(APIView, CartMixin, CartLockMixin, OrderMixin):
 
             order_items = self.create_order_items(cart)
             cart_instance_id = self.get_cart_instance_id(request)
+            # TODO: user_details have to have the field userId changed to uuid to be more clear
+            uuid = user_details.get("userId")
+            try:
+                user_id = CustomUser.objects.get(uuid=uuid).id
+            except CustomUser.DoesNotExist:
+                user_id = "guest"
 
             clean_data = {
-                "user_id": user_details.get("userId", "guest"),
+                "user_id": user_id,
                 "order_item": order_items,
                 "phoneNumber": user_details.get("phoneNumber"),
                 "user_email": user_email,

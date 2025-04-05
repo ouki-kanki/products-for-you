@@ -9,7 +9,8 @@ export interface LoginCreds {
 
 interface JwtPayload {
   username: string;
-  user_id: number
+  user_id: number;
+  uuid: string;
 }
 
 interface LogoutData {
@@ -59,11 +60,11 @@ export const authApi = authBaseApi.injectEndpoints({
       async onQueryStarted(arg, { dispatch, getState, queryFulfilled }) {
         try {
           const { data: { access }} = await queryFulfilled
-          const { username: user, user_id : userId } = jwtDecode<JwtPayload>(access)
+          const { username: user, uuid } = jwtDecode<JwtPayload>(access)
 
           dispatch(setCredentials({
             user,
-            userId,
+            uuid,
             accessToken: access,
           }))
 

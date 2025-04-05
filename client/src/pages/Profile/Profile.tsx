@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState, ChangeEvent } from 'react'
+import { useEffect, useReducer, useState, ChangeEvent, useMemo } from 'react'
 import { useAppDispatch } from '../../app/store/store';
 import { fieldsReducer } from '../../app/reducers';
 import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
@@ -10,7 +10,6 @@ import { useUpdateUserProfileMutation } from '../../api/userApi';
 import { useUploadProfileImageMutation } from '../../api/userProfileApi';
 
 import styles from './profile.module.scss'
-import { Input } from '../../UI/Forms/Inputs';
 import { convertSnakeToCamelV2, convertCamelToSnake } from '../../utils/converters';
 import { haveSameValue } from '../../utils/objUtils';
 import { showNotification } from '../../components/Notifications/showNotification';
@@ -20,8 +19,13 @@ import { ApiError, ValidationError } from '../../types';
 import { userApi } from '../../api/userApi';
 
 import { FavoriteProducts } from './FavoriteProducts/FavoriteProducts';
-import { useClassLister } from '../../hooks/useClassLister';
+import { Spinner } from '../../components/Spinner/Spinner';
 
+import { BaseInput } from '../../components/Inputs/BaseInput/BaseInput';
+import { userProfileFields } from './userProfileFields';
+
+import { useValidationV2 } from '../../hooks/validation/useValidationV2';
+import { notEmptyValidator, phoneValidator } from '../../hooks/validation/validators';
 
 type Error = {
   status: number;
@@ -32,6 +36,7 @@ type Error = {
 
 type ProfileState = Omit<IUserProfileBase, 'image'>
 
+// OBSOLETE
 const initialState: ProfileState = {
   firstName: '',
   lastName: '',
@@ -43,13 +48,40 @@ const initialState: ProfileState = {
 }
 
 export const Profile = () => {
-  // const [trigger, { data: profileData, isError, error, isLoading, }] = useLazyGetUserProfileQuery()
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
   const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData })
-  const classes = useClassLister(styles)
 
-  // TODO: the type fo the error inside withLoadingAndError is wrong. the error it seems to be an object and not a string
 
+  // *** VALIDATION ***
+  const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']
+  const groupWithCommonValidators = Object.fromEntries(fieldsWithNotEmptyValidator.map(field => [field, [notEmptyValidator]])
+  )
+
+
+  const {fields: validatedFields, errors: validationErrors, isFormValid, registerField, changeField, touchField} = useValidationV2({
+    ...groupWithCommonValidators,
+    phoneNumber: [phoneValidator],
+    cellPhoneNumber: [phoneValidator],
+    image: []
+  })
+
+  const fieldNamesArray = useMemo(() => {
+    return userProfileFields.map(field => field.name)
+  }, [])
+
+  useEffect(() => {
+    fieldNamesArray.forEach(field => registerField(field))
+  }, [registerField, fieldNamesArray])
+
+  // load profileDAta
+
+
+  // TODO: need the zip code in the profile
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+    const { target: { name }}= e
+    touchField(name)
+  }
 
   const [updateUserProfile, {data: updateData, isSuccess: isUpdateSuccess, error: updateError, isError: isUpdateError, isLoading: udpateLoading}] = useUpdateUserProfileMutation()
   const [uploadProfileImage, { data: uploadImageData, isSuccess: isUploadImageSuccess, isError: isUploadImageError, error: uploadImageError }] = useUploadProfileImageMutation()
@@ -62,18 +94,20 @@ export const Profile = () => {
   const navigate = useNavigate()
   const [isInEdit, setIsInEdit] = useState(false)
   const location: Location = useLocation()
-  const [state, dispatch] = useReducer(fieldsReducer, initialState)
+  // const [state, dispatch] = useReducer(fieldsReducer, initialState)
 
+  const profileStr = JSON.stringify(profileData)
 
+  //  ******
+  // TODO: check validation Hook useMemo does not solve the problem with the validators dep
+  // that makes sense but i cannot use stringify because i cannot serialize the array of funtions that the validator is . whith the removed dep the hook works as expected but i have to adressd this issue ********
   useEffect(() => {
-    // const data = JSON.parse(strProfileData)
-    if (profileData) {
-      dispatch({
-        type: ActionTypesProfile.SET_PROFILE_DATA,
-        payload: profileData as IUserProfile
-      })
+    if (profileStr) {
+      const data = JSON.parse(profileStr)
+      // console.log("the data of field", fields, data)
+      fieldNamesArray.forEach(field => changeField(field, data[field]))
     }
-  }, [profileData])
+  }, [profileStr, fieldNamesArray])
 
   // UPLOAD IMAGE
   useEffect(() => {
@@ -93,12 +127,6 @@ export const Profile = () => {
 
       apiDispatch(resetApiState())
       refetch()
-      // fetchData()
-
-      // apiDispatch(userApi.endpoints.getUserProfile.initiate(undefined, {
-      //   // subscribe: false,
-      //   forceRefetch: true
-      // }))
     }
   }, [isUploadImageError, isUploadImageSuccess, uploadImageError, apiDispatch, resetApiState, refetch])
 
@@ -111,11 +139,26 @@ export const Profile = () => {
     }
   }, [refetch, strLocation])
 
+  console.log(validatedFields)
+
   // if there is a change in fields show saveChanges btn
   useEffect(() => {
+
+    // const sanitizedValidatedFields = Object.entries(validatedFields).map(([key, value ]) => ({ [key]: value['value'] }))
+    // console.log("comparison", profileData,sanitizedValidatedFields)
+
+    const sanitizedValidatedFields: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(validatedFields)) {
+      sanitizedValidatedFields[key] = value['value']
+      // sanitizedValidatedFields[]
+    }
+
+    console.log("the sanitized fieds", profileData, sanitizedValidatedFields)
+
+
     if (profileData) {
       // useCallback on the function on objUtils
-      if (!haveSameValue(profileData, state as IUserProfile)) {
+      if (!haveSameValue(profileData, sanitizedValidatedFields)) {
         setIsInEdit(true)
       } else {
         if (isInEdit) {
@@ -123,7 +166,7 @@ export const Profile = () => {
         }
       }
     }
-  }, [isInEdit, profileData, state]) // TODO: stringify state and data
+  }, [isInEdit, profileData, validatedFields])
 
   useEffect(() => {
     if (isError && (error as Error).status === 404) {
@@ -133,11 +176,7 @@ export const Profile = () => {
   }, [navigate, isError, error])
 
   const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: ActionTypesProfile.CHANGE,
-      name,
-      value
-    })
+    changeField(name, value)
   }
 
   useEffect(() => {
@@ -153,7 +192,6 @@ export const Profile = () => {
       })
     }
     if (isUpdateSuccess) {
-      // console.log("the udpated data", updateData)
       showNotification({
         message: 'profile updated successfully'
       })
@@ -161,12 +199,12 @@ export const Profile = () => {
   }, [isUpdateSuccess, updateData, updateError, isUpdateError])
 
   if (isLoading) {
-    // use a spinner or skeleton
     return (
-      <div>is loading...</div>
+      <Spinner/>
     )
   }
 
+  // TODO : use the form validation
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
     // filter unchanged fields
@@ -192,24 +230,21 @@ export const Profile = () => {
     )
   }
 
+
   return (
     <div className={styles.profileContainer}>
       <h1>User Profile</h1>
       <div className={styles.mainContainer}>
         <form className={styles.left}>
-          {/* {data && Object.entries(convertSnakeToCamelV2(data)) */}
-          {Object.entries(state as IUserProfile)
-            .filter(([key]) => key !== 'image')
-            .map(([property, value], id) => (
-            <div className={styles.inputContainer} key={id}>
-              <label htmlFor={property}>{property}</label>
-              <Input
-                name={property}
-                type='text'
-                value={value}
-                onChange={handleChange}
-              />
-            </div>
+          {userProfileFields.map(field => (
+            <BaseInput
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              value={validatedFields[field.name]?.value || ''}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
           ))}
         </form>
         <div className={styles.right}>

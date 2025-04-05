@@ -6,7 +6,7 @@ interface BaseInputProps {
   label: string;
   value: string;
   name: string;
-  onBlur: () => void;
+  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   required?: boolean;
   errors?: string[];
@@ -39,7 +39,7 @@ type IInputProps = InputProps | TextAreaProps | SelectProps
 export const BaseInput = forwardRef<HTMLInputElement, IInputProps>(({ label='username', value, name, onChange, onBlur, required=false, errors, type='input', rows=5, cols=50, renderSelect }, ref) => {
   const [isFocused, setIsFocused] = useState(false)
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(false)
     onBlur(e)
   }

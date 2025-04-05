@@ -19,7 +19,7 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer): # noqa
         token = super().get_token(user)
         token['email'] = user.email
         token['username'] = user.username
-
+        token['uuid'] = str(user.uuid)
         # encode uid
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         # token['user_id'] = uid

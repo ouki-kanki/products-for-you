@@ -20,15 +20,39 @@ export const userProfileFields: UserProfileField[] = [
     type: 'text'
   },
   {
-    label: 'Address One',
+    label: 'Email',
+    id: 'email',
+    name: 'email',
+    type: 'email'
+  },
+  {
+    label: 'Shipping Address',
     id: 'address-one',
     name: 'addressOne',
     type: 'text'
   },
   {
-    label: 'Address Two',
+    label: 'Billing Address',
     id: 'address-two',
     name: 'addressTwo',
+    type: 'text',
+  },
+  {
+    label: 'City',
+    id: 'city',
+    name: 'city',
+    type: 'text',
+  },
+  {
+    label: 'Zip code',
+    id: 'zip',
+    name: 'postalCode',
+    type: 'text',
+  },
+  {
+    label: 'Country',
+    id: 'country',
+    name: 'country',
     type: 'text',
   },
   {
@@ -41,18 +65,6 @@ export const userProfileFields: UserProfileField[] = [
     label: 'Cell Phone',
     id: 'cell-phone',
     name: 'cellPhoneNumber',
-    type: 'text',
-  },
-  {
-    label: 'city',
-    id: 'city',
-    name: 'city',
-    type: 'text',
-  },
-  {
-    label: 'country',
-    id: 'country',
-    name: 'country',
     type: 'text',
   },
   {

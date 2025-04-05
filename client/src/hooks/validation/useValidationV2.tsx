@@ -114,6 +114,7 @@ export const useValidationV2 = (validators: Record<string, Validator[]>) => {
 
   const strState = JSON.stringify(state)
 
+
   useEffect(() => {
     const parsedState: ValidationState = JSON.parse(strState)
     let isFormValid = true
@@ -139,16 +140,19 @@ export const useValidationV2 = (validators: Record<string, Validator[]>) => {
     dispatch({ type: ActionType.REGISTER, payload: {name, validators: validators[name]} })
   }, [])
 
-  const changeField = (name: string, value: string) => {
-    dispatch({
-      type: ActionType.CHANGE,
-      payload: {
-        name,
-        value,
-        validators: validators[name]
-      }
-    })
-  }
+
+  const memoValidators = useMemo(() => validators, [validators])
+  const changeField = useCallback((name: string, value: string) => {
+
+      dispatch({
+        type: ActionType.CHANGE,
+        payload: {
+          name,
+          value,
+          validators: memoValidators[name]
+        }
+      })
+  }, [memoValidators])
 
   const touchField = (name: string) => {
     dispatch({
