@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import styles from './cart.module.scss';
 import type { RootState } from '../../app/store/store';
@@ -58,8 +58,6 @@ export const Cart = () => {
       <div>there are no items in your cart</div>
     )
   }
-
-  console.log("the cart")
 
   return (
     <div className={styles.container}>

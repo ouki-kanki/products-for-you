@@ -1,11 +1,9 @@
-import { useEffect, useReducer, useState, ChangeEvent, useMemo } from 'react'
+import { useEffect, useState, ChangeEvent, useMemo } from 'react'
 import { useAppDispatch } from '../../app/store/store';
-import { fieldsReducer } from '../../app/reducers';
 import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
 
 import { useGetUserProfileQuery, useGetFavoriteProductsQuery } from '../../api/userApi';
 import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
-import { ActionTypesProfile } from '../../app/actions';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
 import { useUploadProfileImageMutation } from '../../api/userProfileApi';
 
@@ -32,19 +30,6 @@ type Error = {
   data: {
     message: string
   }
-}
-
-type ProfileState = Omit<IUserProfileBase, 'image'>
-
-// OBSOLETE
-const initialState: ProfileState = {
-  firstName: '',
-  lastName: '',
-  addressOne: '',
-  addressTwo: '',
-  city: '',
-  country: '',
-  email: ''
 }
 
 export const Profile = () => {
@@ -122,7 +107,9 @@ export const Profile = () => {
       })
     }
     if (isUploadImageSuccess) {
-      console.log("isndie the success")
+      showNotification({
+        message: 'image uploaded successfully'
+      })
       // prefetchUserProfile()
 
       apiDispatch(resetApiState())
@@ -139,22 +126,14 @@ export const Profile = () => {
     }
   }, [refetch, strLocation])
 
-  console.log(validatedFields)
 
   // if there is a change in fields show saveChanges btn
   useEffect(() => {
-
-    // const sanitizedValidatedFields = Object.entries(validatedFields).map(([key, value ]) => ({ [key]: value['value'] }))
-    // console.log("comparison", profileData,sanitizedValidatedFields)
-
     const sanitizedValidatedFields: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(validatedFields)) {
       sanitizedValidatedFields[key] = value['value']
       // sanitizedValidatedFields[]
     }
-
-    console.log("the sanitized fieds", profileData, sanitizedValidatedFields)
-
 
     if (profileData) {
       // useCallback on the function on objUtils
@@ -172,7 +151,6 @@ export const Profile = () => {
     if (isError && (error as Error).status === 404) {
       navigate('/profile/create')
     }
-    // TODO: stringify error. (it does not seems to cause problem cause it's null and the it bacames an object?)
   }, [navigate, isError, error])
 
   const handleChange = ({ target: { value, name }}: ChangeEvent<HTMLInputElement>) => {
@@ -181,16 +159,21 @@ export const Profile = () => {
 
   useEffect(() => {
     if (isUpdateError) {
+      // TODO: the type is wrong -> data.image -> array of errors
+      // TODO: handle stack notification. have to show all error messages
       const error = updateError as ValidationError
       console.log("the update error", error)
-      // TODO: handle stack notification. have to show all error messages
-      const message = error.data.non_field_errors[0]
+      if (error) {
+        const data = error?.data
+        const errorArray = Object.values(data).map(value => value[0])
 
-      showNotification({
-        message,
-        type: 'danger'
-      })
+        showNotification({
+          message: errorArray[0],
+          type: 'danger'
+        })
+      }
     }
+
     if (isUpdateSuccess) {
       showNotification({
         message: 'profile updated successfully'
@@ -207,16 +190,27 @@ export const Profile = () => {
   // TODO : use the form validation
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    // filter unchanged fields
+    console.log("validation errors", validationErrors)
+    // check if form is valid
+    if (!isFormValid) {
+      showNotification({
+        message: 'form is not valid'
+      })
+      return
+    }
+
     const data = convertSnakeToCamelV2(profileData as IUserProfile)
-    const profileState = state as IUserProfile
+
     // omit fields if they are not changed
-    const filteredData = Object.keys(profileState as IUserProfile).reduce((ac, key) => {
-      if(profileState[key] !== data[key]) {
-        ac[key] = profileState[key]
+    const filteredData = Object.keys(validatedFields).reduce((ac, key) => {
+      if(validatedFields[key].value !== data[key]) {
+        ac[key] = validatedFields[key].value
       }
       return ac
     }, {} as Record<string, unknown>)
+
+    console.log("filtered data", filteredData)
+
 
     const submitData = convertCamelToSnake({
       data: filteredData as Partial<IUserProfile>
@@ -236,15 +230,18 @@ export const Profile = () => {
       <h1>User Profile</h1>
       <div className={styles.mainContainer}>
         <form className={styles.left}>
-          {userProfileFields.map(field => (
-            <BaseInput
-              key={field.name}
-              label={field.label}
-              name={field.name}
-              value={validatedFields[field.name]?.value || ''}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+          {userProfileFields.filter(field => field.name !== 'image').map(field => (
+            <div key={field.name} className={styles.fieldContainer}>
+              <BaseInput
+                label={field.label}
+                name={field.name}
+                value={validatedFields[field.name]?.value || ''}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                required={validatedFields[field.name]?.required}
+                errors={validationErrors[field.name]}
+              />
+            </div>
           ))}
         </form>
         <div className={styles.right}>

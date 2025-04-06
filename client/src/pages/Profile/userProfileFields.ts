@@ -71,6 +71,6 @@ export const userProfileFields: UserProfileField[] = [
     label: 'image',
     id: 'image',
     name: 'image',
-    type: 'file',
+    type: 'string',
   },
 ]
