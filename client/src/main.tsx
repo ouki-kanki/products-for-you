@@ -7,6 +7,7 @@ import { store } from './app/store/store.ts';
 import { Provider } from 'react-redux'
 
 import { SettingsProvider } from './context/SettingsContext.tsx';
+import { ThemeProvider } from './context/ThemeContext.tsx';
 
 import { BrowserRouter } from 'react-router-dom'
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Provider store={store}>
         <SettingsProvider>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </SettingsProvider>
       </Provider>
     </BrowserRouter>

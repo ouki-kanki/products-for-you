@@ -9,6 +9,7 @@ from products.views import (
     ProductListByCategoryView, GetDefaultVariationsView,
     ProductListByCategoryBySlug,
     PromotedProductItemsListApiView,
+    ProductQuantitiesForCartView,
     LandingPageView,
     GetSimilarProductsView
 )
@@ -26,6 +27,7 @@ urlpatterns = [
     path('products/product-preview/<slug:slug>/', ProductPreview.as_view(), name='product-preview'),
     path('products/category/<int:category_id>', ProductListByCategoryView.as_view(), name='products-by-category-id'),
     path('products/category/<slug:slug>', ProductListByCategoryBySlug.as_view(), name='products-by-category-id'),
+    path('products/quantities', ProductQuantitiesForCartView.as_view(), name='product-quantities'),
     path('products/promotions/', include('promotion.urls')),
     path('categories/', CategoryListView.as_view(), name='categories'),
     path('categories/featured', CategoryFeaturedListView.as_view(), name='categories'),

@@ -9,11 +9,11 @@ interface IProviderProps {
 }
 
 export const ThemeProvider = ({ children }: IProviderProps) => {
-  const [theme, setTheme] = useState('light')
+  const [darkTheme, setDarkTheme] = useState(false)
 
   // TODO: apply more thant 2 variants
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'))
+    setTheme((prevTheme) => (prevTheme !== prevTheme))
   }
 
   return (

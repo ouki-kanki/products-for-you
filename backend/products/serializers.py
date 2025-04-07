@@ -147,6 +147,15 @@ class ProductItemExtendedSerializer(ProductItemSerializer):
         fields = ProductItemSerializer.Meta.fields + ('name',)
 
 
+class ProductItemQuantitySerializer(serializers.ModelSerializer):
+    """
+    used for the cart to validate the quantities of the products.
+    """
+    class Meta:
+        model = ProductItem
+        fields = ('uuid', 'quantity')
+
+
 class ProductAndCategoriesSerializer(serializers.ModelSerializer):
     category = CategoryAndParentCategoriesSerializer(read_only=True)
 

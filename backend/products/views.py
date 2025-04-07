@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework import (
     generics, viewsets, mixins, permissions, authentication, status
 )
@@ -12,7 +13,8 @@ from promotion.models import ProductsOnPromotion
 from .models import Product, ProductItem, Category, ProductImage
 from .serializers import (
     ProductSerializer, ProductVariationSerializer, ProductItemDetailSerializer,
-    ProductItemSerializer, ProductItemExtendedSerializer, CategorySerializer, ProductImageSerializer
+    ProductItemSerializer, ProductItemExtendedSerializer, CategorySerializer, ProductImageSerializer,
+    ProductItemQuantitySerializer
 )
 from common.util.custom_pagination import CustomPageNumberPagination
 
@@ -215,6 +217,34 @@ class GetSimilarProductsView(generics.ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
+class ProductQuantitiesForCartView(generics.ListAPIView):
+    """
+    take the qnts of the products so that the user cannot add more than the available qnts to the cart
+    """
+    serializer_class = ProductItemQuantitySerializer
+    throttle_classes = [ScopedRateThrottle,]
+    throttle_scope = 'cart_limit'
+
+    def post(self, request): # noqa
+        items_uuid_list = request.data.get('uuid_list', [])
+
+        if not items_uuid_list:
+            return Response({
+                "message": 'ids are not valid'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        items = ProductItem.objects.filter(uuid__in=items_uuid_list)
+        if not items.exists():
+            return Response({
+                'message': 'matching items for cart not found'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        serializer = self.get_serializer(items, many=True)
+
+        return Response({
+            'items': serializer.data
+        }, status=status.HTTP_200_OK)
 
 
 # *** THIS IS NOT USED ***

@@ -27,6 +27,11 @@ interface IsimilarProductsParams {
   brand?: string
 }
 
+interface ProductItemQnt {
+  uuid: string;
+  quantity: number;
+}
+
 
 const flatAndConvertToCamel = (products: IProduct[]) => {
     return products.map((product: IProduct) => {
@@ -160,6 +165,13 @@ export const productsApi = createApi({
       transformResponse: (response) => {
         return response
       }
+    }),
+    getItemQuantities: builder.mutation<ProductItemQnt[], string[]>({
+      query: (uuid_list) => ({
+        url: 'products/quantities',
+        method: 'POST',
+        body: { uuid_list }
+      })
     })
   })
 })
@@ -177,5 +189,6 @@ export const {
   useLazyFilterByCategoryQuery,
   useLazyGetProductVariationPreviewQuery,
   useFilterByCategoryQuery,
-  useLazyGetSimilarProductsQuery
+  useLazyGetSimilarProductsQuery,
+  useGetItemQuantitiesMutation
 } = productsApi

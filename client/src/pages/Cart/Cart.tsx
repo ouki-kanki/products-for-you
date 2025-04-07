@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import styles from './cart.module.scss';
@@ -12,12 +12,31 @@ import SubtractIcon from '../../assets/svg_icons/subtract_filled.svg?react'
 import { BaseButton } from '../../components/Buttons/baseButton/BaseButton';
 import { isEmpty } from '../../utils/objUtils';
 
+import { useGetItemQuantitiesMutation } from '../../api/productsApi';
+import { showNotification } from '../../components/Notifications/showNotification';
+
 export const Cart = () => {
   const [isClearModalOpen, setIsClearModalOpen] = useState(false)
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart)
   const total = cart.total
   const navigate = useNavigate()
+  const [getItemQuantities, { data: itemQuantities, isError, isLoading, }] = useGetItemQuantitiesMutation()
+
+
+  console.log("tje cart", cart.items)
+  // console.log(itemQuantities)
+
+  const uuidsString = JSON.stringify(cart?.items.map(item => item.productId))
+
+  useEffect(() => {
+    if (uuidsString.length > 0) {
+      const uuids = JSON.parse(uuidsString)
+      console.log(uuids)
+      getItemQuantities(uuids)
+    }
+
+  }, [uuidsString, getItemQuantities])
 
   const handleNavigateToProduct = (constructedUrl: string, slug: string) => {
     // TODO: dry this is the same in the ProductV2
@@ -25,6 +44,24 @@ export const Cart = () => {
   }
 
   const handleAddQty = (id: number) => {
+    const { quantity } = itemQuantities.items.find(item => item.uuid === id)
+    console.log(quantity)
+
+    // cart quantity
+    const { quantity: cartQuantity } = cart.items.find(item => item.productId === id)
+    console.log(cartQuantity)
+
+    console.log(itemQuantities)
+
+    if (cartQuantity >= quantity) {
+      showNotification({
+        message: 'no more items are available',
+        type: 'caution'
+      })
+      return
+    }
+    // TODO: compare with the qunatity from the db and not allow to add more
+    console.log("the productId", id)
     dispatch(addQuantity({ productId: id }))
   }
 
