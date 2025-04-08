@@ -168,7 +168,7 @@ export const Search = () => {
         </div>
       </div>
 
-      <button onClick={() => handleAddCategoryFilter('shoes')}>yoyo</button>
+      <button onClick={() => handleAddCategoryFilter('shoes')}>test filter</button>
 
       <div className={`${styles.content} ${styles[layout]}`}>
         {data && data.results.map((product, id) => (

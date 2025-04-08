@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import styles from './app.module.scss'
 import type { IUiConfig } from './types';
+import { useTheme } from './context/hooks/useTheme';
 
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
 import { hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
@@ -8,6 +9,7 @@ import { hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 import { EcommerceRoutes } from './routes';
 import { Sidebar } from './components/Sidebar/Sidebar'
 import { CartModal } from './pages'
+import { Spinner } from './components/Spinner/Spinner';
 
 import { useDebounce } from './hooks/useDebounce';
 
@@ -17,9 +19,9 @@ import { sendInitCartToMiddleware, initCart } from './features/cart/cartSlice';
 import type { ICredentials } from './types';
 
 
-
 function App() {
   const dispatch = useDispatch()
+  const { darkTheme, toggleTheme } = useTheme()
 
   useEffect(() => {
     try {
@@ -76,12 +78,12 @@ function App() {
 
   if (isLoading) {
     return (
-      <div>IS LOADING</div>
+      <Spinner/>
     )
   }
 
   return (
-    <div className={styles.appContainer}>
+    <div className={`${styles.appContainer} ${darkTheme ? 'dark-theme' : ''}`}>
         <Sidebar/>
         <CartModal/>
       <div className={styles.contentNavContainer}>

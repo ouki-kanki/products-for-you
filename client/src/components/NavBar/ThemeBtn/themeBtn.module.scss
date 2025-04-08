@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  // border: 1px solid #888;
+  border-radius: 50%;
+  transition: box-shadow 2s ease-out;
+}
+
+
+.container.sun {
+  box-shadow:
+  // 0px 0px 5px rgba(247, 220, 13, 0.783),
+  // 0px 0px 10px rgba(255, 241, 49, 0.847),
+  0px 0px 15px rgba(248, 255, 54, 0.983),
+  0px 0px 25px rgba(248, 251, 140, 0.718);
+
+
+    &:hover {
+      box-shadow:
+      inset 0px 0px 10px rgba(242, 239, 76, 0.939),
+      0px 0px 5px rgba(247, 220, 13, 0.783),
+      0px 0px 10px rgba(255, 241, 49, 0.847),
+      0px 0px 15px rgba(248, 255, 54, 0.983),
+      0px 0px 25px rgba(248, 251, 140, 0.718);
+      // transition: box-shadow 2s ease-in-out;
+
+    }
+}
+
+.container.moon {
+  box-shadow:
+  inset 0px 0px 10px rgba(242, 239, 76, 0.939),
+  0px 0px 5px rgba(177, 242, 243, 0.783),
+  0px 0px 10px rgba(167, 208, 204, 0.847),
+  0px 0px 15px rgba(248, 255, 54, 0.983),
+  0px 0px 25px rgba(248, 251, 140, 0.718);
+}
+
+
+// 0px 0px 5px rgba(247, 220, 13, 0.783),
+// 0px 0px 10px rgba(255, 241, 49, 0.847),
+// 0px 0px 15px rgba(248, 255, 54, 0.983),
+// 0px 0px 25px rgba(248, 251, 140, 0.718);

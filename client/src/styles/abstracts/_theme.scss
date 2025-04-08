@@ -1,0 +1,36 @@
+@use './colors' as *;
+
+
+$light-theme: (
+  primary: $blue-light-primary,
+  secondary: $blue-light-secondary,
+  background: rgb(224, 224, 224),
+  second-background:rgb(224, 224, 224),
+  color: #7777,
+);
+
+$dark-theme: (
+  primary: $lime-primary,
+  secondary: $lime-secondary,
+  background: #121212,
+  second-background: #2f2f2f,
+  color: rgb(225, 228, 197),
+);
+
+
+:root {
+  --background-color: #{map-get($light-theme, background)};
+  --background-color-2: #{map-get($light-theme, second-background)};
+  --text-color: #{map-get($light-theme, color)};
+  --primary-color: #{map-get($light-theme, primary)};
+  --secondary-color: #{map-get($light-theme, secondary)};
+}
+
+/* When `dark-theme` is added to <html>, override variables */
+.dark-theme {
+  --background-color: #{map-get($dark-theme, background)};
+  --background-color-2: #{map-get($dark-theme, second-background)};
+  --text-color: #{map-get($dark-theme, color)};
+  --primary-color: #{map-get($dark-theme, primary)};
+  --secondary-color: #{map-get($dark-theme, secondary)};
+}

@@ -12,6 +12,8 @@ import { Button } from '../../UI/Button/Button';
 import cartIcon from '../../assets/svg_icons/cart.svg';
 import bellIcon from '../../assets/svg_icons/bell.svg'
 import { AnimatedCross } from '../Animations/AnimatedCross/AnimatedCross';
+import { ThemeBtn } from './ThemeBtn/ThemeBtn';
+
 
 
 import { useAuth } from '../../hooks/useAuth';
@@ -184,6 +186,9 @@ export const NavBar = () => {
             </div>
             )
           }
+          <div className={styles.themeBtnContainer}>
+            <ThemeBtn/>
+          </div>
         </div>
       </div>
     </nav>

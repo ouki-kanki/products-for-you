@@ -44,14 +44,12 @@ export const Cart = () => {
   }
 
   const handleAddQty = (id: number) => {
+    //  db qunatity
     const { quantity } = itemQuantities.items.find(item => item.uuid === id)
-    console.log(quantity)
 
     // cart quantity
     const { quantity: cartQuantity } = cart.items.find(item => item.productId === id)
-    console.log(cartQuantity)
 
-    console.log(itemQuantities)
 
     if (cartQuantity >= quantity) {
       showNotification({
