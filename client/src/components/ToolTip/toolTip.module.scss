@@ -3,6 +3,7 @@
   // width: fit-content;
   display: inline-block;
   position: relative;
+  z-index: 1000;
 }
 
 
@@ -14,15 +15,14 @@ $arrow-grey: #777;
   background-color: #777;
   color: white;
   display: flex;
-  z-index: 1000;
   height: 30px;
   justify-content: center;
   align-items: center;
   padding: 5px;
   border-radius: 5px 5px 5px 0;
   width: 200px;
-  top: -140%;
-  left: 100%;
+  top: -40%;
+  left: 110%;
   transform: scale(0);
   transform-origin: 0 130%;
   transition: transform 0.2s ease-in;

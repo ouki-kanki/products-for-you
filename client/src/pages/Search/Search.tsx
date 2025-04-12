@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react'
+import styles from './search.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
-import { addFacets } from '../../features/filtering/facetSlice';
+import { addFacets, setActiveFacets } from '../../features/filtering/facetSlice';
 
 import { isEmpty } from '../../utils/objUtils';
 
 // TODO: create index.ts to export all hooks
 import { useSearchProductItemQuery, useLazySearchProductItemQuery } from '../../api/searchApi';
-import { useSearchParams, NavLink, json } from 'react-router-dom';
+import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 import { useClassLister } from '../../hooks/useClassLister';
 import { usePagination } from '../../hooks/usePagination';
 import { useSort } from '../../hooks/useSort';
 import { useListSearchParams } from '../../utils/routerUtils';
+import { usePrevious } from '../../hooks/usePrevious';
 
-
-import styles from './search.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/ProductPreview1';
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
+import { Spinner } from '../../components/Spinner/Spinner';
 
 const buttons = [
   <FontAwesomeIcon icon={faTableList}/>,
@@ -37,11 +38,7 @@ export const Search = () => {
   const [ searchParams, setSearchParams ] = useSearchParams()
   const classes = useClassLister(styles)
   const dispatch = useDispatch()
-  // const [category, setCategory] = useState('shoes')
-
-  // console.log("the search params", searchParams)
-
-  // if the user changes the sort use the hook
+  const location = useLocation()
 
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
@@ -64,33 +61,44 @@ export const Search = () => {
   const facets = data?.facets
   const activeFacets = useSelector((state: RootState) => state.filters.activeFacets)
 
+
   let activeFacetsStr = '';
   if (!isEmpty(activeFacets)) {
     activeFacetsStr = JSON.stringify(activeFacets)
   }
 
-  // set filters to the querystr
+  // console.log("activefacets", activeFacets)
+
+  // const prevFacetsStrRef = useRef(activeFacetsStr)
+  // let prevFacetsStr = prevFacetsStrRef.current
+  const prevFacetsStr = usePrevious(activeFacetsStr) as string
+
   useEffect(() => {
-    if (activeFacetsStr.length > 0) {
-      const activeFacets = JSON.parse(activeFacetsStr)
-      Object.entries(activeFacets).forEach(([ key, value ]) => {
-        const valuesstr = value.join(',')
+    // console.log("prev -> ", prevFacetsStr, activeFacetsStr)
+    // console.log("current -> ", activeFacetsStr)
 
-        setSearchParams(searchParams => {
-          // if there are no values for the certain facet delete the facet
-          if (activeFacets[key].length === 0) {
-            searchParams.delete(key)
+
+    if (activeFacetsStr.length > 0 && prevFacetsStr !== activeFacetsStr) {
+      const activeFacets: Record<string, string[]> = JSON.parse(activeFacetsStr)
+
+      setSearchParams((prevSearchParams) => {
+        const newSearchParams = new URLSearchParams(prevSearchParams)
+
+        Object.entries(activeFacets).forEach(([key, value]) => {
+          if (value.length === 0) {
+            newSearchParams.delete(key)
           } else {
-            searchParams.set(key, valuesstr) // append to prev
+            newSearchParams.set(key, value.join(','))
           }
-          return searchParams
-        }, { replace: false })
+        })
+        return newSearchParams
+      }, {replace: false})
 
-      })
+      // prevFacetsStr = activeFacetsStr
     }
-  }, [activeFacetsStr, setSearchParams])
+  }, [prevFacetsStr, activeFacetsStr, setSearchParams])
 
-  // TESTING
+  // TEST the category facet
   const handleAddCategoryFilter = (category: string) => {
     setSearchParams(searchParams => {
       searchParams.set('category', category)
@@ -110,12 +118,15 @@ export const Search = () => {
         facets: fts,
         sideBarFieldName: 'search'
       }))
+      // TODO: the sidebar also sets the active facets.this was added to fix the problem
+      // where after trigger the back btn on the browser the activeFacets in the redux state did not update\
+      // timeout here serves to fight the race condition that happens
+      // need to find a better approach
+      setTimeout(() => {
+        dispatch(setActiveFacets())
+      }, 300);
     }
-  }, [facets_for_dep, dispatch])
-
-  // add fitler by category to query string
-
-
+  }, [location.search, facets_for_dep, dispatch])
 
   const handleChangeLayout = (num: number) => {
       switch(num) {
@@ -135,13 +146,13 @@ export const Search = () => {
 
   if (isLoading) {
     // TODO: put a spinner or something
-    return <div>Is loading</div>
+    return <Spinner/>
   }
 
   return (
     <div className={styles.searchContainer}>
       <div className={styles.controlBar}>
-      {/* <button onClick={() => appDispatch(asyncTest('test'))}>test async</button> */}
+      <button onClick={() => handleAddCategoryFilter('shoes')}>add category</button>
         <div className={styles.buttonGroup}>
           <ButtonGroup
             onClick={(num) => handleChangeLayout(num)}
@@ -167,8 +178,6 @@ export const Search = () => {
             </select>
         </div>
       </div>
-
-      <button onClick={() => handleAddCategoryFilter('shoes')}>test filter</button>
 
       <div className={`${styles.content} ${styles[layout]}`}>
         {data && data.results.map((product, id) => (
@@ -201,11 +210,6 @@ export const Search = () => {
           className={page == data?.num_of_pages ? styles.disabled : ''}
           onClick={() => page < data!.num_of_pages && handleNavigate(page + 1)}
           >next</div>
-      </div>
-      <div>
-        <h2>sort by</h2>
-        <div style={{ display: 'flex' }}>
-        </div>
       </div>
       <br />
 

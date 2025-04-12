@@ -5,11 +5,11 @@ interface IToolTipProps {
   children: React.ReactNode;
   showDelay?: number;
   hideDelay?: number;
-  position?: 'top-right' | 'bottom-right'
+  position?: 'top-right' | 'bottom-right';
+  message: string;
 }
 
-
-export const ToolTip = ({ children, showDelay=300, hideDelay=200, position='top-right' }: IToolTipProps) => {
+export const ToolTip = ({ children, showDelay=300, hideDelay=200, position='top-right', message }: IToolTipProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const showTimeout = useRef<NodeJS.Timeout | null>(null)
   const hideTimeout = useRef<NodeJS.Timeout | null>(null)
@@ -50,7 +50,7 @@ export const ToolTip = ({ children, showDelay=300, hideDelay=200, position='top-
       {children}
       <div
         className={`${styles.toolTip} ${styles[`${position}`]} ${isVisible ? styles.visible : ''}`}
-      >the tooltip message</div>
+      >{message}</div>
       </div>
   )
 }

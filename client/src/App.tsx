@@ -2,6 +2,8 @@ import { useCallback, useEffect } from 'react'
 import styles from './app.module.scss'
 import type { IUiConfig } from './types';
 import { useTheme } from './context/hooks/useTheme';
+import { useLocation } from 'react-router-dom';
+
 
 import { useLazyGetProductsQuery } from './features/products/productsSlice'
 import { hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
@@ -22,6 +24,10 @@ import type { ICredentials } from './types';
 function App() {
   const dispatch = useDispatch()
   const { darkTheme, toggleTheme } = useTheme()
+  const location = useLocation()
+
+
+  console.log("the location", location.pathname)
 
   useEffect(() => {
     try {
@@ -84,6 +90,18 @@ function App() {
 
   return (
     <div className={`${styles.appContainer} ${darkTheme ? 'dark-theme' : ''}`}>
+        <div className={styles.clipMain}>
+          {(location.pathname === '/' || location.pathname === '/login') && (
+          <div className={styles.clipContainer}>
+            <svg>
+              <clipPath id="wave" clipPathUnits="objectBoundingBox">
+                <path className="st0" d="M1,0c0,0-0.3,0.1-0.5,0.1S0.3,0,0,0.1V1h1L1,0z"/>
+              </clipPath>
+            </svg>
+          </div>
+            )
+          }
+        </div>
         <Sidebar/>
         <CartModal/>
       <div className={styles.contentNavContainer}>

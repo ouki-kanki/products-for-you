@@ -1,8 +1,7 @@
-import React, { ReactElement, useEffect, useState, useCallback } from 'react'
+import { ReactElement, useState,} from 'react'
 import styles from './sidebarField.module.scss';
 import { NavLink } from 'react-router-dom';
 import type { Facets } from '../../api/searchApi';
-import { IsEmptyObj } from '@reduxjs/toolkit/dist/tsHelpers';
 import { isEmpty } from '../../utils/objUtils';
 import { useLocation } from 'react-router-dom'
 

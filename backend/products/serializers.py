@@ -310,16 +310,26 @@ class ProductItemDetailSerializer(serializers.ModelSerializer):
         return obj.product.features
 
     def get_other_variations_slugs(self, obj): # noqa
+        """
+        this is used to change variation inside the product detail
+        """
         slugs_and_thumbs = []
         request = self.context.get('request')
 
-        for variation in obj.product.product_variations.all():
-            if variation.slug == obj.slug:
-                continue
+        other_variations = [variation for variation in obj.product.product_variations.all()
+                            if variation.slug != obj.slug]
 
+        if not other_variations:
+            return []
+
+        for variation in other_variations:
             slug = variation.slug
             default_thumb_qs = variation.product_image.filter(is_default=True)
-            thumb_url = request.build_absolute_uri(default_thumb_qs[0].thumbnail.url)
+
+            if default_thumb_qs.exists():
+                thumb_url = request.build_absolute_uri(default_thumb_qs[0].thumbnail.url)
+            else:
+                thumb_url = request.build_absolute_uri('/media/icons/placeholder.jpg')
             slugs_and_thumbs.append({'slug': slug, 'thumb_url': thumb_url})
 
         return slugs_and_thumbs

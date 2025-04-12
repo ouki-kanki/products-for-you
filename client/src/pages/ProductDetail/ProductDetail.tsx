@@ -166,26 +166,15 @@ export const ProductDetail = () => {
     )
   }
 
-  const handleTestNontification = () => {
-    // setShowNotification(true)
-    showNotification({
-      message: 'yoyoy',
-      duration: 2000,
-      position: 'top-right',
-      appearFrom: 'from-right',
-      overrideDefaultHideDirection: true,
-      hideDirection: 'to-top',
-      type: 'success'
-    })
+  // TODO: need to handle this situation better
+  if (!data) {
+    return (
+      <h3>we are sorry, could not find info for the current product.</h3>
+    )
   }
-
-
-
-  // TODO: change variation
 
   return (
     <div className={styles.container}>
-      <div onClick={handleTestNontification} style={{ cursor: 'pointer' }}>test notif</div>
       {data && (
           <div className={styles.sectionOne}>
             <div className={styles.leftContainer}>

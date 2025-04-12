@@ -5,8 +5,10 @@ import { QuantityIndicator } from '../../../UI/Indicators/QuantityIndicator';
 import { useClassLister } from '../../../hooks/useClassLister';
 
 
+// TODO: move this interface
 interface ProductPreviewProps {
   name: string;
+  brand: string;
   slug: string;
   categories: string[];
   thumb: string;
@@ -23,8 +25,9 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
   const { layout } = props
   const navigate = useNavigate()
   const classes = useClassLister(styles)
+  // selects the last child of the categories
   const category = props.categories ? props.categories[props.categories?.length -1] : ''
-  const { slug, name } = props
+  const { slug, name, brand } = props
 
   // TODO: the same is used elsewhere . move to a common place (used in the orders component)
   const handleProductDetail = (categorySlug: string, productItemSlug: string) => {
@@ -55,8 +58,13 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
           <div className={styles.container_right__middle__left}>
             {category && (
               <Link
-                to={`/products/${category}`}
+                to={`/search?category=${category}`}
                 className={styles.category}>{category}</Link>
+            )}
+            {brand && (
+              <Link
+                to={`/search?brand=${brand}`}
+                className={styles.category}>{brand}</Link>
             )}
             <p className={styles.description}>{props.description}</p>
             <div className={styles.priceContainer}>

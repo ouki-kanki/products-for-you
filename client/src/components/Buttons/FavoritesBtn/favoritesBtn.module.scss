@@ -7,10 +7,13 @@
   @include transition-transform-quick();
   cursor: pointer;
   fill: red;
+  transition: transform .2s linear;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 
-.heartIconScale {
-  transform: scale(1.2);
-}
+
 
 

@@ -1,6 +1,7 @@
 .containerProduct {
   font-size: 1rem;
   display: flex;
+  background-color: var(--background-color-2);
   // overflow: hidden;
 }
 
@@ -44,8 +45,9 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  background-color: #FAF9F6;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  // background-color: #FAF9F6;
   // background-color: $blue-light-primary;
 
 
@@ -86,7 +88,6 @@
 }
 
 
-
 $gradient_blue_dark: #5d95d5;
 $gradient_blue_light: #7bb3eb;
 
@@ -113,7 +114,9 @@ $gradient_blue_light: #7bb3eb;
 }
 
 .button:not([disabled]):focus {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(46, 119, 158, 0.5), .125rem .125rem 1rem rgba(114, 179, 219, 0.5);
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
+            -.125rem -.125rem 1rem rgba(46, 119, 158, 0.5),
+            .125rem .125rem 1rem rgba(114, 179, 219, 0.5);
 }
 
 .button:not([disabled]):hover {

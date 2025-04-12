@@ -48,6 +48,7 @@ export const facetSlice = createSlice({
   reducers: {
     addFacets: (state, action: PayloadAction<{ facets: Facet, sideBarFieldName: string }>) => {
       const { payload: { facets, sideBarFieldName }} = action
+      console.log("inside the slice facets", facets)
 
       // TODO: fix the type
       state.facets = facets

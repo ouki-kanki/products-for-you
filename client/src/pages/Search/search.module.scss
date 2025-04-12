@@ -1,5 +1,6 @@
 .searchContainer {
   padding: 48px;
+  z-index: 100;
 
   @media screen and (max-width: 1024px) {
     padding: 20px 20px;
@@ -48,9 +49,8 @@
 
   & > div {
     // aspect-ratio: 1 / 1.5;
-    height: 290px;
+    // height: 290px;
     // width: 300px;
-    background-color: pink;
     box-shadow: $box-shadow-transparent-black;
   }
 }

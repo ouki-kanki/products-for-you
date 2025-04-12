@@ -11,7 +11,8 @@ import { useSroll } from '../../hooks/useScroll';
 import { SideBarField } from './SideBarField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
-
+import { ToolTip } from '../ToolTip/ToolTip';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 export const Sidebar = () => {
   const [rotation, setRotation] = useState('')
@@ -20,12 +21,28 @@ export const Sidebar = () => {
   const { facets, sideBarFieldName } = useSelector((state: RootState) => state.filters)
   const { isScrollingDown } = useSroll()
   const classes = useClassLister(styles)
+  // const size = useWindowSize()
+
+  // const isMobile = size[0] < 768
+  const isMobile = false;
+
 
   const navContainerStyles = `
     ${styles.sidebarContainer}
     ${isSideBarHidden ? styles.hidden : ''}
     ${isScrollingDown ? styles.scrolledDown : ''}
   `
+
+  const renderSideBarField = ({ title, icon, link }) => (
+    <SideBarField
+    key={title}
+    title={title}
+    icon={icon}
+    link={link}
+    name={sideBarFieldName}
+    facets={facets}
+  />
+  )
 
   return (
     <div className={navContainerStyles}>
@@ -36,16 +53,15 @@ export const Sidebar = () => {
         <h2>Products for you</h2>
       </div>
       <nav className={styles.fieldsContainer}>
-          {sideBarData.map(({ title, icon, link }) => (
-            <SideBarField
-              key={title}
-              title={title}
-              icon={icon}
-              link={link}
-              name={sideBarFieldName}
-              facets={facets}
-            />
-          ))}
+          {sideBarData.map(({ title, icon, link }) => {
+            return isMobile ?
+            <ToolTip
+              message={title}
+              showDelay={200 }
+            >
+              {renderSideBarField({ title, icon, link })}
+            </ToolTip> : renderSideBarField({ title, icon, link })
+          })}
       </nav>
       <div className={styles.footer}>
         <FontAwesomeIcon icon={faFacebook} size='lg'/>

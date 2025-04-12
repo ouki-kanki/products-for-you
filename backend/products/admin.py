@@ -1,7 +1,8 @@
+from io import BytesIO
 from typing import Any
 from django import forms
 from django.contrib import admin, messages
-from django.conf import settings
+from django.core.files.base import ContentFile
 from django.db import models, transaction
 from django.db.models import Q, F
 from django import forms
@@ -29,6 +30,8 @@ from common.util.static_helpers import render_icon
 from widgets.custom_admin_widgets import CustomAdminFileWidget
 
 from .fields.admin_fields import FeaturesField
+
+from rembg import remove
 
 admin.site.site_title = 'products-for-you admin'
 admin.site.site_header = 'Products For You Administration'
@@ -302,7 +305,7 @@ class ProductImageAdmin(admin.ModelAdmin):
 
     def product_image(self, obj):
         return render_icon(obj, 'image')
-            
+
     def delete_record_and_images(self, request, queryset):
         """
         remove the images from disk and then delete the record
@@ -316,18 +319,55 @@ class ProductImageAdmin(admin.ModelAdmin):
         queryset.delete()
 
 
+class ProductImageInlineForm(forms.ModelForm):
+    remove_background_action = forms.BooleanField(required=False, label='Remove Background')
+    revert_action = forms.BooleanField(required=False, label='return to the original')
+
+    class Meta:
+        model = ProductImage
+        fields = ('is_default', 'has_thumbnail', 'image', 'remove_background_action', 'revert_action')
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        if self.cleaned_data.get('remove_background_action'):
+            if instance.image:
+                img_data = instance.image.read()
+                output = remove(img_data)
+
+                output_image = BytesIO(output)
+                new_image = ContentFile(output_image.getvalue(), name=f'{instance.pk}_no_bg.png')
+                instance.image.save(new_image.name, new_image, save=False)
+
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    readonly_fields = ['product_image', 'product_thumb']
+    readonly_fields = ['remove_bg_btn', 'product_image', 'product_thumb']
     exclude = ['thumbnail',]  #  TODO: if there is need for custom thump remove this but have to inform that thumb is generated automatically
     extra = 1
-    form = ProductImageForm  
+    # form = ProductImageInlineForm
+
+    # def get_urls(self, obj=None):
+
+    def remove_bg_btn(self, obj): # noqa
+
+        if obj.pk:
+            return format_html(
+                "<button "
+                "class='button'"
+                "type='button' onclick='removeBackGround({})'>remove background</button>",
+                obj.pk
+            )
+        return "save the image first"
 
     def product_image(self, obj):  # noqa
         return render_icon(obj, 'image')
 
-    def product_thumb(self, obj):
+    def product_thumb(self, obj): # noqa
         return render_icon(obj, 'thumbnail')
+
+    class Media:
+        js = ('js/remove_bg.js',)
 
 
 class PromotionsInline(admin.TabularInline):

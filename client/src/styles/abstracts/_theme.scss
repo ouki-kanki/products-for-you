@@ -6,7 +6,9 @@ $light-theme: (
   secondary: $blue-light-secondary,
   background: rgb(224, 224, 224),
   second-background:rgb(224, 224, 224),
-  color: #7777,
+  color: #555,
+  link-color: steelblue,
+  filter-clip_path: drop-shadow(5px 5px 10px #666)
 );
 
 $dark-theme: (
@@ -15,8 +17,13 @@ $dark-theme: (
   background: #121212,
   second-background: #2f2f2f,
   color: rgb(225, 228, 197),
+  link-color: #89cff0,
+  filter-clip_path: drop-shadow(5px 5px 5px #eff179)
+          drop-shadow(5px 5px 15px #e0e0bc)
 );
 
+
+// backgournd-color-2 used for card background
 
 :root {
   --background-color: #{map-get($light-theme, background)};
@@ -24,6 +31,8 @@ $dark-theme: (
   --text-color: #{map-get($light-theme, color)};
   --primary-color: #{map-get($light-theme, primary)};
   --secondary-color: #{map-get($light-theme, secondary)};
+  --link-color: #{map-get($light-theme, link-color)};
+  --filter-clip_path: #{map-get($light-theme, filter-clip_path)};
 }
 
 /* When `dark-theme` is added to <html>, override variables */
@@ -33,4 +42,6 @@ $dark-theme: (
   --text-color: #{map-get($dark-theme, color)};
   --primary-color: #{map-get($dark-theme, primary)};
   --secondary-color: #{map-get($dark-theme, secondary)};
+  --link-color: #{map-get($dark-theme, link-color)};
+  --filter-clip_path: #{map-get($dark-theme, filter-clip_path)};
 }

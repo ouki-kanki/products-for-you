@@ -11,6 +11,7 @@ const Home = () => {
     <>
       <NavBar/>
       <Breadcrumbs/>
+
       <section className={styles.section}>
         <Outlet/>
       </section>

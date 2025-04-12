@@ -6,22 +6,22 @@ import { useTheme } from '../../../context/hooks/useTheme'
 
 export const ThemeBtn = () => {
   const { darkTheme, toggleTheme } = useTheme()
-  console.log("isdart", darkTheme)
 
   return (
     <div
-      className={`${styles.container} ${darkTheme ? styles.moon : styles.sun}`}
+      className={`${styles.container} ${darkTheme ? styles.sun : styles.moon}`}
       onClick={toggleTheme}
       >
       {darkTheme ? (
-        <MoonIcon width={20} height={20} fill='beige'/>
+        <SunIcon width={20} height={20} fill='yellow'/>
       ): (
-        <SunIcon
+        <MoonIcon
+          className={styles.moonSvg}
           width={20}
           height={20}
-          // stroke='black'
-          // strokeWidth={.3}
-          fill='yellow'/>
+          stroke="none"
+          // strokeWidth={.1}
+          fill='beige'/>
         )
       }
     </div>

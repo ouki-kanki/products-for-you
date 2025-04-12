@@ -23,7 +23,7 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
         <h2>Featured Product</h2>
         <div className={styles.featuredProductContainer}>
           <ProductV2
-            width='wide'
+            width='fluid'
             name={featuredItem.name}
             price={featuredItem.price}
             quantity={featuredItem.quantity}

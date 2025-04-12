@@ -1,6 +1,8 @@
+@use '../../styles/styles_v2/mixins_v2' as *;
+
 .navContainer {
   position: sticky;
-  top: 0;
+  top: 10px;
   display: flex;
   height: 3.5rem;
   padding: 0 20px 10px 0;
@@ -20,6 +22,13 @@
   display: flex;
 }
 
+.rightContainer {
+  @include mobile-12pro {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
 .leftContainer {
   margin-left: .3rem;
   align-items: center;
@@ -31,6 +40,10 @@
 
 .searchContainer {
   margin-right: 10px;
+
+  @include mobile-12pro {
+    margin-top: 10px;
+  }
 }
 
 .buttonsContainer {
@@ -94,7 +107,7 @@ $notification-height: 30px;
     transform: translateY(1px);
     font-weight: bold;
     font-family: 'Lemon', serif;
-    color: black;
+    color: var(--text-color);
     // color: white;
     // text-shadow:
     // -1px -1px 0 #000,

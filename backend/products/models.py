@@ -1,6 +1,8 @@
 import os
 import uuid
-from io import IOBase
+from io import IOBase, BytesIO
+
+from django.core.files.base import ContentFile
 from django.db import models, transaction
 from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
@@ -27,7 +29,7 @@ from services.imageServices import (
 from user_control.models import CustomUser as User
 
 from .utils import get_list_of_parent_categories
-
+from rembg import remove
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -197,6 +199,7 @@ class ProductItem(models.Model):
     """ PRODUCT - VARIANT """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    # TODO: need to remove this. there is a property that builds the variation name
     variation_name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
     sku = models.CharField(max_length=255, blank=True, unique=True)
@@ -352,6 +355,19 @@ class ProductDetail(models.Model):
         return f"details for product {self.product_item.product.name}"
 
 
+def remove_backGround_v2(instance): # noqa
+    try:
+        with instance.image.open('rb') as img_file:
+            img_data = img_file.read()
+            output = remove(img_data)
+            output_image = BytesIO(output)
+            new_image = ContentFile(output_image.getvalue(), name=f'{instance.product_item.variation_name}_nobg')
+            instance.image = new_image
+    except Exception as e:
+        # TODO: handle the exception better
+        print(f"could not remove back ground")
+
+
 class ProductImage(models.Model):
     product_item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, related_name='product_image')
     image = models.ImageField(upload_to=upload_product_item_image)
@@ -397,6 +413,9 @@ class ProductImage(models.Model):
             thumb = generate_thumbnail_v2(self, 'image', self.product_item.variation_name)
             self.thumbnail = thumb
 
+        if self.remove_background:
+            remove_backGround_v2(self)
+
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -421,11 +440,14 @@ def product_image_pre_save(sender, instance, *args, **kwargs):
             other_default_images.update(is_default=False)
 
 
-@receiver(post_save, sender=ProductImage)
-def product_image_post_save(sender, instance, *args, **kwargs):
-    output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
-    if instance.remove_background:
-        remove_background(instance.image, output_path)
+
+
+
+# @receiver(post_save, sender=ProductImage)
+# def product_image_post_save(sender, instance, *args, **kwargs):
+#     output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
+#     if instance.remove_background:
+#         remove_background(instance.image, output_path)
 
 
 

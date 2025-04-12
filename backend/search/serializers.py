@@ -9,6 +9,7 @@ class SearchProductItemSerializer(serializers.Serializer): # noqa
     thumb = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     name = serializers.CharField(read_only=True)
+    brand = serializers.CharField(read_only=True)
     categories = serializers.ListField(read_only=True)
     description = serializers.CharField(read_only=True)
     # name_suggest = NameSerializer(read_only=True)

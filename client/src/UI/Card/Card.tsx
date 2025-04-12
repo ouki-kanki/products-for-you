@@ -5,15 +5,15 @@ import styles from './card.module.scss'
 export type WidthType = 'medium' | 'wide' | 'fluid'
 
 interface ICardProps extends HTMLProps<HTMLDivElement>  {
-  width: WidthType
+  width: WidthType;
   shadow?: boolean
 }
 
 /**
- * 
- * @param param0 
- * @returns 
- * 
+ *
+ * @param param0
+ * @returns
+ *
  * this have an embedded badding 2rem 1.3rem
  */
 export const Card = ({ children, width, shadow=true, ...rest }: PropsWithChildren<ICardProps> ) => {
@@ -25,12 +25,12 @@ export const Card = ({ children, width, shadow=true, ...rest }: PropsWithChildre
       case 'wide':
         return wide
       case 'fluid':
-        return ''       
+        return ''
     }
   }
-  
+
   return (
-    <div 
+    <div
       className={`${styles.cardContainer} ${style(width)} ${!shadow && styles.noShadow}`}
       { ...rest }
       >
