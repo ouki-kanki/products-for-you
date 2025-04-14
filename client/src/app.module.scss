@@ -8,39 +8,6 @@
   filter: drop-shadow(5px 5px 10px #666);
 }
 
-.clipMain {
-  position: absolute;
-  // z-index: 100;
-  // flex: 1;
-  height: 100%;
-  width: 100%;
-  filter: var(--filter-clip_path);
-  // filter: drop-shadow(5px 5px 5px #eff179)
-          // drop-shadow(5px 5px 15px #e0e0bc);
-  // width: 100%;
-  // background-color: red;
-}
-
-.clipContainer {
-  // clip-path: path("M1,0C0,0-0.3,0.1-0.5,0.1S0.3,0,0,0.1V1h1L1,0Z");
-  // clip-path: path("M1,0 c0,0 -0.3,0.1 -0.5,0.1 S0.3,0,0,0.1 V1 H1 L1,0 Z");
-  // clip-path: path(
-    // "M 1,0 C 1,0 0.7,10% 0.5,10% S 0.3,0 0,10% V 100% H 100% L 1,0 Z"
-    // );
-    background: linear-gradient(to bottom, lightblue, #666);
-    position: absolute;
-    // z-index: -1;
-    height: 100%;
-    width: 100%;
-    clip-path: url(#wave);
-
-    svg {
-
-  }
-  // flex-grow: 1;
-  // background-color: red;;
-}
-
 .contentNavContainer {
   flex-grow: 1;
   display: flex;
@@ -50,8 +17,6 @@
   overflow-x: hidden; // CAUTION: for some reason if this is missing sidebar is srinking when the products do not fit inside the products container in landing and products page.
   // justify-content: center;
   // background: transparent;
-
-
 }
 
 

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./baseConfig";
 
-interface SearchProductItem {
+export interface SearchProductItem {
   thumb: string;
   image: string;
   name: string;
@@ -20,7 +20,7 @@ export interface Facets {
   [key: string]: Facet,
 }
 
-interface ListResponse<T> {
+export interface ListResponse<T> {
   next: string | null;
   prev: string | null;
   total_items: number;

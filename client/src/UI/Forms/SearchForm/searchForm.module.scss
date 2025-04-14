@@ -22,13 +22,16 @@
   height: $btn_height;
   padding: 10px 20px;
   border-radius: 10px;
-  border: 1px solid  #dcdcdc;
+  // border: 1px solid  #dcdcdc;
   font-size: medium;
   font-weight: bold;
   transition: border .1s ease-out;
+  border: 3px solid #a7a7a7;
+  background-color: var(--background-color-2);
+  color: var(--text-color);
 
   &:hover {
-    border: 3px solid #a7a7a7;
+    border: 3px solid #7d7d7d;
   }
 
   &:focus {
@@ -36,7 +39,7 @@
   }
 
   &::placeholder {
-    color: $search_color_primary;
+    color: var(--text-color);
     font-size: medium;
     font-weight: bold;
   }
@@ -45,11 +48,14 @@
 .searchIcon {
   position: absolute;
   right: 20px;
-  color: red;
   cursor: pointer;
 
   &:hover {
     transform: scale(1.1);
+  }
+
+  path {
+    fill: rgb(172, 231, 235);
   }
 }
 

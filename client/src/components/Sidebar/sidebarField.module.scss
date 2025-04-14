@@ -1,5 +1,6 @@
 .navFieldContainer {
   position: relative;
+  // background-color: $blue-light-primary;
 }
 
 .linkContainer {
@@ -9,8 +10,29 @@
   justify-content: flex-start;
   color: antiquewhite;
 
+  &.active {
+    span:nth-child(2) {
+      background: $gradient_yellow_45_var2;
+      color: transparent;
+      background-clip: text;
+    }
+  }
+
+
+  @media  screen and (max-width: 906px) {
+    &.active {
+      background-color: $blue-light-primary;
+    }
+  }
+
   & span {
     color: inherit;
+    // the text of the link
+
+    path {
+      // the color of the icons
+      fill: $dark-gray;
+    }
   }
 
   svg {
@@ -23,7 +45,7 @@
     }
   }
 
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 906px){
     .title {
       display: none;
     }

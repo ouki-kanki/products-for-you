@@ -2,15 +2,17 @@
   font-size: 1rem;
   display: flex;
   background-color: var(--background-color-2);
-  // overflow: hidden;
+
+
+  @media screen and (max-width: 890px) {
+    font-size: small;
+  }
 }
 
 // left and right parent
 .container {
   flex: 0 0 50%;
   // @include border_green__bold
-  // flex-grow: 1;
-  // flex-basis: 50%;
 }
 
 .containerLeft {
@@ -47,10 +49,6 @@
   flex-direction: column;
   overflow-y: hidden;
   overflow-x: hidden;
-  // background-color: #FAF9F6;
-  // background-color: $blue-light-primary;
-
-
 
   &__middle {
     flex-grow: 1;
@@ -86,10 +84,6 @@
   }
 
 }
-
-
-$gradient_blue_dark: #5d95d5;
-$gradient_blue_light: #7bb3eb;
 
 .button {
   background: linear-gradient(to bottom right, $gradient_blue_dark, $gradient_blue_light);
@@ -180,7 +174,6 @@ $gradient_blue_light: #7bb3eb;
 
     }
   }
-
 
   .description {
     font-size: 10px;

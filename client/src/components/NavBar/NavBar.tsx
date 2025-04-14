@@ -1,7 +1,9 @@
+import { useEffect, useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../app/store/store';
-import { useEffect, useState, useCallback } from 'react'
-import { showCartModal } from '../../features/UiFeatures/UiFeaturesSlice';
+import { useTheme } from '../../context/hooks/useTheme';
+
+import { showCartModal } from '../.z./features/UiFeatures/UiFeaturesSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -24,6 +26,7 @@ import { showNotification } from '../Notifications/showNotification';
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const [lastScrollValue, setLastScrollValue] = useState(0)
+  const { darkTheme } = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { pathname } = useLocation();
@@ -131,7 +134,7 @@ export const NavBar = () => {
         {/* <div onClick={handleSideBarVis}> */}
           {/* <FontAwesomeIcon icon={isSideBarHidden ? faPlus : faMinus}/> */}
         {/* </div> */}
-        {pathname !== '/' && (
+        {(isSideBarHidden && pathname !== '/') && (
           <Link
             to='/'
             className={`${styles.icons} ${styles.back}`}>
@@ -179,7 +182,7 @@ export const NavBar = () => {
           </div>
           { !token && (
             <div
-              className={styles.signUp}
+              className={`${styles.signUp} ${darkTheme ? styles.dark : ''}`}
               onClick={handleNavigate('sign-up')}
               >
               Sign <span>U</span>p

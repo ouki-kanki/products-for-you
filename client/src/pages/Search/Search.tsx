@@ -3,30 +3,24 @@ import styles from './search.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
 import { addFacets, setActiveFacets } from '../../features/filtering/facetSlice';
+import { useNavigate } from 'react-router-dom';
 
 import { isEmpty } from '../../utils/objUtils';
+import { useScrollToTop } from '../../hooks/useScrollToTop';
 
-// TODO: create index.ts to export all hooks
-import { useSearchProductItemQuery, useLazySearchProductItemQuery } from '../../api/searchApi';
-import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
+import { useSearchProductItemQuery } from '../../api/searchApi';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { useClassLister } from '../../hooks/useClassLister';
 import { usePagination } from '../../hooks/usePagination';
 import { useSort } from '../../hooks/useSort';
 import { useListSearchParams } from '../../utils/routerUtils';
 import { usePrevious } from '../../hooks/usePrevious';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableList, faTableColumns, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/ProductPreview1';
-import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
+
+import { ControlBar } from '../../components/ControlBars/ControlBar/ControlBar';
 import { Spinner } from '../../components/Spinner/Spinner';
 
-const buttons = [
-  <FontAwesomeIcon icon={faTableList}/>,
-  <FontAwesomeIcon icon={faTableCellsLarge}/>,
-  <FontAwesomeIcon icon={faTableCells}/>,
-  <FontAwesomeIcon icon={faTableCells}/>,
-]
 
 interface PaginationObject {
   search: string
@@ -39,6 +33,8 @@ export const Search = () => {
   const classes = useClassLister(styles)
   const dispatch = useDispatch()
   const location = useLocation()
+  const scrollToTop = useScrollToTop()
+  const navigate = useNavigate()
 
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
@@ -69,15 +65,9 @@ export const Search = () => {
 
   // console.log("activefacets", activeFacets)
 
-  // const prevFacetsStrRef = useRef(activeFacetsStr)
-  // let prevFacetsStr = prevFacetsStrRef.current
   const prevFacetsStr = usePrevious(activeFacetsStr) as string
 
   useEffect(() => {
-    // console.log("prev -> ", prevFacetsStr, activeFacetsStr)
-    // console.log("current -> ", activeFacetsStr)
-
-
     if (activeFacetsStr.length > 0 && prevFacetsStr !== activeFacetsStr) {
       const activeFacets: Record<string, string[]> = JSON.parse(activeFacetsStr)
 
@@ -119,7 +109,7 @@ export const Search = () => {
         sideBarFieldName: 'search'
       }))
       // TODO: the sidebar also sets the active facets.this was added to fix the problem
-      // where after trigger the back btn on the browser the activeFacets in the redux state did not update\
+      // where after selecting a facet the back btn on the browser the activeFacets in the redux state did not update\
       // timeout here serves to fight the race condition that happens
       // need to find a better approach
       setTimeout(() => {
@@ -145,39 +135,29 @@ export const Search = () => {
   }
 
   if (isLoading) {
-    // TODO: put a spinner or something
     return <Spinner/>
+  }
+
+  // *** navigation ***
+  /**
+   * scroll to top and navigate
+   * @param pageNumber
+   * @param page_size
+   * @param searchValue
+   */
+  const handleNavigateToPage = async (pageNumber: number, page_size: number, searchValue: string) => {
+    await scrollToTop()
+    navigate(prepareLink(pageNumber + 1, page_size, {search: searchValue}))
   }
 
   return (
     <div className={styles.searchContainer}>
-      <div className={styles.controlBar}>
-      <button onClick={() => handleAddCategoryFilter('shoes')}>add category</button>
-        <div className={styles.buttonGroup}>
-          <ButtonGroup
-            onClick={(num) => handleChangeLayout(num)}
-            options={buttons}
-            width={200}/>
-        </div>
-        <div>{ data?.results ? <b>{data.total_items}</b>: 'no' } products found</div>
-        <div className={styles.line}></div>
-        <div className={styles.sortContainer}>
-          <label htmlFor="sort_by">Sort by</label>
-          <select
-              value={sortValue || ''}
-              onChange={(e) => handleChangeSort(e.target.value)}
-              name="sort_by"
-              id="sort_by"
-              >
-              <option value="time">time</option>
-              <option value="time desc">time descenting</option>
-              <option value="name">name</option>
-              <option value="name desc">name descenting</option>
-              <option value="price">price</option>
-              <option value="price desc">price descenting</option>
-            </select>
-        </div>
-      </div>
+      <ControlBar
+        sortValue={sortValue}
+        data={data}
+        handleChangeLayout={handleChangeLayout}
+        handleChangeSort={handleChangeSort}
+      />
 
       <div className={`${styles.content} ${styles[layout]}`}>
         {data && data.results.map((product, id) => (
@@ -188,7 +168,6 @@ export const Search = () => {
         ))}
       </div>
 
-
       <div className={styles.paginationContainer}>
         <div
           className={page === 1 ? styles.disabled : ''}
@@ -196,14 +175,11 @@ export const Search = () => {
           >prev</div>
 
         {data && Array.from(Array(data.num_of_pages).keys()).map((pageNumber, i) => (
-          <NavLink
-            className={({ isActive }) =>
-                isActive && page === pageNumber + 1 ? classes('page', 'isActive') : styles.page
-              }
+          <a
+            className={page === pageNumber + 1 ? `${styles.page} ${styles.isActive}` : styles.page}
+            onClick={() => handleNavigateToPage(pageNumber, page_size, searchValue)}
             key={i}
-            to={prepareLink(pageNumber + 1, page_size, { search: searchValue }
-            )}
-          >{pageNumber + 1}</NavLink>
+          >{pageNumber + 1}</a>
         ))}
 
         <div

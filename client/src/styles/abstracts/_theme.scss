@@ -8,19 +8,23 @@ $light-theme: (
   second-background:rgb(224, 224, 224),
   color: #555,
   link-color: steelblue,
-  filter-clip_path: drop-shadow(5px 5px 10px #666)
-);
+  filter-clip_path: drop-shadow(5px 5px 10px #666),
+  sidebar-background: #cdb4db,
+  );
 
-$dark-theme: (
-  primary: $lime-primary,
-  secondary: $lime-secondary,
-  background: #121212,
-  second-background: #2f2f2f,
-  color: rgb(225, 228, 197),
-  link-color: #89cff0,
-  filter-clip_path: drop-shadow(5px 5px 5px #eff179)
-          drop-shadow(5px 5px 15px #e0e0bc)
-);
+  $dark-theme: (
+    primary: $lime-primary,
+    secondary: $lime-secondary,
+    background: #1b1b1b,
+    second-background: #2f2f2f,
+    color: rgb(225, 228, 197),
+    link-color: #89cff0,
+    filter-clip_path: drop-shadow(5px 5px 5px #424242)
+    drop-shadow(5px 5px 15px #000000)
+    drop-shadow(5px 5px 15px #000000),
+    // sidebar-background: rbga(0, 0, 0, 0.8),
+    sidebar-background: rgb(16, 16, 16),
+    );
 
 
 // backgournd-color-2 used for card background
@@ -33,6 +37,8 @@ $dark-theme: (
   --secondary-color: #{map-get($light-theme, secondary)};
   --link-color: #{map-get($light-theme, link-color)};
   --filter-clip_path: #{map-get($light-theme, filter-clip_path)};
+  --landing-gradient: linear-gradient(to bottom, lightblue, #444);
+  --sidebar-background: #{map-get($light-theme, sidebar-background)};
 }
 
 /* When `dark-theme` is added to <html>, override variables */
@@ -44,4 +50,7 @@ $dark-theme: (
   --secondary-color: #{map-get($dark-theme, secondary)};
   --link-color: #{map-get($dark-theme, link-color)};
   --filter-clip_path: #{map-get($dark-theme, filter-clip_path)};
+  --landing-gradient: linear-gradient(to bottom, #444 50%, lightblue);
+  --sidebar-background: #{map-get($dark-theme, sidebar-background)};
 }
+

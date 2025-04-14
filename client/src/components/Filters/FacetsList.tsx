@@ -1,31 +1,27 @@
-import React from 'react'
-import styles from './sidebarNested.module.scss'
-
-import { useAppDispatch } from '../../../app/store/store'
-import { asyncToggleFacet } from '../../../features/filtering/facetSlice'
+import styles from './facetsList.module.scss'
+import { isEmpty } from '../../utils/objUtils'
 
 
-export const SidebarNested = ({nestedFields}) => {
-  const appDispatch = useAppDispatch()
+interface FacetsList {
+  facets: Record<string, unknown>;
+  handleSelectBoxChange: () => void;
+  location: 'sidebar' | 'controlbar'
+}
 
-  const handleSelectBoxChange = (e: React.ChangeEvent<HTMLInputElement>, facetName: string) => {
-    appDispatch(asyncToggleFacet({
-      facetName,
-      propertyName: e.target.name,
-      isActive: e.target.checked
-    }))
-  }
+
+export const FacetsList = ({ facets, handleSelectBoxChange, location='sidebar' }: FacetsList) => {
 
   return (
-    Object.keys(nestedFields).map((field, i) => (
-      <div
+    <>
+      {!isEmpty(facets) && Object.keys(facets).map((facet, i) => (
+        <div
         className={styles.container}
         key={i}>
         <div className={styles.line}></div>
         <br />
-        <h3>By {field}</h3>
+        <h3>By {facet}</h3>
         <div className={styles.facetContainer}>
-          {nestedFields[field].map((item, i) => (
+          {facets[facet].map((item, i) => (
             <div
               key={i}
               className={styles.facetValueContainer}>
@@ -36,7 +32,7 @@ export const SidebarNested = ({nestedFields}) => {
                     type='checkbox'
                     value={item.isActive}
                     checked={item.isActive}
-                    onChange={(e) => handleSelectBoxChange(e, field)}
+                    onChange={(e) => handleSelectBoxChange(e, facet)}
                     // name={`${item.name} ${item.count}`}
                     />
                   <label htmlFor={item.name}>{item.name}</label>
@@ -46,6 +42,7 @@ export const SidebarNested = ({nestedFields}) => {
           ))}
         </div>
       </div>
-    )
-  ))
+      ))}
+    </>
+  )
 }

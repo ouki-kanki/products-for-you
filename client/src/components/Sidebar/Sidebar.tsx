@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import styles from "./Sidebar.module.scss";
 import type { RootState } from '../../app/store/store';
-import { useClassLister } from '../../hooks/useClassLister';
 
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
@@ -15,14 +13,13 @@ import { ToolTip } from '../ToolTip/ToolTip';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
 export const Sidebar = () => {
-  const [rotation, setRotation] = useState('')
   const navigate = useNavigate()
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const { facets, sideBarFieldName } = useSelector((state: RootState) => state.filters)
   const { isScrollingDown } = useSroll()
-  const classes = useClassLister(styles)
   // const size = useWindowSize()
 
+  // NOTE: disabled for now do not use tooltips on mobile
   // const isMobile = size[0] < 768
   const isMobile = false;
 

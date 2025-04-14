@@ -16,32 +16,6 @@
 
 }
 
-.controlBar {
-  padding: 0 20px 60px 0;
-  display: flex;
-  // grid-template-columns: 1fr 1fr auto 1fr;
-  // border: $border-red;
-  height: 50px;
-  align-items: center;
-}
-
-.line {
-  margin: 0 20px 0 20px;
-  flex-grow: 1;
-  // display: inline-block;
-  height: 3px;
-  // border: 1px solid red;
-  background-color: $font_light_1_brown;
-}
-
-.sortContainer {
-  margin-left: auto;
-}
-
-.buttonGroup {
-  margin-right: 10px;
-}
-
 .content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));

@@ -18,16 +18,12 @@ import { useDebounce } from './hooks/useDebounce';
 import { useDispatch } from 'react-redux';
 import { sendInitCartToMiddleware, initCart } from './features/cart/cartSlice';
 
-import type { ICredentials } from './types';
+import { WaveClipPath } from './components/ClipPaths/Wave/WaveClipPath';
 
 
 function App() {
   const dispatch = useDispatch()
-  const { darkTheme, toggleTheme } = useTheme()
-  const location = useLocation()
-
-
-  console.log("the location", location.pathname)
+  const { darkTheme } = useTheme()
 
   useEffect(() => {
     try {
@@ -90,18 +86,7 @@ function App() {
 
   return (
     <div className={`${styles.appContainer} ${darkTheme ? 'dark-theme' : ''}`}>
-        <div className={styles.clipMain}>
-          {(location.pathname === '/' || location.pathname === '/login') && (
-          <div className={styles.clipContainer}>
-            <svg>
-              <clipPath id="wave" clipPathUnits="objectBoundingBox">
-                <path className="st0" d="M1,0c0,0-0.3,0.1-0.5,0.1S0.3,0,0,0.1V1h1L1,0z"/>
-              </clipPath>
-            </svg>
-          </div>
-            )
-          }
-        </div>
+        <WaveClipPath/>
         <Sidebar/>
         <CartModal/>
       <div className={styles.contentNavContainer}>

@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom';
 import type { Facets } from '../../api/searchApi';
 import { isEmpty } from '../../utils/objUtils';
 import { useLocation } from 'react-router-dom'
-
-import { SidebarNested } from './SidebarNested/SidebarNested';
+import { useAppDispatch } from '../../app/store/store'
+import { asyncToggleFacet } from '../../features/filtering/facetSlice'
+import { FacetsList } from '../Filters/FacetsList'
 
 interface SidebarFieldProps {
   title: string,
@@ -29,6 +30,15 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
   const location = useLocation()
   const rawPath = location.pathname
   const lastElementOfPath = rawPath.slice(-1)
+  const appDispatch = useAppDispatch()
+
+  const handleSelectBoxChange = (e: React.ChangeEvent<HTMLInputElement>, facetName: string) => {
+    appDispatch(asyncToggleFacet({
+      facetName,
+      propertyName: e.target.name,
+      isActive: e.target.checked
+    }))
+  }
 
 
   // open sidebar nested fields according to the path
@@ -47,7 +57,9 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
     <div className={styles.navFieldContainer}>
       <NavLink
         to={link}
-        className={`${styles.linkContainer} ${isHovered && styles.hovered}`}
+        className={({isActive}) => (
+          `${styles.linkContainer} ${isHovered && styles.hovered} ${isActive ? styles.active : ''}`
+        )}
         onMouseEnter={() => setIsHovered('hovered')}
         onMouseLeave={() => setIsHovered(null)}
         >
@@ -62,7 +74,10 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
       {path === name.toLowerCase() && title.toLowerCase() === 'products' && (
         <div className={styles.nestedFieldContainer}>
           {!isEmpty(facets) && (
-              <SidebarNested nestedFields={facets}/>
+              <FacetsList
+                facets={facets}
+                handleSelectBoxChange={handleSelectBoxChange}
+                />
           )}
         </div>
       )}

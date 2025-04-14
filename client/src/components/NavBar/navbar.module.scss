@@ -108,12 +108,6 @@ $notification-height: 30px;
     font-weight: bold;
     font-family: 'Lemon', serif;
     color: var(--text-color);
-    // color: white;
-    // text-shadow:
-    // -1px -1px 0 #000,
-    // 1px -1px 0 #000,
-    // -1px 1px 0 #000,
-    // 1px 1px 0 #000;
   }
 }
 
@@ -126,20 +120,31 @@ $notification-height: 30px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  color: var(--text-color);
 
-  &:hover {
-    & span {
-      color: #917e7e;
-      font-weight: bold;
-      line-height: 150%;
-      transform: translateY(-3px) scaleY(1.2);
+  &.dark {
+    span {
+      color: yellow;
     }
   }
 
   & span {
     transition: transform .2s ease-in;
     color: $font_light_1_brown;
+    color: $yellow;
+    color: #f0782b;
   }
+
+  &:hover {
+    & span {
+      // color: $yellow;
+      font-weight: bold;
+      line-height: 150%;
+      // color: #f0782b;
+      transform: translateY(-3px) scaleY(1.2);
+    }
+  }
+
 }
 
 // TODO: make this utility
