@@ -34,7 +34,7 @@ export const EcommerceRoutes = () => (
       <Route path='/' element={<Home/>}>
         <Route element={<PersistLogin />}>
           <Route index element={<LandingPage/>}/>
-          <Route path='/categories' element={<Categories/>}/>
+          <Route path='/categories/*' element={<Categories/>}/>
           <Route path='/categories/:slug/*' element={<Categories/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>

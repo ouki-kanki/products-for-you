@@ -36,7 +36,7 @@ export interface IProduct {
   quantity: number;
   price: string;
   features: string[];
-  product_images: IProductImage[];
+  productImages: IProductImage[];
   current_variation: ICurrentVariation[];
   category: string[];
   description: string;

@@ -19,19 +19,17 @@ export const Category = ({ id, title, image, alt, handleCategoryClick }: Categor
 
 
   return (
-    <Card
+    <div
       onClick={() => handleCategoryClick(id)}
       onMouseEnter={activateHover}
       onMouseLeave={deactivateHover}
-      width='fluid'>
-      <div
-        className={styles.categoryContainer}
+      className={styles.categoryContainer}
+      // width='fluid'
       >
         <div className={`${styles.imageContainer} ${isHovered && styles.isHovered}`}>
           <img src={image} alt={alt}/>
         </div>
         <h2 className={styles.title}>{title}</h2>
-      </div>
-    </Card>
+    </div>
   )
 }

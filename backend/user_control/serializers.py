@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import ValidationError
+from common.validators.field_validators import is_numeric
 
 from .models import CustomUser, UserDetail
-from common.validators.field_validators import is_numeric
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TokenSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Token
         fields = ('key', 'user', 'role')
@@ -27,7 +27,7 @@ class PasswordChangeSerializer(serializers.Serializer):
         if not self.context['request'].user.check_password(value):
             raise serializers.ValidationError({'current_password': 'Does not match'})
         return value
-    
+
 
 class UserDetailSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()

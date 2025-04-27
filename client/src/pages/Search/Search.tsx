@@ -9,6 +9,7 @@ import { isEmpty } from '../../utils/objUtils';
 import { useScrollToTop } from '../../hooks/useScrollToTop';
 
 import { useSearchProductItemQuery } from '../../api/searchApi';
+
 import { useSearchParams, useLocation } from 'react-router-dom';
 import { useClassLister } from '../../hooks/useClassLister';
 import { usePagination } from '../../hooks/usePagination';
@@ -39,7 +40,12 @@ export const Search = () => {
   const searchValue = searchParams.get('search') || ''
   const { prepareLink, handleNavigate, page, page_size } = usePagination<PaginationObject>({ search: searchValue })
   const { sortValue, handleChangeSort } = useSort('time')
+
+  // the following hook gathers the querystring from the page (inside the hook) the sort_value and the value from the search form
+
+
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
+
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
     page,
@@ -54,6 +60,7 @@ export const Search = () => {
     refetch()
   }, [paramsStr, refetch])
 
+  // ** the flow of data is this: facets are taken from querystring -> send facets with useSearchProductItemQuery -> get the List of facets
   const facets = data?.facets
   const activeFacets = useSelector((state: RootState) => state.filters.activeFacets)
 
@@ -63,12 +70,14 @@ export const Search = () => {
     activeFacetsStr = JSON.stringify(activeFacets)
   }
 
-  // console.log("activefacets", activeFacets)
-
   const prevFacetsStr = usePrevious(activeFacetsStr) as string
 
   useEffect(() => {
-    if (activeFacetsStr.length > 0 && prevFacetsStr !== activeFacetsStr) {
+    if (prevFacetsStr === undefined || activeFacetsStr === undefined) {
+      return
+    }
+
+    if (prevFacetsStr !== activeFacetsStr) {
       const activeFacets: Record<string, string[]> = JSON.parse(activeFacetsStr)
 
       setSearchParams((prevSearchParams) => {
@@ -88,18 +97,13 @@ export const Search = () => {
     }
   }, [prevFacetsStr, activeFacetsStr, setSearchParams])
 
-  // TEST the category facet
-  const handleAddCategoryFilter = (category: string) => {
-    setSearchParams(searchParams => {
-      searchParams.set('category', category)
-      return searchParams
-    })
-  }
-
+  // ** these are the facets that coming from the server given by the querystring
   let facets_for_dep = ''
   if (!isEmpty(facets)) {
     facets_for_dep = JSON.stringify(facets)
   }
+
+  // console.log("facets for dep", facets_for_dep)
 
   useEffect(() => {
     if (facets_for_dep.length > 0) {
@@ -159,7 +163,9 @@ export const Search = () => {
         handleChangeSort={handleChangeSort}
       />
 
-      <div className={`${styles.content} ${styles[layout]}`}>
+      <div
+        className={`${styles.content} ${styles[layout]}`}
+        >
         {data && data.results.map((product, id) => (
           <ProductPreview1
             key={id}
@@ -194,19 +200,6 @@ export const Search = () => {
             <div className={classes('sample', 'sample_second')}></div>
             <div className={classes('sample', 'sample_active')}></div>
           </div>
-
-      {/* <div className={`${styles.content} ${styles[layout]}`}> */}
-        {/* <div>item 2</div> */}
-        {/* <div className={styles['grid-col-span-2']}>item 2</div> */}
-        {/* <div>item 3</div>
-        <div>item 4</div>
-        <div>item 5</div>
-        <div>item 6</div>
-        <div>item 7</div>
-        <div>item 8</div>
-        <div>item 9</div> */}
-      {/* </div> */}
-
     </div>
   )
 }

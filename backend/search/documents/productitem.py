@@ -1,8 +1,9 @@
 from django_elasticsearch_dsl.registries import registry
-from django_elasticsearch_dsl import Document, Index, fields
-from products.models import ProductItem, Product, ProductImage
-from .analyzers import html_strip
+from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
+
+from products.models import ProductItem, Product, ProductImage
+from .analyzers import html_strip, variation_name_analyzer
 
 
 @registry.register_document
@@ -10,6 +11,11 @@ class ProductItemDocument(Document):
 
     name_suggest = fields.Completion()
     slug_suggest = fields.CompletionField()
+    category_suggest = fields.CompletionField()
+    # variation_name_suggest = fields.CompletionField()
+    variation_name_suggest = fields.TextField(
+        analyzer=variation_name_analyzer
+    )
 
     slug = fields.TextField(
         fields={
@@ -44,10 +50,9 @@ class ProductItemDocument(Document):
     image = fields.TextField()
     description = fields.TextField()
 
-    categories = fields.TextField(
-        analyzer=html_strip,
+    categories = fields.KeywordField(
         fields={
-            'raw': fields.TextField(multi=True),
+            'raw': fields.KeywordField(multi=True),
             'suggest': fields.CompletionField(multi=True)
         },
         multi=True
@@ -68,8 +73,11 @@ class ProductItemDocument(Document):
         if isinstance(related_instance, ProductImage):
             return related_instance.product_item
 
-        if isinstance(related_instance, Product):
+        elif isinstance(related_instance, Product):
             return related_instance.product_variations.all()
+
+    def prepare_categories(self, instance): # noqa
+        return [instance.product.category.name] if instance.product.category else []
 
     def prepare_name(self, instance): # noqa
         return instance.product.name
@@ -82,10 +90,7 @@ class ProductItemDocument(Document):
         for item in qs:
             if item.thumbnail:
                 return "".join(item.thumbnail.url)
-            else:
-                return ""
-        # if item.thumbnail:
-            # return "".join([item.thumbnail.url for item in qs]) if qs else ''
+            return ""
 
     def prepare_image(self, instance): # noqa
         qs = instance.product_image.filter(is_default=True)
@@ -105,3 +110,18 @@ class ProductItemDocument(Document):
             "input": [instance.slug],
             "weight": 10
         }
+
+    def prepare_category_suggest(self, instance):
+        return {
+            "input": [instance.product.category.name],
+            "weight": 10
+        }
+
+    # def prepare_variation_name_suggest(self, instance):
+    #     return {
+    #         "input": [instance.variation_name],
+    #         "weight": 10
+    #     }
+
+    def prepare_variation_name_suggest(self, instance):
+        return instance.variation_name

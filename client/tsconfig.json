@@ -2,6 +2,7 @@
   "files": ["./vite-env.d.ts"],
   "compilerOptions": {
     "target": "ES2022",
+    "sourceMap": true,
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",

@@ -1,21 +1,23 @@
-import json
-from pprint import pprint
-from django.db.models import F
+from typing import List
 from django.conf import settings
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.views import APIView
+
 
 from elasticsearch_dsl import (
     Q, Search, FacetedSearch, TermsFacet,
     DateHistogramFacet, RangeFacet, NestedFacet
 )
 from elasticsearch_dsl.query import Match, Term
+from elasticsearch_dsl.exceptions import ElasticsearchDslException
 
+from common.paginators.paginator_elasticsearch import ElasticSearchPaginator, ElasticSearchPagination
 from .serializers import SearchProductItemSerializer
 from .documents.productitem import ProductItemDocument
-from common.paginators.paginator_elasticsearch import ElasticSearchPaginator, ElasticSearchPagination
+from .documents.category_document import CategoryDocument
 
 sort_hash = {
     'time': 'created_at',
@@ -40,7 +42,7 @@ class ProductsFacetedSearch(FacetedSearch):
     facets = {
         'name': TermsFacet(field='name'),
         'brand': TermsFacet(field='brand'),
-        # 'categories': TermsFacet(field='categories.keyword'),
+        'categories': TermsFacet(field='categories.raw'),
         'price': RangeFacet(field='price', ranges=[
             ('0 - 100', (0.01, 100)),
             ('100 - 2000', (100, 2000)),
@@ -49,27 +51,28 @@ class ProductsFacetedSearch(FacetedSearch):
     }
 
     def search(self):
-        """ add facets """
+        # add facets
         s = super().search()
         q = Q(
             'multi_match',
             query=self.query,
             fields=[
-                'name',
-                'slug',
-                'categories',
+                'name.raw',
+                'variation_name_suggest',
+                'slug.raw',
+                'categories.raw',
             ],
-            fuzziness='AUTO'
+            fuzziness='AUTO',
+            type='best_fields'
         )
 
-        print("inside the over", self._query)
-        print("the category insidne teh over", self.category)
-
-        price_filter = F({'range': {'price': {'gte': 100, 'lte': 2000}}})
+        # NOTE: this is left for testing
+        # price_filter = F({'range': {'price': {'gte': 100, 'lte': 2000}}})
         # s.filter(price_filter)
         # s.filter('range', **{'price': {'from': 100, "to": 1000}})
         # s.filter('match', **{'name': 'Air Jordan'})
 
+        # NOTE: this is left for testing
         if self.category:
             s = s.filter('match', **{'categories': self.category[0]})
 
@@ -82,32 +85,25 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
     serializer = SearchProductItemSerializer
     search_document = ProductItemDocument
 
-    def get(self, request): # noqa
+    def get(self, request):  # pylint: disable=too-many-locals
         search_str = request.query_params.get('search')
         sort_by = request.query_params.get('sort_by')
         name = request.query_params.getlist('name')
         price = request.query_params.getlist('price')
-        category = request.query_params.getlist('category')
+        category = request.query_params.getlist('categories')
         brand = request.query_params.getlist('brand')
 
-        print("the brand filter", brand)
         # print("the category", category)
-        # print("the price filter", price)
 
         filters = {
             'name': name,
             'price': price,
-            'brand': brand
-            # 'categories': category
+            'brand': brand,
+            'categories': category
         }
 
-        query_list = request.GET.urlencode()
-        query_ar = query_list.split('&')
-
-        for item in query_ar:
-            itemArr = item.split('=')
-            item_dict = {itemArr[0]: itemArr[1]}
-            # print("the item dict", item_dict)
+        # query_list = request.GET.urlencode()
+        # query_ar = query_list.split('&')
 
         try:
             # --**-- pagination --**--
@@ -162,16 +158,11 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
             # print("serializer data", json.dumps(serializer.data, indent=4))
 
-            data = serializer.data
-
-            # if category:
-            #     filtered_data = [item for item in data if category[0] in item['categories']]
-            #     print(json.dumps(filtered_data, indent=4))
-
+            # TODO: had to access protected member,
             paged_response_with_facets = {
                 'next': next_link,
                 'prev': prev_link,
-                'total_items': paginator._count.value,
+                'total_items': paginator._count.value,  # pylint: disable=protected-access
                 'per_page': paginator.count,
                 'num_of_pages': paginator.num_pages,
                 'results': serializer.data,
@@ -186,53 +177,82 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
 
 class ProductItemSuggestView(APIView):
-    """ input: productName or category out: products"""
-    # TODO: when input is category suggest categories
-    serializer = SearchProductItemSerializer
-    search_document = ProductItemDocument
+
+    @staticmethod
+    def get_suggestions(suggestion_obj: Search, *index_names) -> List[str]:
+        suggestions = suggestion_obj.execute()
+        suggestions = suggestions.suggest
+
+        suggestions_list = []
+        for index_name in index_names:
+            suggestions_list += suggestions[index_name][0]['options']
+
+        options = [option.to_dict() for option in suggestions_list]
+
+        return [option['text'] for option in options]
 
     def get(self, request):
         try:
             param = request.query_params.get('suggest')
-            # suggest = self.search_document.search().suggest('slug_suggestion', param, completion={'field': 'slug.suggest'})
 
-            suggest_with_categories = Search(index='productitem').suggest(
-                'cat_suggestion',
-                param,
-                completion={
-                    'field': 'categories.suggest',
-                    'fuzzy': {
-                        'fuzziness': 2
-                    },
-                    "size": 5
-                }
-            ).suggest(
+            # substring matching variation names
+            variations = ProductItemDocument.search().query(
+                'match', variation_name_suggest=param
+            )
+            variations_res = variations.execute()
+            # print("variatio neams dump", json.dumps(variations_res.to_dict(), indent=4))
+
+            suggestions = [hit['_source']['variation_name_suggest']
+                           for hit in variations_res['hits']['hits']]
+
+            # slug suggestions for the items
+            items = ProductItemDocument.search()
+            items: Search = items.suggest(
                 'slug_suggestion',
                 param,
                 completion={
-                    'field': 'slug_suggest',
-                    'fuzzy': {
-                        'fuzziness': 2
+                    "field": 'slug_suggest',
+                    "fuzzy": {
+                        'fuzziness': 'AUTO'
                     },
-                    "size": 5
+                    'size': 5
                 }
             )
 
-            response = suggest_with_categories.source(['slug_suggest', 'categories']).execute()
-            # pprint(response_from_categories.to_dict())
+            suggestions += self.get_suggestions(items, 'slug_suggestion')
 
-            suggestions = [
-                ''.join(option._source.slug_suggest.input) for option in response.suggest.slug_suggestion[0].options
-                if response.suggest.slug_suggestion[0].options] # noqa
+            # category suggestions
+            categories = CategoryDocument.search()
+            categories = categories.suggest(
+                'categories_suggestion',
+                param,
+                completion={
+                    "field": 'name_suggest',
+                    'fuzzy': {
+                        'fuzziness': 'AUTO'
+                    },
+                    'size': 5
+                }
+            )
 
-            # print("suggestions from slug", suggestions)
-            suggestions += [
-                ''.join(option._source.slug_suggest.input) for option in response.suggest.cat_suggestion[0].options
-                if response.suggest.cat_suggestion[0].options] # noqa
+            suggestions += self.get_suggestions(categories, 'categories_suggestion')
 
-            # print(response.to_dict())
+            print("suggestions", suggestions)
 
             return Response(suggestions)
-
-        except Exception as e:
-            return HttpResponse(e, status=500)
+        except KeyError as e:
+            return Response({
+                "message": f"key error: {str(e)}"
+            })
+        except (ValueError, TypeError) as e:
+            return Response({
+                "message": f"input error: {str(e)}"
+            })
+        except ElasticsearchDslException as e:
+            return Response({
+                "message": f"elastic error: {str(e)}"
+            })
+        except Exception as e:  # pylint: disable=broad-except
+            return Response({
+                "message": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

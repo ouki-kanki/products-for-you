@@ -52,7 +52,7 @@ export const LandingPage = () => {
   const { data: promotedProducts, isLoading: isLoadingPromoted, isError: isErrorPromoted} = useGetPromotedProductsQuery(undefined, { skip: !featuredProducts })
   const { data: featuredCategories, isLoading: isLoadingCategories, isError: isErrorCategories} = useGetCategoriesQuery('featured', { skip: !promotedProducts })
 
-  // console.log("latest", latestProducts)
+  console.log("latest", latestProducts)
   // console.log("featured", featuredProducts, isLoadingFeatured, isErrorFeatured)
   // console.log("promoted", promotedProducts)
   // console.log("categories", featuredCategories)

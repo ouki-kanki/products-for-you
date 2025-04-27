@@ -1,4 +1,5 @@
 from django.utils.text import slugify
+from django.http import HttpRequest
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 from rest_framework.validators import UniqueTogetherValidator
@@ -40,16 +41,18 @@ class ProductSerializer(serializers.ModelSerializer):
     variations = serializers.SerializerMethodField()
 
     def get_variations(self, obj):
-        request = self.context.get('request')
+        request: HttpRequest = self.context.get('request')
         variations = obj.product_variations.all()
+        placeholder_url = request.build_absolute_uri('media/icons/placeholder')
         # TODO: check the time complexity here (use prefetch related)
         return [
             {
                 'slug': variation.slug,
                 'product_url': request.build_absolute_uri(reverse('products:product-preview', args=[variation.slug])),
-                'thumb': request.build_absolute_uri(variation.product_image.filter(is_default=True)
-                                                    .first().thumbnail.url)
-                if variation.product_image.filter(is_default=True).exists() else None
+                'thumb': request.build_absolute_uri(default_image.thumbnail.url)
+                if (default_image := variation.product_image.filter(is_default=True).first())
+                and default_image.thumbnail
+                else placeholder_url
             }
             for variation in variations
         ]

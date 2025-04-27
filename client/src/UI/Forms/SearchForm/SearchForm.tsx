@@ -33,7 +33,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
   }
 
   const debouncedSearchValue = useDebouncedValue(searchValue, 500)
-  const [ trigger, { data: suggeStionData, isUninitialized }] = useLazySugestProductNameQuery()
+  const [ trigger, { data: suggestionList, isUninitialized }] = useLazySugestProductNameQuery()
 
   useEffect(() => {
     if (debouncedSearchValue !== '') {
@@ -71,7 +71,7 @@ export const SearchForm = forwardRef<Ref, IInput>(() => {
             id='data'
             >
             {debouncedSearchValue.length > 0 &&
-              suggeStionData?.map((item, index) => (
+              suggestionList?.map((item, index) => (
               <option key={index} value={item}/>
             ))
           }

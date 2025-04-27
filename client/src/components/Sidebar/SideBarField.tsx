@@ -77,6 +77,7 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
               <FacetsList
                 facets={facets}
                 handleSelectBoxChange={handleSelectBoxChange}
+                location='sidebar'
                 />
           )}
         </div>

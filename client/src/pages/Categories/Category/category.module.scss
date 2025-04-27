@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 15px;
+  background: linear-gradient(-45deg, rgba(175, 231, 235, 0.7), rgba(24, 228, 243, 0.7), rgba(90, 233, 255, 0.7));
 }
 
 .imageContainer {

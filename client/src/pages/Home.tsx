@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { NavBar } from '../components/NavBar/NavBar'
 import styles from './home.module.scss'
 
@@ -11,7 +11,6 @@ const Home = () => {
     <>
       <NavBar/>
       <Breadcrumbs/>
-
       <section className={styles.section}>
         <Outlet/>
       </section>

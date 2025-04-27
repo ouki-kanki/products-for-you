@@ -1,12 +1,43 @@
+.facetsContainer {
+  display: flex;
+  flex-wrap: wrap;
+
+  &.sidebar {
+    flex-direction: column;
+
+    @media  screen and (max-width: 906px) {
+      display: none;
+    }
+  }
+}
+
 .container {
+  display: flex;
+  flex-wrap: wrap;
   h3 {
     margin-bottom: 10px;
     // display: block;
     // display: none;
   }
 
-  @media  screen and (max-width: 906px) {
+}
+
+.controlbar {
+  color: red;
+  flex-wrap: wrap;
+
+  .line {
     display: none;
+  }
+
+  .column {
+    // @include border_green;
+    margin-right: 10px;
+  }
+
+  .facetContainer {
+    // @include border_green;
+    padding: 5px 10px 5px 0;
   }
 }
 

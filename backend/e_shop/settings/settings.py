@@ -162,7 +162,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript)
 STATIC_URL = 'static/'
 
 # NOTE: points inside e_shop directory
@@ -248,8 +248,8 @@ ELASTICSEARCH_DSL = {
 }
 
 ELASTICSEARCH_INDEX_NAMES = {
-    # 'product.productitem': 'productitem',
     'search.documents.productitem': 'productitem',
+    'search.documents.category_document': 'category'
 }
 
 PAGE_SIZE = 5

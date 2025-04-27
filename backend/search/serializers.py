@@ -5,6 +5,7 @@ class NameSerializer(serializers.Serializer):
     input = serializers.ListField(read_only=True)
     weight = serializers.IntegerField(read_only=True)
 
+
 class SearchProductItemSerializer(serializers.Serializer): # noqa
     thumb = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()

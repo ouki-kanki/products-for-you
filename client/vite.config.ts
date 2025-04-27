@@ -5,20 +5,25 @@ import svgr from 'vite-plugin-svgr'
 
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    svgr()
-  ],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        implementation: sass,
-        // this makes vite to include main.sccs to every scss file that compliles
-        additionalData: `
-          @use "./src/styles/_main.scss" as *;
-          `,
-      }
-    }
+export default defineConfig(({ mode }) => {
+  const isDebug = process.env.VITE_DEBUG
+
+  return {
+    plugins: [
+      react(),
+      svgr()
+    ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          implementation: sass,
+          // this makes vite to include main.sccs to every scss file that compliles
+          additionalData: `
+            @use "./src/styles/_main.scss" as *;
+            `,
+        }
+      },
+      devSourcemap: isDebug
+    },
   }
 })

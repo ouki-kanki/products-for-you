@@ -151,13 +151,14 @@ export const productsApi = createApi({
        })
     }),
     // TODO: jsdoc. inform that featured can be fetch from here as an option
-    getCategories: builder.query<ICategory[], string>({
-      query: (featured: string) => ({
+    getCategories: builder.query<ICategory[], string | undefined>({
+      query: (featured?: string) => ({
         url: featured ? `categories/${featured}` : 'categories/'
       }),
       onQueryStarted: (q) => {
         // console.log("Categories query -started--")
     }}),
+    // TODO: obsolete. was used inside categories
     filterByCategory: builder.query<IProductApiResponse, string>({
       query: (slug) => ({
         url: `products/category/${slug}`

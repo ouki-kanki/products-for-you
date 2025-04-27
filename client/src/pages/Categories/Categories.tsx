@@ -4,14 +4,9 @@ import { useGetCategoriesQuery } from '../../api/productsApi';
 import { useLazyFilterByCategoryQuery } from '../../api/productsApi';
 import { useNavigate, useParams, createSearchParams } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
-
-
 import { ICategory } from '../../types';
 
 import { Card } from '../../UI/Card'
-
-import kdeImage from '../../../assets/kd14_low_res.png';
-import demin from '../.././../assets/clothing/demin.png'
 
 import { Category } from './Category/Category';
 
@@ -41,7 +36,7 @@ const filterCategoriesWithNoParent = (categories: ICategory[] | undefined) => {
 
 // MAIN COMPONENT
 const Categories = () => {
-  // console.log("categories component mounted")
+  const navigate = useNavigate()
   const { data: categories , isLoading } = useGetCategoriesQuery()
   const [ currentCategories, setCurrentCategories ] = useState<ICategory[] | undefined>([])
   const { slug } = useParams()
@@ -56,30 +51,27 @@ const Categories = () => {
 
   }, [categories, slug])
 
-  // console.log("categories", categories)
 
-  const navigate = useNavigate()
-  const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
-
-  const handleClickCategory = (slug: string) => {
-    const currentCategory = currentCategories && currentCategories.find(cat => cat.slug === slug)
-    console.log('currentcat', currentCategory, slug)
+  const handleClickCategory = (name: string) => {
+    const currentCategory = currentCategories && currentCategories.find(cat => cat.name === name)
 
     // if there no more chilren fetch the related items
     if (currentCategory && currentCategory.children.length === 0) {
       navigate({
-        // to: '/search',
         pathname: '/search',
         search: createSearchParams({
-          category: slug
-        }).toString()
+          categories: name
+        }).toString(),
       })
    } else {
     // this is used when there are children categories to jump to the child
-     navigate(`${slug}`)
+    // it will set the name of the parent to the url and after rerender it will pass the condition above and it will load the children
+     navigate(`${name}`)
    }
 
   }
+
+  // http://localhost:5173/search?categories=video+games
 
   return (
     <div>

@@ -3,17 +3,22 @@ from typing import Any
 from django import forms
 from django.contrib import admin, messages
 from django.core.files.base import ContentFile
-from django.db import models, transaction
-from django.db.models import Q, F
-from django import forms
+from django.db import models
+from django.db.models import Q
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
-from django.utils.html import strip_tags, format_html
+from django.utils.html import format_html
 from django.urls import reverse
 
+from rembg import remove
+
 from services.imageServices import delete_image_from_filesystem
+from common.util.static_helpers import render_icon
+from promotion.models import ProductsOnPromotion
+from widgets.custom_admin_widgets import CustomAdminFileWidget
+
 
 from .models import (
     Product,
@@ -25,13 +30,9 @@ from .models import (
     FeaturedItem,
     ProductDetail
 )
-from promotion.models import ProductsOnPromotion
-from common.util.static_helpers import render_icon
-from widgets.custom_admin_widgets import CustomAdminFileWidget
 
 from .fields.admin_fields import FeaturesField
 
-from rembg import remove
 
 admin.site.site_title = 'products-for-you admin'
 admin.site.site_header = 'Products For You Administration'
@@ -48,7 +49,8 @@ class CategoryAdminForm(forms.ModelForm):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product_icon', 'is_featured', 'slug', 'parent_category', 'has_related_products', 'created_at')
+    list_display = ('name', 'product_icon', 'is_featured',
+                    'slug', 'parent_category', 'has_related_products', 'created_at')
     readonly_fields = ('product_icon',)
     actions = ('delete_categories',)
     form = CategoryAdminForm
@@ -56,7 +58,7 @@ class CategoryAdmin(admin.ModelAdmin):
     # sortable_by = ['position', ]
 
     formfield_overrides = {
-        models.ImageField: { 'widget': CustomAdminFileWidget }
+        models.ImageField: {'widget': CustomAdminFileWidget}
     }
 
     def has_related_products(self, obj):
@@ -66,7 +68,7 @@ class CategoryAdmin(admin.ModelAdmin):
         return render_icon(obj, 'icon')
 
     @staticmethod
-    def delete_categories(self, request, queryset):
+    def delete_categories(request, queryset):
         """
         remove the records and the images from disk
         """
@@ -75,13 +77,14 @@ class CategoryAdmin(admin.ModelAdmin):
                 delete_image_from_filesystem(obj, 'icon')
         # run the default del
         queryset.delete()
-    
-    # NOT WORKING FOR NOW 
+
+    # NOT WORKING FOR NOW
     def response_change(self, request: HttpRequest, obj: Any) -> HttpResponse:
         """
         change the name of the imageFile on the disk.
-        - deactivated for now - 
-        NOTE: needs debugging (it seems there is conflict with the mechanism in the models that removes the old file and replaces it with new)
+        - deactivated for now -
+        NOTE: needs debugging (it seems there is
+        conflict with the mechanism in the models that removes the old file and replaces it with new)
         """
         icon_name = request.POST.get('icon_name', '')
 
@@ -90,11 +93,6 @@ class CategoryAdmin(admin.ModelAdmin):
             # obj.save()
 
         return super().response_change(request, obj)
-
-# Register your models here.
-
-
-# INLINES
 
 
 class FeaturedItemInlineForm(forms.ModelForm):
@@ -131,7 +129,7 @@ class ProductItemInline(admin.TabularInline):
         if obj.pk:
             url = reverse('admin:products_productitem_change', args=[obj.pk])
             return format_html('<a href="{}">{}</a>', url, obj.variation_name)
-        
+
     def get_fields(self, request, obj=None):
         fields = ['variation_link'] + list(super().get_fields(request, obj=obj))
         return fields
@@ -139,12 +137,12 @@ class ProductItemInline(admin.TabularInline):
 
 class ProductForm(forms.ModelForm):
     features = FeaturesField()  # NOTE: this corresponds to the name of the field in the database
-    
+
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
 
         self.fields['features'].widget.attrs['placeholder'] = "insert comma seperated values. ex: foo, bar, "
-    
+
     class Meta:
         model = Product
         fields = "__all__"
@@ -164,9 +162,11 @@ class ProductAdmin(admin.ModelAdmin):
     message = "Warning.There are no variations for this product.please provide at least one variation"
     no_featured_warning = "Warning. please provide a default variation"
 
-    formfield_overrides = {models.ImageField: {'widget': CustomAdminFileWidget},}
+    formfield_overrides = {models.ImageField: {'widget': CustomAdminFileWidget}, }
 
-    def changeform_view(self, request: HttpRequest, object_id: str | None = ..., form_url: str = ..., extra_context: dict[str, bool] | None = ...) -> Any:
+    def changeform_view(
+            self, request: HttpRequest, object_id: str | None = ...,
+            form_url: str = ..., extra_context: dict[str, bool] | None = ...) -> Any:
         product_items = ProductItem.objects.filter(product=object_id)
         isFeaturedExists = product_items.filter(is_default=True)
         if not isFeaturedExists:
@@ -224,7 +224,7 @@ class ProductAdmin(admin.ModelAdmin):
         # super().save_model(request, obj, form, change)
 
     @staticmethod
-    def delete_products(self, request, queryset):
+    def delete_products(request, queryset):
         for obj in queryset:
             if obj.icon:
                 delete_image_from_filesystem(obj, 'icon')
@@ -315,7 +315,7 @@ class ProductImageAdmin(admin.ModelAdmin):
                 delete_image_from_filesystem(obj, 'image')
             if obj.thumbnail:
                 delete_image_from_filesystem(obj, 'thumbnail')
-        
+
         queryset.delete()
 
 
@@ -342,23 +342,11 @@ class ProductImageInlineForm(forms.ModelForm):
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    readonly_fields = ['remove_bg_btn', 'product_image', 'product_thumb']
-    exclude = ['thumbnail',]  #  TODO: if there is need for custom thump remove this but have to inform that thumb is generated automatically
+    readonly_fields = ['product_image', 'product_thumb']
+    exclude = ['thumbnail',]  # TODO: if there is need for custom thump
+    # remove this but have to inform that thumb is generated automatically
     extra = 1
     # form = ProductImageInlineForm
-
-    # def get_urls(self, obj=None):
-
-    def remove_bg_btn(self, obj): # noqa
-
-        if obj.pk:
-            return format_html(
-                "<button "
-                "class='button'"
-                "type='button' onclick='removeBackGround({})'>remove background</button>",
-                obj.pk
-            )
-        return "save the image first"
 
     def product_image(self, obj):  # noqa
         return render_icon(obj, 'image')
@@ -382,6 +370,7 @@ class ProductItemForm(forms.ModelForm):
         model = ProductItem
         fields = '__all__'
 
+
 class ProductDetailInline(admin.TabularInline):
     model = ProductDetail
     extra = 0
@@ -390,7 +379,7 @@ class ProductDetailInline(admin.TabularInline):
 @admin.register(ProductItem)
 class ProductItemAdmin(admin.ModelAdmin):
     list_display = (
-        '__str__', 'slug', 'id', 'get_default_image',
+        '__str__', 'variation_name', 'slug', 'id', 'get_default_image',
         'product', 'quantity_formated', 'get_category',
         'active_promotion',
         'limited_number_of_items_threshold',
@@ -427,7 +416,7 @@ class ProductItemAdmin(admin.ModelAdmin):
             return self.format_qnt(quantity, 'yellow')
         else:
             return quantity
-        
+
     quantity_formated.short_description = 'Quantity'
 
     def get_category(self, obj):
@@ -436,7 +425,6 @@ class ProductItemAdmin(admin.ModelAdmin):
     get_category.short_description = 'Category'
 
     def get_default_image(self, obj):
-        image = obj.product_image.filter(is_default=True).get().image.url
         image_obj = obj.product_image.filter(is_default=True).get()
 
         return render_icon(image_obj, 'image')

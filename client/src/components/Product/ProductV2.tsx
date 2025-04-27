@@ -22,7 +22,7 @@ import kdWhiteYellow from '../../assets/variations/kd14_yel_white.jpg';
 import kdIce from '../../assets/variations/kd14_ice.jpg';
 import kdDeepBlue from '../../assets/variations/kd14_deep_blue.jpg'
 
-import { IProduct } from '../../api/productsApi';
+import { IProduct } from '../../api/types';
 
 import { useLazyGetProductVariationPreviewQuery } from '../../api/productsApi';
 

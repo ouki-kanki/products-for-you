@@ -1,0 +1,10 @@
+[MASTER]
+load-plugins=pylint_django
+django-settings-module=e_shop.settings.dev
+
+[MESSAGES CONTROL]
+disable=missing-module-docstring,missing-class-docstring,missing-function-docstring,fixme,too-many-arguments,too-few-public-methods
+
+
+[FORMAT]
+max-line-length=120

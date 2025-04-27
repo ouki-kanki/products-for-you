@@ -1,0 +1,233 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "backend",
+      "type": "shell",
+      "command": "zsh",
+      "args": [
+        "-i",
+        // "-l",
+        "-c",
+        "pyzsh"
+        // "source ~/.zshrc && pyzsh"
+        // "cd .. && cd client && exec zsh",
+        // "source venv/bin/activate"
+        // "source ${workspaceFolder}/venv/bin/activate"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "group": "groupA",
+      },
+      // "isBackground": true
+    },
+    {
+      "label": "server",
+      "type": "shell",
+      "command": "zsh",
+      "args": [
+        "-i",
+        "-c",
+        "pyzsh"
+      ],
+      // "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "groupA"
+      }
+    },
+    {
+      "label": "db",
+      "type": "shell",
+      "command": "zsh -c -i 'pyzsh && cd ..' && cd ..",
+      "args": [
+        // "cd .."
+        // "-i",
+        // "-c",
+        // "pyzsh && -c 'cd ..'"
+        // "source ${workspaceFolder}/venv/bin/activate && cd .. && ",
+      ],
+      // "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "groupB"
+      }
+    },
+    {
+      "label": "client",
+      "type": "shell",
+      "command": "zsh",
+      "args": [
+        "-i",
+        "-c",
+        "pyzsh && cd ..",
+      ],
+      // "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "groupB"
+      }
+    },
+    {
+      "label": "runBoth",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": ["backend", "server", "db", "client"],
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}
+
+// {
+//   "version": "2.0.0",
+//   "tasks": [
+//     {
+//       "label": "term one",
+//       "type": "shell",
+//       "command": "zsh",
+//       "args": [
+//         // "-c",
+//         // "source ${workspaceFolder}/venv/bin/activate"
+//       ],
+//       "presentation": {
+//         "echo": true,
+//         "reveal": "always",
+//         "group": "backend-split",
+//         // "panel": "shared",
+//         "clear": false,
+//         // "reveal": "silent",
+//       },
+//       "isBackground": true,
+//       "problemMatcher": []
+//     },
+//     {
+//       "label": "term two",
+//       "type": "shell",
+//       "command": "zsh",
+//       "presentation": {
+//         "echo": true,
+//         "reveal": "always",
+//         "focus": false,
+//         "group": "backend-split",
+//         // "panel": "shared",
+//         "showReuseMessage": true,
+//         "clear": false
+//       },
+//       "dependsOn": ["term one"],
+//       "isBackground": true,
+//       "problemMatcher": []
+//     },
+//     {
+//       "label": "open terms",
+//       "dependsOn": ["term two"],
+//       "group": {
+//         "kind": "build",
+//         "isDefault": true
+//       },
+//       "problemMatcher": []
+//     }
+//   ]
+// }
+
+// {
+//     "version": "2.0.0",
+//     "tasks": [
+//         {
+//             "label": "backend split",
+//             "dependsOn": ["term one", "server", "client", "db", "root"],
+//             "group": {
+//                 "kind": "build",
+//                 "isDefault": true
+//             },
+//             "runOptions": {
+//                 // "runOn": "folderOpen"
+//             },
+//             "problemMatcher": []
+//         },
+//         {
+//             "label": "term one",
+//             "type": "shell",
+//             "command": "${command:python.interpreterPath} manage.py runserver",
+//             "options": {
+//                 "shell": {
+//                     "args": []
+//                 }
+//             },
+//             "presentation": {
+//                 "group": "backend_split",
+//                 "echo": false,
+//                 "clear": false
+//             },
+//             "problemMatcher": []
+//         },
+//         {
+//             "label": "server",
+//             "type": "shell",
+//             "command": "zsh -c 'python manage.py runserver'",
+//             "options": {
+//                 "shell": {
+//                     "args": []
+//                 }
+//             },
+//             "presentation": {
+//               "group": "backend_split",
+//                 "echo": false,
+//                 "focus": false,
+//                 "panel": "shared",
+//                 "clear": false
+//             },
+//             "problemMatcher": []
+//         },
+//         {
+//             "label": "client",
+//             "type": "shell",
+//             "command": "zsh -c 'cd ../client && exec zsh'",
+//             "options": {
+//               "shell": {
+//                 "args": []
+//               }
+//             },
+//             "presentation": {
+//               "group": "client",
+//               "panel": "dedicated",
+//               "reveal": "always"
+//             },
+//             "problemMatcher": []
+//           },
+//           {
+//             "label": "db",
+//             "type": "shell",
+//             "command": "zsh -c 'cd db && exec zsh'",
+//             "options": {
+//               "shell": {
+//                 "args": []
+//               }
+//             },
+//             "presentation": {
+//               "group": "db",
+//               "panel": "dedicated",
+//               "reveal": "always"
+//             },
+//             "problemMatcher": []
+//           },
+//           {
+//             "label": "root",
+//             "type": "shell",
+//             "command": "zsh -c 'cd .. && exec zsh'",
+//             "options": {
+//               "shell": {
+//                 "args": []
+//               }
+//             },
+//             "presentation": {
+//               "group": "root",
+//               "panel": "dedicated",
+//               "reveal": "always"
+//             },
+//             "problemMatcher": []
+//           }
+//     ]
+// }

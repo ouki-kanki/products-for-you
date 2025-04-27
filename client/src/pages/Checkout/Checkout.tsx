@@ -21,7 +21,6 @@ import { useCreateOrderMutation } from '../../api/orderApi';
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-
 import type { Stripe, StripeCardElement, StripeError, } from '@stripe/stripe-js';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
 
@@ -187,8 +186,6 @@ export const Checkout = () => {
       const { client_secret } = await createPaymentIntent({ planId: planOptionId }).unwrap()
       const { firstName, lastName, userEmail, city, state, country, shippingAddress, billingAddress, zipCode, phoneNumber } = validatedFields
 
-      console.log("the client secret", client_secret)
-
       const paymentMethodReq = await stripeRef?.createPaymentMethod({
         type: 'card',
         card: cardElement as StripeCardElement,
@@ -205,10 +202,6 @@ export const Checkout = () => {
           },
         }
       })
-
-
-
-      // console.log("the payment", paymentMethodReq)
 
       if (!isEmpty(paymentMethodReq?.error as StripeError)) {
         setIsLoading(false)
@@ -228,17 +221,12 @@ export const Checkout = () => {
         return
       }
 
-      console.log("the payment request", paymentMethodReq)
-
       // cofirm the payment
       const confirmedCardPayment = await stripeRef?.confirmCardPayment(client_secret, {
         payment_method: paymentMethodReq.paymentMethod?.id as string,
       })
 
-      console.log("confirmed payment", confirmedCardPayment)
-
       const copyCart = { ...cart, items: prepareCartItems([...cart.items])}
-      console.log("the prepared cart", copyCart)
 
       // TODO: show what went wrong with the payment. take info form stripe obj
       if (confirmedCardPayment?.paymentIntent?.status !== PaymentIntentStatus.SUCCESS) {

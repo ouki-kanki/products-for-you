@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styles from './controlBar.module.scss'
 import type { ListResponse, SearchProductItem } from '../../../api/searchApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../app/store/store';
-import { isEmpty } from '../../../utils/objUtils';
 
 import { ButtonGroup } from '../../../UI/ButtonGroup/ButtonGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+
+import { FacetsList } from '../../Filters/FacetsList';
 
 import { useAppDispatch } from '../../../app/store/store';
 import { asyncToggleFacet } from '../../../features/filtering/facetSlice';
@@ -19,14 +20,57 @@ interface ControlBarProps {
   handleChangeSort: (value: string) => void;
 }
 
+const animationDuration = 300;
 
 export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSort }: ControlBarProps) => {
-  const [ isFilterOpen, toggleFilter ] = useState(true)
+  const [ isFilterOpen, setFilterOpen ] = useState(true)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof window.setTimeout>>(null)
+  const filterMenuRef = useRef<HTMLDivElement>(null)
+
+
+  const setHeightValue = () => {
+    if (filterMenuRef.current) {
+      const menuHeight = filterMenuRef.current.scrollHeight
+      document.documentElement.style.setProperty('--menu-height', `${menuHeight}px`)
+    }
+  }
+
+  // TODO: fix the type of the ref
+  const handleToggleFilter = () => {
+    if (!isFilterOpen) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      setIsAnimating(true)
+      setHeightValue()
+
+    timeoutRef.current = setTimeout(() => {
+        setIsAnimating(false)
+        setFilterOpen(true)
+      }, animationDuration)
+      return
+    }
+
+    // *** -- this closes the menu -- ***
+
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setIsAnimating(true)
+    setHeightValue()
+    timeoutRef.current = setTimeout(() => {
+      setIsAnimating(false)
+      setFilterOpen(false)
+    }, animationDuration)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
+
   const appDispatch = useAppDispatch()
   const { facets } = useSelector((state: RootState) => state.filters)
 
-  // console.log(facets)
-  console.log(isFilterOpen)
 
   const handleSelectBoxChange = (e: React.ChangeEvent<HTMLInputElement>, facetName: string) => {
     appDispatch(asyncToggleFacet({
@@ -66,41 +110,18 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
         <FontAwesomeIcon
           className={styles.filter}
           icon={faFilter}
-          onClick={() => toggleFilter((prev) => !prev)}
+          onClick={handleToggleFilter}
         />
       </div>
-      <div className={`${styles.facetsContainer} ${isFilterOpen ? styles.open : ''}` }>
-
-        {!isEmpty(facets) && Object.keys(facets).map((facet, i) => (
-          <div
-          className={styles.container}
-          key={i}>
-          <div className={styles.line}></div>
-          <br />
-          <h3>By {facet}</h3>
-          <div className={styles.facetContainer}>
-            {facets[facet].map((item, i) => (
-              <div
-                key={i}
-                className={styles.facetValueContainer}>
-                  <div>
-                    <input
-                      name={item.name}
-                      id={item.name}
-                      type='checkbox'
-                      value={item.isActive}
-                      checked={item.isActive}
-                      onChange={(e) => handleSelectBoxChange(e, facet)}
-                      // name={`${item.name} ${item.count}`}
-                      />
-                    <label htmlFor={item.name}>{item.name}</label>
-                  </div>
-                <div>{item.count}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        ))}
+      <div
+        className={`${styles.facetsContainer} ${isFilterOpen ? styles.open : ''} ${isAnimating ? styles.animating : ''}`}
+        ref={filterMenuRef}
+        >
+        <FacetsList
+          facets={facets}
+          handleSelectBoxChange={handleSelectBoxChange}
+          location='controlbar'
+        />
       </div>
 
     </div>

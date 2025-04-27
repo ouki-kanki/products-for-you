@@ -1,4 +1,3 @@
-import os
 import uuid
 from io import IOBase, BytesIO
 
@@ -9,10 +8,10 @@ from django.utils.text import slugify
 from django.urls import reverse
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
-from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.validators import MinValueValidator, MaxValueValidator
+from rembg import remove
 
 from common.util.string_utils import replace_space_with_dash
 from common.util.static_helpers import (
@@ -22,19 +21,19 @@ from common.util.static_helpers import (
 from common.util.slugify_helper import slugify_unique, lower_random
 from services.imageServices import (
     generate_thumbnail_v2,
-    remove_background,
     compare_images_delete_prev_if_not_same,
     delete_image_from_filesystem
 )
 from user_control.models import CustomUser as User
 
 from .utils import get_list_of_parent_categories
-from rembg import remove
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=50, blank=True)
-    parent_category = models.ForeignKey("self", on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
+    parent_category = models.ForeignKey("self",
+                                        on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
     is_featured = models.BooleanField(default=False)
     icon = models.ImageField(upload_to='categories/', blank=True, default='icons/placeholder.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -46,7 +45,7 @@ class Category(models.Model):
         ordering = ['position']
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     # TODO: do not allow more than 20 featured categories
 
@@ -83,14 +82,9 @@ class Category(models.Model):
 
 
 # NOTE: sender is the class
-def category_pre_save(sender, instance, *args, **kwargs):
+def category_pre_save(_sender, instance, *args, **kwargs):
     if instance.slug is None or instance.slug == "":
         instance.slug = slugify(instance.name)
-
-
-# def category_post_save(sender, instance, created, *args, **kwargs):
-#     if created:
-#         instance.save()
 
 
 pre_save.connect(category_pre_save, sender=Category)
@@ -105,7 +99,7 @@ class Brand(models.Model):
     icon = models.ImageField(upload_to='brands/', blank=True, default='icons/placeholder.jpg')
 
     def __str__(self):
-        return self.name
+        return str(self.name) if self.name else ""
 
 
 class Product(models.Model):
@@ -134,7 +128,7 @@ class Product(models.Model):
         return f'/{self.category.slug}/{self.slug}/'
 
     def __str__(self):
-        return self.name
+        return "{}".format(self.name)
 
     def save(self, *args, **kwargs):
         # this will trigger if this is first created instance so we do not need to clear the filesystem
@@ -192,7 +186,7 @@ class Tag(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
 
     def __str__(self):
-        return self.slug
+        return str(self.slug)
 
 
 class ProductItem(models.Model):
@@ -200,7 +194,6 @@ class ProductItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variations')
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     # TODO: need to remove this. there is a property that builds the variation name
-    variation_name = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
     sku = models.CharField(max_length=255, blank=True, unique=True)
     quantity = models.PositiveIntegerField()
@@ -208,7 +201,10 @@ class ProductItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_default = models.BooleanField(default=False)
     variation_option = models.ManyToManyField('variations.VariationOptions')  # to avoid circular imports
-    generate_tags = models.BooleanField(default=False, help_text='this will gather info about the product and will try to create assosiated tags')
+    generate_tags = models.BooleanField(
+        default=False,
+        help_text='this will gather info about the product '
+        'and will try to create assosiated tags')
     tags = models.ManyToManyField(Tag, related_name='product_items', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -235,9 +231,9 @@ class ProductItem(models.Model):
         format product_name-variation_values
         used to save the thumb of product variation to the filesystem as name for the file
         """
-        qs = self.variation_option.all()
+        qs = self.variation_option.all()  # pylint: disable=no-member
         variation_values = '- '.join(option.value for option in qs)
-        product_name = self.product_name.replace(' ', '-')
+        product_name = self.product_name.replace(' ', '-')  # pylint: disable=no-member
 
         return f'{product_name}-{variation_values}'
 
@@ -259,14 +255,11 @@ class ProductItem(models.Model):
         return f"{category_slug}/{product_slug}"
 
     def __str__(self):
-        qs = self.variation_option.all()
+        qs = self.variation_option.all()  # pylint: disable=no-member
         # returns the variations joined in a string
         variation_values = ', '.join(option.value for option in qs)
         # return self.product_name
         return f'{self.product_name}, {self.sku}-{variation_values}'
-
-    def __unicode__(self):
-        return f"sku - {self.sku} - {self.price} - {self.quantity}"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -275,15 +268,15 @@ class ProductItem(models.Model):
             tag_names = set()
 
             if self.product.category:
-                tag_names.add(self.product.category.name.strip())
+                tag_names.add(self.product.category.name.strip())  # pylint: disable=no-member
 
-            for variation in self.variation_option.all():
+            for variation in self.variation_option.all():  # pylint: disable=no-member
                 tag_names.add(variation)
 
             for tag_name in tag_names:
                 tag, _ = Tag.objects.get_or_create(name=tag_name, slug=slugify(tag_name))
                 self.tags.add(tag)
-            
+
             self.generate_tags = False
             super().save(*args, **kwargs)
 
@@ -306,9 +299,6 @@ def product_item_post_save(sender, instance, created, **kwargs):
 
         if instance.product.category:
             tag_names.add(instance.product.category.name.strip())
-
-
-
 
     def generate_slug_and_sku():
         need_generate = False
@@ -354,8 +344,7 @@ class ProductDetail(models.Model):
         # TODO: change if it causes performance problems
         return f"details for product {self.product_item.product.name}"
 
-
-def remove_backGround_v2(instance): # noqa
+def remove_background_v2(instance): # noqa
     try:
         with instance.image.open('rb') as img_file:
             img_data = img_file.read()
@@ -363,9 +352,9 @@ def remove_backGround_v2(instance): # noqa
             output_image = BytesIO(output)
             new_image = ContentFile(output_image.getvalue(), name=f'{instance.product_item.variation_name}_nobg')
             instance.image = new_image
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         # TODO: handle the exception better
-        print(f"could not remove back ground")
+        print(f"could not remove back ground {str(e)}")
 
 
 class ProductImage(models.Model):
@@ -373,14 +362,14 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to=upload_product_item_image)
     is_default = models.BooleanField(default=False)
     has_thumbnail = models.BooleanField(default=False)
-    remove_background = models.BooleanField(default=False, help_text="experimental, works with white background")
+    remove_background = models.BooleanField(default=False, help_text="removes the bg of the image, to revert you need to reupload the image!")
     thumbnail = models.ImageField(upload_to=upload_product_thumb, blank=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.product_item.product_name
+        return str(self.product_item.product_name)
 
     @staticmethod
     def delete_image_and_thumb_from_filesystem(instance, field_name: str):
@@ -414,7 +403,7 @@ class ProductImage(models.Model):
             self.thumbnail = thumb
 
         if self.remove_background:
-            remove_backGround_v2(self)
+            remove_background_v2(self)
 
         super().save(*args, **kwargs)
 
@@ -434,23 +423,12 @@ def product_image_pre_save(sender, instance, *args, **kwargs):
     TODO: the same is used in product item. have to DRY it.
     """
     if instance.is_default:
-        other_default_images = ProductImage.objects.filter(product_item=instance.product_item, is_default=True).exclude(pk=instance.pk)
+        other_default_images = ProductImage.objects.filter(
+            product_item=instance.product_item,
+            is_default=True).exclude(pk=instance.pk)
 
         if other_default_images:
             other_default_images.update(is_default=False)
-
-
-
-
-
-# @receiver(post_save, sender=ProductImage)
-# def product_image_post_save(sender, instance, *args, **kwargs):
-#     output_path = os.path.join(settings.MEDIA_ROOT, 'test\\test.png')
-#     if instance.remove_background:
-#         remove_background(instance.image, output_path)
-
-
-
 
 
 # *** OBSOLETE ***
@@ -462,10 +440,9 @@ class Discount(models.Model):
     # TODO: change the field with sanitized version of a jsonfield
     description = models.TextField(blank=True)
     # discount_value = models.DecimalField(max_digits=2, decimal_places=2)
-    discount_value = models.PositiveBigIntegerField(verbose_name='discount percentage',
-        validators=[
-            MaxValueValidator(100, message="max value is 100")
-    ])
+    discount_value = models.PositiveBigIntegerField(
+        verbose_name='discount percentage',
+        validators=[MaxValueValidator(100, message="max value is 100")])
     discount_type = models.CharField(max_length=255)
     times_used = models .PositiveIntegerField()
     is_active = models.BooleanField(default=False)
@@ -498,7 +475,7 @@ class ProductReview(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
     # NOTE: these validators are not a db constrain.
-    
+
     def __str__(self):
         return f"{self.user.email} - {self.product.name} - {self.rating}"
 

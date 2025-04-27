@@ -7,8 +7,9 @@ export const useListSearchParams = (omitValues?: string[]) => {
 
   // console.log("searchparams", searchParams)
 
-  // omit the values and construt the new URL obj
+  // omit the values from the omitValues array and construt the new URL obj
   for (const [key, value] of searchParams) {
+    // console.log("trigger inside the hook", key, value)
     if (omitValues && omitValues?.length > 0 && omitValues?.includes(key)) {
       continue
     }

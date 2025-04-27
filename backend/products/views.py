@@ -10,13 +10,14 @@ from rest_framework import (
 )
 
 from promotion.models import ProductsOnPromotion
+from common.util.custom_pagination import CustomPageNumberPagination
+
 from .models import Product, ProductItem, Category, ProductImage
 from .serializers import (
     ProductSerializer, ProductVariationSerializer, ProductItemDetailSerializer,
     ProductItemSerializer, ProductItemExtendedSerializer, CategorySerializer, ProductImageSerializer,
     ProductItemQuantitySerializer
 )
-from common.util.custom_pagination import CustomPageNumberPagination
 
 
 class ProductsAndRelatedVariationsView(generics.ListAPIView):

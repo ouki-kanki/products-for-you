@@ -1,0 +1,47 @@
+{
+  "keepExisingTerminalsOpen": false,
+  "runOnStartup": true,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "backend",
+          "commands": [""]
+        },
+        {
+          "name": "server",
+          "commands": ["python manage.py runserver"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "db",
+          "commands": ["cd db", "docker-compose up"],
+          "_shouldRunCommands": false
+        },
+        {
+          "name": "client",
+          "commands": ["cd ../client && yarn run dev"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "client",
+          "commands": ["cd ../client"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "git/root",
+          "commands": ["cd .."]
+        }
+      ]
+    }
+  ]
+}
