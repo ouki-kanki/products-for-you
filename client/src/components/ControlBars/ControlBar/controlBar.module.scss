@@ -22,14 +22,22 @@
 .line {
   margin: 0 20px 0 20px;
   flex-grow: 1;
-  // display: inline-block;
   height: 3px;
-  // border: 1px solid red;
-  background-color: $font_light_1_brown;
+  background-color: $blue-light-active;
 }
 
 .sortContainer {
   margin-left: auto;
+
+  label {
+    margin-right: 5px;
+  }
+
+  select {
+    border: 2px solid $dark-gray;
+    border-radius: 10px 10px 0 0;
+    padding: 6px;
+  }
 }
 
 .filter {
@@ -38,10 +46,11 @@
 }
 
 .facetsContainer {
+  margin-top: 20px;
   display: flex;
+  flex-wrap: nowrap;
   height: 0;
   overflow: hidden;
-  // transform: scaleY(0);
   transform: translateX(-100%);
   transform-origin: top;
   opacity: 0;
@@ -55,12 +64,26 @@
       animation: spring 0.3s ease-out forwards;
   }
 
-
   &.open {
     height: var(--menu-height);
     opacity: 1;
-    // transform: scaleY(1.1);
     transform: translateX(0);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+  }
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 }
 

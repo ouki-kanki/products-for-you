@@ -2,6 +2,21 @@
   display: flex;
   flex-wrap: wrap;
 
+  // add horizontal to the panel that is inisde the search component
+  &.controlbar {
+
+    @media  screen and (max-width: 970px) {
+      overflow-x: scroll;
+    }
+
+    @media screen and (max-width: 730px) {
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      overflow-y: auto;
+
+    }
+  }
+
   &.sidebar {
     flex-direction: column;
 

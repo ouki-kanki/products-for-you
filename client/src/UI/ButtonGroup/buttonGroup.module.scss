@@ -3,8 +3,8 @@
   grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
   border: 2px solid $dark-gray;
   border-radius: 10px;
+  max-height: 40px;
   justify-content: space-evenly;
-  height: 40px;
   cursor: pointer;
   overflow: hidden;
 

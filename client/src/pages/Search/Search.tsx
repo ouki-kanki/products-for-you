@@ -55,6 +55,12 @@ export const Search = () => {
     facets: paramsStr
   })
 
+  // console.log("dat", data?.results)
+
+  console.log("the search value", searchValue)
+  console.log("the next", data?.next)
+
+
   useEffect(() => {
     // facets are cached. trigger request when facetslist is changed
     refetch()
@@ -151,7 +157,9 @@ export const Search = () => {
    */
   const handleNavigateToPage = async (pageNumber: number, page_size: number, searchValue: string) => {
     await scrollToTop()
-    navigate(prepareLink(pageNumber + 1, page_size, {search: searchValue}))
+    // navigate(prepareLink(pageNumber + 1, page_size, {search: searchValue}))
+    // navigate((pageNumber + 1))
+    handleNavigate(pageNumber + 1)
   }
 
   return (

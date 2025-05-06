@@ -47,7 +47,7 @@ export const Sidebar = () => {
         onClick={() => navigate('/')}
         className={styles.logoContainer}
         >
-        <h2>Products for you</h2>
+        <h2 className={styles.logo}>Products for you</h2>
       </div>
       <nav className={styles.fieldsContainer}>
           {sideBarData.map(({ title, icon, link }) => {

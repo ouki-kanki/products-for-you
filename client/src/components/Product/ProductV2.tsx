@@ -1,41 +1,50 @@
-import { useState, useEffect } from 'react'
-import styles from './productV2.module.scss';
-import type { WidthType } from '../../UI/Card/Card';
+import { useState, useEffect } from "react";
+import styles from "./productV2.module.scss";
+import type { WidthType } from "../../UI/Card/Card";
 
-import { useHover } from '../../hooks/useHover';
-import { useNavigate } from 'react-router-dom';
+import { useHover } from "../../hooks/useHover";
+import { useNavigate } from "react-router-dom";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { faStar as faSolidStar } from "@fortawesome/free-solid-svg-icons";
 
-import { Card } from '../../UI/Card/Card';
-import { Button } from '../../UI/Button/Button';
-import { QuantityIndicator } from '../../UI/Indicators/QuantityIndicator';
-import { FavoritesBtn } from '../Buttons/FavoritesBtn/FavoritesBtn';
+import { Card } from "../../UI/Card/Card";
+import { Button } from "../../UI/Button/Button";
+import { QuantityIndicator } from "../../UI/Indicators/QuantityIndicator";
+import { FavoritesBtn } from "../Buttons/FavoritesBtn/FavoritesBtn";
 
-import kdeImage from '../../assets/kd14_low_res.png'
-import kdeRight from '../../assets/kd14_right.jpg'
-import kdeTop from '../../assets/kd14_top.jpg'
-import kdeBack from '../../assets/kd14_back.jpg'
-import kdWhiteYellow from '../../assets/variations/kd14_yel_white.jpg';
-import kdIce from '../../assets/variations/kd14_ice.jpg';
-import kdDeepBlue from '../../assets/variations/kd14_deep_blue.jpg'
+import kdeImage from "../../assets/kd14_low_res.png";
+import kdeRight from "../../assets/kd14_right.jpg";
+import kdeTop from "../../assets/kd14_top.jpg";
+import kdeBack from "../../assets/kd14_back.jpg";
+import kdWhiteYellow from "../../assets/variations/kd14_yel_white.jpg";
+import kdIce from "../../assets/variations/kd14_ice.jpg";
+import kdDeepBlue from "../../assets/variations/kd14_deep_blue.jpg";
 
-import { IProduct } from '../../api/types';
+import { IProduct } from "../../api/types";
 
-import { useLazyGetProductVariationPreviewQuery } from '../../api/productsApi';
-
+import { useLazyGetProductVariationPreviewQuery } from "../../api/productsApi";
 
 const formatPrice = (strNum: string) => {
-  const num = Number(strNum).toLocaleString()
-  return `${num} €`
+  const num = Number(strNum).toLocaleString();
+  return `${num} €`;
+};
 
+const getDefaultImage = (images) => {
+  const defaultImage = images.reduce((a, image) => image.isDefault && image.url, [''])
+  if (defaultImage) {
+    return defaultImage
+  } else {
+    // if there is no default flag pick the fist image in the list
+    return images[0].url
+  }
 }
 
+
 interface IProductV2Props extends IProduct {
-  width?: WidthType,
-  shadow?: boolean
+  width?: WidthType;
+  shadow?: boolean;
 }
 
 // TODO: getProductVariationPreview has to be moved from here. has to go to the parent
@@ -52,75 +61,92 @@ export const ProductV2 = ({
   handleFavorite,
   isFavorite,
   shadow = true,
-  width = 'fluid' }: IProductV2Props) => {
-  const { isHovered, isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300)
-  const [ currentImage, setCurrentImage ] = useState<string>(kdeImage)
-  const navigate = useNavigate()
-  const [newQuantity, setNewQuantity] = useState<number | null>(null)
-  const [variationPrice, setVariationPrice] = useState<string | null>(null)
-  const [variationProductThumbnails, setVariationProductsThumbnails] = useState({})
-  const [variationSlug, setVariationSlug] = useState<string>('')
-  const [ trigger, result, lastPromiseInfo ] = useLazyGetProductVariationPreviewQuery()
+  width = "fluid",
+}: IProductV2Props) => {
+  const { isTempHovered, activateHover, deactivateHover } = useHover(undefined, 300);
+  const [currentImage, setCurrentImage] = useState<string>(kdeImage);
+  const navigate = useNavigate();
+  const [newQuantity, setNewQuantity] = useState<number | null>(null);
+  const [variationPrice, setVariationPrice] = useState<string | null>(null);
+  const [variationProductThumbnails, setVariationProductsThumbnails] = useState({});
+  const [variationSlug, setVariationSlug] = useState<string>("");
+  const [trigger, { data }, lastPromiseInfo] = useLazyGetProductVariationPreviewQuery();
 
-  const strProductImages = JSON.stringify(productImages)
-  const strVariationResult = result.data && JSON.stringify(result.data)
+  // remove the current variation from the list of other variations
+  const [omitedVariationSlug, setOmitedVariationSlug] = useState(slug || null)
+
+  const strProductImages = JSON.stringify(productImages);
+  const strVariationResult = data && JSON.stringify(data);
+
+  useEffect(() => {
+    const productImages = JSON.parse(strProductImages)
+    if (productImages.length > 0) {
+      const defImage = getDefaultImage(productImages)
+      setCurrentImage(defImage)
+    }
+  }, [strProductImages])
+
 
   useEffect(() => {
     if (strVariationResult) {
-      const selectedVariation = JSON.parse(strVariationResult)
-      setNewQuantity(selectedVariation.quantity)
-      setVariationPrice(selectedVariation.price)
-      setVariationProductsThumbnails(selectedVariation.productThumbnails)
-      setVariationSlug(selectedVariation.slug)
+      const selectedVariation = JSON.parse(strVariationResult);
+      console.log("the new variation", selectedVariation)
+      setNewQuantity(selectedVariation.quantity);
+      setVariationPrice(selectedVariation.price);
+      setVariationProductsThumbnails(selectedVariation.productThumbnails);
+      setVariationSlug(selectedVariation.slug);
+
+      const defaultImage = getDefaultImage(selectedVariation.productThumbnails)
+      setCurrentImage(defaultImage)
     }
-  }, [strVariationResult])
+  }, [strVariationResult]);
 
   useEffect(() => {
-    setNewQuantity(quantity)
-    setVariationPrice(price)
+    // TODO: convert to reducer
+    setNewQuantity(quantity);
+    setVariationPrice(price);
 
-    // TODO: this is bad practice, have to find a more elegant solution
-    setVariationProductsThumbnails(JSON.parse(strProductImages))
-    setVariationSlug(slug)
-  }, [quantity, price, strProductImages, slug])
+    setVariationProductsThumbnails(JSON.parse(strProductImages));
+    setVariationSlug(slug);
+  }, [quantity, price, strProductImages, slug]);
 
   const handleVariationChange = (e: React.MouseEvent<HTMLDivElement>, slug: string) => {
-    console.log("yyoyoyo")
-    e.stopPropagation()
-    console.log("inside change variation", slug)
-    trigger(slug)
-  }
+    e.stopPropagation();
+
+    // omit the new variation from the list of other variations
+    setOmitedVariationSlug(slug)
+    trigger(slug);
+  };
 
   // TODO: repeated functionality on latest products. DRY the
   const handleProductDetail = () => {
-    console.log("inside product detail")
+    console.log("inside product detail");
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${variationSlug}`, {
-      state: constructedUrl
-    })
-  }
+      state: constructedUrl,
+    });
+  };
 
   const handleSetMainImage = (e: React.MouseEvent<HTMLDivElement>, url: string) => {
-    e.stopPropagation()
-    setCurrentImage(url)
-  }
+    e.stopPropagation();
+    setCurrentImage(url);
+  };
 
   // render the variation images on the right of the panel
-  // TODO: click the variation is broken
   const renderVariations = () => {
     if (variations && variations.length > 0) {
       return (
         <div className={styles.variationsContainer}>
-          {variations.map((variation, index) => (
+          {variations.filter(variation => variation.slug !== omitedVariationSlug).map((variation, index) => (
             <div
               className={styles.varImageContainer}
               onClick={(e) => handleVariationChange(e, variation.slug)}
-              key={index}>
-              <img
-                src={variation.thumb} alt="variation image" />
-            </div>))}
+              key={index}
+            >
+              <img src={variation.thumb} alt="variation image" />
+            </div>
+          ))}
         </div>
-      )
-
+      );
     } else {
       return (
         <div className={styles.variationsContainer}>
@@ -134,66 +160,66 @@ export const ProductV2 = ({
             <img src={kdWhiteYellow} alt="variation image" />
           </div>
         </div>
-      )
+      );
     }
-  }
+  };
 
   return (
-      <Card
-        onMouseEnter={activateHover}
-        onMouseLeave={deactivateHover}
-        width={width}
-        shadow={shadow}
-        >
-        <FavoritesBtn
-          handleFavorite={handleFavorite}
-          isFavorite={isFavorite}
-        />
-        <div
-          className={styles.productContainer}
-          onClick={handleProductDetail}
-          >
+    <Card
+      onMouseEnter={activateHover}
+      onMouseLeave={deactivateHover}
+      width={width}
+      shadow={shadow}
+      image={currentImage}>
+      <div className={styles.mainContainer}>
+        <FavoritesBtn handleFavorite={handleFavorite} isFavorite={isFavorite} />
+        <div className={styles.clipContainer}>
+          <svg>
+            <defs>
+              <filter id="shadow_filter" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="5" stdDeviation="4" floodColor="rgba(0, 0, 0, 0.3)" />
+              </filter>
+            </defs>
+
+            <clipPath id="wave_featured_product" clipPathUnits="objectBoundingBox">
+              <path className="st0" d="M0,0.5 C0.2,0.5,0.6,0.7,0.5,1 L1,1 V0 H0 Z" />
+            </clipPath>
+          </svg>
+        </div>
+
+        <div className={styles.productContainer} onClick={handleProductDetail}>
           <div className={styles.topRegion}>
             <h2>{title}</h2>
           </div>
-          <div className={`${styles.medRegion} ${width === 'wide' && styles.wide}`}>
-
+          <div className={`${styles.medRegion} ${width === "wide" && styles.wide}`}>
             <div className={styles.ml}>
               <div className={styles.imageContainer}>
                 <img
                   src={currentImage}
                   className={`${styles.imageMain} ${isTempHovered && styles.imageHovered}`}
-                  alt="shoe image" />
+                  alt="shoe image"
+                />
               </div>
             </div>
-            {width === 'wide' && (
+            {width === "wide" && (
               <div className={styles.mm}>
-                <div>
-                  {description}
-                </div>
+                <div>{description}</div>
               </div>
             )}
 
             <div className={styles.mr}>
               <div className={styles.mrFirst}>
-                <h3 className={styles.priceContainer}>price: {formatPrice(variationPrice as string)}</h3>
+                <h3 className={styles.priceContainer}>
+                  price: {formatPrice(variationPrice as string)}
+                </h3>
 
                 {/* TODO: move it to a seperate component */}
                 <div className={styles.ratingsContainer}>
-                <FontAwesomeIcon
-                  className={styles.starIcon}
-                  icon={faSolidStar}
-                  size='lg'/>
-                <FontAwesomeIcon
-                  className={styles.starIcon}
-                  icon={faSolidStar}
-                  size='lg'/>
-                <FontAwesomeIcon
-                  className={styles.starIcon}
-                  icon={faStar}
-                  size='lg'/>
+                  <FontAwesomeIcon className={styles.starIcon} icon={faSolidStar} size="lg" />
+                  <FontAwesomeIcon className={styles.starIcon} icon={faSolidStar} size="lg" />
+                  <FontAwesomeIcon className={styles.starIcon} icon={faStar} size="lg" />
                 </div>
-                <QuantityIndicator quantity={newQuantity}/>
+                <QuantityIndicator quantity={newQuantity} />
               </div>
 
               {/* VARIATIONS */}
@@ -201,25 +227,22 @@ export const ProductV2 = ({
 
               <div className={styles.contentContainer}>
                 <h3>features</h3>
-                <ul>
-                  {features && features.map((feature, id) => (
-                    <li key={id}>{feature}</li>
-                  ))}
-                </ul>
+                <ul>{features && features.map((feature, id) => <li key={id}>{feature}</li>)}</ul>
               </div>
-
             </div>
-
           </div>
 
           {/* Product views */}
           <div className={styles.bottomRegion}>
-            {variationProductThumbnails && variationProductThumbnails.length > 0 ? variationProductThumbnails.map((thumb, index) => (
-              <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}>
-                <img src={thumb.url} alt="top view of the product" />
-              </div>)) : (
+            {variationProductThumbnails && variationProductThumbnails.length > 0 ? (
+              variationProductThumbnails.map((thumb, index) => (
+                <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}>
+                  <img src={thumb.url} alt="top view of the product" />
+                </div>
+              ))
+            ) : (
               <>
-              {/* TODO: for testing remove if production !!! */}
+                {/* TODO: for testing remove if production !!! */}
                 <div onClick={() => setCurrentImage(kdeRight)}>
                   <img src={kdeRight} alt="right view of the product" />
                 </div>
@@ -230,19 +253,18 @@ export const ProductV2 = ({
                   <img src={kdeBack} alt="back view of the product" />
                 </div>
               </>
-              )
-            }
+            )}
           </div>
           <div className={styles.actionContainer}>
             <Button>buy now</Button>
             {/* <FontAwesomeIcon
-              className={styles.addIcon}
-              icon={faPlus}
-              size='2x'
-              /> */}
+                className={styles.addIcon}
+                icon={faPlus}
+                size='2x'
+                /> */}
           </div>
         </div>
-      </Card>
-    // </div>
-  )
-}
+      </div>
+    </Card>
+  );
+};

@@ -47,18 +47,6 @@ function App() {
 
   console.log("app triggered")
 
-  const [
-    trigger,
-    {
-      data: products,
-      isLoading,
-      isSuccess,
-      isError,
-      error
-    }
-  ] = useLazyGetProductsQuery()
-
-
   // TODO: this only serves to hide the sidebar. clean the code
   // TODO: move this to another file
   const handleUiConfig = useCallback((config: IUiConfig) => {
@@ -77,12 +65,6 @@ function App() {
   }, [handleUiConfig])
 
   useDebounce(debouncedHideSidebar, 200, [debouncedHideSidebar])
-
-  if (isLoading) {
-    return (
-      <Spinner/>
-    )
-  }
 
   return (
     <div className={`${styles.appContainer} ${darkTheme ? 'dark-theme' : ''}`}>

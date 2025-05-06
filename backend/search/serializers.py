@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
 
-class NameSerializer(serializers.Serializer):
+class NameSerializer(serializers.Serializer):  # pylint: disable=abstract-method
     input = serializers.ListField(read_only=True)
     weight = serializers.IntegerField(read_only=True)
 
 
-class SearchProductItemSerializer(serializers.Serializer): # noqa
+class SearchProductItemSerializer(serializers.Serializer):  # pylint: disable=abstract-method
     thumb = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     name = serializers.CharField(read_only=True)

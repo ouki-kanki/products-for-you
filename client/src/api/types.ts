@@ -66,6 +66,14 @@ export interface IfeaturedItem extends IproductItem {
   featured_position: number;
 }
 
+export interface FeaturedItems {
+  count: number;
+  next: string | null;
+  numOfPages: number;
+  previous: string | null;
+  results: IfeaturedItem[]
+}
+
 
 // TODO: DRY THIS there are simiral properties
 export interface IproductDetail {

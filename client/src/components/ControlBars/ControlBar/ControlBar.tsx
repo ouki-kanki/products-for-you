@@ -51,8 +51,6 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
     }
 
     // *** -- this closes the menu -- ***
-
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     setIsAnimating(true)
     setHeightValue()
@@ -71,7 +69,6 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
   const appDispatch = useAppDispatch()
   const { facets } = useSelector((state: RootState) => state.filters)
 
-
   const handleSelectBoxChange = (e: React.ChangeEvent<HTMLInputElement>, facetName: string) => {
     appDispatch(asyncToggleFacet({
       facetName,
@@ -83,7 +80,6 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
   return (
     <div className={styles.controlBar}>
       <div className={styles.controlButtons}>
-      {/* <button onClick={() => handleAddCategoryFilter('shoes')}>add category</button> */}
         <div className={styles.buttonGroup}>
           <ButtonGroup
             onClick={(num) => handleChangeLayout(num)}
@@ -113,6 +109,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
           onClick={handleToggleFilter}
         />
       </div>
+
       <div
         className={`${styles.facetsContainer} ${isFilterOpen ? styles.open : ''} ${isAnimating ? styles.animating : ''}`}
         ref={filterMenuRef}

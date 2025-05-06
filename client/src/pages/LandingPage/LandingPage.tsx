@@ -9,7 +9,6 @@ import { FeaturedProduct } from './FeaturedProduct';
 import { FeaturedProducts } from './FeaturedProducts/FeaturedPoroducts';
 import { FeaturedCategories } from './FeaturedCategories/FeaturedCategories';
 
-import { ProductV2 } from "../../components/Product/ProductV2"
 import { LatestProducts } from './LatestProducts/LatestProducts';
 import { PromotedProducts } from './PromotedProducts/PromotedProducts';
 
@@ -52,14 +51,13 @@ export const LandingPage = () => {
   const { data: promotedProducts, isLoading: isLoadingPromoted, isError: isErrorPromoted} = useGetPromotedProductsQuery(undefined, { skip: !featuredProducts })
   const { data: featuredCategories, isLoading: isLoadingCategories, isError: isErrorCategories} = useGetCategoriesQuery('featured', { skip: !promotedProducts })
 
-  console.log("latest", latestProducts)
+  // console.log("latest", latestProducts)
   // console.log("featured", featuredProducts, isLoadingFeatured, isErrorFeatured)
   // console.log("promoted", promotedProducts)
   // console.log("categories", featuredCategories)
 
   return (
     <div className={styles.container}>
-      {/* {productView === 'products' && renderProducts()} */}
       <FeaturedProduct
         data={featuredProducts?.results}
         isLoading={isLoadingFeatured}

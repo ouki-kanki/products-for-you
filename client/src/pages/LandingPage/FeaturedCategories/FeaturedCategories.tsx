@@ -43,7 +43,7 @@ export const FeaturedCategories = ({data, isLoading, isError}) => {
                 className={styles.categoryContainer}
                 onClick={() => handleCategoryClick(item.slug)}
                 >
-                <h2 className={styles.title}>{item.name}</h2>
+                <h2 className={styles.categoryTitle}>{item.name}</h2>
                 <div className={styles.imageContainer}>
                   <img src={item.icon} alt='category icon' />
                 </div>

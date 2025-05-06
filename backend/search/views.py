@@ -1,4 +1,5 @@
 from typing import List
+from urllib.parse import urlencode
 from django.conf import settings
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
@@ -18,6 +19,7 @@ from common.paginators.paginator_elasticsearch import ElasticSearchPaginator, El
 from .serializers import SearchProductItemSerializer
 from .documents.productitem import ProductItemDocument
 from .documents.category_document import CategoryDocument
+from .utils.pagination import paginate
 
 sort_hash = {
     'time': 'created_at',
@@ -93,8 +95,6 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
         category = request.query_params.getlist('categories')
         brand = request.query_params.getlist('brand')
 
-        # print("the category", category)
-
         filters = {
             'name': name,
             'price': price,
@@ -102,10 +102,13 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             'categories': category
         }
 
-        # query_list = request.GET.urlencode()
-        # query_ar = query_list.split('&')
-
         try:
+
+            # pagination = paginate(request, search_str, fc,)
+            # posts, items_per_page = pagination.get('posts'), pagination.get('items_per_page')
+            # total_items, num_of_pages = pagination.get('total_items'), pagination.get('num_of_pages')
+            # prev_link, next_link = pagination.get('prev_link'), pagination.get('next_link')
+
             # --**-- pagination --**--
             uri = request.build_absolute_uri(request.path)
             default_page = '1'
@@ -140,12 +143,27 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
             paginator = ElasticSearchPaginator(response, page_size)
 
+            # print("facets", response.facets.to_dict())
+
+            facets_dict = response.facets.to_dict()
+
+            def build_facets_query(facets):
+                active_dict = {}
+                for key, values in facets.items():
+                    active_values = [items[0] for items in values if items[2]]
+                    if active_values:
+                        active_dict[key] = ",".join(active_values)
+                return f'&{urlencode(active_dict)}' if active_dict else ''
+
+            facets_query = build_facets_query(facets_dict)
+            print("facets_query: ", facets_query)
+
             next_link = None
             prev_link = None
             if page < paginator.num_pages:
-                next_link = f'{uri}/?search={search_str}&page={page + 1}&page_size={page_size}'
+                next_link = f'{uri}?search={search_str}&page={page + 1}&page_size={page_size}{facets_query}'
             if page > 1:
-                prev_link = f'{uri}/?search={search_str}&page={page - 1}&page_size={page_size}'
+                prev_link = f'{uri}?search={search_str}&page={page - 1}&page_size={page_size}{facets_query}'
 
             try:
                 posts = paginator.page(page)
@@ -158,14 +176,20 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
 
             # print("serializer data", json.dumps(serializer.data, indent=4))
 
+            print("the next link", next_link)
+            print("prev link", prev_link)
             # TODO: had to access protected member,
             paged_response_with_facets = {
                 'next': next_link,
                 'prev': prev_link,
+                # 'total_items': total_items,  # pylint: disable=protected-access
                 'total_items': paginator._count.value,  # pylint: disable=protected-access
+                # 'per_page': items_per_page,
                 'per_page': paginator.count,
+                # 'num_of_pages': num_of_pages,
                 'num_of_pages': paginator.num_pages,
                 'results': serializer.data,
+                # 'facets': pagination.get('facets_response').facets.to_dict()
                 'facets': response.facets.to_dict()
             }
 
@@ -217,9 +241,16 @@ class ProductItemSuggestView(APIView):
                     },
                     'size': 5
                 }
+            ).suggest(
+                'brand_suggestion',
+                param,
+                completion={
+                    "field": 'brand.suggest',
+                    'size': 1 # keep the number of results 1 because it will find the related brands of many broducts and i want only one to show in suggestion
+                },
             )
 
-            suggestions += self.get_suggestions(items, 'slug_suggestion')
+            suggestions += self.get_suggestions(items, 'slug_suggestion', 'brand_suggestion')
 
             # category suggestions
             categories = CategoryDocument.search()

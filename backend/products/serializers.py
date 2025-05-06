@@ -191,7 +191,8 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
     def get_variations(self, obj):
         request = self.context.get('request')
-        variations = obj.product.product_variations.exclude(slug=obj.slug)
+        # variations = obj.product.product_variations.exclude(slug=obj.slug)
+        variations = obj.product.product_variations.all()
 
         if variations.exists():
             # TODO: dry the same logic on productSerializer

@@ -9,18 +9,37 @@ interface returnParams<T> {
   handleNavigate: (page: number, queryStringObj: any) => void
 }
 
+const _prepareLink = (path: string) => (page: string, queryString: string): string => {
+  let queryStr = queryString
 
-const _prepareLink = (path: string) => (page: number, page_size: number, queryStringObj): string => {
+  // remove the old page from the queryString
+
+
+  console.log("the que", queryString)
+  queryStr += queryStr ? '&' : ''
+
+  if (page) {
+    queryStr += `page=${page}`
+  }
+
+  if (queryStr) {
+    return path + '?' + queryStr
+  } else {
+    return path
+  }
+}
+
+// *** OBSOLETE ***
+const _prepareLink_old = (path: string) => (page: number, page_size: number, queryStringObj): string => {
   let queryStr = ''
 
-  // console.log("is empty", isEmpty(queryStringObj))
-
-  // add all the custom querystrings if there are any
   if (! isEmpty(queryStringObj)) {
     for (const [key, value] of Object.entries(queryStringObj)) {
       !queryStr ? queryStr += `?${key}=${value}` : queryStr += `&${key}=${value}`
     }
   }
+
+  // TODO: remove the above and use the string that is created -> url_query_string
 
   queryStr += !queryStr ? '?' : '&'
   queryStr += `page=${page}&page_size=${page_size}` // TODO: only if page or pagesize exist
@@ -44,6 +63,15 @@ export const usePagination = <T>(queryStringObj: T) => {
   const { pathname } = useLocation()
   const scrollToTop = useScrollToTop()
 
+  let queryString = Object.fromEntries(searchParams.entries())
+  console.log("the querystring obj", queryString)
+  queryString = Object.fromEntries(
+    Object.entries(queryString).filter(([key]) => key !== 'page')
+  )
+  console.log("clean querystring", queryString)
+  const urlQueryString = new URLSearchParams(queryString).toString()
+
+  console.log("the url query", urlQueryString)
 
   const preparedLinkWithPath = _prepareLink(pathname)
 
@@ -52,13 +80,15 @@ export const usePagination = <T>(queryStringObj: T) => {
    * @param page
    */
   const handleNavigate = async (page: number): void => {
-    const path = preparedLinkWithPath(page, page_size, queryStringObj)
+    const path = preparedLinkWithPath(page, urlQueryString)
+    console.log("the final path", path)
     await scrollToTop()
     navigate(path)
   }
 
   return {
     // Note: preparelink is returned to be used in Navlinks
+    // TODO: this has to use the new url_query_string also
     prepareLink: preparedLinkWithPath,
     handleNavigate,
     page,

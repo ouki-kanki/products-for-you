@@ -1,20 +1,23 @@
 .cardContainer {
   position: relative;
-  background-color: #fff;
   height: 28em;
   // width: 400px;
+  // background-color: #fff;
   // height: 100%;
-  padding: 2rem 1.3rem;
-  border-radius: 5% 3% 2em 3%;
+  // padding: 2rem 1.3rem;
+  border-radius: 2em 1em 2em 1em;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   transition: transform ease 150ms;
   // cursor: pointer;
   // background: linear-gradient(-45deg, rgba(241, 183, 175, 0.7), rgba(255, 102, 90, 0.7), rgba(255, 102, 90, 0.7));
-  background: linear-gradient(-45deg, rgba(235, 219, 175, 0.7), rgba(243, 185, 24, 0.7), rgba(255, 102, 90, 0.7));
-  background: linear-gradient(-45deg, rgba(175, 231, 235, 0.7), rgba(24, 228, 243, 0.7), rgba(90, 233, 255, 0.7));
+  // background: linear-gradient(-45deg, rgba(235, 219, 175, 0.7), rgba(243, 185, 24, 0.7), rgba(255, 102, 90, 0.7));
+  // background: linear-gradient(-45deg, rgba(175, 231, 235, 0.7), rgba(24, 228, 243, 0.7), rgba(90, 233, 255, 0.7));
   // width: 300px;
+  // background-color: rgba($color: #ffffff, $alpha: 0.2);
   max-width: 750px;
+  overflow: hidden;
   /* border: 3px solid #ff4d40; */
+  // z-index: -10;
 }
 
 .noShadow {
@@ -35,9 +38,25 @@
   width: 50em;
 }
 
-
 .cardContainer:hover {
   // transform: scale(1.03);
   box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px;
 }
 
+
+.imageContainer {
+  position: absolute;
+  bottom: 0;
+  height: 50%;
+  border-radius: 0 100% 0 0;
+  width: 60%;
+  background-color: white;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    // object-fit: contain;
+    object-fit: cover;
+  }
+}

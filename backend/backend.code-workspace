@@ -8,7 +8,7 @@
 		"window.title": "${dirty}${activeEditorShort}${separator}${folderPath}${separator}${appName}",
 		"editor.fontSize": 16,
 		// "workbench.colorTheme": "Night Coder Flame",
-		"workbench.colorTheme": "Gruvbox Dark Medium",
+		"workbench.colorTheme": "Gruvbox Material Dark",
 		"editor.semanticHighlighting.enabled": true,
 		"python.languageServer": "Pylance",
 		"python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",

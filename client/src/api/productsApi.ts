@@ -10,7 +10,8 @@ import type { IProduct,
               IproductVariationPreview,
               IproductItem,
               IproductDetail,
-              IfeaturedItem
+              IfeaturedItem,
+              FeaturedItems
              } from './types';
 
 interface IProductPaginatedResponse {
@@ -105,7 +106,7 @@ export const productsApi = createApi({
       }
     }),
 
-    getFeaturedProducts: builder.query<IfeaturedItem, string | void>({
+    getFeaturedProducts: builder.query<FeaturedItems, string | void>({
       query: (pageSize) => ({
         url: `products/featured${pageSize ? `?pagesize=${pageSize}` : '' }`
       }),
