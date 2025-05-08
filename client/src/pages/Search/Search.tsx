@@ -55,11 +55,7 @@ export const Search = () => {
     facets: paramsStr
   })
 
-  // console.log("dat", data?.results)
-
-  console.log("the search value", searchValue)
-  console.log("the next", data?.next)
-
+  // console.log("results", data?.results)
 
   useEffect(() => {
     // facets are cached. trigger request when facetslist is changed
@@ -70,6 +66,7 @@ export const Search = () => {
   const facets = data?.facets
   const activeFacets = useSelector((state: RootState) => state.filters.activeFacets)
 
+  console.log("the active factes", activeFacets)
 
   let activeFacetsStr = '';
   if (!isEmpty(activeFacets)) {

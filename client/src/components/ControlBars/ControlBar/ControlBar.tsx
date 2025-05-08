@@ -27,7 +27,23 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
   const [isAnimating, setIsAnimating] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof window.setTimeout>>(null)
   const filterMenuRef = useRef<HTMLDivElement>(null)
+  const selectBtnRef = useRef<HTMLSelectElement>(null)
 
+  // NOTE: option from select button does not accept dynamic values in css file
+  // had to follow this approach
+  useEffect(() => {
+    if (selectBtnRef) {
+      selectBtnRef.current?.querySelectorAll('option')
+        .forEach(option => {
+          const computedBackgroundColor = getComputedStyle(document.documentElement).getPropertyValue
+          ('--primary-color')
+          const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color')
+
+          option.style.backgroundColor = computedBackgroundColor
+          option.style.color = computedColor
+        })
+    }
+  }, [])
 
   const setHeightValue = () => {
     if (filterMenuRef.current) {
@@ -90,6 +106,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
         <div className={styles.sortContainer}>
           <label htmlFor="sort_by">Sort by</label>
           <select
+              ref={selectBtnRef}
               value={sortValue || ''}
               onChange={(e) => handleChangeSort(e.target.value)}
               name="sort_by"

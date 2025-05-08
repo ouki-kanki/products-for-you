@@ -3,7 +3,6 @@
   display: flex;
   background-color: var(--background-color-2);
 
-
   @media screen and (max-width: 890px) {
     font-size: small;
   }
@@ -72,6 +71,10 @@
         font-weight: 500;
       }
     }
+
+    .tagsContainer {
+      font-size: small;
+    }
   }
 
   &__bottom {
@@ -121,6 +124,7 @@
   box-shadow: none;
 }
 
+
 .listLayout {
   .container {
     flex: 1 1 100%; // reset
@@ -168,6 +172,12 @@
         margin-top: 0;
       }
 
+      .tagsContainer {
+        a {
+          font-size: 8px;
+        }
+      }
+
       .availabilityContainer {
         margin-left: auto;
       }
@@ -184,3 +194,5 @@
     padding: 5px 15px;
   }
 }
+
+

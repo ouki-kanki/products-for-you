@@ -21,6 +21,7 @@ class SearchProductItemSerializer(serializers.Serializer):  # pylint: disable=ab
     price = serializers.DecimalField(read_only=True, max_digits=6, decimal_places=2)
     is_default = serializers.BooleanField(read_only=True)
     availability = serializers.CharField(read_only=True)
+    tags = serializers.ListField()
     created_at = serializers.DateTimeField(read_only=True)
 
     def get_thumb(self, hit):

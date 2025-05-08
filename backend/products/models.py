@@ -264,6 +264,7 @@ class ProductItem(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+        # this generates the list of tags
         if self.pk and self.generate_tags:
             tag_names = set()
 
@@ -294,11 +295,12 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
 @receiver(post_save, sender=ProductItem) # noqa
 def product_item_post_save(sender, instance, created, **kwargs):
     # if created and (instance.slug is None or instance.slug == ''):
-    if instance.generate_tags:
-        tag_names = set()
 
-        if instance.product.category:
-            tag_names.add(instance.product.category.name.strip())
+    # if instance.generate_tags:
+    #     tag_names = set()
+
+    #     if instance.product.category:
+    #         tag_names.add(instance.product.category.name.strip())
 
     def generate_slug_and_sku():
         need_generate = False

@@ -25,9 +25,10 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
   const { layout } = props
   const navigate = useNavigate()
   const classes = useClassLister(styles)
+
   // selects the last child of the categories
   const category = props.categories ? props.categories[props.categories?.length -1] : ''
-  const { slug, name, brand } = props
+  const { slug, name, brand, tags } = props
 
   // TODO: the same is used elsewhere . move to a common place (used in the orders component)
   const handleProductDetail = (categorySlug: string, productItemSlug: string) => {
@@ -69,6 +70,12 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
             <p className={styles.description}>{props.description}</p>
             <div className={styles.priceContainer}>
               <div>Price: <span>{props.price}€</span></div>
+            </div>
+
+            <div className={styles.tagsContainer}>
+              {tags.map(tag => (
+                <Link to={`/search?tags=${tag}`}>#{tag}</Link>
+              ))}
             </div>
           </div>
           <div className={styles.availabilityContainer}>

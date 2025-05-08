@@ -1,6 +1,8 @@
+from attr import field
 from django_elasticsearch_dsl.registries import registry
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
+from networkx import multi_source_dijkstra
 
 from products.models import ProductItem, Product, ProductImage
 from .analyzers import html_strip, variation_name_analyzer
@@ -43,6 +45,13 @@ class ProductItemDocument(Document):
         fields={
             'raw': fields.TextField(analyzer=edge_ngram_completion),
             'suggest': fields.CompletionField()
+        }
+    )
+
+    tags = fields.KeywordField(
+        fields={
+            'raw': fields.KeywordField(multi=True),
+            'suggest': fields.CompletionField(multi=True)
         }
     )
 
@@ -117,11 +126,9 @@ class ProductItemDocument(Document):
             "weight": 10
         }
 
-    # def prepare_variation_name_suggest(self, instance):
-    #     return {
-    #         "input": [instance.variation_name],
-    #         "weight": 10
-    #     }
-
     def prepare_variation_name_suggest(self, instance):
         return instance.variation_name
+
+    def prepare_tags(self, instance):
+        return [tag.name for tag in instance.tags.all()]\
+                if instance.tags.exists() else []

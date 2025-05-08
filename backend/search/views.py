@@ -45,6 +45,7 @@ class ProductsFacetedSearch(FacetedSearch):
         'name': TermsFacet(field='name'),
         'brand': TermsFacet(field='brand'),
         'categories': TermsFacet(field='categories.raw'),
+        'tags': TermsFacet(field='tags.raw'),
         'price': RangeFacet(field='price', ranges=[
             ('0 - 100', (0.01, 100)),
             ('100 - 2000', (100, 2000)),
@@ -63,6 +64,7 @@ class ProductsFacetedSearch(FacetedSearch):
                 'variation_name_suggest',
                 'slug.raw',
                 'categories.raw',
+                'tags.raw'
             ],
             fuzziness='AUTO',
             type='best_fields'
@@ -94,12 +96,16 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
         price = request.query_params.getlist('price')
         category = request.query_params.getlist('categories')
         brand = request.query_params.getlist('brand')
+        tags = request.query_params.getlist('tags')
+
+        print("the tags", tags)
 
         filters = {
             'name': name,
             'price': price,
             'brand': brand,
-            'categories': category
+            'categories': category,
+            'tags': tags
         }
 
         try:
@@ -175,9 +181,8 @@ class ProductItemSearchView(APIView, ElasticSearchPagination):
             serializer = self.serializer(posts, context={'request': request}, many=True)
 
             # print("serializer data", json.dumps(serializer.data, indent=4))
-
-            print("the next link", next_link)
-            print("prev link", prev_link)
+            # print("the next link", next_link)
+            # print("prev link", prev_link)
             # TODO: had to access protected member,
             paged_response_with_facets = {
                 'next': next_link,
@@ -248,9 +253,16 @@ class ProductItemSuggestView(APIView):
                     "field": 'brand.suggest',
                     'size': 1 # keep the number of results 1 because it will find the related brands of many broducts and i want only one to show in suggestion
                 },
+            ).suggest(
+                'tags_suggestion',
+                param,
+                completion={
+                    "field": 'tags.suggest',
+                    'size': 1
+                }
             )
 
-            suggestions += self.get_suggestions(items, 'slug_suggestion', 'brand_suggestion')
+            suggestions += self.get_suggestions(items, 'slug_suggestion', 'brand_suggestion', 'tags_suggestion')
 
             # category suggestions
             categories = CategoryDocument.search()

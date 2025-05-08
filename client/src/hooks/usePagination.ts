@@ -64,15 +64,11 @@ export const usePagination = <T>(queryStringObj: T) => {
   const scrollToTop = useScrollToTop()
 
   let queryString = Object.fromEntries(searchParams.entries())
-  console.log("the querystring obj", queryString)
   queryString = Object.fromEntries(
     Object.entries(queryString).filter(([key]) => key !== 'page')
   )
-  console.log("clean querystring", queryString)
+
   const urlQueryString = new URLSearchParams(queryString).toString()
-
-  console.log("the url query", urlQueryString)
-
   const preparedLinkWithPath = _prepareLink(pathname)
 
   /**

@@ -28,7 +28,8 @@ from .models import (
     Discount,
     ProductImage,
     FeaturedItem,
-    ProductDetail
+    ProductDetail,
+    Tag
 )
 
 from .fields.admin_fields import FeaturesField
@@ -434,6 +435,11 @@ class ProductItemAdmin(admin.ModelAdmin):
 
 @admin.register(ProductDetail)
 class ProductDetailsAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
     pass
 
 
