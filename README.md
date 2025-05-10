@@ -1,6 +1,29 @@
 # Products-For-You
 
-Products-For-You is a e-commerce web site made with django-rest-framework and React.js
+## Overview
+
+Products-For-You is a e-commerce web site build with django-rest-framework and React.js.
+
+### TECH STACK:
+
+  **Front end**:
+
+  React.js,redux-toolkit, rtk-query, scss with css modules
+
+  **Back end**:
+
+  Django, django-rest-framework, elastic-search, jwt-authentication, stripe payments
+
+#### Key Features
+
+- faceted search, advanced search functionality using elastic search
+- user authentication using jwt
+- secure payments with stripe
+- product management with tags, categories
+- ability to add favorite products
+- shipping cost calculation, different tax-rates application
+- promotions
+- order history
 
 ## Installation
 
@@ -31,7 +54,7 @@ Products-For-You is a e-commerce web site made with django-rest-framework and Re
 [^1]: (inside the root of the project)
 ```python
 pip install -r requirement.txt
-``` 
+```
 ---
 3) run the database (docker has to be configured on the operating system)
 
@@ -42,7 +65,7 @@ pip install -r requirement.txt
 ```
 
 ---
-4) make migrations 
+4) make migrations
 ```python
 python manage.py makemigrations
 ```
@@ -62,13 +85,13 @@ python manage.py createsuperuser
 - cd into client directory
 - install required dependencies
 
-``yarn`` 
+``yarn``
 
 - start the development server
 
 ``yarn run dev``
 
-> on windows machines there is a ps1 script that is called **start_app.ps1**. This script starts the database , runs the dev server on the client & opens a chrome browser on the correct address given that chrome is installed to default location on the system. 
+> on windows machines there is a ps1 script that is called **start_app.ps1**. This script starts the database , runs the dev server on the client & opens a chrome browser on the correct address given that chrome is installed to default location on the system.
 
 
 
