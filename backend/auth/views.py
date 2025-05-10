@@ -1,3 +1,9 @@
+import email
+from sqlite3 import IntegrityError
+from urllib import request
+from cv2 import DMatch
+from jsonschema import ValidationError
+import requests
 from urllib.parse import urlparse
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -8,18 +14,17 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from rest_framework.views import APIView
 
-import requests
-
-from .serializers import MyTokenObtainSerializer, RegistrationSerializer
 from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
+
+from .serializers import MyTokenObtainSerializer, RegistrationSerializer
 from .auth_utils import send_activation_email
 
 
@@ -37,6 +42,58 @@ class MyTokenObtainPairView(TokenObtainPairView):
             httponly=True,
             secure=False,
             samesite='Lax',
+        )
+
+        return response
+
+
+# TODO: demo-user
+# mark the demo user as active
+class DemoTokenObtainPairView(APIView):
+
+    # create a demo user
+    def post(self, request, *args, **kwargs):
+        try:
+            demo_user, created = User.objects.get_or_create(
+                username='demo_user',
+                email='demo_user@demouser.com',
+                is_verified=True,
+                is_active=True,
+                role='demo_user'
+            )
+
+            demo_user.set_password('demo_pass_1234')
+            demo_user.save()
+        except IntegrityError:
+            return Response({
+                "message": 'could not create the demo user'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except ValidationError as e:
+            return Response({
+                "message": f'could not create the demo user: {e.args[0]}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        data = {
+            "username": demo_user.username,
+            "email": demo_user.email,
+            "password": 'demo_pass_1234'
+        }
+
+        serializer = MyTokenObtainSerializer(data=data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        jwt_data = serializer.validated_data
+        response = Response(jwt_data, status=status.HTTP_200_OK)
+
+        response.set_cookie(
+            key='refresh',
+            value=jwt_data['refresh'],
+            httponly=True,
+            secure=False,
+            samesite='Lax'
         )
 
         return response
@@ -85,8 +142,8 @@ class RegistrationView(APIView):
     def post(self, request): # noqa
         serializer = RegistrationSerializer(data=request.data)
 
-        # TODO: if email cannot be send the user will get an error that something went wrong but the registration
-        # is completed if the gredentials are valid and user is not aware of that.
+        # TODO: if email cannot be send the user will get an error that something went wrong but the registration /
+        # is completed if the gredentials are valid and user is not aware of the error.
         if serializer.is_valid():
             user = serializer.save()
             response_data = serializer.data
@@ -139,9 +196,9 @@ class ActivateUserView(APIView):
             user.is_verified = True
             user.save()
 
-        except Exception as e:
+        except Exception:
             user = None
-            return Response({'message': 'could not activate'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': 'could not activate user'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         host = request.get_host()
         domain = urlparse(f'//{host}').hostname

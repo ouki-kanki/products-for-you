@@ -6,7 +6,8 @@ from rest_framework import serializers
 
 from user_control.models import Roles, CustomUser
 
-class MyTokenObtainSerializer(TokenObtainPairSerializer): # noqa
+
+class MyTokenObtainSerializer(TokenObtainPairSerializer):  # pylint: disable=abstract-method
     def validate(self, attrs):
         data = super().validate(attrs)
 

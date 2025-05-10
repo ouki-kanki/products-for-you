@@ -1,3 +1,4 @@
+import logging
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import FieldError
@@ -8,14 +9,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 
-from .models import CustomUser as User, UserDetail
-from .serializers import UserSerializer, UserDetailSerializer
+from common.util.custom_pagination import CustomPageNumberPagination
 from products.models import ProductItem, FavoriteProductItem
 from products.serializers import FavoriteProductItemSerializer, ProductItemExtendedSerializer
 from order.serializers import ShopOrderSerializerForClient
 from order.models import ShopOrder
+
+from .models import CustomUser as User, UserDetail
+from .serializers import UserSerializer, UserDetailSerializer
 from .mixins import UserUpdateMixin
-from common.util.custom_pagination import CustomPageNumberPagination
+
+
+logger = logging.getLogger(__name__)
 
 
 class UsersViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
@@ -29,8 +34,8 @@ users_list_view = UsersViewSet.as_view({
     'get': 'list'
 })
 
-# TODO: this retrieves the user model , not the user detail 
-# it will bring confusion, have to change the names 
+# TODO: this retrieves the user model , not the user detail
+# it will bring confusion, have to change the names
 users_detail_view = UsersViewSet.as_view({
     'get': 'retrieve'
 })
@@ -70,7 +75,7 @@ class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
     serializer_class = UserDetailSerializer
 
     def perform_update(self, serializer):
-        instance = serializer.save()
+        serializer.save()
 
 
 class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
@@ -102,7 +107,8 @@ class FavoriteProductItemListView(generics.ListAPIView):
             try:
                 qs = qs.order_by(sort_values.get(sort_by))
             except FieldError as e:
-                print("cannot order")
+                logger.error('cannot sort orders: %e', e)
+                print("cannot sort the orders")
 
         return qs
 
@@ -175,6 +181,10 @@ class OrdersListApiView(generics.ListAPIView):
             try:
                 qs = qs.order_by(sort_by)
             except FieldError as e:
-                print("cannot order")
+                logger.error('cannot retrieve list of orders: %e', e)
+
+                return Response({
+                    "message": 'could not retrieve list of orders'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return qs

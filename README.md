@@ -19,7 +19,7 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 - faceted search, advanced search functionality using elastic search
 - user authentication using jwt
 - secure payments with stripe
-- product management with tags, categories
+- product management with tags, categories, custom variations
 - ability to add favorite products
 - shipping cost calculation, different tax-rates application
 - promotions
