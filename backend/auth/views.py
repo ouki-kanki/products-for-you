@@ -1,14 +1,11 @@
-import email
-from sqlite3 import IntegrityError
-from urllib import request
-from cv2 import DMatch
+from urllib.parse import urlparse
 from jsonschema import ValidationError
 import requests
-from urllib.parse import urlparse
 
+from django.db.utils import IntegrityError
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import render
 
 from rest_framework import viewsets
@@ -24,7 +21,8 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
 
-from .serializers import MyTokenObtainSerializer, RegistrationSerializer
+from .serializers import (
+    MyTokenObtainSerializer, MyDemoTokenObtainSerializer, RegistrationSerializer)
 from .auth_utils import send_activation_email
 
 
@@ -79,7 +77,7 @@ class DemoTokenObtainPairView(APIView):
             "password": 'demo_pass_1234'
         }
 
-        serializer = MyTokenObtainSerializer(data=data)
+        serializer = MyDemoTokenObtainSerializer(data=data)
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:

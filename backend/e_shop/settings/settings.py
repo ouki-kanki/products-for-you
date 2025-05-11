@@ -9,9 +9,6 @@ from urllib.parse import quote_plus as urlquote
 BASE_DIR = Path(__file__).resolve().parent.parent
 SITE_URL = 'http://localhost:5173'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_API_KEY")
@@ -212,6 +209,8 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=50),
+    "ACCESS_TOKEN_DEMO_USER_LIFETIME": timedelta(minutes=1),
+    "REFRESH_TOKEN_DEMO_USER_LIFETIME": timedelta(minutes=20),
     "SIGNING_KEY": config("SECRET_KEY"),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,

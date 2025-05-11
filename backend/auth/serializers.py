@@ -1,10 +1,10 @@
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
+import datetime
 
+from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
-from user_control.models import Roles, CustomUser
+from user_control.models import CustomUser
 
 
 class MyTokenObtainSerializer(TokenObtainPairSerializer):  # pylint: disable=abstract-method
@@ -21,11 +21,33 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer):  # pylint: disable=abs
         token['email'] = user.email
         token['username'] = user.username
         token['uuid'] = str(user.uuid)
-        # encode uid
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        # token['user_id'] = uid
+
+        del token['user_id']
 
         return token
+
+
+DEMO_USER_ACCESS_TOKKEN_LIFETIME = settings.SIMPLE_JWT.get("ACCESS_TOKEN_DEMO_USER_LIFETIME")
+DEMO_USER_REFRESH_TOKKEN_LIFETIME = settings.SIMPLE_JWT.get("REFRESH_TOKEN_DEMO_USER_LIFETIME")
+
+
+class MyDemoTokenObtainSerializer(MyTokenObtainSerializer):  # pylint: disable=abstract-method
+
+    # skip the check if the user is verified derived from the parent class
+    def validate(self, attrs):
+        data = TokenObtainPairSerializer.validate(self, attrs)
+
+        # change lifetime for demo user tokens
+        refresh_token = self.get_token(self.user)
+        refresh_token.set_exp(lifetime=DEMO_USER_REFRESH_TOKKEN_LIFETIME)
+        data['refresh'] = str(refresh_token)
+
+        access_token = refresh_token.access_token
+        access_token.set_exp(lifetime=DEMO_USER_ACCESS_TOKKEN_LIFETIME)
+
+        data['access'] = str(access_token)
+
+        return data
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
