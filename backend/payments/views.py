@@ -2,7 +2,9 @@ import uuid
 from decimal import Decimal
 from django.conf import settings
 from django.http import Http404
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -159,7 +161,31 @@ class CalculateShippingCostsView(APIView):
 class CreatePaymentIntentAPIView(APIView, CartLockMixin):
     def post(self, request): # noqa
 
+        # TODO: decouple this login from here
+        is_blocked = request.session.get('is_blocked')
+        if is_blocked and timezone.now() < is_blocked:
+            time_diff = timezone.now() - is_blocked
+            time_diff_min = int(time_diff.total_seconds() // 60)
+
+            return Response({
+                "message": f'to many attemps. try again in {time_diff_min}'
+            }, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
         user = request.user
+        session_id = request.session.session_key
+        session = request.session
+
+        payment_attempt_count = request.session.get('payment_attempt', 0)
+
+        if payment_attempt_count >= 5:
+            request.session['is_blocked'] = timezone.now() + timezone.timedelta(minutes=2)
+            request.session['payment_attempt'] = 0
+            request.session.save()
+
+        request.session['payment_attempt'] = payment_attempt_count + 1
+
+        request.session.save()
+
         try:
             if request.user.is_authenticated:
                 cart = get_object_or_404(Cart, user=user, status=Cart.Status.ACTIVE)
@@ -181,10 +207,14 @@ class CreatePaymentIntentAPIView(APIView, CartLockMixin):
         except Exception as e:
             return exceptions.generic_exception(e)
 
+        return Response({
+            "message": 'test the api'
+        }, status=status.HTTP_202_ACCEPTED)
+
         # take plan uuid  from the front and find the plan find the location and add to the total cost
         plan_option_id = request.data.get('planId')
         plan = get_object_or_404(ShippingPlanOption, uuid=plan_option_id)
-        
+
         tax_rate = plan.destination.tax_rate.rate
         shipping_costs = plan.base_cost
         if plan.extra_fee:

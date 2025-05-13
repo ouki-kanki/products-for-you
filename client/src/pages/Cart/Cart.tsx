@@ -15,17 +15,14 @@ import { isEmpty } from '../../utils/objUtils';
 import { useGetItemQuantitiesMutation } from '../../api/productsApi';
 import { showNotification } from '../../components/Notifications/showNotification';
 
+
 export const Cart = () => {
   const [isClearModalOpen, setIsClearModalOpen] = useState(false)
   const dispatch = useDispatch()
   const cart = useSelector((state: RootState) => state.cart)
   const total = cart.total
   const navigate = useNavigate()
-  const [getItemQuantities, { data: itemQuantities, isError, isLoading, }] = useGetItemQuantitiesMutation()
-
-
-  console.log("tje cart", cart.items)
-  // console.log(itemQuantities)
+  const [getItemQuantities, { data: itemQuantities, isError: isItemQntiesError, isItemQtiesLoading, }] = useGetItemQuantitiesMutation()
 
   const uuidsString = JSON.stringify(cart?.items.map(item => item.productId))
 
@@ -43,7 +40,15 @@ export const Cart = () => {
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`)
   }
 
-  const handleAddQty = (id: number) => {
+  const handleAddQty = (id: string) => {
+    if (isItemQntiesError) {
+      return
+    }
+
+    if (!itemQuantities?.items || itemQuantities.items.length === 0) {
+      return;
+    }
+
     //  db qunatity
     const { quantity } = itemQuantities.items.find(item => item.uuid === id)
 

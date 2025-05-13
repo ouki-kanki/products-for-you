@@ -30,6 +30,7 @@ export interface ICartItem extends CartItemForServer {
   slug: string;
   constructedUrl: string;
   productIcon: string;
+  productId: string;
 }
 
 export interface ICart {

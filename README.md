@@ -24,7 +24,12 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 - shipping costs calculation using dimensional factor, different tax-rates application
 - promotions-discounts system
 - order history
--
+
+
+#### Some Features regarding the react app
+- custom validation hook
+- custom notification system
+
 
 ## Installation
 
