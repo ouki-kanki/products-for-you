@@ -9,18 +9,21 @@ import type { IloginInput } from './getLoginFields';
 
 interface FormProps {
   handleSubmit: (e: SyntheticEvent) => void;
+  handleDemoLogin: (e: SyntheticEvent) => void;
   fields: IloginInput[];
   isValid: boolean;
   isLoading: boolean;
   title: string;
   btnTitle: string;
+  mode: 'register' | 'login',
   children: React.ReactNode
 }
 
 export const LoginRegisterForm = ({
   handleSubmit,
+  handleDemoLogin,
   fields,
-  isValid, isLoading, title, btnTitle, children}: FormProps) => {
+  isValid, isLoading, title, btnTitle, mode, children}: FormProps) => {
 
     const firstInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -32,7 +35,7 @@ export const LoginRegisterForm = ({
 
     return (
       <WithoutSidebar>
-        <div className={styles.mainContainer}>
+        <div className={`${styles.mainContainer}`}>
           <div className={styles.cardContainer}>
             <div className={styles.divider}></div>
             <div className={styles.leftContainer}>
@@ -51,9 +54,15 @@ export const LoginRegisterForm = ({
                   ))}
                   <div className={styles.inputContainer}>
                     <div>
-                    <Button type='submit' disabled={!isValid || isLoading}>
-                      {isLoading ? 'Loading...' : `${btnTitle}`}
-                    </Button>
+                      <div className={styles.btnContainer}>
+                        <Button type='submit' disabled={!isValid || isLoading}>
+                          {isLoading ? 'Loading...' : `${btnTitle}`}
+                        </Button>
+                        {mode === 'login' && (
+                            <Button onClick={handleDemoLogin}>Demo Account</Button>
+                          )
+                        }
+                      </div>
                     {children}
                     </div>
                   </div>

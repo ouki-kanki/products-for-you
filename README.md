@@ -8,7 +8,7 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 
   **Front end**:
 
-  React.js,redux-toolkit, rtk-query, scss with css modules
+  React.js, redux-toolkit, rtk-query, scss with css modules
 
   **Back end**:
 
@@ -21,9 +21,10 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 - secure payments with stripe
 - product management with tags, categories, custom variations
 - ability to add favorite products
-- shipping cost calculation, different tax-rates application
-- promotions
+- shipping costs calculation using dimensional factor, different tax-rates application
+- promotions-discounts system
 - order history
+-
 
 ## Installation
 
@@ -90,10 +91,6 @@ python manage.py createsuperuser
 - start the development server
 
 ``yarn run dev``
-
-> on windows machines there is a ps1 script that is called **start_app.ps1**. This script starts the database , runs the dev server on the client & opens a chrome browser on the correct address given that chrome is installed to default location on the system.
-
-
 
 
 ## Licence

@@ -17,7 +17,7 @@ import { AnimatedCross } from '../Animations/AnimatedCross/AnimatedCross';
 import { ThemeBtn } from './ThemeBtn/ThemeBtn';
 
 
-
+import { authApi } from '../../api/authApi';
 import { useAuth } from '../../hooks/useAuth';
 import { useLogoutMutation } from '../../api/authApi';
 import { useLazyGetUserProfileQuery } from '../../api/userApi';
@@ -55,6 +55,8 @@ export const NavBar = () => {
     logout()
     // clear cookie
     const data = await clearCookie().unwrap()
+
+
     showNotification({
       appearFrom: 'from-bottom',
       duration: 2000,
@@ -63,6 +65,8 @@ export const NavBar = () => {
       position: 'bottom-right',
       overrideDefaultHideDirection: false
     })
+
+    navigate('/login')
   }
 
   const handleNavShow =  useCallback(() => {

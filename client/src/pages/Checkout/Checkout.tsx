@@ -22,6 +22,7 @@ import { useCreateOrderMutation } from '../../api/orderApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import type { Stripe, StripeCardElement, StripeError, } from '@stripe/stripe-js';
+import type { Order } from '../../api/orderApi';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
 
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
@@ -91,7 +92,6 @@ export const Checkout = () => {
   const handleBlur = (name: string): void => {
     touchField(name)
   }
-
 
   useEffect(() => {
     const paymentCanceled = searchParams.get('canceled')
@@ -260,12 +260,12 @@ export const Checkout = () => {
         }
       }
 
-      const clean_payload = convertCamelToSnake({data: payload})
-      // console.log("the clean payload", clean_payload)
+      const clean_payload = convertCamelToSnake<Order>({data: payload})
 
+      // create the order
       const data = await createOrder(clean_payload).unwrap()
       if (data) {
-        console.log("data from sserver from created order", data)
+        // console.log("data from sserver from created order", data)
         setIsLoading(false)
         showNotification({
           message: 'order created'

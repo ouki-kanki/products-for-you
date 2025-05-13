@@ -43,6 +43,12 @@ export const authApi = authBaseApi.injectEndpoints({
         }
       })
     }),
+    loginDemo: builder.mutation({
+      query: () => ({
+        url: '/auth/token/demo',
+        method: 'POST'
+      })
+    }),
     // cookie is http, clear it on the server
     logout: builder.mutation<LogoutData, void>({
       query: () => ({
@@ -99,6 +105,7 @@ export const authApi = authBaseApi.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useLoginDemoMutation,
   useRefreshMutation,
   useLogoutMutation,
   useRegisterMutation,

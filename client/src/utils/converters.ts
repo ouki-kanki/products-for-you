@@ -64,7 +64,7 @@ interface ConvertCamelToSnake {
   customConvertions?: customConvertion[]
 }
 
-export const convertCamelToSnake = ({ data, omitedKeys, customConvertions }: ConvertCamelToSnake) => {
+export const convertCamelToSnake = <T>({ data, omitedKeys, customConvertions }: ConvertCamelToSnake) => {
     return Object.keys(data as Record<string, unknown>).reduce((acc, key) => {
 
       // handle omited values
@@ -98,7 +98,7 @@ export const convertCamelToSnake = ({ data, omitedKeys, customConvertions }: Con
         acc[snake] = data[key]
       }
       return acc
-    }, {} as Record<string, unknown>)
+    }, {} as Record<string, unknown>) as T
 }
 
 /**

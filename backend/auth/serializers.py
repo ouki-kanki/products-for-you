@@ -22,7 +22,12 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer):  # pylint: disable=abs
         token['username'] = user.username
         token['uuid'] = str(user.uuid)
 
-        del token['user_id']
+        # token['user_id'] = str(user.uuid)
+
+        # TODO: have to transform the auth system to use the uuid instead of user_id
+        # for now if i remove user_id from the token auth breaks
+
+        # del token['user_id']
 
         return token
 

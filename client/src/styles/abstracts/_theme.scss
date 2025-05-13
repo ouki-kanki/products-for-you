@@ -20,6 +20,7 @@ $light-theme: (
     background: #1b1b1b,
     second-background: #2f2f2f,
     color: rgb(225, 228, 197),
+    color-on-white-bg: rgb(50, 50, 50),
     link-color: #89cff0,
     filter-clip_path: drop-shadow(5px 5px 5px #424242)
     drop-shadow(5px 5px 15px #000000)
@@ -48,6 +49,7 @@ $light-theme: (
   --background-color: #{map-get($dark-theme, background)};
   --background-color-2: #{map-get($dark-theme, second-background)};
   --text-color: #{map-get($dark-theme, color)};
+  --text-color-white-bg: #{map-get($dark-theme, color-on-white-bg)};
   --primary-color: #{map-get($dark-theme, primary)};
   --secondary-color: #{map-get($dark-theme, secondary)};
   --link-color: #{map-get($dark-theme, link-color)};

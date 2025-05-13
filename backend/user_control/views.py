@@ -46,10 +46,12 @@ class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        print("the request", self.request.user)
         user = self.request.user.id
         return get_object_or_404(UserDetail, user=user)
 
     def get(self, request, *args, **kwargs):
+        print("the user ", request.user)
         return self.retrieve(request, *args, **kwargs)
 
 
@@ -92,7 +94,6 @@ class FavoriteProductItemListView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        print("the user inside favorites", user)
         qs = ProductItem.objects.filter(favorite_by__user=user)
         sort_by = self.request.query_params.get('sort_by')
 

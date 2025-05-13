@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 from jsonschema import ValidationError
 import requests
+from decouple import config
 
 from django.db.utils import IntegrityError
 from django.contrib.sites.shortcuts import get_current_site
@@ -60,7 +61,7 @@ class DemoTokenObtainPairView(APIView):
                 role='demo_user'
             )
 
-            demo_user.set_password('demo_pass_1234')
+            demo_user.set_password(config('DEMO_PASS'))
             demo_user.save()
         except IntegrityError:
             return Response({
@@ -74,7 +75,7 @@ class DemoTokenObtainPairView(APIView):
         data = {
             "username": demo_user.username,
             "email": demo_user.email,
-            "password": 'demo_pass_1234'
+            "password": config('DEMO_PASS')
         }
 
         serializer = MyDemoTokenObtainSerializer(data=data)
