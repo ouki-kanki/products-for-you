@@ -1,5 +1,5 @@
-import uuid
 from decimal import Decimal
+from datetime import datetime
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -15,6 +15,7 @@ from products.models import ProductItem
 from inventory.models import Store
 from shopping_cart.models import Cart
 from shopping_cart.mixins import CartMixin, CartLockMixin
+from mixins.throtle_temp_ban_mixins import TempBanMixin
 
 from .models import ShippingPlanOption, Location
 from .serializers import ShippingPlanOptionSerializer, LocationListSerializer
@@ -158,33 +159,12 @@ class CalculateShippingCostsView(APIView):
 
 # TODO: add support for paypal payments
 # TODO: store the amounts in cents in the shipping plan options
-class CreatePaymentIntentAPIView(APIView, CartLockMixin):
+class CreatePaymentIntentAPIView(APIView, CartLockMixin, TempBanMixin):
     def post(self, request): # noqa
-
-        # TODO: decouple this login from here
-        is_blocked = request.session.get('is_blocked')
-        if is_blocked and timezone.now() < is_blocked:
-            time_diff = timezone.now() - is_blocked
-            time_diff_min = int(time_diff.total_seconds() // 60)
-
-            return Response({
-                "message": f'to many attemps. try again in {time_diff_min}'
-            }, status=status.HTTP_429_TOO_MANY_REQUESTS)
-
+        ban_response = self.ban_after_many_requests(request)
+        if ban_response:
+            return ban_response
         user = request.user
-        session_id = request.session.session_key
-        session = request.session
-
-        payment_attempt_count = request.session.get('payment_attempt', 0)
-
-        if payment_attempt_count >= 5:
-            request.session['is_blocked'] = timezone.now() + timezone.timedelta(minutes=2)
-            request.session['payment_attempt'] = 0
-            request.session.save()
-
-        request.session['payment_attempt'] = payment_attempt_count + 1
-
-        request.session.save()
 
         try:
             if request.user.is_authenticated:
