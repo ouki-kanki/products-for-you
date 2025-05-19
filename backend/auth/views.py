@@ -23,7 +23,8 @@ from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
 
 from .serializers import (
-    MyTokenObtainSerializer, MyDemoTokenObtainSerializer, RegistrationSerializer)
+    MyTokenObtainSerializer, MyDemoTokenObtainSerializer,
+    RegistrationSerializer, TokenRefreshSerializerForNormalAndDemoUsers)
 from .auth_utils import send_activation_email
 
 
@@ -98,9 +99,11 @@ class DemoTokenObtainPairView(APIView):
         return response
 
 
+# TOOD: if it is a demo account i have to procide the refresh for demo account
+# i want the client to use the same view for normal and refresh users
 class MyRefreshTokenObtainView(TokenRefreshView):
     """ send a new access & refresh token """
-    serializer_class = TokenRefreshSerializer
+    serializer_class = TokenRefreshSerializerForNormalAndDemoUsers
 
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get('refresh')

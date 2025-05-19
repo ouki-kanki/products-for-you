@@ -75,7 +75,10 @@ export const authApi = authBaseApi.injectEndpoints({
           }))
 
         } catch (error) {
-          // console.log(error)
+          console.log("inside the api error")
+          // if refresh exprired logout the user
+          dispatch(authApi.endpoints.logout.initiate())
+
         }
       }
     }),

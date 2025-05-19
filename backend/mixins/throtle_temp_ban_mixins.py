@@ -21,7 +21,7 @@ class TempBanMixin:
             if is_blocked:
                 is_blocked_timezone_obj = datetime.fromisoformat(is_blocked)
 
-                if timezone.now() < is_blocked_timezone_obj:
+                if timezone.now()  < is_blocked_timezone_obj:
                     time_diff = is_blocked_timezone_obj - timezone.now()
                     total_seconds = int(time_diff.total_seconds())
                     minutes_diff = int(total_seconds // 60.0)

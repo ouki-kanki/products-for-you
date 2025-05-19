@@ -18,7 +18,7 @@ from order.models import ShopOrder
 from .models import CustomUser as User, UserDetail
 from .serializers import UserSerializer, UserDetailSerializer
 from .mixins import UserUpdateMixin
-
+from common.permissions import IsAuthButNotDemo
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +57,7 @@ class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
 
 class UserProfileInsertView(generics.CreateAPIView):
     serializer_class = UserDetailSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     parser_classes = [MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
@@ -73,7 +73,7 @@ class UserProfileInsertView(generics.CreateAPIView):
 
 
 class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     serializer_class = UserDetailSerializer
 
     def perform_update(self, serializer):
@@ -81,7 +81,7 @@ class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
 
 
 class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     serializer_class = UserDetailSerializer
     parser_classes = [MultiPartParser, FormParser]
 

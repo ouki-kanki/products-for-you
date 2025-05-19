@@ -1,8 +1,10 @@
 import datetime
+from os import access
 
 from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
 from user_control.models import CustomUser
 
@@ -53,6 +55,36 @@ class MyDemoTokenObtainSerializer(MyTokenObtainSerializer):  # pylint: disable=a
         data['access'] = str(access_token)
 
         return data
+
+
+class TokenRefreshSerializerForNormalAndDemoUsers(TokenRefreshSerializer):  # pylint: disable=abstract-method
+    def validate(self, attrs):
+        refresh = self.token_class(attrs["refresh"])
+        user = refresh.payload['user_id']
+
+        if not CustomUser.objects.filter(id=user, role='demo_user').exists():
+            # if ther user is not demo i want to return the normal tokens
+            return super().validate(attrs)
+
+        # handle when there is rotation
+        if settings.SIMPLE_JWT['ROTATE_REFRESH_TOKENS']:
+            if settings.SIMPLE_JWT['BLACKLIST_AFTER_ROTATION']:
+                try:
+                    refresh.blacklist()
+                except AttributeError:
+                    pass
+
+            refresh.set_jti()
+            refresh.set_exp(lifetime=settings.SIMPLE_JWT['REFRESH_TOKEN_DEMO_USER_LIFETIME'])
+            refresh.set_iat()
+
+        access_token = refresh.access_token
+        access_token.set_exp(lifetime=settings.SIMPLE_JWT['ACCESS_TOKEN_DEMO_USER_LIFETIME'])
+
+        return {
+            "access": str(access_token),
+            "refresh": str(refresh)
+        }
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

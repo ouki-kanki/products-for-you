@@ -29,7 +29,6 @@ export const Cart = () => {
   useEffect(() => {
     if (uuidsString.length > 0) {
       const uuids = JSON.parse(uuidsString)
-      console.log(uuids)
       getItemQuantities(uuids)
     }
 
