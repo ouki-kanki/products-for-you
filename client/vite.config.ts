@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import sass from 'sass'
 import svgr from 'vite-plugin-svgr'
+import mkcert from 'vite-plugin-mkcert'
 
 
 // https://vitejs.dev/config/
@@ -11,8 +12,12 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
-      svgr()
+      svgr(),
+      mkcert()
     ],
+    server: {
+      https: true
+    },
     css: {
       preprocessorOptions: {
         scss: {

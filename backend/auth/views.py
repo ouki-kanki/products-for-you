@@ -88,6 +88,7 @@ class DemoTokenObtainPairView(APIView):
         jwt_data = serializer.validated_data
         response = Response(jwt_data, status=status.HTTP_200_OK)
 
+        # response.delete_cookie("refresh")
         response.set_cookie(
             key='refresh',
             value=jwt_data['refresh'],
@@ -114,14 +115,17 @@ class MyRefreshTokenObtainView(TokenRefreshView):
         except TokenError as e:
             raise InvalidToken(e.args[0])
 
+        # TODO: remove refresh from response.it is set to cookie
         new_refresh_token = serializer.validated_data['refresh']
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
+
         response.set_cookie(
             key='refresh',
             value=new_refresh_token,
             httponly=True,
             secure=False,
             samesite='Lax',
+            path='/'
         )
 
         return response

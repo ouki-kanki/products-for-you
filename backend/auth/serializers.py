@@ -33,7 +33,6 @@ class MyTokenObtainSerializer(TokenObtainPairSerializer):  # pylint: disable=abs
 
         return token
 
-
 DEMO_USER_ACCESS_TOKKEN_LIFETIME = settings.SIMPLE_JWT.get("ACCESS_TOKEN_DEMO_USER_LIFETIME")
 DEMO_USER_REFRESH_TOKKEN_LIFETIME = settings.SIMPLE_JWT.get("REFRESH_TOKEN_DEMO_USER_LIFETIME")
 
@@ -58,12 +57,16 @@ class MyDemoTokenObtainSerializer(MyTokenObtainSerializer):  # pylint: disable=a
 
 
 class TokenRefreshSerializerForNormalAndDemoUsers(TokenRefreshSerializer):  # pylint: disable=abstract-method
+    """
+        serializser that returns tokens for the user and if is a demo account
+        it will return tokens with lifetime defined in the settings for the demo user
+    """
     def validate(self, attrs):
         refresh = self.token_class(attrs["refresh"])
         user = refresh.payload['user_id']
 
+        # if ther user is not demo i want to return the normal tokens
         if not CustomUser.objects.filter(id=user, role='demo_user').exists():
-            # if ther user is not demo i want to return the normal tokens
             return super().validate(attrs)
 
         # handle when there is rotation
@@ -75,11 +78,17 @@ class TokenRefreshSerializerForNormalAndDemoUsers(TokenRefreshSerializer):  # py
                     pass
 
             refresh.set_jti()
-            refresh.set_exp(lifetime=settings.SIMPLE_JWT['REFRESH_TOKEN_DEMO_USER_LIFETIME'])
+            refresh_demo_token_lifetime = settings.SIMPLE_JWT.get('REFRESH_TOKEN_DEMO_USER_LIFETIME')
+            if refresh_demo_token_lifetime:
+                refresh.set_exp(lifetime=refresh_demo_token_lifetime)
+            else:
+                refresh.set_exp() # if there no key in settings provide the default
             refresh.set_iat()
 
         access_token = refresh.access_token
-        access_token.set_exp(lifetime=settings.SIMPLE_JWT['ACCESS_TOKEN_DEMO_USER_LIFETIME'])
+        access_demo_token_lifetime = settings.SIMPLE_JWT.get('ACCESS_TOKEN_DEMO_USER_LIFETIME')
+        if access_demo_token_lifetime:
+            access_token.set_exp(lifetime=access_demo_token_lifetime)
 
         return {
             "access": str(access_token),

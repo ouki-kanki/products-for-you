@@ -22,6 +22,7 @@ django-extensions==3.2.3
 django-import-export==4.1.1
 django-nine==0.2.7
 django-silk==5.0.4
+django-sslserver==0.22
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 drf-spectacular==0.26.3
@@ -31,6 +32,7 @@ elasticsearch==8.15.0
 elasticsearch-dsl==8.15.1
 flake8==7.2.0
 flatbuffers==25.2.10
+git-filter-repo==2.47.0
 gprof2dot==2024.6.6
 humanfriendly==10.0
 idna==3.10

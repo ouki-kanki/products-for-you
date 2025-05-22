@@ -54,7 +54,81 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 
 ---
 
-2) Install required dependencies[^1].
+## SSL configuration
+
+
+there are 2 options regarding running the dev servers with https
+
+1) create ssl keys and cert and config the front end back dev servers
+
+  -  install the ``openssl`` package
+      - for arch systems it can be installed with ``sudo pacman -Sy openssl``
+
+  - a folder have to be made inside the project and be added to .gitignore
+    to store the keys
+
+  - the key and cert can be created with the following commands
+    ```sh
+    openssl genrsa -out server.key 2048
+    opessl req -new -key server.key -out server.csr
+    ```
+  by default python runs the dev server in http
+
+  there are 2 options for creating a proxy server to serve and decrypt the https requests
+
+  the first option is to use the package ``stunnel``
+  in arch systems in can be installed with ``pacman -Sy stunnel``
+
+  inside the project a confing file can be created to run stunnel
+
+  ``stunnel.conf``
+
+  ```bash
+  cert = <location of server.crt>
+  key = <location of server.key>
+
+  [https]
+  accept = 8443
+  connect = 8000
+  TIMEOUTclose = 0
+
+  ```
+
+
+
+
+
+ 2) there is the  plugin for vite ``vite-plugin-mkcert``
+it can be installed using ``vite add vite-plugin-mkcert`
+
+then inside vite.config.ts
+
+ ```js
+ import { defineConfig } from 'vite'
+ import mkcert from 'vite-plugin-mkcert'
+
+ export default defineConfig({
+   plugins: [mkcert()],
+   server: {
+     https: true
+   }
+ })
+```
+after this setup it vite will serve the app through https
+
+
+for the django server there is the django-sslserver package that can be installed with pip.
+https://github.com/teddziuba/django-sslserver
+
+
+
+
+
+
+
+---
+
+## DJANGO SERVER SETUP
 
 
 [^1]: (inside the root of the project)

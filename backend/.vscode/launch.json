@@ -19,7 +19,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/manage.py",
       "python": "${workspaceFolder}/venv/bin/python",
-      "args": ["runserver"],
+      "args": ["runsslserver"],
       "console": "integratedTerminal"
     }
   ]

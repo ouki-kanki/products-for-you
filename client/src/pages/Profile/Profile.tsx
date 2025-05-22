@@ -36,6 +36,7 @@ export const Profile = () => {
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
   const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData })
 
+  console.log("inside the profile")
 
   // *** VALIDATION ***
   const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']
@@ -97,7 +98,6 @@ export const Profile = () => {
   // UPLOAD IMAGE
   useEffect(() => {
     if (isUploadImageError) {
-      console.log("the error from upload image", uploadImageError)
       const apiError = uploadImageError as ApiError
       const message = apiError.data.detail
 

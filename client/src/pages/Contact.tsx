@@ -16,9 +16,7 @@ const Wrapper = (props: IPropTypes) => {
   )
 }
 
-
 const Contact = ( ) => {
-
 
   return (
     <div>
