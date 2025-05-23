@@ -67,16 +67,15 @@ there are 2 options regarding running the dev servers with https
   - a folder have to be made inside the project and be added to .gitignore
     to store the keys
 
-  - the key and cert can be created with the following commands
-    ```sh
-    openssl genrsa -out server.key 2048
-    opessl req -new -key server.key -out server.csr
-    ```
+  - create certificates locally using openssl
+  https://docs.starlingx.io/security/kubernetes/create-certificates-locally-using-openssl.html
+
+
+
   by default python runs the dev server in http
 
-  there are 2 options for creating a proxy server to serve and decrypt the https requests
+  ### stunnel as reverse proxy
 
-  the first option is to use the package ``stunnel``
   in arch systems in can be installed with ``pacman -Sy stunnel``
 
   inside the project a confing file can be created to run stunnel
@@ -94,11 +93,17 @@ there are 2 options regarding running the dev servers with https
 
   ```
 
+### nginx as reverse proxy
+
+- install nginx ``sudo pacman -Syu && sudo pacman -Sy nginx``
+- to config nginx from inside the project a symlink can be created pointing to the config
+  inside the derired folder a file nginx.conf has to be created
+  then
+  ``ln -s /etc/nginx/modules.d/myconf.conf nginx.conf``
 
 
 
-
- 2) there is the  plugin for vite ``vite-plugin-mkcert``
+ 1) there is the  plugin for vite ``vite-plugin-mkcert``
 it can be installed using ``vite add vite-plugin-mkcert`
 
 then inside vite.config.ts

@@ -4,15 +4,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-print("yoyoyo", settings.MEDIA_ROOT)
-
+#
+# admin and api endpoints are valid
+# the rest of the endpoints was moved to the api app
+#  users/ products/ cart/ orders/ are marked as obsolete
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('users/', include('user_control.urls')),
     path('products/', include('products.urls')),
-    path('cart/', include('shopping_cart.urls')),    
-    path('orders/', include('order.urls')),    
+    path('cart/', include('shopping_cart.urls')),
+    path('orders/', include('order.urls')),
 ]
 
 if settings.DEBUG:
