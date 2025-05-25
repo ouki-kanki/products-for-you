@@ -11,6 +11,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+
+    # these are obsolete
     path('users/', include('user_control.urls')),
     path('products/', include('products.urls')),
     path('cart/', include('shopping_cart.urls')),

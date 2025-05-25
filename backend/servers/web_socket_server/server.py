@@ -25,8 +25,6 @@ connected_clients = set()
 
 # *** OBSOLETE ***
 async def activate_user(token):
-    print("the token", token)
-
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         user_id = payload.get('user_id')
@@ -42,7 +40,10 @@ async def activate_user(token):
         await asyncio.to_thread(user.save)
 
         return user
-    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist, jwt.DecodeError) as e:
+    except (jwt.ExpiredSignatureError,
+            jwt.InvalidTokenError,
+            User.DoesNotExist,
+            jwt.DecodeError) as e:
         print("the error", e)
         return None
 
@@ -76,30 +77,6 @@ async def http_handler(request):
         return web.json_response({
             'message': 'couldn\'t send activation signal',
         }, status=500)
-
-
-# *** OBSOLETE ***
-async def http_handler_old(request):
-    # this will come from the view that handles the email activation link
-    data = await request.json()
-    token = data.get('token')
-
-    # activate the user here
-    user = activate_user(token)
-
-    if user is None:
-        for ws in connected_clients:
-            ws.close()
-            # TODO: handle the error send a proper response
-            return web.Response(text='could not activate user')
-
-    # send message to connected clients
-    for ws in connected_clients:
-        try:
-            await ws.send("user_activated")
-        except Exception as e:
-            print("the exception", e)
-    return web.Response(text="user activated")
 
 
 async def main():
