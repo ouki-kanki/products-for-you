@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { getAccessToken } from '../features/auth/authSlice';
-import { logOut } from '../features/auth/authSlice';
+import { clearCredentials } from '../features/auth/authSlice';
 
 import { userApi } from '../api';
 import { useAppDispatch } from '../hooks';
@@ -25,8 +25,11 @@ export const useAuth = (): IReturnedObj => {
 
   return useMemo(() => {
     const logout = () => {
-      dispatch(logOut())
+      console.log("inside the cookie cleaner")
+      // document.cookie = "refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      dispatch(clearCredentials())
       dispatch(userApi.util.resetApiState())
+      // logOutMutAsync()
     }
 
     return {

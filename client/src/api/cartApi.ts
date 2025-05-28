@@ -4,17 +4,10 @@ import { AuthEnum } from "./enums";
 import { RootState } from "../app/store/store";
 import { BASE_URL } from "./baseConfig";
 import type { CartItemForServer } from "../types/cartPayments";
+import type { ICart } from "../types/cartPayments";
 
 interface ICartResponse {
   message: string;
-}
-
-// TODO: check if the type exists
-
-
-interface ICart {
-  items: ICartItem[];
-  total: number;
 }
 
 interface SessionCart {

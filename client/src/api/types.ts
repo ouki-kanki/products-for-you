@@ -108,3 +108,7 @@ export interface Iorder {
   orderTotal: string;
   orderItem: IorderItem[]
 }
+
+export interface LogoutData {
+  message: string;
+}

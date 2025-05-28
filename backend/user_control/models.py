@@ -1,6 +1,6 @@
 import hashlib
 
-import uuid as uuid
+import uuid
 from django.core.exceptions import SuspiciousFileOperation
 from django.core.files.storage import default_storage
 from django.db import models
@@ -21,7 +21,8 @@ Roles = (
     ("editor", "editor"),
     ("sales_person", "sales_person"),
     ("customer", "customer"),
-    ("visitor", "visitor")
+    ("visitor", "visitor"),
+    ("demo_user", "demo_user")
 )
 
 
@@ -133,7 +134,7 @@ class UserDetail(models.Model):
             print("cannot delete")
         except Exception as e:
             print("there was an error", e)
-    
+
     def save(self, *args, **kwargs):
         if self.pk:
             prev_instance = UserDetail.objects.get(pk=self.pk)
@@ -146,7 +147,7 @@ class UserDetail(models.Model):
         else:
             if self.image.url != '/media/user_images/default_user_image.png':
                 self.image = make_thumbnail(self.image)
-        
+
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -33,7 +33,7 @@ interface UserDetailsOrder {
   address: AddressOrder
 }
 
-interface Order {
+export interface Order {
   cart: CartOrder;
   paymentId: string;
   shippingPlanId: string;

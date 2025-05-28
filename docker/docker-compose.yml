@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ../client
+    container_name: react_app
+    # loads .env from local machine to the container on runtime
+    # env_file:
+      # - fileName
+    ports:
+      - "5173:5173"
+    volumes:
+      - react_build:/app/build
+    depends_on:
+      - backend
+    image: frontend:react_app
+    networks:
+      - products_for_you_net
+
+  backend:
+    build: ../backend
+    container_name: django_rest_api
+    env_file: ../backend/.env
+    volumes:
+      - ../backend:/app
+    depends_on:
+      - db
+      - e_search
+    image: app:django_rest_api
+    command: gunicorn e_shop.wsgi.prod.py --bind 0.0.0.0:8000
+    # command: python manage.py runserver 0.0.0.0.:8000
+    ports:
+      - "8000:8000"
+    networks:
+      - products_for_you_net
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:8080
+      - 443:443
+      # NOTE: there is a change that teh conf.d folder is renamed to modules.d
+    volumes:
+      - ./backend/servers/nginx_conf/prod_nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - react_build:/var/www/react
+      - ./backend/ssl:/etc/nginx/certs:ro
+    depends_on:
+      - client
+      - backend
+  db:
+    image: postgres:latest
+    container_name: ${DB_NAME}
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/products_for_you
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - products_for_you:/data/products_for_you
+    ports:
+      - "5432:5432"
+    networks:
+      - products_for_you_net
+    restart: unless-stopped
+  db_test:
+    image: postgres:latest
+    container_name: ${DB_TEST_NAME}
+    environment:
+      POSTGRES_USER: ${DB_TEST_USER}
+      POSTGRES_PASSWORD: ${DB_TEST_PASSWORD}
+      # PGDATA: /data/products_for_you
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - products_for_you_net
+    restart: unless-stopped
+  e_search:
+    container_name: product_for_you_elastic_v8
+    image: elasticsearch:8.14.3
+    environment:
+      - cluster.name=elastic-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      #      - xpack.monitoring.enabled=false
+      - ELASTIC_USERNAME=test_elastic
+      - ELASTIC_PASSWORD=elastic1234
+      - "ES_JAVA_OPTS=-Xms4G -Xmx4G"
+      - network.bind_host=0.0.0.0
+    ports:
+      - "9200:9200"
+    networks:
+      - products_for_you_net
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+    depends_on:
+      - products_for_you
+networks:
+  products_for_you_net:
+    driver: bridge
+
+volumes:
+  products_for_you:
+  react_build:
+  elasticsearch-data:

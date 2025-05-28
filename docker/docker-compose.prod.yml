@@ -1,0 +1,15 @@
+version: '3.8'
+
+
+services:
+  client:
+    image: client-prod-image
+    build:
+      dockerfile: Dockerfile.prod
+    container_name: client-prod-container
+    volumes:
+      - react_build:/client/build
+    environment:
+      - NODE_ENV=production
+volumes:
+  react_build:

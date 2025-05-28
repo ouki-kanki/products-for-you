@@ -3,7 +3,7 @@ version: "3"
 services:
   products_for_you:
     container_name: ${DB_NAME}
-    image: postgres
+    image: postgres:16
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -50,7 +50,7 @@ services:
       - products_for_you
 networks:
   products_for_you_net:
-    driver: bridge
+    external: true
 
 volumes:
   products_for_you:

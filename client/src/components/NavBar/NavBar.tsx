@@ -17,9 +17,10 @@ import { AnimatedCross } from '../Animations/AnimatedCross/AnimatedCross';
 import { ThemeBtn } from './ThemeBtn/ThemeBtn';
 
 
-
+import { authApi } from '../../api/authApi';
 import { useAuth } from '../../hooks/useAuth';
-import { useLogoutMutation } from '../../api/authApi';
+import { useLogoutMutation } from '../../api/authApiV2';
+// import { useLogoutMutation } from '../../api/authApi';
 import { useLazyGetUserProfileQuery } from '../../api/userApi';
 import { showNotification } from '../Notifications/showNotification';
 
@@ -31,7 +32,7 @@ export const NavBar = () => {
   const dispatch = useDispatch()
   const { pathname } = useLocation();
   const { token, logout } = useAuth()
-  const [trigger, { data }] = useLazyGetUserProfileQuery()
+  const [getProfile, { data }] = useLazyGetUserProfileQuery()
   const isCartUpdating = useSelector((state: RootState) => state.cart.isUpdating)
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const numberOfproductInCart = useSelector((state: RootState) => state.cart.numberOfItems)
@@ -39,11 +40,11 @@ export const NavBar = () => {
 
   useEffect(() => {
     if (token) {
-      trigger()
+      getProfile()
     }
-  }, [token, trigger])
+  }, [token, getProfile])
 
-  const [ clearCookie, { data: logOutData, isLoading: isLoadingLogOut, isSuccess, isError, error }] = useLogoutMutation()
+  const [ logoutMut, { data: logOutData, isLoading: isLoadingLogOut, isSuccess, isError, error }] = useLogoutMutation()
 
   // TODO : transfrom response to retrieve only the image and the name
   const handleNavigate = (destination: string) => () => {
@@ -51,10 +52,11 @@ export const NavBar = () => {
   }
 
   const handleLogOut = async () => {
-    // clear store
-    logout()
-    // clear cookie
-    const data = await clearCookie().unwrap()
+    // logout()
+    const data = await logoutMut().unwrap()
+    console.log("the data", data)
+
+
     showNotification({
       appearFrom: 'from-bottom',
       duration: 2000,
@@ -63,6 +65,8 @@ export const NavBar = () => {
       position: 'bottom-right',
       overrideDefaultHideDirection: false
     })
+
+    // navigate('/login')
   }
 
   const handleNavShow =  useCallback(() => {

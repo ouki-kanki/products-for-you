@@ -5,3 +5,4 @@ export { searchApi } from './searchApi';
 export { userProfileApi } from './userProfileApi'
 export { cartApi } from './cartApi'
 export { paymentApi } from './paymentApi'
+export { authApiV2 } from './authApiV2'

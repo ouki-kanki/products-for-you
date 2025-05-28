@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  client:
+    image: client-dev-image
+    build:
+      dockerfile: Dockerfile.dev
+    container_name: client-dev-container
+    volumes:
+      - ../client:/client
+      - node_modules:/client/node_modules/
+    # ports:
+      # - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    extends:
+      file: docker-compose_common.yml
+      service: client
+  nginx:
+    image: nginx:latest
+    container_name: nginx-dev-container
+    ports:
+      - 80:8080
+      - 443:443
+    volumes:
+      - ../backend/servers/nginx_conf/dev_nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../backend/e_shop/media:/app/media:ro
+    # command: ["nginx", "-g", "daemon off;"]
+    restart: always
+    networks:
+      - products_for_you_net
+    depends_on:
+      - client
+  db:
+    container_name: pg_container
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/products_for_you
+    volumes:
+      - db_products_for_you:/data/products_for_you
+    ports:
+      - "5432:5432"
+    networks:
+      - products_for_you_net
+    restart: unless-stopped
+  elastic:
+    container_name: elastic_container
+    image: elasticsearch:8.14.3
+    environment:
+      - cluster.name=elastic-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - "ES_JAVA_OPTS=-Xms4G -Xmx4G"
+      - network.bind_host=0.0.0.0
+    ports:
+      - "9200:9200"
+    networks:
+      - products_for_you_net
+    volumes:
+      - db_elasticsearch-data:/usr/share/elasticsearch/data
+volumes:
+  node_modules:
+  db_products_for_you:
+    external: true
+  db_elasticsearch-data:
+    external: true
+networks:
+  products_for_you_net:
+    external: true
+

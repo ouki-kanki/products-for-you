@@ -1,3 +1,4 @@
+import logging
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import FieldError
@@ -8,14 +9,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 
-from .models import CustomUser as User, UserDetail
-from .serializers import UserSerializer, UserDetailSerializer
+from common.util.custom_pagination import CustomPageNumberPagination
 from products.models import ProductItem, FavoriteProductItem
 from products.serializers import FavoriteProductItemSerializer, ProductItemExtendedSerializer
 from order.serializers import ShopOrderSerializerForClient
 from order.models import ShopOrder
+
+from .models import CustomUser as User, UserDetail
+from .serializers import UserSerializer, UserDetailSerializer
 from .mixins import UserUpdateMixin
-from common.util.custom_pagination import CustomPageNumberPagination
+from common.permissions import IsAuthButNotDemo
+
+logger = logging.getLogger(__name__)
 
 
 class UsersViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
@@ -29,8 +34,8 @@ users_list_view = UsersViewSet.as_view({
     'get': 'list'
 })
 
-# TODO: this retrieves the user model , not the user detail 
-# it will bring confusion, have to change the names 
+# TODO: this retrieves the user model , not the user detail
+# it will bring confusion, have to change the names
 users_detail_view = UsersViewSet.as_view({
     'get': 'retrieve'
 })
@@ -41,16 +46,18 @@ class UserProfileView(generics.GenericAPIView, mixins.RetrieveModelMixin):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        print("the request", self.request.user)
         user = self.request.user.id
         return get_object_or_404(UserDetail, user=user)
 
     def get(self, request, *args, **kwargs):
+        print("the user ", request.user)
         return self.retrieve(request, *args, **kwargs)
 
 
 class UserProfileInsertView(generics.CreateAPIView):
     serializer_class = UserDetailSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     parser_classes = [MultiPartParser, FormParser]
 
     def create(self, request, *args, **kwargs):
@@ -66,15 +73,15 @@ class UserProfileInsertView(generics.CreateAPIView):
 
 
 class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     serializer_class = UserDetailSerializer
 
     def perform_update(self, serializer):
-        instance = serializer.save()
+        serializer.save()
 
 
 class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     serializer_class = UserDetailSerializer
     parser_classes = [MultiPartParser, FormParser]
 
@@ -87,7 +94,6 @@ class FavoriteProductItemListView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        print("the user inside favorites", user)
         qs = ProductItem.objects.filter(favorite_by__user=user)
         sort_by = self.request.query_params.get('sort_by')
 
@@ -102,7 +108,8 @@ class FavoriteProductItemListView(generics.ListAPIView):
             try:
                 qs = qs.order_by(sort_values.get(sort_by))
             except FieldError as e:
-                print("cannot order")
+                logger.error('cannot sort orders: %e', e)
+                print("cannot sort the orders")
 
         return qs
 
@@ -175,6 +182,10 @@ class OrdersListApiView(generics.ListAPIView):
             try:
                 qs = qs.order_by(sort_by)
             except FieldError as e:
-                print("cannot order")
+                logger.error('cannot retrieve list of orders: %e', e)
+
+                return Response({
+                    "message": 'could not retrieve list of orders'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return qs

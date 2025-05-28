@@ -49,7 +49,7 @@ const authSlice = createSlice({
       state.userInfo.user_id = userId
       state.userTokens.accessToken = accessToken
     },
-    logOut: state => {
+    clearCredentials: state => {
       state.userInfo = {} as UserInfo,
       state.userTokens = {} as UserTokens
     }
@@ -58,7 +58,7 @@ const authSlice = createSlice({
 })
 
 export default authSlice.reducer
-export const { setCredentials, logOut } = authSlice.actions
+export const { setCredentials, clearCredentials } = authSlice.actions
 export const getAccessToken = (state: RootState) => state.auth.userTokens.accessToken
 export const getUserInfo = (state: RootState) => state.auth.userInfo
 export const getUser = (state: RootState) => state.auth.userInfo.user

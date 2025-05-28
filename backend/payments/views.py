@@ -1,8 +1,10 @@
-import uuid
 from decimal import Decimal
+from datetime import datetime
 from django.conf import settings
 from django.http import Http404
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,6 +15,7 @@ from products.models import ProductItem
 from inventory.models import Store
 from shopping_cart.models import Cart
 from shopping_cart.mixins import CartMixin, CartLockMixin
+from mixins.throtle_temp_ban_mixins import TempBanMixin
 
 from .models import ShippingPlanOption, Location
 from .serializers import ShippingPlanOptionSerializer, LocationListSerializer
@@ -156,10 +159,13 @@ class CalculateShippingCostsView(APIView):
 
 # TODO: add support for paypal payments
 # TODO: store the amounts in cents in the shipping plan options
-class CreatePaymentIntentAPIView(APIView, CartLockMixin):
+class CreatePaymentIntentAPIView(APIView, CartLockMixin, TempBanMixin):
     def post(self, request): # noqa
-
+        ban_response = self.ban_after_many_requests(request)
+        if ban_response:
+            return ban_response
         user = request.user
+
         try:
             if request.user.is_authenticated:
                 cart = get_object_or_404(Cart, user=user, status=Cart.Status.ACTIVE)
@@ -181,10 +187,14 @@ class CreatePaymentIntentAPIView(APIView, CartLockMixin):
         except Exception as e:
             return exceptions.generic_exception(e)
 
+        return Response({
+            "message": 'test the api'
+        }, status=status.HTTP_202_ACCEPTED)
+
         # take plan uuid  from the front and find the plan find the location and add to the total cost
         plan_option_id = request.data.get('planId')
         plan = get_object_or_404(ShippingPlanOption, uuid=plan_option_id)
-        
+
         tax_rate = plan.destination.tax_rate.rate
         shipping_costs = plan.base_cost
         if plan.extra_fee:

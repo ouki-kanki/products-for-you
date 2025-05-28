@@ -4,6 +4,8 @@ import { Input } from '../../UI/Forms/Inputs'
 
 
 const Settings = () => {
+
+  console.log("settings inside")
   return (
     <div>
       <h1>Settings</h1>

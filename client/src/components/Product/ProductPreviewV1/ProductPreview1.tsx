@@ -73,7 +73,7 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
             </div>
 
             <div className={styles.tagsContainer}>
-              {tags.map(tag => (
+              {tags?.map(tag => (
                 <Link to={`/search?tags=${tag}`}>#{tag}</Link>
               ))}
             </div>

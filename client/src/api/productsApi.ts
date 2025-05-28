@@ -2,15 +2,17 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../api/baseConfig';
 import type { RootState } from '../app/store/store';
 import { AuthEnum } from './enums';
+import { baseQueryWithReauth } from './authBaseApi';
 
 import { convertSnakeToCamel } from '../utils/converters';
 import { ICategory } from '../types';
+import { ICartItem, CartItemForServer } from '../types/cartPayments';
+
 
 import type { IProduct,
               IproductVariationPreview,
               IproductItem,
               IproductDetail,
-              IfeaturedItem,
               FeaturedItems
              } from './types';
 
@@ -28,48 +30,18 @@ interface IsimilarProductsParams {
   brand?: string
 }
 
-interface ProductItemQnt {
+interface ItemQnt {
   uuid: string;
   quantity: number;
 }
 
-
-const flatAndConvertToCamel = (products: IProduct[]) => {
-    return products.map((product: IProduct) => {
-    // TODO: correct type
-    convertSnakeToCamel(product)
-    const { selectedVariation, ...resultNoSelectedVariation } = product
-    const { variationDetails, ...selectedVariationNodetails } = selectedVariation
-    const listOfVariations = variationDetails?.reduce((a, variation) => {
-      a[variation.variationName] = variation.value
-      return a
-    }, {})
-
-    return {
-      ...resultNoSelectedVariation,
-      ...selectedVariationNodetails,
-      listOfVariations
-    }
-  })
+export interface ProductItemQntsResponse {
+  items: ItemQnt[]
 }
 
-// TODO: categories falls under /products/categories
-// have to create a different api for categories and change the url to just /categories/
-
-// TODO: userapi uses baseAuthApi .have to check if i can use it here to dry the code
 export const productsApi = createApi({
   reducerPath: 'productApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.userTokens.accessToken
-      if (token) {
-        headers.set(AuthEnum.authorization, `Bearer ${token}`)
-      }
-      return headers
-    },
-    // credentials: 'include'
-  }),
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getLatestProducts: builder.query<IProduct[] | undefined, string>({
       query: (pageSize = '10') => ({
@@ -151,7 +123,6 @@ export const productsApi = createApi({
         return response
        })
     }),
-    // TODO: jsdoc. inform that featured can be fetch from here as an option
     getCategories: builder.query<ICategory[], string | undefined>({
       query: (featured?: string) => ({
         url: featured ? `categories/${featured}` : 'categories/'
@@ -168,7 +139,7 @@ export const productsApi = createApi({
         return response
       }
     }),
-    getItemQuantities: builder.mutation<ProductItemQnt[], string[]>({
+    getItemQuantities: builder.mutation<ProductItemQntsResponse, string[]>({
       query: (uuid_list) => ({
         url: 'products/quantities',
         method: 'POST',

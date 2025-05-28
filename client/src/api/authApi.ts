@@ -1,6 +1,9 @@
 import { authBaseApi } from "./authBaseApi";
 import { setCredentials } from "../features/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
+import { clearCredentials } from "../features/auth/authSlice";
+import { userApi } from "./userApi";
+import type { LogoutData } from "./types";
 
 export interface LoginCreds {
   email: string;
@@ -13,9 +16,7 @@ interface JwtPayload {
   uuid: string;
 }
 
-interface LogoutData {
-  message: string;
-}
+
 
 interface RegisterData {
   username?: string;
@@ -43,12 +44,27 @@ export const authApi = authBaseApi.injectEndpoints({
         }
       })
     }),
+    loginDemo: builder.mutation({
+      query: () => ({
+        url: '/auth/token/demo',
+        method: 'POST'
+      })
+    }),
     // cookie is http, clear it on the server
     logout: builder.mutation<LogoutData, void>({
       query: () => ({
         url: '/auth/logout/',
         method: 'POST'
-      })
+      }),
+      async onQueryStarted(arg, { dispatch, getState, queryFulfilled }) {
+        try {
+          await queryFulfilled
+          dispatch(clearCredentials()) // clears the user state
+          // dispatch(userApi.util.resetApiState())
+        } catch (error) {
+          console.error(error)
+        }
+      }
     }),
     // TODO: similar logic inside baseQuery
     // this is used to persist data on reload the other mutation gets user creds from store
@@ -64,12 +80,14 @@ export const authApi = authBaseApi.injectEndpoints({
 
           dispatch(setCredentials({
             user,
-            uuid,
+            userId: uuid,
             accessToken: access,
           }))
 
         } catch (error) {
-          // console.log(error)
+          console.log("inside the api error")
+          // if refresh exprired logout the user
+          dispatch(authApi.endpoints.logout.initiate())
         }
       }
     }),
@@ -99,6 +117,7 @@ export const authApi = authBaseApi.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useLoginDemoMutation,
   useRefreshMutation,
   useLogoutMutation,
   useRegisterMutation,
