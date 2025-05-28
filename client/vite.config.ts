@@ -16,7 +16,18 @@ export default defineConfig(({ mode }) => {
       svgr(),
       // mkcert()
     ],
-    // server: {
+    server: {
+      host: "0.0.0.0",
+      port: 5173,
+      allowedHosts: ["client"],
+      cors: true,
+      hmr: {
+        host: "localhost",
+        clientPort: 80,
+        protocol: "ws"
+      }
+    },
+        // server: {
     //   proxy: {
     //     '/api': {
     //       target: 'https://localhost:8443',
@@ -37,11 +48,6 @@ export default defineConfig(({ mode }) => {
     //       // rewrite: (path: string) => path.replace(/^\/api/, '/api'),
     //     }
     //   },
-      https: {
-        key: fs.readFileSync('./ssl/my-server-key.pem'),
-        cert: fs.readFileSync('./ssl/my-server-cert.pem')
-      }
-    },
     css: {
       preprocessorOptions: {
         scss: {

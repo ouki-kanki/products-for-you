@@ -1,0 +1,14 @@
+version: '3.8'
+
+
+services:
+  client:
+    build:
+      context: ../client
+    networks:
+      - products_for_you_net
+networks:
+  products_for_you_net:
+    external: true
+volumes:
+  products_for_you:

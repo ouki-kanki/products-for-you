@@ -1,0 +1,11 @@
+FROM node:lts-alpine3.21
+WORKDIR /client
+COPY package*.json ./
+RUN npm install
+COPY . .
+CMD [ "npm", "run", "dev" ]
+# CMD [ "npm", "run", "dev", "--", "debug" ]
+# or docker logs -f <name of the container can be used>
+#  to track the vite out but some issues might not show up
+
+

@@ -31,26 +31,42 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 - custom notification system
 
 
-## Installation
+## Installation - dev
 
-### BACKEND
-### 1) create a virtual enviroment
+### First setup
 
-### On windows
+in this setup postgres, nginx, elastic-search, and react are running inside docker
+django dev server is running on the host
 
-* to create the env
+nginx acts as a reverse proxy for the react app and drf
 
-``python -m venv <name of the env>``
+- media are served by nginx
+- ssl is configured to allow correct cookie behavior
 
-* to activate the evn
 
-``<name of the env>\Scripts\activate``
+```mermaid
 
-### bash - zsh
-`` python3 -m virtualenv <name_of_the_env>``
-* activate
+flowchart LR
+    subgraph Host
+        direction TB
+        A["Client"]
+        B["Django Dev Server"]
+    end
 
-``source <name_of_the_env>/bin/activate``
+    subgraph Docker
+        direction TB
+        C["Nginx"] --> D["Media"]
+        C --> |Reverse Proxy|E["React"]
+        F["Elastic Search"]
+        G["Postgres"]
+    end
+
+    A --> C
+    B -->F
+    B --> G
+    C --> B
+
+```
 
 ---
 

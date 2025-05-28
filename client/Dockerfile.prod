@@ -1,0 +1,29 @@
+# -- production setup with multiple stages
+
+# build stage
+FROM node:lts-alpine3.21 AS build
+
+WORKDIR /client
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+
+# production stage
+FROM nginx:stable-alpine AS production
+
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+# run nginx on foreground
+CMD [ "nginx", "-g", "daemon off;" ]
+
+
+# docker build -t my-react-app-dev --target build .
+
+# --- OLD SETUP PROD
+# FROM node:lts-alpine3.21
+# WORKDIR /app
+# ENV PATH="./node_modules/.bin:$PATH"
+# COPY . .
+# RUN npm run build
