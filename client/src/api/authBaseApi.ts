@@ -34,7 +34,6 @@ export const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOp
 
   if (result?.error?.status === 403 || result?.error?.status === 401) {
     // if access is expired fetch new access and refresh tokens
-    // document.cookie = "refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     const refreshResult = await refreshBaseQuery({
                                         url: '/auth/token/refresh/',},
                                         { ...api, type: 'mutation', },
@@ -61,7 +60,7 @@ export const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOp
       result = await baseQuery(args, api, extraOptions)
     } else {
       console.log("refresh expired logout")
-      // api.dispatch(authApiV2.endpoints.logout.initiate())
+      api.dispatch(authApiV2.endpoints.logout.initiate())
     }
 
   }

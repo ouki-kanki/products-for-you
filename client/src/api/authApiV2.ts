@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "./baseConfig";
-import { AuthEnum } from "./enums";
 import { LogoutData } from "./types";
-import { userApi } from "./userApi";
 import { clearCredentials } from "../features/auth/authSlice";
 
 export const authApiV2 = createApi({

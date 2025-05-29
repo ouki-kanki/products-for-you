@@ -58,8 +58,8 @@ class MyDemoTokenObtainSerializer(MyTokenObtainSerializer):  # pylint: disable=a
 
 class TokenRefreshSerializerForNormalAndDemoUsers(TokenRefreshSerializer):  # pylint: disable=abstract-method
     """
-        serializser that returns tokens for the user and if is a demo account
-        it will return tokens with lifetime defined in the settings for the demo user
+        serializser that returns tokens for the user,
+        if is a demo account it returns tokens with lifetime defined in the settings for the demo user
     """
     def validate(self, attrs):
         refresh = self.token_class(attrs["refresh"])

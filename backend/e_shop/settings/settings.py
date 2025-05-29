@@ -212,7 +212,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=50),
     "ACCESS_TOKEN_DEMO_USER_LIFETIME": timedelta(seconds=2),
-    "REFRESH_TOKEN_DEMO_USER_LIFETIME": timedelta(seconds=120),
+    "REFRESH_TOKEN_DEMO_USER_LIFETIME": timedelta(seconds=10),
     "SIGNING_KEY": config("SECRET_KEY"),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,

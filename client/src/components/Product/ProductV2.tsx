@@ -136,7 +136,10 @@ export const ProductV2 = ({
     if (variations && variations.length > 0) {
       return (
         <div className={styles.variationsContainer}>
-          {variations.filter(variation => variation.slug !== omitedVariationSlug).map((variation, index) => (
+          {variations
+            .filter(variation => variation.slug !== omitedVariationSlug)
+            .slice(0, 3)
+            .map((variation, index) => (
             <div
               className={styles.varImageContainer}
               onClick={(e) => handleVariationChange(e, variation.slug)}
@@ -148,6 +151,8 @@ export const ProductV2 = ({
         </div>
       );
     } else {
+
+      // TODO: fallback, this was used for testing
       return (
         <div className={styles.variationsContainer}>
           <div className={styles.varImageContainer}>
