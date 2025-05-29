@@ -25,6 +25,7 @@ services:
     volumes:
       - ../backend/servers/nginx_conf/dev_nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ../backend/e_shop/media:/app/media:ro
+      - ../backend/ssl:/etc/nginx/ssl:ro
     # command: ["nginx", "-g", "daemon off;"]
     restart: always
     networks:
