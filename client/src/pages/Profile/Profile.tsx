@@ -36,7 +36,6 @@ export const Profile = () => {
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
   const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData })
 
-  console.log("inside the profile")
 
   // *** VALIDATION ***
   const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']
@@ -162,7 +161,6 @@ export const Profile = () => {
       // TODO: the type is wrong -> data.image -> array of errors
       // TODO: handle stack notification. have to show all error messages
       const error = updateError as ValidationError
-      console.log("the update error", error)
       if (error) {
         const data = error?.data
         const errorArray = Object.values(data).map(value => value[0])
@@ -190,7 +188,6 @@ export const Profile = () => {
   // TODO : use the form validation
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    console.log("validation errors", validationErrors)
     // check if form is valid
     if (!isFormValid) {
       showNotification({
@@ -208,8 +205,6 @@ export const Profile = () => {
       }
       return ac
     }, {} as Record<string, unknown>)
-
-    console.log("filtered data", filteredData)
 
 
     const submitData = convertCamelToSnake({

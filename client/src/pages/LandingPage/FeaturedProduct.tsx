@@ -1,12 +1,12 @@
 import styles from './featuredProduct.module.scss'
 import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
 
-import { IProduct } from '../../api/productsApi'
+import { IProduct } from '../../api/types'
 import { ProductV2 } from '../../components/Product/ProductV2'
 import { withLoadingAndError } from '../../hocs/LoadingError/withLoadingAndError'
 
 interface IFeaturedProductProps {
-  data: IProduct;
+  data: IProduct[];
   isLoading: boolean;
   isError: boolean;
 }
