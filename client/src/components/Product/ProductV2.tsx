@@ -13,6 +13,8 @@ import { Card } from "../../UI/Card/Card";
 import { Button } from "../../UI/Button/Button";
 import { QuantityIndicator } from "../../UI/Indicators/QuantityIndicator";
 import { FavoritesBtn } from "../Buttons/FavoritesBtn/FavoritesBtn";
+import { Rating } from "../Rating/Rating";
+
 
 import kdeImage from "../../assets/kd14_low_res.png";
 import kdeRight from "../../assets/kd14_right.jpg";
@@ -218,12 +220,7 @@ export const ProductV2 = ({
                   price: {formatPrice(variationPrice as string)}
                 </h3>
 
-                {/* TODO: move it to a seperate component */}
-                <div className={styles.ratingsContainer}>
-                  <FontAwesomeIcon className={styles.starIcon} icon={faSolidStar} size="lg" />
-                  <FontAwesomeIcon className={styles.starIcon} icon={faSolidStar} size="lg" />
-                  <FontAwesomeIcon className={styles.starIcon} icon={faStar} size="lg" />
-                </div>
+                <Rating/>
                 <QuantityIndicator quantity={newQuantity} />
               </div>
 
@@ -237,36 +234,20 @@ export const ProductV2 = ({
             </div>
           </div>
 
-          {/* Product views */}
+          {/* Product other images */}
           <div className={styles.bottomRegion}>
-            {variationProductThumbnails && variationProductThumbnails.length > 0 ? (
-              variationProductThumbnails.map((thumb, index) => (
+            {variationProductThumbnails && variationProductThumbnails.length > 0 && (
+              variationProductThumbnails
+              .slice(0, 3)
+              .map((thumb, index) => (
                 <div onClick={(e) => handleSetMainImage(e, thumb.url)} key={index}>
                   <img src={thumb.url} alt="top view of the product" />
                 </div>
               ))
-            ) : (
-              <>
-                {/* TODO: for testing remove if production !!! */}
-                <div onClick={() => setCurrentImage(kdeRight)}>
-                  <img src={kdeRight} alt="right view of the product" />
-                </div>
-                <div onClick={() => setCurrentImage(kdeTop)}>
-                  <img src={kdeTop} alt="top view of the product" />
-                </div>
-                <div onClick={() => setCurrentImage(kdeBack)}>
-                  <img src={kdeBack} alt="back view of the product" />
-                </div>
-              </>
             )}
           </div>
           <div className={styles.actionContainer}>
             <Button>buy now</Button>
-            {/* <FontAwesomeIcon
-                className={styles.addIcon}
-                icon={faPlus}
-                size='2x'
-                /> */}
           </div>
         </div>
       </div>

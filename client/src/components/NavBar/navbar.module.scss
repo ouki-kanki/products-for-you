@@ -1,29 +1,37 @@
 @use '../../styles/styles_v2/mixins_v2' as *;
 
-.navContainer {
-  position: sticky;
-  top: 10px;
-  display: flex;
-  height: 3.5rem;
-  padding: 0 20px 10px 0;
-  // margin-left: auto;
-  justify-content: space-between;
-  align-items: center;
-  transition: .3s linear;
+// .navContainer {
+//   position: sticky;
+//   top: 10px;
+//   display: flex;
+//   height: 3.5rem;
+//   padding: 0 20px 10px 0;
+//   // margin-left: auto;
+//   justify-content: space-between;
+//   align-items: center;
+//   transition: .3s linear;
 
-  &___hidden {
-    position: fixed;
-    top: -80px;
-  }
-  // @include border_green();
-}
+//   @include mobile {
+//     // position: relative;
+//     flex-direction: column;
+//     transition: none;
+//     padding: 5px 0;
+//   }
+
+//   &___hidden {
+//     position: fixed;
+//     top: -80px;
+//   }
+//   // @include border_green();
+// }
 
 .leftContainer, .rightContainer {
   display: flex;
+  @include border_green;
 }
 
 .rightContainer {
-  @include mobile-12pro {
+  @include mobile {
     flex-direction: column-reverse;
     align-items: center;
   }
@@ -41,7 +49,7 @@
 .searchContainer {
   margin-right: 10px;
 
-  @include mobile-12pro {
+  @include mobile {
     margin-top: 10px;
   }
 }
@@ -83,6 +91,10 @@
 
 .cartIconContainer {
   position: relative;
+
+  @include mobile {
+    order: 1;
+  }
 }
 
 $notification-width: 30px;
@@ -166,6 +178,10 @@ $notification-height: 30px;
   margin-right: 5px;
   cursor: pointer;
 
+  @include mobile {
+    order: 1;
+  }
+
   & img {
     height: 100%;
     width: 100%;
@@ -180,6 +196,7 @@ $notification-height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  order: 1;
 }
 
 

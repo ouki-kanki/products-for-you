@@ -12,6 +12,7 @@ class TempBanMixin:
 
     max_attempts = 5
     block_duration = 2
+    # TODO: if the user makes a certain number of requests in a certain amount of time ban him
 
     def ban_after_many_requests(self, request) -> Optional[Response]:
         user = request.user

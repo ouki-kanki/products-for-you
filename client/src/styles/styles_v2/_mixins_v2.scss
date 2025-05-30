@@ -1,6 +1,6 @@
-$breakpoint_mobile: 390px;
+$breakpoint_mobile: 415px;
 
-@mixin mobile-12pro($breakpoint: $breakpoint_mobile) {
+@mixin mobile($breakpoint: $breakpoint_mobile) {
   @media screen and (max-width: $breakpoint) {
     @content;
   }

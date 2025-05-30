@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react'
 import { ModalCentered } from '../../../components/Modal/ModalCentered/ModalCentered'
 import styles from './profileImage.module.scss'
+import { BaseButton } from '../../../components/Buttons/baseButton/BaseButton'
+
 
 interface ProfileImageProps {
   imageUrl: string;
@@ -58,13 +60,16 @@ export const ProfileImage = ({ imageUrl, handleImageUpLoad }: ProfileImageProps)
         >
         <img src={imageUrl} alt='profile image'/>
       </div>
-      <input
-        className={styles.fileInput}
-        type="file"
-        accept='image/*'
-        onChange={handleImageUpload}
-        ref={imageInputRef}
-      />
+      <label className={styles.customImageUploadBtn}>
+        upload image
+        <input
+          className={styles.fileInput}
+          type="file"
+          accept='image/*'
+          onChange={handleImageUpload}
+          ref={imageInputRef}
+        />
+      </label>
       <ModalCentered
         onClose={handleCloseModal}
         isOpen={isModalOpen}
@@ -80,8 +85,17 @@ export const ProfileImage = ({ imageUrl, handleImageUpLoad }: ProfileImageProps)
             }}
             src={previewImage.url || ''} alt="prev of image" />
         </div>
-        <button onClick={handleCloseModal}>back</button>
-        <button onClick={handleImageUploadSubmit}>submit</button>
+        <div className={styles.actionContainer}>
+          <BaseButton
+            size='sm'
+            color='secondary'
+            rounded
+            onClick={handleCloseModal}>back</BaseButton>
+          <BaseButton
+            size='sm'
+            rounded
+            onClick={handleImageUploadSubmit}>submit</BaseButton>
+        </div>
       </ModalCentered>
     </div>
   )

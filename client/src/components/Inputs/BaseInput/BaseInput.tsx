@@ -67,6 +67,7 @@ export const BaseInput = forwardRef<HTMLInputElement, IInputProps>(({ label='use
                 </div>
           ): (
           <textarea
+            className={styles.textArea}
             rows={rows}
             cols={cols}
             onChange={onChange}

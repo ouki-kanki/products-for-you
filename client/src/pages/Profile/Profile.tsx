@@ -20,7 +20,9 @@ import { FavoriteProducts } from './FavoriteProducts/FavoriteProducts';
 import { Spinner } from '../../components/Spinner/Spinner';
 
 import { BaseInput } from '../../components/Inputs/BaseInput/BaseInput';
+import { BaseButton } from '../../components/Buttons/baseButton/BaseButton';
 import { userProfileFields } from './userProfileFields';
+
 
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { notEmptyValidator, phoneValidator } from '../../hooks/validation/validators';
@@ -50,6 +52,8 @@ export const Profile = () => {
     image: []
   })
 
+  console.log("val errors", validationErrors, isFormValid)
+
   const fieldNamesArray = useMemo(() => {
     return userProfileFields.map(field => field.name)
   }, [])
@@ -57,11 +61,6 @@ export const Profile = () => {
   useEffect(() => {
     fieldNamesArray.forEach(field => registerField(field))
   }, [registerField, fieldNamesArray])
-
-  // load profileDAta
-
-
-  // TODO: need the zip code in the profile
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
     const { target: { name }}= e
@@ -98,6 +97,7 @@ export const Profile = () => {
   useEffect(() => {
     if (isUploadImageError) {
       const apiError = uploadImageError as ApiError
+      // console.log("the error", apiError)
       const message = apiError.data.detail
 
       showNotification({
@@ -160,10 +160,24 @@ export const Profile = () => {
     if (isUpdateError) {
       // TODO: the type is wrong -> data.image -> array of errors
       // TODO: handle stack notification. have to show all error messages
+      // TODO: error system needs refactoring !!
+
       const error = updateError as ValidationError
       if (error) {
+
         const data = error?.data
+
+        if (data?.detail) {
+          showNotification({
+            message: data.detail,
+            type: 'danger'
+          })
+
+          return
+        }
+
         const errorArray = Object.values(data).map(value => value[0])
+        console.log("the error array", errorArray)
 
         showNotification({
           message: errorArray[0],
@@ -250,7 +264,10 @@ export const Profile = () => {
           </div>
           {isInEdit && (
             <div className={styles.btnContainer}>
-              <button onClick={handleSubmit}>submit changes</button>
+              <BaseButton
+                onClick={handleSubmit}
+                disabled={!isFormValid}
+                >submit changes</BaseButton>
             </div>
           )}
         </div>

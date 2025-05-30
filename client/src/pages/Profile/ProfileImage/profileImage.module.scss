@@ -1,3 +1,22 @@
 .imageContainer {
   cursor: pointer;
 }
+
+.customImageUploadBtn {
+  cursor: pointer;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+.actionContainer {
+  padding: 10px 10px 10px 0;
+  > :nth-child(1) {
+    margin-right: 10px;
+  }
+}

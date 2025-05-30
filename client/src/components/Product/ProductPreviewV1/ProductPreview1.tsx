@@ -59,7 +59,7 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
           <div className={styles.container_right__middle__left}>
             {category && (
               <Link
-                to={`/search?category=${category}`}
+                to={`/search?categories=${category}`}
                 className={styles.category}>{category}</Link>
             )}
             {brand && (

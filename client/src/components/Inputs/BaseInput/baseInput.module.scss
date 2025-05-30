@@ -7,7 +7,6 @@
     top: 50%;
     transform: translateY(-50%);
     background: inherit;
-    // width: 100%;
     padding: 0 4px;
     font-size: 16px;
     color: #aaa;
@@ -59,6 +58,11 @@ font-size: 18px;
 outline: none;
 transition: border .2s linear;
 background-color: inherit;
+background-color: #fbfbfb;
+
+:global(.dark-theme) & {
+  background-color: #555;
+}
 
   &:hover {
     border: 1px solid #8c8c8c;
@@ -72,4 +76,14 @@ background-color: inherit;
     // box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, .3), 0 0 4px rgba(0, 0, 0, .3);
   }
+}
+
+.textArea {
+ @extend .input;
+
+ &:focus {
+  border: 1px solid #ddd;
+  transition: none;
+  box-shadow: none;
+ }
 }

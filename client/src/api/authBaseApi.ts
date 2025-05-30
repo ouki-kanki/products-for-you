@@ -6,7 +6,6 @@ import { BASE_URL } from './baseConfig'
 import { AuthEnum } from './enums'
 import type { RootState } from '../app/store/store'
 import { jwtDecode } from 'jwt-decode'
-
 import { authApiV2 } from './authApiV2'
 
 const baseQuery = fetchBaseQuery({
@@ -30,7 +29,6 @@ export const refreshBaseQuery = fetchBaseQuery({
 
 export const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
-  console.log("inside the base query", result)
 
   if (result?.error?.status === 403 || result?.error?.status === 401) {
     // if access is expired fetch new access and refresh tokens
@@ -39,7 +37,7 @@ export const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOp
                                         { ...api, type: 'mutation', },
                                         extraOptions, )
 
-    console.log("refresh result", refreshResult)
+    // console.log("refresh result", refreshResult)
     if (refreshResult?.data) {
       const user = (api.getState() as RootState).auth.userInfo.user as string
       const userId = (api.getState() as RootState).auth.userInfo.user_id
@@ -47,7 +45,7 @@ export const baseQueryWithReauth = async (args: Args, api: BaseQueryApi, extraOp
 
       const decoded = jwtDecode(access)
       const exp = decoded.exp * 1000
-      console.log("token exp", new Date(exp).toLocaleString())
+      // console.log("token exp", new Date(exp).toLocaleString())
 
 
       api.dispatch(setCredentials({
