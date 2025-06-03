@@ -25,7 +25,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
       { data && data.length > 0 && (
         <>
           <h2>Latest Products</h2>
-          <div className={styles.carouselContainer}>
+          {/* <div className={styles.carouselContainer}> */}
             <SwiperCarouselV2
             data={data}
             renderCard={
@@ -46,7 +46,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
                 to='/search?sort_by=time'
               >more products</NavLink>
             </div>
-          </div>
+          {/* </div> */}
         </>
       )}
     </div>

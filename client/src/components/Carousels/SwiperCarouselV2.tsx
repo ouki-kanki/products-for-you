@@ -79,6 +79,7 @@ export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props )
         // effect='cards'
         spaceBetween={2}
         slidesPerView={numberOfVisible}
+        // slidesPerView={1}
         // onSlideChange={() => console.log('slide change')}
         // onSwiper={(swiper) => console.log(swiper)}
       >

@@ -5,8 +5,13 @@ export interface UiState {
   isCartModalOpen: boolean
 }
 
+const sidebarStateFromStorage = localStorage.getItem("is_sidebar_hidden")
+const isMobile = window.innerWidth < 431
+
+console.log("inside the slice", isMobile)
+
 const initialState: UiState = {
-  isSidebarHidden: false,
+  isSidebarHidden: sidebarStateFromStorage ? JSON.parse(sidebarStateFromStorage) : isMobile,
   isCartModalOpen: false
 }
 
@@ -17,7 +22,7 @@ export const uiFeaturesSlice = createSlice({
     hideSidebar: state => {
       localStorage.setItem("is_sidebar_hidden", JSON.stringify(true))
       state.isSidebarHidden = true
-    }, 
+    },
     showSidebar: state => {
       localStorage.setItem("is_sidebar_hidden", JSON.stringify(false))
       state.isSidebarHidden = false

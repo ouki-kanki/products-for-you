@@ -6,14 +6,18 @@ $height: 4px;
   height: $width;
   width: $width;
   background-color: transparent;
+  z-index: 1000;
 }
 
 .symbol {
+  // @include border_red__bolder;
   position: relative;
   width: $width;
   height: $height;
+  transform: translateY(10px);
   border-radius: calc($height / 2);
   background-color: $dark-gray;
+  // @include border_green;
 
   &::after {
     content: '';

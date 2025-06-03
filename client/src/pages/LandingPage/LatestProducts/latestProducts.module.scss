@@ -1,32 +1,14 @@
 // old component
 .container {
-  // overflow-x: hidden;
+  // display: flex;
+  // flex-direction: column;
+  // width: 100%;
+  // max-width: 100%;
+  // min-width: 0;
+
 
   &> h2 {
     margin-bottom: 1.4rem;
-  }
-}
-
-.carouselContainer {
-  position: relative;
-  margin-bottom: 3rem;
-  // left: -20px;
-  // border: 2px solid  #B2BEB5;
-}
-
-.containerWithSlide {
-  // margin: 0 auto;
-  max-width: 80%;
-  // width: 80%;
-  color: red;
-  display: flex;
-  border: 1px solid red;
-  overflow-x: auto;
-  overflow-y: hidden;
-  // padding: 10px 50px;
-
-  > div {
-    padding: 10px 50px;
   }
 }
 
@@ -37,64 +19,12 @@
   left: -180px;
 }
 
-.carousel {
-  position: relative;
-  overflow: hidden;
-}
 
-.carouselIndicators {
-  position: absolute;
-  right: 0;
-  bottom: 0.5em;
-  left: 0;
-  z-index: 15;
-  display: flex;
-  justify-content: center;
-  padding-left: 0;
-  list-style: none;
-  margin: 0 auto;
-}
 
-.carouselIndicator {
-  position: relative;
-  flex: 0 1 auto;
-  width: 1.5em;
-  height: 0.7em;
-  margin: 0 0.3em;
-  background: green;
-  // background: $box-shadow-btn;
-  cursor: pointer;
 
-  &:hover {
-    background: $box-shadow-btn-d;
-  }
 
-  &active {
-    background: $box-shadow-btn-m;
-    cursor: default;
-  }
-}
 
-.carouselContent {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-  border: 2px solid green;
-  // height: 500px;
-}
 
-.carouselItem {
-  // width: 100%;
-  // width: 50%;
-  border: $border-green;
-  padding: 5px 10px;
-  height: 500px;
-  // width: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
+
 
 

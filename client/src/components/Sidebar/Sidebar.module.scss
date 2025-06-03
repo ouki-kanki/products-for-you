@@ -1,25 +1,32 @@
+@use '../..//styles/styles_v2/mixins_v2'  as *;
+
+
 .sidebarContainer {
-  position: sticky;
+  position: absolute;
+  z-index: 120;
   top: 0;
   left: 0;
   height: 100vh;
+  height: 100%;
   color: antiquewhite;
   background: var(--sidebar-background);
-  // backdrop-filter: blur(12px);
-  // -webkit-backdrop-filter: blur(12px);
-  // animation: hideSidebar 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) alternate both;
-
-  // transform: translateX(-300px);
-  // flex:0 0 $sidebar-width;
-  // white-space: nowrap;
   flex-shrink: 0; // TODO: if i use basis if the elemement is hidden the right item does not fill the remaining space
   width: $sidebar-width;
   display: flex;
   flex-direction: column;
   transition: transform .3s ease-out, width .3s ease-out;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  // backdrop-filter: blur(12px);
+  // -webkit-backdrop-filter: blur(12px);
+  // animation: hideSidebar 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) alternate both;
+
+  @include tablet {
+    position: sticky;
+    height: 100vh;
+  }
+
   // background: linear-gradient(-45deg, rgba(235, 219, 175, 0.7), rgba(243, 185, 24, 0.7), rgba(255, 102, 90, 0.7));
   // box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 
   @media screen and (max-width: 1200px) {
     // flex: 0 0 170px;
@@ -28,23 +35,20 @@
     font-size: small;
   }
 
-
   @media screen and (max-width: 768px) {
     // flex: 0 1 50px;
     width: 50px;
     box-shadow: $box-shadow-btn;
   }
-
   // animation: hideSidebar 0.6s cubic-bezier(1, 1, 0.4, 1) reverse forwards;
-
 }
 
 .hidden {
   // animation: hideSidebar .6s  forwards;
   // animation: hideSidebar 0.6s cubic-bezier(.4, .5, .3, 1) forwards;
   transform: translateX(-300px);
+  // transform: translateX(-100%);
   width: 0;
-  // margin-left: -300px;
 }
 
 @keyframes hideSidebar {
@@ -93,7 +97,6 @@
     }
   }
 }
-
 
 .fieldsContainer {
   display: flex;
@@ -150,6 +153,5 @@
   @media screen and (max-width: 768px) {
     display: None;
   }
-
 }
 

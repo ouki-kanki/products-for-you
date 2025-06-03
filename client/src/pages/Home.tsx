@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <>
       <NavBar/>
-      <Breadcrumbs/>
+      {/* <Breadcrumbs/> */}
       <section className={styles.section}>
         <Outlet/>
       </section>

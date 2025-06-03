@@ -1,22 +1,52 @@
 .container {
-  max-width: 90%;
+  // width: 100%;
+  // max-width: 100%;
+  // max-height: 100vh;
+  // CSS Grid/Flexbox bug size workaround
+  // @see https://github.com/kenwheeler/slick/issues/982
+  // @see https://github.com/nolimits4web/swiper/issues/3599
+  // min-height: 0;
+  // min-width: 0;
+  display: grid;
+
+  // max-width: 90%;
+  // flex-basis: 100vw;
+  // flex: 1;
+  // @include border_lime__bold;
+
   margin-left: -20px;
   // margin-top: 3rem;
-  &> h2 {
-    padding: 5px 10px;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
+  // &> h2 {
+  //   padding: 5px 10px;
+  //   font-size: 2rem;
+  //   margin-bottom: 1rem;
+  // }
 }
 
 .swiper {
-height: 460px; // change the height of the scroller
-  .swiper-button-next {
-    color: red;
+  // width: 100%;
+  max-width: 100%;
+  max-height: 100vh;
+  min-height: 0;
+  min-width: 0;
+  // width: 100vw;
+  // max-width: 100%;
+  // max-width: 100vw;
+  // @include border_pink__bold;
+
+  .swiper-wrapper {
+    width: 100%;
+    @include border_lime__bolder;
   }
-  .swiper-pagination-bullet-active {
-    color: red;
-  }
+
+
+  height: 460px; // change the height of the scroller
+    .swiper-button-next {
+      color: red;
+    }
+    .swiper-pagination-bullet-active {
+      color: red;
+    }
 }
 
 .dummyItem {
@@ -27,3 +57,4 @@ height: 460px; // change the height of the scroller
   width: 100%;
   height: 320px;
 }
+

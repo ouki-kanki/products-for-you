@@ -9,6 +9,10 @@
   cursor: pointer;
   @include transition-transform-quick();
 
+  &sharp {
+    border-radius: 0;
+  }
+
   &m {
     height: $btn_height;
     width: 120px;
@@ -18,6 +22,12 @@
     height: 30px;
     width: 80px;
     font-size: 10px;
+  }
+
+  &square {
+    padding: 5px;
+    height: $btn_height;
+    width: $btn_height;
   }
 
   &primary {

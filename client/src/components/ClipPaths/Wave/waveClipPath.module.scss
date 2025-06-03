@@ -1,14 +1,29 @@
 .clipMain {
   position: absolute;
-  // z-index: 100;
-  // flex: 1;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
   filter: var(--filter-clip_path);
   // filter: drop-shadow(5px 5px 5px #eff179)
           // drop-shadow(5px 5px 15px #e0e0bc);
   // width: 100%;
   // background-color: red;
+  .imageContainer {
+    position: absolute;
+    top: 130px;
+    // left: 50%;
+    right: -10%;
+    width: 600px;
+    height: auto;
+    // transform: translateX(-50%) rotateY(-50deg);
+    overflow: hidden;
+    z-index: -1;
+
+    .imageOne {
+      width: 100%;
+      height: auto;
+    }
+  }
 }
 
 .clipContainer {
@@ -24,10 +39,7 @@
     height: 100%;
     width: 100%;
     clip-path: url(#wave);
-
-    svg {
-
-  }
-  // flex-grow: 1;
-  // background-color: red;;
+    // clip-path: var(--wave-path);
+    overflow: hidden;
+    // clip-path: path("M1,0c0,0-0.3,0.1-0.5,0.1S0.3,0,0,0.1V1h1L1,0z");
 }

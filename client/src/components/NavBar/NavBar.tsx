@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../app/store/store';
 import { useTheme } from '../../context/hooks/useTheme';
@@ -6,6 +6,10 @@ import { useTheme } from '../../context/hooks/useTheme';
 import { showCartModal } from '../.z./features/UiFeatures/UiFeaturesSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDebounce, useDebouncedValue, useDebouncedFunction } from '../../hooks/useDebounce';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './navbar.module.scss';
 import { hideSidebar, showSidebar } from '../../features/UiFeatures/UiFeaturesSlice';
@@ -16,17 +20,13 @@ import bellIcon from '../../assets/svg_icons/bell.svg'
 import { AnimatedCross } from '../Animations/AnimatedCross/AnimatedCross';
 import { ThemeBtn } from './ThemeBtn/ThemeBtn';
 
-
-import { authApi } from '../../api/authApi';
 import { useAuth } from '../../hooks/useAuth';
 import { useLogoutMutation } from '../../api/authApiV2';
-// import { useLogoutMutation } from '../../api/authApi';
 import { useLazyGetUserProfileQuery } from '../../api/userApi';
 import { showNotification } from '../Notifications/showNotification';
 
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
-  const [lastScrollValue, setLastScrollValue] = useState(0)
   const { darkTheme } = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -36,7 +36,8 @@ export const NavBar = () => {
   const isCartUpdating = useSelector((state: RootState) => state.cart.isUpdating)
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const numberOfproductInCart = useSelector((state: RootState) => state.cart.numberOfItems)
-  // const { isScrollingDown } = useSroll()
+
+  const lastScrollValue = useRef(window.scrollY)
 
   useEffect(() => {
     if (token) {
@@ -46,16 +47,12 @@ export const NavBar = () => {
 
   const [ logoutMut, { data: logOutData, isLoading: isLoadingLogOut, isSuccess, isError, error }] = useLogoutMutation()
 
-  // TODO : transfrom response to retrieve only the image and the name
   const handleNavigate = (destination: string) => () => {
     navigate(destination);
   }
 
   const handleLogOut = async () => {
-    // logout()
     const data = await logoutMut().unwrap()
-    console.log("the data", data)
-
 
     showNotification({
       appearFrom: 'from-bottom',
@@ -65,21 +62,32 @@ export const NavBar = () => {
       position: 'bottom-right',
       overrideDefaultHideDirection: false
     })
-
     // navigate('/login')
   }
 
-  const handleNavShow =  useCallback(() => {
-    setTimeout(() => {
-      if (window.scrollY > lastScrollValue) {
-        setShowNav(false)
-      } else  {
-        setShowNav(true)
-      }
+  // const debouncedCurrentScroll = useDebouncedValue<number>(window.scrollY, 200)
+  const handleHideNavbar = useCallback(() => {
+    const currentScroll = window.scrollY
 
-      setLastScrollValue(window.scrollY)
-    }, 50)
-  }, [lastScrollValue])
+    // console.log("the current scroll", currentScroll)
+    // console.log("the last scroll", lastScrollValue.current)
+
+    if (currentScroll > lastScrollValue.current) {
+      setShowNav(false)
+    } else {
+      setShowNav(true)
+    }
+    lastScrollValue.current = currentScroll
+  }, [])
+
+
+  /**
+   * TODO: something is off if delay is used
+   * when the navbar hides it pushes the rest of the page up, when delay is used
+   * the whole animation seems to be off. i need to keep the rest of the content to the same position and have
+   * havbar sticky
+   */
+  const debouncedHandleHideNavbar = useDebouncedFunction(handleHideNavbar, 50)
 
   const handleBack = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -87,29 +95,53 @@ export const NavBar = () => {
     }
   }, [navigate])
 
-
   useEffect(() => {
-    window.addEventListener('scroll', handleNavShow)
+    // window.addEventListener('scroll', debouncedHandleHideNavbar)
+    window.addEventListener('scroll', handleHideNavbar)
     window.addEventListener('keydown', handleBack as EventListenerOrEventListenerObject);
 
     return () => {
-      window.removeEventListener('scroll', handleNavShow)
+      // window.removeEventListener('scroll', debouncedHandleHideNavbar)
+      window.removeEventListener('scroll', handleHideNavbar)
       window.removeEventListener('keydown', handleBack as EventListenerOrEventListenerObject)
     }
-  }, [lastScrollValue, handleNavShow, handleBack])
+  }, [])
+
+  const renderIconBnt = () => (
+    <Button
+      shape='square'
+      onClick={handleLogOut}
+      >
+        <FontAwesomeIcon
+          className={styles.logIcon}
+          icon={faSignInAlt}
+          size='xl'
+        />
+      </Button>
+  )
 
   const renderLoginLogout = () => {
     if (token) {
       return (
-        <Button
-          onClick={handleLogOut}
-          size='m'>Logout</Button>
+        <>
+          <div className={styles.btnDesktop}>
+            <Button
+              onClick={handleLogOut}
+              size='m'>Logout</Button>
+          </div>
+          {renderIconBnt()}
+        </>
           )
       } else {
         return (
-          <Button
-            onClick={handleNavigate('login')}
-            size='m'>Login</Button>
+          <>
+            <div className={styles.btnDesktop}>
+              <Button
+                onClick={handleNavigate('login')}
+                size='m'>Login</Button>
+            </div>
+            {renderIconBnt()}
+          </>
           )
       }
   }
@@ -129,15 +161,14 @@ export const NavBar = () => {
 
   return (
     <nav className={showNav ? styles.navContainer : styles.navContainer__hidden}>
-      {/* LEFT SIDE */}
+    {/* <nav className={styles.navContainer}> */}
       <div className={styles.leftContainer}>
-        <AnimatedCross
-          onClick={handleSideBarVis}
-          isHidden={isSideBarHidden}
-        />
-        {/* <div onClick={handleSideBarVis}> */}
-          {/* <FontAwesomeIcon icon={isSideBarHidden ? faPlus : faMinus}/> */}
-        {/* </div> */}
+        <div className={styles.crossContainer}>
+          <AnimatedCross
+            onClick={handleSideBarVis}
+            isHidden={isSideBarHidden}
+            />
+        </div>
         {(isSideBarHidden && pathname !== '/') && (
           <Link
             to='/'
@@ -147,56 +178,55 @@ export const NavBar = () => {
         )}
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className={styles.rightContainer}>
-        <div className={styles.searchContainer}>
-          <SearchForm/>
+      <div className={styles.buttonsContainer}>
+        <div
+          className={`${styles.icons} ${styles.cartIconContainer} ${isCartUpdating && styles.activeCartBtn}`}
+          onClick={handleOpenCart}>
+            <img src={cartIcon} alt="cart button" />
+            {numberOfproductInCart > 0 && (
+              <div className={styles.cartNotification}>
+                <span>{numberOfproductInCart}</span>
+              </div>
+            )}
         </div>
 
-        <div className={styles.buttonsContainer}>
+        <Link
+          className={styles.icons}
+          to='/'>
+          <img src={bellIcon} alt="notification button" />
+        </Link>
+
+
+        <div className={`margin-right-10 ${styles.loginContainer} `}>
+          { pathname !== '/login' && renderLoginLogout() }
+        </div>
+
+        {/* AVATAR */}
+        {data && token && (
           <div
-            className={`${styles.icons} ${styles.cartIconContainer} ${isCartUpdating && styles.activeCartBtn}`}
-            onClick={handleOpenCart}>
-              <img src={cartIcon} alt="cart button" />
-              {numberOfproductInCart > 0 && (
-                <div className={styles.cartNotification}>
-                  <span>{numberOfproductInCart}</span>
-                </div>
-              )}
+            onClick={handleNavigate('/profile')}
+            className={styles.profileImageContainer}>
+            <img src={data.image} alt='profile image' />
           </div>
+        )}
 
-          <Link
-            className={styles.icons}
-            to='/'>
-            <img src={bellIcon} alt="notification button" />
-          </Link>
-          {data && token && (
-            <div
-              onClick={handleNavigate('/profile')}
-              className={styles.profileImageContainer}>
-              <img src={data.image} alt='profile image' />
-            </div>
-          )}
 
-          <div className={`margin-right-10 ${styles.centerField}`}>
-            { pathname === '/login'
-              ? <p className='annotation'>Don't Have an Account ? </p>
-              : renderLoginLogout()
-            }
+        { !token && (
+          <div
+            className={`${styles.signUp} ${darkTheme ? styles.dark : ''}`}
+            onClick={handleNavigate('sign-up')}
+            >
+            Sign <span>U</span>p
           </div>
-          { !token && (
-            <div
-              className={`${styles.signUp} ${darkTheme ? styles.dark : ''}`}
-              onClick={handleNavigate('sign-up')}
-              >
-              Sign <span>U</span>p
-            </div>
-            )
-          }
-          <div className={styles.themeBtnContainer}>
-            <ThemeBtn/>
-          </div>
+          )
+        }
+        <div className={styles.themeBtnContainer}>
+          <ThemeBtn/>
         </div>
+      </div>
+
+      <div className={styles.searchContainer}>
+        <SearchForm/>
       </div>
     </nav>
   )

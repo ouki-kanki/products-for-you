@@ -1,6 +1,10 @@
 .section {
   padding: 6rem 4rem;
-  flex-grow: 1;
+  height: 100%;
+  flex: 1;
+  // min-height: 100vh;
+
+  // @include border_red;
 
   @media screen and (max-width: 768px) {
     padding: 6rem 44px;

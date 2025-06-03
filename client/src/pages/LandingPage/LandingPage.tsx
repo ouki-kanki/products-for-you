@@ -51,7 +51,6 @@ export const LandingPage = () => {
   const { data: promotedProducts, isLoading: isLoadingPromoted, isError: isErrorPromoted} = useGetPromotedProductsQuery(undefined, { skip: !featuredProducts })
   const { data: featuredCategories, isLoading: isLoadingCategories, isError: isErrorCategories} = useGetCategoriesQuery('featured', { skip: !promotedProducts })
 
-  console.log("inside the landing")
   // console.log("latest", latestProducts)
   // console.log("featured", featuredProducts, isLoadingFeatured, isErrorFeatured)
   // console.log("promoted", promotedProducts)
@@ -64,10 +63,7 @@ export const LandingPage = () => {
         isLoading={isLoadingFeatured}
         isError={isErrorFeatured}
         />
-
-      <div className={styles.sectionContainer}>
-        <LatestProducts data={latestProducts}/>
-      </div>
+      <LatestProducts data={latestProducts}/>
 
       {featuredProducts ?
       <FeaturedProducts
@@ -83,7 +79,6 @@ export const LandingPage = () => {
         />
 
       <PromotedProducts data={promotedProducts} isLoading={isLoadingPromoted}/>
-
     </div>
   )
 }

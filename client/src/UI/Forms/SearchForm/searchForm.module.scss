@@ -2,8 +2,11 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 95%;
+  max-width: 400px;
+  min-width: 50px;
 
-  // TODO: check if this is ok
   svg {
     path {
       // color: $search_color_primary;
@@ -19,10 +22,10 @@
 }
 
 .input {
+  flex: 1;
   height: $btn_height;
   padding: 10px 20px;
   border-radius: 10px;
-  // border: 1px solid  #dcdcdc;
   font-size: medium;
   font-weight: bold;
   transition: border .1s ease-out;
@@ -57,9 +60,4 @@
   path {
     fill: rgb(172, 231, 235);
   }
-}
-
-.searchBtn {
-  padding: 0;
-  width: 100%d;
 }

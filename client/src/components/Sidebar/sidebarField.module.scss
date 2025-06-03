@@ -65,6 +65,11 @@
   position: relative;
   left: 30px;
   width: calc(100% - 30px);
+  scrollbar-width: 2px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #393939 transparent;
+  max-height: 400px;
 }
 
 

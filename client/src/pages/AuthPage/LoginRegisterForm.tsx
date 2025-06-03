@@ -10,21 +10,30 @@ import type { IloginInput } from './getLoginFields';
 interface FormProps {
   handleSubmit: (e: SyntheticEvent) => void;
   handleDemoLogin: (e: SyntheticEvent) => void;
+  handlePersist: () => void;
+  handleSignUp: () => void;
+  persist: boolean;
   fields: IloginInput[];
   isValid: boolean;
   isLoading: boolean;
   title: string;
   btnTitle: string;
   mode: 'register' | 'login',
-  children: React.ReactNode
 }
 
 export const LoginRegisterForm = ({
   handleSubmit,
   handleDemoLogin,
   fields,
-  isValid, isLoading, title, btnTitle, mode, children}: FormProps) => {
-
+  isValid,
+  isLoading,
+  title,
+  btnTitle,
+  mode,
+  handlePersist,
+  persist,
+  handleSignUp
+}: FormProps) => {
     const firstInputRef = useRef<HTMLInputElement | null>(null)
 
     useEffect(() => {
@@ -35,13 +44,14 @@ export const LoginRegisterForm = ({
 
     return (
       <WithoutSidebar>
-        <div className={`${styles.mainContainer}`}>
+        <div className={styles.container}>
           <div className={styles.cardContainer}>
-            <div className={styles.divider}></div>
+            {/* <div className={styles.divider}></div> */}
             <div className={styles.leftContainer}>
             </div>
             <div className={styles.rightContainer}>
               <div className={styles.formContainer}>
+
                 <form className={styles.form} onSubmit={handleSubmit}>
                   <h2>{title}</h2>
                   {fields.map(({ id, ...rest }) => (
@@ -63,12 +73,26 @@ export const LoginRegisterForm = ({
                           )
                         }
                       </div>
-                    {children}
+
+                      <label htmlFor="persist">
+                        <input
+                          type="checkbox"
+                          id='persist'
+                          checked={persist}
+                          onChange={handlePersist}
+                        />
+                        Remember Credentials
+                      </label>
+                      <a
+                        className={styles.signUp}
+                        onClick={handleSignUp}>Sign Up</a>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
+
+          {/* card -container end */}
           </div>
         </div>
       </WithoutSidebar>

@@ -1,9 +1,11 @@
 .container {
+  width: 100%;
+  // width: 100vw;
+  // max-width: 100%;
+  // overflow-x: hidden;
+  // flex-grow: 1;
+  // @include border_orange__bold;
   // border: $border-green;
-  // padding: 20px 50px;
 }
 
-// .sectionContainer {
-//   border: $border-red;
-//   margin: 0 auto;
-// }
+

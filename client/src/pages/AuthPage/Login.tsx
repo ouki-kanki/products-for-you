@@ -1,7 +1,7 @@
 import { useEffect, SyntheticEvent } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { showNotification } from '../../components/Notifications/showNotification';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 import { setCredentials } from '../../features/auth/authSlice';
 import { useLoginMutation, useLoginDemoMutation } from '../../api/authApi';
@@ -164,6 +164,7 @@ const {
   }
 
   const handlePersist = () => setPersist((prev: boolean) => !prev)
+  const handleSignUp = () => navigate('/sign-up')
 
   return <LoginRegisterForm
             title='Login'
@@ -174,15 +175,8 @@ const {
             isLoading={isLoading}
             isValid={isValid}
             mode='login'
-            >
-              <label htmlFor="persist">
-                <input
-                  type="checkbox"
-                  id='persist'
-                  checked={persist}
-                  onChange={handlePersist}
-                />
-                Remember Credentials
-                </label>
-            </LoginRegisterForm>
+            handlePersist={handlePersist}
+            persist={persist}
+            handleSignUp={handleSignUp}
+            />
 }

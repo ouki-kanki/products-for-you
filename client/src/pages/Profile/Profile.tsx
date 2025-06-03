@@ -36,8 +36,9 @@ type Error = {
 
 export const Profile = () => {
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
-  const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData })
+  const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData, refetchOnMountOrArgChange: true })
 
+  console.log("the profile")
 
   // *** VALIDATION ***
   const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']

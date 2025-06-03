@@ -2,10 +2,9 @@ import { useCallback, useEffect } from 'react'
 import styles from './app.module.scss'
 import type { IUiConfig } from './types';
 import { useTheme } from './context/hooks/useTheme';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from './app/store/store';
 
-
-import { useLazyGetProductsQuery } from './features/products/productsSlice'
 import { hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 
 import { EcommerceRoutes } from './routes';
@@ -24,6 +23,7 @@ import { WaveClipPath } from './components/ClipPaths/Wave/WaveClipPath';
 function App() {
   const dispatch = useDispatch()
   const { darkTheme } = useTheme()
+  const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
 
   useEffect(() => {
     try {
@@ -41,8 +41,6 @@ function App() {
     } catch (error) {
       console.log(error)
     }
-
-
   }, [dispatch])
 
   console.log("app triggered")
@@ -51,14 +49,13 @@ function App() {
   // TODO: move this to another file
   const handleUiConfig = useCallback((config: IUiConfig) => {
     const { isSidebarHidden } = config
-    // console.log("the sidebar data from local" , isSidebarHidden)
 
     if (JSON.parse(isSidebarHidden as string)) {
       dispatch(hideSidebar())
     }
   }, [dispatch])
 
-  // TODO: change the name, this was obsolete
+  // TODO: change the name, this is obsolete
   const debouncedHideSidebar = useCallback(() => {
     const isSidebarHidden = localStorage.getItem('is_sidebar_hidden');
     handleUiConfig({ isSidebarHidden })
@@ -66,13 +63,19 @@ function App() {
 
   useDebounce(debouncedHideSidebar, 200, [debouncedHideSidebar])
 
+
+  const contentNavContainerStyles = `
+  ${styles.contentNavContainer}
+  ${isSideBarHidden ? styles.hidden : ''}
+  `
+
   return (
     <div className={`${styles.appContainer} ${darkTheme ? 'dark-theme' : ''}`}>
         <WaveClipPath/>
         <Sidebar/>
         <CartModal/>
-      <div className={styles.contentNavContainer}>
-        <EcommerceRoutes/>
+      <div className={contentNavContainerStyles}>
+          <EcommerceRoutes/>
       </div>
     </div>
   )

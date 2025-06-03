@@ -14,6 +14,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  // --wave-path: path("M1,0c0,0-0.3,0.1-0.5,0.1S0.3,0,0,0.1V1h1L1,0z");
 }
 
 /* NOTE: do not use viewport units with typography! it will cause problems . zoom in - out not working! */
@@ -56,20 +57,25 @@
   box-sizing: border-box;
 }
 
+html {
+  width: 100vw;
+
+}
+
 body {
+  max-width: 100vw;
+  // width: 100vw;
+  overflow-x: hidden;
   font-family: 'Montserrat', sans-serif;
   font-size: var(--fs-s);
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  // background-color: #fafafa;
 }
 
-.App {
-  // background-color: #fefefe;
-  height: 100vh;
-  // width: 100%;
-  // display: flex;
+#root {
+  max-width: 100%;
+  // width: 100vw;
 }
 
 h1 {
@@ -104,15 +110,6 @@ a:hover {
   color: #3a3b3f;
 }
 
-// TO
-// a.active span:nth-child(2) {
-//   font-size: 16px;
-//   text-decoration: none;
-//   background: $gradient_yellow_45_var2;
-//   color: transparent;
-//   background-clip: text;
-// }
-
 ul {
   list-style-position: inside;
   list-style: none;
@@ -130,4 +127,35 @@ ul {
 // carouser configuration
 .swiper-button-next, .swiper-button-prev {
   color: $violet;
+  // color: red;
 }
+
+.swiper-pagination-bullet-active {
+  background: $violet;
+}
+
+/**
+old fix for the swipper
+it seems that only display: grid in the closest
+parent of the swiper element is needed
+*/
+
+// .swiper-wrapper {
+//   max-height: 100%;
+//   height: 100%;
+//   display: flex;
+//   width: 100vw;
+//   max-width: 100%;
+//   min-width: 0;
+//   min-height: 0;
+//   max-height: 100vh;
+//   @include border_pink__bold;
+// }
+
+// .swiper-slide {
+//   width: auto;
+//   flex-shrink: 0;
+//   display: block;
+//   height: 100%;
+//   max-height: 100%;
+// }

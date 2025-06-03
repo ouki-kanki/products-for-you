@@ -1,24 +1,27 @@
-.mainContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@use '../../styles/styles_v2/mixins_v2' as *;
 
-  color: red;
+.container {
+  @include border_pink;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+
 .cardContainer {
+  flex: 1;
   display: flex;
-  width: 80%;
-  max-width: 60%;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  // border: 2px solid #dcdcdd;
   border-radius: 15px;
   box-shadow: $box-shadow-v2;
   overflow: hidden;
   color: inherit;
 
-  @media screen and (max-width: 1300px) {
-    max-width: 80%;
+  @include tablet {
+    max-width: 70%;
   }
 }
 
@@ -49,6 +52,7 @@
 }
 
 .rightContainer {
+  // @include border_red__bold;
   padding: 30px 40px;
   flex: 1;
   display: flex;
@@ -58,12 +62,12 @@
   form {
     display: flex;
     flex-direction: column;
+    // @include border_green__bolder;
     color: inherit;
 
     h2 {
       text-align: center;
       // color: var(--text-color-white-bg);
-      // color: red;
 
       :global(.dark-theme) & {
         // color: #555;
@@ -74,7 +78,6 @@
   &::before {
     content: '';
     background-color: #ffffff;
-    // background-color: #f0d98f;
     position: absolute;
     height: 150%;
     width: 150%;
@@ -82,10 +85,8 @@
     left: -20%;
     transform: rotate(70deg);
     z-index: 0;
-    // box-shadow: 0px 0px 20px rgba(0, 0, 0, .4);
     box-shadow:
-    inset 0 0 120px rgba(0, 0, 0, 0.5); /* Inner shadow */
-    // 0 0 10px rgba(0, 0, 0, 0.5); /* Outer shadow */
+    inset 0 0 120px rgba(0, 0, 0, 0.5);
 
     :global(.dark-theme) & {
       background-color: rgb(47, 47, 47);
@@ -139,6 +140,12 @@
       background-color: rgb(211, 171, 26);
       padding: 0 10px;
     }
+  }
+
+  .signUp {
+    margin-top: 10px;
+    font-size: 16px;
+    cursor: pointer;
   }
 }
 
