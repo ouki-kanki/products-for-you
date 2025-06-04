@@ -39,15 +39,11 @@
     --fs-m: 1rem;
     --fs-s: .6rem
   }
-
 }
 
 * {
   margin: 0;
   padding: 0;
-  /* color: var(--font-color-gray); */
-  /* color: #800000; */
-  // color: $dark-gray;
   color: var(--text-color);
 }
 
@@ -59,12 +55,10 @@
 
 html {
   width: 100vw;
-
 }
 
 body {
   max-width: 100vw;
-  // width: 100vw;
   overflow-x: hidden;
   font-family: 'Montserrat', sans-serif;
   font-size: var(--fs-s);
@@ -75,7 +69,6 @@ body {
 
 #root {
   max-width: 100%;
-  // width: 100vw;
 }
 
 h1 {
@@ -115,15 +108,6 @@ ul {
   list-style: none;
 }
 
-._searchIcon_us6cu_44 {
-  color: red;
-}
-
-.fa-magnifying-glass {
-  color: red;
-}
-
-
 //  **** carouser configuration ****
 .swiper-button-next, .swiper-button-prev {
   color: $violet;
@@ -135,7 +119,6 @@ ul {
 }
 
 .swiper-slide {
-  // @include border_pink__bolder;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,6 +128,7 @@ ul {
 old fix for the swipper
 it seems that only display: grid in the closest
 parent of the swiper element is needed
+** this was used to fix the overflow on the x axis **
 */
 
 // .swiper-wrapper {

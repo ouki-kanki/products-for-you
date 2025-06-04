@@ -13,23 +13,8 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  // z-index: 100;
   width: 100%;
   min-height: 100vh;
-
-  @include tablet {
-    max-width: 90%;
-    margin : 0 auto;
-  }
-
-  // @include border_green__bolder;
-  // overflow-x: hidden;
-  // overflow-y: auto;
-  // max-height: 100vh;
-  // max-width: 100%;
-  // max-width: 80vw;
-  // max-width: calc(100vw - $sidebar-width);
-  // overflow-x: clip;
 }
 
 

@@ -17,9 +17,6 @@ import { Rating } from "../Rating/Rating";
 
 
 import kdeImage from "../../assets/kd14_low_res.png";
-import kdeRight from "../../assets/kd14_right.jpg";
-import kdeTop from "../../assets/kd14_top.jpg";
-import kdeBack from "../../assets/kd14_back.jpg";
 import kdWhiteYellow from "../../assets/variations/kd14_yel_white.jpg";
 import kdIce from "../../assets/variations/kd14_ice.jpg";
 import kdDeepBlue from "../../assets/variations/kd14_deep_blue.jpg";
@@ -74,7 +71,7 @@ export const ProductV2 = ({
   const [variationSlug, setVariationSlug] = useState<string>("");
   const [trigger, { data }, lastPromiseInfo] = useLazyGetProductVariationPreviewQuery();
 
-  // remove the current variation from the list of other variations
+  // removes the current variation from the list of other variations
   const [omitedVariationSlug, setOmitedVariationSlug] = useState(slug || null)
 
   const strProductImages = JSON.stringify(productImages);
@@ -87,7 +84,6 @@ export const ProductV2 = ({
       setCurrentImage(defImage)
     }
   }, [strProductImages])
-
 
   useEffect(() => {
     if (strVariationResult) {
@@ -120,9 +116,8 @@ export const ProductV2 = ({
     trigger(slug);
   };
 
-  // TODO: repeated functionality on latest products. DRY the
+  // TODO: repeated functionality on latest products. DRY this
   const handleProductDetail = () => {
-    console.log("inside product detail");
     navigate(`/products/${encodeURIComponent(constructedUrl)}/${variationSlug}`, {
       state: constructedUrl,
     });
@@ -153,6 +148,9 @@ export const ProductV2 = ({
         </div>
       );
     } else {
+      return (
+        <div>could not load variations</div>
+      )
 
       // TODO: fallback, this was used for testing
       return (
@@ -227,7 +225,7 @@ export const ProductV2 = ({
               {/* VARIATIONS */}
               {renderVariations()}
 
-              <div className={styles.contentContainer}>
+              <div className={styles.featuresContainer}>
                 <h3>features</h3>
                 <ul>{features && features.map((feature, id) => <li key={id}>{feature}</li>)}</ul>
               </div>

@@ -36,7 +36,7 @@ export const Card = ({ children, width, image, shadow=true, ...rest }: PropsWith
       { ...rest }
       >
         <div className={styles.imageContainer}>
-          {/* <img src={image} alt="product main image" /> */}
+          {/* __placeholder__for__product_image (white bottom left region) */}
         </div>
       {children}
     </div>

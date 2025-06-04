@@ -40,7 +40,7 @@ interface ISwipperCarouselV1Props {
   renderCard: (item: IItem) => ReactNode
 }
 
-export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props ) => {
+export const SwiperCarousel = ({ data,  renderCard}: ISwipperCarouselV1Props ) => {
   const [ windowWidth ] = useWindowSize()
   const [numberOfVisible, setNumberOfVisible] = useState(3)
 
@@ -59,7 +59,7 @@ export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props )
       setNumberOfVisible(4)
     } else if (windowWidth >= 1300) {
       setNumberOfVisible(4)
-    } else if (windowWidth >= 1000) {
+    } else if (windowWidth >= 1200) {
       setNumberOfVisible(3)
     } else if (windowWidth >= 700) {
       setNumberOfVisible(2)

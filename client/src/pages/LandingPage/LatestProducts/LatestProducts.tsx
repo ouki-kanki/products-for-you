@@ -6,7 +6,7 @@ import { SectionContainer } from '../../../components/Layout/SectionContainer/Se
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3';
 import { Iproduct } from '../../../types';
 import { ICarouselContainerProps } from '../../../hooks/useCarousel/carouselTypes';
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel';
+import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel';
 
 interface ILatestProductsProps extends ICarouselContainerProps {
   data: Iproduct[]
@@ -25,7 +25,7 @@ export const LatestProducts: React.FC<ILatestProductsProps> = ({ data }) => {
     <SectionContainer title='Latest Products' linkPath='/search?sort_by=time' linkTitle='more products'>
       { data && data.length > 0 && (
         <>
-          <SwiperCarouselV2
+          <SwiperCarousel
           data={data}
           renderCard={
             (product: Iproduct) => (

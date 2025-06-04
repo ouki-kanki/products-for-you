@@ -3,7 +3,7 @@ import styles from './promotedProducts.module.scss'
 
 import { SectionContainer } from '../../../components/Layout/SectionContainer/SectionContainer'
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3'
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel'
+import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel'
 import type { IproductItem } from '../../../api/types'
 import { Link } from 'react-router-dom'
 
@@ -40,7 +40,7 @@ export const PromotedProducts: React.FC<PromotedProductProps> = ({ data, isLoadi
       linkTitle='more products'
       linkPath='/search?sort_by=time'>
       <div className={styles.carouselContainer}>
-        <SwiperCarouselV2
+        <SwiperCarousel
               data={data}
               renderCard={
                 (product: Iproduct) => (

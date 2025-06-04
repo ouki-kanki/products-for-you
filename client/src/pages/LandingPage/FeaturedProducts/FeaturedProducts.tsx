@@ -6,7 +6,7 @@ import { SectionContainer } from '../../../components/Layout/SectionContainer/Se
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3';
 import { Iproduct } from '../../../types';
 import { ICarouselContainerProps } from '../../../hooks/useCarousel/carouselTypes';
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel';
+import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel';
 
 // TODO: move from here to types
 interface Idata {
@@ -42,7 +42,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ data }) => {
       linkPath='/search?sort_by=time'>
       { data && data.results.length > 0 && (
         <div className={styles.carouselContainer}>
-          <SwiperCarouselV2
+          <SwiperCarousel
           data={data.results}
           renderCard={
             (product: Iproduct) => (

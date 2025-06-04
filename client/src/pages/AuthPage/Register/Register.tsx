@@ -106,7 +106,6 @@ export const Register = () => {
 
 
   return (
-    <div className={styles.registerContainer}>
       <LoginRegisterForm
         title='Register'
         btnTitle='Register'
@@ -115,6 +114,5 @@ export const Register = () => {
         isValid={isValid}
         fields={registerFields}
       />
-    </div>
   )
 }

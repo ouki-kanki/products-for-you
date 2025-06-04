@@ -1,4 +1,4 @@
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel'
+import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel'
 import styles from './featuredCategories.module.scss';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'
@@ -39,7 +39,7 @@ export const FeaturedCategories = ({data, isLoading, isError}) => {
       linkPath='/categories'>
       {data && data.length > 0 && (
           <div className={styles.carouselContainer}>
-            <SwiperCarouselV2
+            <SwiperCarousel
             data={data}
             renderCard={
               (item => (

@@ -21,7 +21,6 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
     const featuredItem = data[0]
     return (
       <SectionContainer title='Featured Product' noLink={true}>
-        <div className={styles.featuredProductContainer}>
           <ProductV2
             width='fluid'
             name={featuredItem.name}
@@ -37,7 +36,6 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
             handleFavorite={() => handleFavorite(featuredItem.slug, featuredItem.isFavorite)}
             isFavorite={featuredItem.isFavorite}
           />
-        </div>
       </SectionContainer>
     )
   }

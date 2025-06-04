@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useRef, useEffect } from 'react'
-import { WithoutSidebar } from '../../hocs/WithoutSidebar';
+import { WithoutSidebar } from '../../hocs/WithoutSidebar/WithoutSidebar';
 import styles from './loginregisterForm.module.scss'
 
 import { Input } from '../../UI/Forms/Inputs/Input/Input';

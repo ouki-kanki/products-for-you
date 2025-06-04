@@ -168,21 +168,19 @@ const {
   const handleSignUp = () => navigate('/sign-up')
 
   return (
-    <div className={styles.loginContainer}>
-      <LoginRegisterForm
-                title='Login'
-                btnTitle='Login'
-                handleSubmit={handleSubmit}
-                handleDemoLogin={handleDemoLogin}
-                fields={loginFields}
-                isLoading={isLoading}
-                isValid={isValid}
-                mode='login'
-                handlePersist={handlePersist}
-                persist={persist}
-                handleSignUp={handleSignUp}
-                />
-    </div>
+    <LoginRegisterForm
+              title='Login'
+              btnTitle='Login'
+              handleSubmit={handleSubmit}
+              handleDemoLogin={handleDemoLogin}
+              fields={loginFields}
+              isLoading={isLoading}
+              isValid={isValid}
+              mode='login'
+              handlePersist={handlePersist}
+              persist={persist}
+              handleSignUp={handleSignUp}
+              />
   )
 
 }

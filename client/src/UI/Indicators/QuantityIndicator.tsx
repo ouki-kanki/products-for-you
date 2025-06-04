@@ -33,19 +33,5 @@ export const QuantityIndicator = ({availability }: QuantityIndicatorProps) => {
       )
     }
     return <div></div>
-
-
-    // if (availability) {
-    //   switch(true) {
-    //     case availability === Availability.not_available:
-    //       return <div className={classes('label', 'danger')}>{availability}</div>
-    //     case availability === Availability.limited:
-    //       return <div className={classes('label', 'caution')}>limited number of items left</div>
-    //     case availability >= 4:
-    //       return <div className={classes('label', 'available')}>available</div>
-    //   }
-    // } else {
-    //   return <div className={classes('label', 'danger')}>quantity not available. contanct store</div>
-    // }
 }
 
