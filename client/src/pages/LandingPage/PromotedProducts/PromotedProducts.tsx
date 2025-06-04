@@ -1,8 +1,9 @@
 import React from 'react'
 import styles from './promotedProducts.module.scss'
 
+import { SectionContainer } from '../../../components/Layout/SectionContainer/SectionContainer'
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3'
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarouselV2'
+import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel'
 import type { IproductItem } from '../../../api/types'
 import { Link } from 'react-router-dom'
 
@@ -34,8 +35,10 @@ export const PromotedProducts: React.FC<PromotedProductProps> = ({ data, isLoadi
   }
 
   return (
-    <>
-      <h2>Promoted Products</h2>
+    <SectionContainer
+      title='Promoted Products'
+      linkTitle='more products'
+      linkPath='/search?sort_by=time'>
       <div className={styles.carouselContainer}>
         <SwiperCarouselV2
               data={data}
@@ -52,12 +55,7 @@ export const PromotedProducts: React.FC<PromotedProductProps> = ({ data, isLoadi
                 )
               }
               />
-              <div className={styles.linkRight}>
-                <Link
-                  to='/search?sort_by=time'
-                >more products</Link>
-              </div>
       </div>
-    </>
+    </SectionContainer>
   )
 }

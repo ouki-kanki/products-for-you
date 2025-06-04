@@ -1,10 +1,10 @@
+@use '../../styles/styles_v2/mixins_v2' as *;
+
 .footerContainer {
   // @include border_green();
-  // position: fixed;
-  bottom: 15px;
+  // bottom: 15px;
   right: 20px;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   max-width: 90%;
   margin: 0 auto;
@@ -28,6 +28,11 @@
     > a, div {
       margin-bottom: 20px;
     }
+  }
+
+  @include mobile-max {
+    padding-bottom: 30px;
+    // margin-bottom: 30px;
   }
 }
 

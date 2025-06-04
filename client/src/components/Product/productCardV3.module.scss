@@ -1,16 +1,17 @@
 .container {
-  // height: 360px;
   margin: 20px;
   padding: 20px;
+  flex: 1;
   display: flex;
-  // justify-content: center;
   align-items: center;
   flex-direction: column;
   background-color: var(--background-color-2);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   cursor: pointer;
-  // border: $blue-light-active;
+  // @include border_orange__bolder;
+  max-width: 350px;
+
 }
 
 .title {

@@ -6,7 +6,7 @@ import { useTheme } from '../../context/hooks/useTheme';
 import { showCartModal } from '../.z./features/UiFeatures/UiFeaturesSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDebounce, useDebouncedValue, useDebouncedFunction } from '../../hooks/useDebounce';
+import { useDebouncedFunction } from '../../hooks/useDebounce';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';

@@ -2,6 +2,7 @@ import { useEffect, SyntheticEvent } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { showNotification } from '../../components/Notifications/showNotification';
 import { useNavigate, Navigate } from 'react-router-dom';
+import styles from './login.module.scss';
 
 import { setCredentials } from '../../features/auth/authSlice';
 import { useLoginMutation, useLoginDemoMutation } from '../../api/authApi';
@@ -166,17 +167,22 @@ const {
   const handlePersist = () => setPersist((prev: boolean) => !prev)
   const handleSignUp = () => navigate('/sign-up')
 
-  return <LoginRegisterForm
-            title='Login'
-            btnTitle='Login'
-            handleSubmit={handleSubmit}
-            handleDemoLogin={handleDemoLogin}
-            fields={loginFields}
-            isLoading={isLoading}
-            isValid={isValid}
-            mode='login'
-            handlePersist={handlePersist}
-            persist={persist}
-            handleSignUp={handleSignUp}
-            />
+  return (
+    <div className={styles.loginContainer}>
+      <LoginRegisterForm
+                title='Login'
+                btnTitle='Login'
+                handleSubmit={handleSubmit}
+                handleDemoLogin={handleDemoLogin}
+                fields={loginFields}
+                isLoading={isLoading}
+                isValid={isValid}
+                mode='login'
+                handlePersist={handlePersist}
+                persist={persist}
+                handleSignUp={handleSignUp}
+                />
+    </div>
+  )
+
 }

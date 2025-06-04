@@ -124,7 +124,7 @@ ul {
 }
 
 
-// carouser configuration
+//  **** carouser configuration ****
 .swiper-button-next, .swiper-button-prev {
   color: $violet;
   // color: red;
@@ -132,6 +132,13 @@ ul {
 
 .swiper-pagination-bullet-active {
   background: $violet;
+}
+
+.swiper-slide {
+  // @include border_pink__bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /**

@@ -1,12 +1,14 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LoginRegisterForm } from './LoginRegisterForm'
-import { useValidation } from '../../hooks/useValidation/useValidation'
-import { getRegisterFields } from './getRegisterFields'
+import { LoginRegisterForm } from '../LoginRegisterForm'
+import { useValidation } from '../../../hooks/useValidation/useValidation'
+import { getRegisterFields } from '../getRegisterFields'
 
-import { useRegisterMutation } from '../../api/authApi'
-import { showNotification } from '../../components/Notifications/showNotification'
+import { useRegisterMutation } from '../../../api/authApi'
+import { showNotification } from '../../../components/Notifications/showNotification'
 import { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types'
+import styles from './register.module.scss';
+
 
 export const Register = () => {
   const [username, setUsername] = useState('')
@@ -104,15 +106,15 @@ export const Register = () => {
 
 
   return (
-    <LoginRegisterForm
-      title='Register'
-      btnTitle='Register'
-      handleSubmit={handleRegister}
-      isLoading={isLoading}
-      isValid={isValid}
-      fields={registerFields}
-    >
-
-    </LoginRegisterForm>
+    <div className={styles.registerContainer}>
+      <LoginRegisterForm
+        title='Register'
+        btnTitle='Register'
+        handleSubmit={handleRegister}
+        isLoading={isLoading}
+        isValid={isValid}
+        fields={registerFields}
+      />
+    </div>
   )
 }

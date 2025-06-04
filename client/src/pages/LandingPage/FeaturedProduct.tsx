@@ -1,6 +1,7 @@
 import styles from './featuredProduct.module.scss'
 import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
 
+import { SectionContainer } from '../../components/Layout/SectionContainer/SectionContainer'
 import { IProduct } from '../../api/types'
 import { ProductV2 } from '../../components/Product/ProductV2'
 import { withLoadingAndError } from '../../hocs/LoadingError/withLoadingAndError'
@@ -19,8 +20,7 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
     // selects the first item from featured products. the first item has position 1
     const featuredItem = data[0]
     return (
-      <div className={styles.container}>
-        <h2>Featured Product</h2>
+      <SectionContainer title='Featured Product' noLink={true}>
         <div className={styles.featuredProductContainer}>
           <ProductV2
             width='fluid'
@@ -38,7 +38,7 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
             isFavorite={featuredItem.isFavorite}
           />
         </div>
-      </div>
+      </SectionContainer>
     )
   }
 })

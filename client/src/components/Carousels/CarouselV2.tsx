@@ -10,14 +10,16 @@ interface IDummyItemProps {
   index: number;
 }
 
+
+// *** OBSOLETE ***
 const DummyItem = ({ item, itemWidth, activeIndex, index }: IDummyItemProps) => (
   <div
     className={
-      `${styles.dummyItem} 
+      `${styles.dummyItem}
        ${index === activeIndex && `${styles.active}`}
        `
-      } 
-    style={{ 
+      }
+    style={{
       backgroundColor:  item.color,
       // width: `${itemWidth}px`
       }}>
@@ -44,7 +46,7 @@ export const CarouselV2 = () => {
   const rightVisible = 6
   const numberOfItems = dummyItems.length
   const containerWidth = 800;
-  const itemWidth = containerWidth / numberOfItems  
+  const itemWidth = containerWidth / numberOfItems
   const { moveLeft, moveRight, active } = useCarouselV2(numberOfItems)
   const carouselContainerRef = useRef<HTMLDivElement>(null)
 
@@ -56,7 +58,7 @@ export const CarouselV2 = () => {
   }
 
   useEffect(() => {
-    // TODO : have to use useCallback check dan abramov solution 
+    // TODO : have to use useCallback check dan abramov solution
     if (carouselContainerRef.current) {
       carouselContainerRef.current.addEventListener('transitionend', handleTransitionEnd)
     }
@@ -88,30 +90,30 @@ export const CarouselV2 = () => {
       carouselContainerRef.current.style.transform = `translateX(-${itemWidth}px)`
 
 
-      setTimeout(() => {        
+      setTimeout(() => {
         setProducts((prevProducts) => {
           const newProducts = [ ...prevProducts ]
           newProducts.push(newProducts.shift() as IDummyItem)
-          return newProducts 
+          return newProducts
         })
       }, 500)
-      
+
       setTimeout(() => {
         carouselContainerRef.current!.style.transition = 'none'
         carouselContainerRef.current!.style.transform = 'translateX(0)'
       }, 501)
-    } else if (direction === 'left') {      
+    } else if (direction === 'left') {
       setProducts((prevProducts) => {
         const newProducts = [ ...prevProducts ]
         newProducts.unshift(newProducts.pop() as IDummyItem)
         return newProducts
       })
-      
+
       setTimeout(() => {
         carouselContainerRef.current!.style.transition = 'transform 0.5s linear'
         carouselContainerRef.current!.style.transform = `translateX(-${itemWidth}px)`
       }, 500)
-      
+
       setTimeout(() => {
         carouselContainerRef.current!.style.transition = 'none'
         carouselContainerRef.current!.style.transform = 'translateX(0)'
@@ -123,25 +125,25 @@ export const CarouselV2 = () => {
     <div className={styles.mainContainer}>
       <div className={styles.hideLeft} style={{ width: `${itemWidth}px` }}></div>
       <div className={styles.hideRight} style={{ width: `${itemWidth}px` }}></div>
-      <div 
+      <div
         className={`${styles.indicatorContainer} ${styles.left}`}
         onClick={handlePrev}
       >{'<'}</div>
-      <div 
+      <div
         className={styles.carouselContainer}
-        // ref={handleRefContainer} 
+        // ref={handleRefContainer}
         ref={carouselContainerRef}
         >
         {products.map((item, index) => (
           <DummyItem
-            item={item} 
+            item={item}
             activeIndex={active}
             index={index}
             key={index}
             />
         ))}
       </div>
-      <div 
+      <div
         className={`${styles.indicatorContainer} ${styles.right}`}
         onClick={handleNext}
         >{'>'}</div>

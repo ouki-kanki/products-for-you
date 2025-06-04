@@ -1,3 +1,5 @@
+@use './styles/styles_v2/mixins_v2' as *;
+
 .appContainer {
   display: flex;
   position: relative;
@@ -13,10 +15,14 @@
   flex-direction: column;
   // z-index: 100;
   width: 100%;
-  height: 100%;
   min-height: 100vh;
-  // max-width: 100vw;
-  // width: 100vw;
+
+  @include tablet {
+    max-width: 90%;
+    margin : 0 auto;
+  }
+
+  // @include border_green__bolder;
   // overflow-x: hidden;
   // overflow-y: auto;
   // max-height: 100vh;

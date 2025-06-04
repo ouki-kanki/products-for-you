@@ -47,14 +47,12 @@ export const EcommerceRoutes = () => (
           <Route path='/settings' element={<Settings/>}/>
           <Route path='/products/' element={<ProductsPage/>}/>
           <Route path='/products/:slug' element={<ProductsPage/>}/>
-          <Route path='/testproducts/' element={<ProductsPage/>}/>
-          {/* first slug -> category, second slug -> item (uses the contructed url field. check drf)*/}
+          {/* <Route path='/testproducts/' element={<ProductsPage/>}/> */}
           <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
           <Route path='/search/' element={<Search/>}/>
           <Route element={<ProtectedRoute/>}>
             <Route path='/orders/' element={<Orders/>}/>
           </Route>
-          <Route path='sign-up' element={<Register/>}/>
           <Route path='/delivery-terms' element={<DeliveryTerms/>}/>
           <Route path='/terms-of-use' element={<TermsOfUse/>}/>
           <Route element={<ProtectedRoute/>}>
@@ -64,6 +62,7 @@ export const EcommerceRoutes = () => (
           </Route>
       </Route>
       <Route path='login' element={<Login/>}/>
+      <Route path='sign-up' element={<Register/>}/>
       <Route path='activate/:user_id' element={<Activation/>}/>
       <Route path='activation-success/:uidb64' element={<ActivationSuccess/>}/>
     </Route>

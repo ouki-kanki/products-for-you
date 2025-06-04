@@ -1,0 +1,16 @@
+.container {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+
+    > h2 {
+        margin-bottom: 1rem;
+    }
+
+    .link {
+        flex: 1;
+        font-size: 13px;
+        text-align: right;
+        margin-right: 30px; //TODO: this is to align the link with the carousel content but is sloppy solution. need to fix!
+    }
+}

@@ -2,10 +2,11 @@ import React, { useState} from 'react'
 import styles from './featuredProducts.module.scss';
 import { NavLink } from 'react-router-dom';
 
+import { SectionContainer } from '../../../components/Layout/SectionContainer/SectionContainer';
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3';
 import { Iproduct } from '../../../types';
 import { ICarouselContainerProps } from '../../../hooks/useCarousel/carouselTypes';
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarouselV2';
+import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel';
 
 // TODO: move from here to types
 interface Idata {
@@ -35,31 +36,25 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ data }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <SectionContainer
+      title='Featured Products'
+      linkTitle='more products'
+      linkPath='/search?sort_by=time'>
       { data && data.results.length > 0 && (
-        <>
-          <h2>Featured Products</h2>
-          <div className={styles.carouselContainer}>
-            <SwiperCarouselV2
-            data={data.results}
-            renderCard={
-              (product: Iproduct) => (
-                <ProductCardV3
-                  product={product}
-                  defaultThumb={renderDefaultThumb(product)}
-                />
-              )
-            }
-            />
-            <div className={styles.linkRight}>
-              <NavLink
-                to='/search?sort_by=time'
-                // replace=false
-              >more products</NavLink>
-            </div>
-          </div>
-        </>
+        <div className={styles.carouselContainer}>
+          <SwiperCarouselV2
+          data={data.results}
+          renderCard={
+            (product: Iproduct) => (
+              <ProductCardV3
+                product={product}
+                defaultThumb={renderDefaultThumb(product)}
+              />
+            )
+          }
+          />
+        </div>
       )}
-    </div>
+    </SectionContainer>
   )
 }

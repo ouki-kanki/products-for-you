@@ -44,14 +44,24 @@ export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props )
   const [ windowWidth ] = useWindowSize()
   const [numberOfVisible, setNumberOfVisible] = useState(3)
 
+
+  /**
+   * need to bring the number of items for each instance as a prop
+   * use this number as the max value that numberOfVisible can get.
+   * now if the number of items is less than the max-number that is defined below
+   * carousel breaks.it needs to have at least for items in order to work properly
+   */
+
   useEffect(() => {
     if (windowWidth >= 2200) {
-      setNumberOfVisible(5)
+      setNumberOfVisible(4)
     } else if (windowWidth >= 1700) {
       setNumberOfVisible(4)
+    } else if (windowWidth >= 1300) {
+      setNumberOfVisible(4)
     } else if (windowWidth >= 1000) {
-      setNumberOfVisible(2)
-    } else if (windowWidth >= 800) {
+      setNumberOfVisible(3)
+    } else if (windowWidth >= 700) {
       setNumberOfVisible(2)
     } else {
       setNumberOfVisible(1)
@@ -67,6 +77,7 @@ export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props )
         className={styles.swiper}
         navigation
         loop
+
         // autoplay={{
         //   delay: 3000,
         //   disableOnInteraction: false
@@ -79,6 +90,7 @@ export const SwiperCarouselV2 = ({ data,  renderCard}: ISwipperCarouselV1Props )
         // effect='cards'
         spaceBetween={2}
         slidesPerView={numberOfVisible}
+        // slidesPerGroup={numberOfVisible}
         // slidesPerView={1}
         // onSlideChange={() => console.log('slide change')}
         // onSwiper={(swiper) => console.log(swiper)}

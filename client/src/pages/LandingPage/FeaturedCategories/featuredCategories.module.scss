@@ -6,19 +6,15 @@
 
 .carouselContainer {
   .categoryContainer {
-    // height: 360px;
     margin: 20px;
     padding: 20px;
     display: flex;
-    // justify-content: center;
     align-items: center;
     flex-direction: column;
-    // background-color: pink;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     cursor: pointer;
     user-select: none;
-    // border: $blue-light-active;
   }
 }
 

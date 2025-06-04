@@ -1,18 +1,24 @@
+@use '../styles/styles_v2/_mixins_v2.scss' as *;
+
+
 .section {
-  padding: 6rem 4rem;
   height: 100%;
   flex: 1;
-  // min-height: 100vh;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+  margin-bottom: 2rem;
   // @include border_red;
 
-  @media screen and (max-width: 768px) {
-    padding: 6rem 44px;
+  @include mobile-max {
+    // @include border_green__bolder;
+    padding: 3rem 44px;
   }
 
-  // iphone 12
-  @media screen and (max-width: 391px) {
-    padding: 4rem 20px;
+  @include tablet {
+    max-height: none;
+    // height: 100%;
   }
-  // @include border_green();
+
 }

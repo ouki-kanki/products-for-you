@@ -1,7 +1,9 @@
-import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarouselV2'
+import { SwiperCarouselV2 } from '../../../components/Carousels/SwiperCarousel'
 import styles from './featuredCategories.module.scss';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'
+
+import { SectionContainer } from '../../../components/Layout/SectionContainer/SectionContainer';
 
 // TODO: type the props
 export const FeaturedCategories = ({data, isLoading, isError}) => {
@@ -31,31 +33,30 @@ export const FeaturedCategories = ({data, isLoading, isError}) => {
 
 
   return (
-    <div className={styles.container}>
-      <h2>Featured Categories</h2>
+    <SectionContainer
+      title='Featured Categories'
+      linkTitle='more categories'
+      linkPath='/categories'>
       {data && data.length > 0 && (
-        <div className={styles.carouselContainer}>
-          <SwiperCarouselV2
-          data={data}
-          renderCard={
-            (item => (
-              <div
-                className={styles.categoryContainer}
-                onClick={() => handleCategoryClick(item.slug)}
-                >
-                <h2 className={styles.categoryTitle}>{item.name}</h2>
-                <div className={styles.imageContainer}>
-                  <img src={item.icon} alt='category icon' />
+          <div className={styles.carouselContainer}>
+            <SwiperCarouselV2
+            data={data}
+            renderCard={
+              (item => (
+                <div
+                  className={styles.categoryContainer}
+                  onClick={() => handleCategoryClick(item.slug)}
+                  >
+                  <h2 className={styles.categoryTitle}>{item.name}</h2>
+                  <div className={styles.imageContainer}>
+                    <img src={item.icon} alt='category icon' />
+                  </div>
                 </div>
-              </div>
-            ))
-          }
-        />
-        <div className={styles.more}>
-          <Link to='/categories' >more categories</Link>
-        </div>
+              ))
+            }
+          />
         </div>
       )}
-    </div>
+    </SectionContainer>
   )
 }

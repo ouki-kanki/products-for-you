@@ -6,7 +6,7 @@ import { useGetLatestProductsQuery,
          } from "../../api/productsApi"
 
 import { FeaturedProduct } from './FeaturedProduct';
-import { FeaturedProducts } from './FeaturedProducts/FeaturedPoroducts';
+import { FeaturedProducts } from './FeaturedProducts/FeaturedProducts';
 import { FeaturedCategories } from './FeaturedCategories/FeaturedCategories';
 
 import { LatestProducts } from './LatestProducts/LatestProducts';

@@ -6,7 +6,7 @@ export {default as Account} from './Account'
 export {default as Settings} from './Settings/Settings'
 export { ProductsPage } from './ProductsPage';
 export { Login } from './AuthPage/Login'
-export { Register } from './AuthPage/Register'
+export { Register } from './AuthPage/Register/Register'
 export { Profile } from './Profile/Profile'
 export { ErrorPage } from './ErrorPage/ErrorPage';
 export { LandingPage } from './LandingPage/LandingPage';
