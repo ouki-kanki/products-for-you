@@ -1,10 +1,12 @@
+@use '../../../styles/styles_v2/mixins_v2' as *;
+
 .container {
   display: flex;
-  @include border_green;
+  // @include border_green;
   flex-wrap: wrap;
+  justify-content: center;
 
-  div {
-    // flex: 1 1 200px;
-    // height: 400px;
+  @include tablet {
+    justify-content: flex-start;
   }
 }

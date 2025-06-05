@@ -74,8 +74,16 @@ export interface FeaturedItems {
   results: IfeaturedItem[]
 }
 
+export interface Promotion {
+  promotionName: string;
+  promoPrice: string;
+  isActive: boolean;
+  isScheduled: false;
+  promoEnd: string;
+  promoStart: string;
+  promoReduction: number;
+}
 
-// TODO: DRY THIS there are simiral properties
 export interface IproductDetail {
   uuid: number;
   slug: string;
@@ -92,6 +100,7 @@ export interface IproductDetail {
   productThumbnails: IProductThumbnailorImage[];
   productImages: IProductThumbnailorImage[];
   isFavorite?: boolean;
+  promotions: Promotion[];
 }
 
 interface IorderItem {
