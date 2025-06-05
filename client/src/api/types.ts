@@ -33,7 +33,7 @@ export interface IProductThumbnailorImage {
 
 export interface IProduct {
   name: string;
-  quantity: number;
+  availability: string;
   price: string;
   features: string[];
   productImages: IProductImage[];
@@ -84,6 +84,7 @@ export interface IproductDetail {
   sku: string;
   price: number;
   quantity: string;
+  availability: string;
   detailedDescription: string;
   features: string[];
   icon: string;

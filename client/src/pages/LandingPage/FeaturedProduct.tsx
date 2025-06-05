@@ -26,6 +26,7 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
             name={featuredItem.name}
             price={featuredItem.price}
             quantity={featuredItem.quantity}
+            availability={featuredItem.availability}
             features={featuredItem.features}
             variations={featuredItem.variations}
             description={featuredItem.description}

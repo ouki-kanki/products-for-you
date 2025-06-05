@@ -17,9 +17,10 @@ const mapAvailabilitytoClasses = {
 interface QuantityIndicatorProps {
   // quantity?: number;
   availability: string;
+  size?: 'sm' | 'md' | 'lg'
 }
 
-export const QuantityIndicator = ({availability }: QuantityIndicatorProps) => {
+export const QuantityIndicator = ({availability, size='md' }: QuantityIndicatorProps) => {
     const classes = useClassLister(styles)
     if (availability) {
 
@@ -27,8 +28,8 @@ export const QuantityIndicator = ({availability }: QuantityIndicatorProps) => {
 
       return (
         <div className={styles.containerIndicator}>
-          <div className={classes('label', `${availabilityClass}`)}>{availability}</div>
-          <div className={classes('indicator')}></div>
+          <div className={classes('label', `${size}`, `${availabilityClass}`)}>{availability}</div>
+          {/* <div className={classes('indicator')}></div> */}
         </div>
       )
     }

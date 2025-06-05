@@ -2,20 +2,16 @@ $breakpoint-small: 600px;
 $breakpoint-medium: 768px;
 $breakpoint-large: 1024px;
 
-
 .container {
 //  overflow: hidden;
-
 }
 
 .sectionOne {
-  // @include border_green();
   display: flex;
   display: flex;
   margin-bottom: 40px;
 
   .leftContainer {
-    // @include border_lime();
     flex: 1 1 60%;
     max-width: 700px;
     padding: 20px;
@@ -108,8 +104,6 @@ $breakpoint-large: 1024px;
       div:first-child::before {
         @include strikethrough_diagonal();
       }
-
-
     }
 
     .priceContainer {
@@ -160,7 +154,6 @@ $breakpoint-large: 1024px;
       width: 60px;
       height: 60px;
       cursor: pointer;
-      // @include border_green;
 
       &:hover {
         // TODO smooth transition
@@ -183,21 +176,23 @@ $breakpoint-large: 1024px;
   color: mediumspringgreen;
 }
 
-
 .action {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 10px;
 
   .quantityBtnContainer {
     margin-right: 10px;
+
     & input {
       border: none;
       border-bottom: 2px solid #a2d2ff;
       outline: none;
+      background: transparent;
       color: #a2d2ff;
       font-family: 'Lemon', serif;
       font-size: 20px;
+      max-width: 100px;
     }
 
     .plusMinusContainer {
@@ -206,8 +201,11 @@ $breakpoint-large: 1024px;
     }
 
     .qIcon {
+      @include border_green;
       height: 2em;
       width: 2em;
+      background: transparent;
+
       cursor: pointer;
       border: none;
 
@@ -247,7 +245,6 @@ $breakpoint-large: 1024px;
         }
       }
     }
-
   }
 
   .buyBtn {
@@ -271,12 +268,6 @@ $breakpoint-large: 1024px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  // @include border_pink__bold();
-
-  & div {
-    // @include border_orange__bold();
-  }
-  // align-self: flex-end;
 }
 
 .iconContainer {
@@ -286,7 +277,6 @@ $breakpoint-large: 1024px;
 }
 
 .returnIcon {
-  // @include border_orange();
   fill: #444;
   width: 25px;
   height: 25px;
@@ -300,8 +290,6 @@ $breakpoint-large: 1024px;
   transform: translate(-5px, -4px);
 }
 
-
-
 .image-grid {
   display: grid;
   gap: 10px;
@@ -313,6 +301,7 @@ $breakpoint-large: 1024px;
   border-radius: 8px;
 }
 
+// TODO: use the new media queries from mixins_v2
 @media screen and (max-width: $breakpoint-small) {
   .image-grid {
     grid-template-columns: repeat(1, 1fr);
@@ -334,24 +323,6 @@ $breakpoint-large: 1024px;
 @media screen and (min-width: $breakpoint-large) {
   .image-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.flexContainer {
-  @include border_red__bold;
-
-  .child {
-    display: flex;
-
-    .img {
-      flex: 1;
-    }
-
-    .text {
-      flex: 2;
-      @include border_lime__bold();
-      text-align: left;
-    }
   }
 }
 

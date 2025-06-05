@@ -5,10 +5,6 @@ import type { WidthType } from "../../UI/Card/Card";
 import { useHover } from "../../hooks/useHover";
 import { useNavigate } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
-import { faStar as faSolidStar } from "@fortawesome/free-solid-svg-icons";
-
 import { Card } from "../../UI/Card/Card";
 import { Button } from "../../UI/Button/Button";
 import { QuantityIndicator } from "../../UI/Indicators/QuantityIndicator";
@@ -56,6 +52,7 @@ export const ProductV2 = ({
   quantity,
   description,
   variations,
+  availability,
   constructedUrl,
   handleFavorite,
   isFavorite,
@@ -219,7 +216,7 @@ export const ProductV2 = ({
                 </h3>
 
                 <Rating/>
-                <QuantityIndicator quantity={newQuantity} />
+                <QuantityIndicator availability={availability}/>
               </div>
 
               {/* VARIATIONS */}

@@ -4,19 +4,21 @@ import { isEmpty } from '../../utils/objUtils'
 
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
-import { useGetProductDetailQuery, useLazyGetProductDetailQuery } from '../../api/productsApi'
+import { useLazyGetProductDetailQuery } from '../../api/productsApi'
 import { useLazyGetSimilarProductsQuery } from '../../api/productsApi'
 
 import { SimilarProducts } from '../../components/Product/SimilarProducts/SimilarProducts'
 import { showNotification } from '../../components/Notifications/showNotification'
 import { FavoritesBtn } from '../../components/Buttons/FavoritesBtn/FavoritesBtn'
 import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
+import { QuantityIndicator } from '../../UI/Indicators/QuantityIndicator'
 
 import styles from './productDetail.module.scss'
 import ReturnIcon from '../../assets/svg_icons/return_icon.svg?react'
 import TrackIcon from '../../assets/svg_icons/track.svg?react'
 import AddIcon from '../../assets/svg_icons/add_filled.svg?react'
 import SubtractIcon from '../../assets/svg_icons/subtract_filled.svg?react'
+
 
 export const ProductDetail = () => {
   const dispatch = useDispatch()
@@ -159,7 +161,6 @@ export const ProductDetail = () => {
     // navigate(featuredImage, { replace: true })
   }
 
-
   if (isLoading) {
     return (
       <div>Loading</div>
@@ -220,9 +221,7 @@ export const ProductDetail = () => {
                     }
                   </div>
                 </div>
-                <div className={styles.available}>
-                  {Number(data?.quantity) > 0 ? 'Available' : 'Not Available'}
-                </div>
+                <QuantityIndicator availability={data.availability}/>
 
                 <div className={styles.action}>
                   <div className={styles.quantityBtnContainer}>
@@ -230,7 +229,6 @@ export const ProductDetail = () => {
                       // type="number"
                       type='string'
                       value={desiredQuantity}
-                      // max={data?.quantity}
                       onChange={handleQntChange}
                       onBlur={handleBlur}
                       />

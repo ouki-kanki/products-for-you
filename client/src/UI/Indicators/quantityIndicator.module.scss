@@ -1,22 +1,20 @@
 .label {
   padding: 10px 0;
-  // border: $border-green-bold;
-
-
-  @media screen and (max-width: 1400px) {
-    font-size: 12px;
-  }
+  font-family: 'Lemon', serif;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .available {
+  font-size: inherit;
   margin-top: 10px;
   font-weight: 700;
-  // color: #6fc17f;
-  color: $positive_green;
+  color: $medium_spring;
 }
 
 .danger {
   color: rgb(173, 173, 173);
+  font-size: inherit;
 
   &:first-of-type + div {
     display: none;
@@ -25,6 +23,7 @@
 
 .caution {
   color: khaki;
+  font-size: inherit;
 
   &:first-of-type + div {
     background-color: yellow;
@@ -32,6 +31,15 @@
   }
 }
 
+.lg {
+    font-size: larger;
+}
+
+.sm {
+  font-size: small;
+}
+
+// ** not used the markup is commented out **
 .containerIndicator {
   display: flex;
   align-items: baseline;
@@ -40,7 +48,6 @@
 .label {
   margin-right: 10px;
 }
-
 
 .indicator {
   height: 8px;
