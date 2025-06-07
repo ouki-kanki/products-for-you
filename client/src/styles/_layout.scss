@@ -1,10 +1,7 @@
 @use './variables' as *;
 
-
 // dimensions.
 $sidebar-width: 250px;
-
-
 
 .annotation {
   font-size: small;
@@ -36,9 +33,6 @@ $btn_height: 40px;
   }
 }
 
-// MIXINS
-// TODO have mixins also in a seperate folder,
-
 @mixin basic_auto_grid($min: 15rem) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
@@ -46,7 +40,6 @@ $btn_height: 40px;
 }
 
 // BASIC STYLE FOR ICONS
-
 @mixin icon_btn_square() {
   width: $btn_height;
   height: $btn_height;

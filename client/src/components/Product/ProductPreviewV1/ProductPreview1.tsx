@@ -38,8 +38,6 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
     })
   }
 
-  console.log("the product", props)
-
   return (
     <div
       className={classes('containerProduct', `${layout}`)}>

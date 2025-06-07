@@ -1,6 +1,6 @@
 {
   "keepExisingTerminalsOpen": false,
-  "runOnStartup": true,
+  "runOnStartup": false,
   "terminals": [
     {
       "splitTerminals": [

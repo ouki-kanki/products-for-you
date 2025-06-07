@@ -7,7 +7,6 @@ import type { RootState } from '../../../app/store/store';
 import { ButtonGroup } from '../../../UI/ButtonGroup/ButtonGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-
 import { FacetsList } from '../../Filters/FacetsList';
 
 import { useAppDispatch } from '../../../app/store/store';
@@ -31,6 +30,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
 
   // NOTE: option from select button does not accept dynamic values in css file
   // had to follow this approach
+  // TODO: do a research to find if the above is false and there is a way to achieve this
   useEffect(() => {
     if (selectBtnRef) {
       selectBtnRef.current?.querySelectorAll('option')
@@ -41,6 +41,10 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
 
           option.style.backgroundColor = computedBackgroundColor
           option.style.color = computedColor
+          option.style.position = 'absolute'
+          option.style.top = '0'
+          option.style.left = '0'
+          option.style.right = '0'
         })
     }
   }, [])
@@ -112,12 +116,14 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
               name="sort_by"
               id="sort_by"
               >
-              <option value="time">time</option>
-              <option value="time desc">time descenting</option>
-              <option value="name">name</option>
-              <option value="name desc">name descenting</option>
-              <option value="price">price</option>
-              <option value="price desc">price descenting</option>
+              <div className={styles.optionContainer}>
+                <option value="time">time</option>
+                <option value="time desc">time descenting</option>
+                <option value="name">name</option>
+                <option value="name desc">name descenting</option>
+                <option value="price">price</option>
+                <option value="price desc">price descenting</option>
+              </div>
             </select>
         </div>
         <FontAwesomeIcon

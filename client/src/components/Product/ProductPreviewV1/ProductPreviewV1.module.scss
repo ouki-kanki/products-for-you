@@ -1,6 +1,7 @@
 .containerProduct {
   font-size: 1rem;
   display: flex;
+  max-width: 550px;
   background-color: var(--background-color-2);
 
   @media screen and (max-width: 890px) {
@@ -10,6 +11,7 @@
 
 // left and right parent
 .container {
+  // overflow: hidden;
   flex: 0 0 50%;
   // @include border_green__bold
 }
@@ -41,7 +43,6 @@
   }
 }
 
-// TODO: change the syntax to camelcase
 .container_right {
   padding: 20px;
   display: flex;

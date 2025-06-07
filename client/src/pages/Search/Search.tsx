@@ -43,7 +43,6 @@ export const Search = () => {
 
   // the following hook gathers the querystring from the page (inside the hook) the sort_value and the value from the search form
 
-
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
 
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
@@ -54,8 +53,6 @@ export const Search = () => {
     sort_by: sortValue || '',
     facets: paramsStr
   })
-
-  // console.log("results", data?.results)
 
   useEffect(() => {
     // facets are cached. trigger request when facetslist is changed
@@ -106,8 +103,6 @@ export const Search = () => {
     facets_for_dep = JSON.stringify(facets)
   }
 
-  // console.log("facets for dep", facets_for_dep)
-
   useEffect(() => {
     if (facets_for_dep.length > 0) {
       const fts = JSON.parse(facets_for_dep)
@@ -131,13 +126,13 @@ export const Search = () => {
           setLayout('')
           break
         case 2:
-          setLayout('twoColLayout')
+          setLayout('listLayout')
           break
         case 3:
-          setLayout('fourColLayout')
+          setLayout('twoColLayout')
           break;
         case 4:
-          setLayout('listLayout')
+          setLayout('fourColLayout')
       }
   }
 
@@ -201,11 +196,11 @@ export const Search = () => {
       <br />
 
       {/* TODO: remove -- testing --  */}
-      <div className={styles.sampleContainer}>
+      {/* <div className={styles.sampleContainer}>
             <div className={classes('sample', 'sample_prime')}></div>
             <div className={classes('sample', 'sample_second')}></div>
             <div className={classes('sample', 'sample_active')}></div>
-          </div>
+      </div> */}
     </div>
   )
 }

@@ -1,7 +1,9 @@
-import { useState, ReactNode } from 'react'
+import { useState, useEffect, ReactNode } from 'react'
 import styles from './buttonGroup.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTableList, faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
+import { faTableList, faTableCellsLarge, faTableCells, faTableColumns, faTableTennis, faTablet } from '@fortawesome/free-solid-svg-icons';
+import { useWindowSize } from '../../hooks/useWindowSize';
+
 
 /**
  *  onClick(number) - a callback
@@ -11,25 +13,36 @@ interface IButtonGroup {
   onClick?: (num: number) => void
 }
 
-const buttons = [
-  <FontAwesomeIcon icon={faTableList}/>,
-  <FontAwesomeIcon icon={faTableCellsLarge}/>,
-  <FontAwesomeIcon icon={faTableCells}/>,
-  <FontAwesomeIcon icon={faTableCells}/>,
-]
-
 
 /**
  *
  * @param {ReactNode[]} options - array of the btn children
  * @param onClick(number) - a callback that when clicked it will give the corresponing number of the btn that was clicked so it can be used to provoke some functionality
  * @returns
- */
+*/
 export const ButtonGroup = ({width = 250, onClick}: IButtonGroup) => {
   const [selected, setSelected] = useState<number>(1)
+  const [dynamicWidth, setDynamicWidth] = useState(width)
+  const windowSize = useWindowSize()
+
+  const buttons = [
+  <FontAwesomeIcon icon={faTableColumns}/>,
+  <FontAwesomeIcon icon={faTableList}/>,
+  <FontAwesomeIcon icon={faTableCellsLarge}/>,
+  <FontAwesomeIcon icon={faTableCells}/>,
+  ]
+
+
+  const windowWidth = windowSize[0]
+  // show only the fluid and list layout options on mobile
+  windowWidth < 667 && buttons.splice(2, 2)
+
+  useEffect(() => {
+    windowWidth < 667 ? setDynamicWidth(100) : setDynamicWidth(width)
+  }, [windowWidth, width])
+
 
   const handleClick = (number: number) => {
-    // TODO: this is the typeguard approach.can it solved with a more elegand way?
     onClick && onClick(number);
     setSelected(number)
   }
@@ -39,7 +52,7 @@ export const ButtonGroup = ({width = 250, onClick}: IButtonGroup) => {
   )
 
   return (
-    <div className={styles.container} style={{ width }}>
+    <div className={styles.container} style={{ width: dynamicWidth }}>
       {
         buttons.map((item: ReactNode, index) => (
           <div
@@ -49,14 +62,6 @@ export const ButtonGroup = ({width = 250, onClick}: IButtonGroup) => {
             >{item}</div>
         ))
       }
-      {/* <div
-        className={buttonStyles(2)}
-        onClick={() => handleClick(2)}
-        >second</div>
-      <div
-        className={buttonStyles(3)}
-        onClick={() => handleClick(3)}
-        >third</div> */}
     </div>
   )
 }
