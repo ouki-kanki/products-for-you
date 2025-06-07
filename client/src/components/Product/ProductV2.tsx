@@ -216,7 +216,9 @@ export const ProductV2 = ({
                 </h3>
 
                 <Rating/>
-                <QuantityIndicator availability={availability}/>
+                <div className={styles.availabilityContainer}>
+                  <QuantityIndicator availability={availability}/>
+                </div>
               </div>
 
               {/* VARIATIONS */}

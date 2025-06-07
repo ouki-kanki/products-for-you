@@ -18,7 +18,7 @@ interface ProductPreviewProps {
   upc: string;
   price: string;
   availability: string;
-  layout: string
+  layout?: 'listLayout' | null
 }
 
 export const ProductPreview1 = (props: ProductPreviewProps) => {
@@ -53,10 +53,59 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
       </div>
 
       {/* right panel */}
-      <div className={[styles.container_right, styles.container].join(' ')}>
-        <h2>{props.name}</h2>
+      <div className={classes('container_right', `${layout}`)}>
+        <div className={styles.titleContainer}>
+          <h2>{props.name}</h2>
+        </div>
+
+        <div className={styles.priceAndQntContainer}>
+          <div className={styles.priceContainer}>
+            <span>Price: </span>
+            <span>€{props.price}</span>
+          </div>
+
+          <div className={styles.availabilityContainer}>
+            <QuantityIndicator availability={props.availability}/>
+          </div>
+        </div>
+
+        <div className={styles.descriptionContainer}>
+          {props.description}
+        </div>
+
+        <div className={styles.btnContainer}>
+          <button
+            onClick={() => handleProductDetail(category, slug)}
+            className={styles.button}>details</button>
+        </div>
+
+        <div className={styles.tagsContainer}>
+            {category && (
+              <Link
+                to={`/search?categories=${category}`}>{category}</Link>
+            )}
+
+            {brand && (
+              <Link
+                to={`/search?brand=${brand}`}
+                className={styles.category}>{brand}</Link>
+            )}
+
+            <div className={styles.tagsContainer}>
+              {tags?.map((tag: string) => (
+                <Link to={`/search?tags=${tag}`}>#{tag}</Link>
+              ))}
+            </div>
+
+
+        </div>
+
+
+      </div>
+      {/* <div className={classes('container_right', 'container', `${layout}`)}>
         <div className={styles.container_right__middle}>
           <div className={styles.container_right__middle__left}>
+            <h2>{props.name}</h2>
             {category && (
               <Link
                 to={`/search?categories=${category}`}
@@ -67,19 +116,22 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
                 to={`/search?brand=${brand}`}
                 className={styles.category}>{brand}</Link>
             )}
-            <p className={styles.description}>{props.description}</p>
-            <div className={styles.priceContainer}>
-              <div>Price: <span>{props.price}€</span></div>
-            </div>
 
             <div className={styles.tagsContainer}>
               {tags?.map(tag => (
                 <Link to={`/search?tags=${tag}`}>#{tag}</Link>
               ))}
             </div>
+            <p className={styles.description}>{props.description}</p>
           </div>
-          <div className={styles.availabilityContainer}>
-            <QuantityIndicator availability={props.availability}/>
+
+          <div className={styles.priceAndQntContainer}>
+            <div className={styles.priceContainer}>
+              <div>Price: <span>{props.price}€</span></div>
+            </div>
+            <div className={styles.availabilityContainer}>
+              <QuantityIndicator availability={props.availability}/>
+            </div>
           </div>
         </div>
 
@@ -88,7 +140,7 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
             onClick={() => handleProductDetail(category, slug)}
             className={styles.button}>details</button>
         </div>
-      </div>
+      </div> */}
 
     </div>
   )

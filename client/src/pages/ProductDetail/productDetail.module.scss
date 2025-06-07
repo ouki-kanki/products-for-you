@@ -26,30 +26,37 @@
 
 .sectionTwo {
     // @include border_orange__bold();
-    background: rgba(255, 255, 255, 0.2);
-    // backdrop-filter: blur(10px);
-    // -webkit-backdrop-filter: blur(10px);
+    // background: rgba(255, 255, 255, 0.2);
     order: -1;
     flex: 1 1 40%;
-    // padding: 2rem 3rem;
     padding: 2rem 1rem;
-    // margin: 0 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    // background: rgba(116, 116, 116, 0.763);
 
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: inherit;
-      filter: blur(10px);
-      z-index: -1;
+    @supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     }
+
+    @supports not (backdrop-filter: blur(10px)) {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(10px);
+        z-index: -1;
+      }
+    }
+
 
     @include tablet {
       order: unset;

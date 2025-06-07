@@ -130,14 +130,12 @@
   color: inherit;
   margin-left: 10px;
 
-  @include tablet {
-    margin-left: 0;
+  .availabilityContainer {
+    margin: 10px 0;
   }
 
-  .available {
-    margin-top: 10px;
-    font-weight: 700;
-    color: #6fc17f;
+  @include tablet {
+    margin-left: 0;
   }
 }
 

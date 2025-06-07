@@ -25,8 +25,8 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
   const [ isFilterOpen, setFilterOpen ] = useState(true)
   const [isAnimating, setIsAnimating] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof window.setTimeout>>(null)
-  const filterMenuRef = useRef<HTMLDivElement>(null)
-  const selectBtnRef = useRef<HTMLSelectElement>(null)
+  const filterMenuRef = useRef<HTMLDivElement | null>(null)
+  const selectBtnRef = useRef<HTMLSelectElement | null>(null)
 
   // NOTE: option from select button does not accept dynamic values in css file
   // had to follow this approach
@@ -41,27 +41,31 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
 
           option.style.backgroundColor = computedBackgroundColor
           option.style.color = computedColor
-          option.style.position = 'absolute'
-          option.style.top = '0'
-          option.style.left = '0'
-          option.style.right = '0'
         })
     }
   }, [])
 
   const setHeightValue = () => {
     if (filterMenuRef.current) {
+      // the following is used for the observer to calculate the correct height
+      filterMenuRef.current.style.visibility = 'hidden';
+      filterMenuRef.current.style.display = 'block';
       const menuHeight = filterMenuRef.current.scrollHeight
       document.documentElement.style.setProperty('--menu-height', `${menuHeight}px`)
+
+
+      filterMenuRef.current.style.display = '';
+      filterMenuRef.current.style.visibility = ''
     }
   }
 
   // TODO: fix the type of the ref
   const handleToggleFilter = () => {
     if (!isFilterOpen) {
+      if (filterMenuRef.current) filterMenuRef.current.scrollLeft = 0;
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
       setIsAnimating(true)
-      setHeightValue()
+      // setHeightValue()
 
     timeoutRef.current = setTimeout(() => {
         setIsAnimating(false)
@@ -73,7 +77,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
     // *** -- this closes the menu -- ***
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     setIsAnimating(true)
-    setHeightValue()
+    // setHeightValue()
     timeoutRef.current = setTimeout(() => {
       setIsAnimating(false)
       setFilterOpen(false)
@@ -81,7 +85,15 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
   }
 
   useEffect(() => {
+    if (!filterMenuRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      setHeightValue();
+    })
+    observer.observe(filterMenuRef.current)
+
     return () => {
+      observer.disconnect();
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
   }, [])
@@ -135,8 +147,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
 
       <div
         className={`${styles.facetsContainer} ${isFilterOpen ? styles.open : ''} ${isAnimating ? styles.animating : ''}`}
-        ref={filterMenuRef}
-        >
+        ref={filterMenuRef}>
         <FacetsList
           facets={facets}
           handleSelectBoxChange={handleSelectBoxChange}

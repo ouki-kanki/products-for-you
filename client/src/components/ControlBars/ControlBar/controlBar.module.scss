@@ -57,18 +57,19 @@
   display: flex;
   flex-wrap: nowrap;
   height: 0;
-  overflow: hidden;
   transform: translateX(-100%);
   transform-origin: top;
   opacity: 0;
 
   &.animating {
       animation: spring 0.3s ease-out reverse forwards;
+      // overflow: hidden;
   }
 
   // when the user oopens the panel
   &.animating:not(.open) {
       animation: spring 0.3s ease-out forwards;
+      // overflow: hidden;
   }
 
   &.open {
@@ -78,6 +79,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
+    // min-height: 250px;
   }
 
   &::-webkit-scrollbar {

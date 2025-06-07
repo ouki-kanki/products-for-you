@@ -1,7 +1,9 @@
+@use "../../../styles/styles_v2/mixins_v2" as *;
+
 .containerProduct {
   font-size: 1rem;
   display: flex;
-  max-width: 550px;
+  // max-width: 550px;
   background-color: var(--background-color-2);
 
   @media screen and (max-width: 890px) {
@@ -36,7 +38,7 @@
   .imageContainer:before {
     position: absolute;
     display: block;
-    content: '';
+    content: "";
     height: inherit;
     width: inherit;
     background-color: $blue-light-primary;
@@ -44,91 +46,69 @@
 }
 
 .container_right {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  display: grid;
+  padding: 10px;
+  grid-template-columns: 1fr 1fr auto;
+  grid-template-rows: auto auto auto;
+  min-height: 150px;
 
-  &__middle {
-    flex-grow: 1;
 
-    .category {
+  grid-template-areas:
+    "title title priceAvailability"
+    "description description description"
+    "tags tags button";
+
+  .titleContainer {
+    h2 {
+      font-size: 10px;
+    }
+  }
+
+  .titleContainer {
+    grid-area: title;
+    margin-bottom: 0;
+  }
+  .priceAndQntContainer {
+    grid-area: priceAvailability;
+    .availabilityContainer {
+      font-size: 8px;
+    }
+  }
+  .descriptionContainer {
+    grid-area: description;
+    overflow-y: hidden;
+    font-size: 7px;
+  }
+
+  .tagsContainer {
+    grid-area: tags;
+
+    & > a {
       text-decoration: underline;
-      color: $grey_m;
-    }
-
-    .description {
-      margin-top: 10px;
-    }
-
-    .priceContainer {
-      margin-top: 20px;;
-      div:first-child {
-        font-weight: bold;
-      }
-
-      span {
-        font-weight: 500;
-      }
-    }
-
-    .tagsContainer {
-      font-size: small;
+      // color: $grey_m;
+      margin-right: 5px;
     }
   }
 
-  &__bottom {
+  .btnContainer {
+    grid-area: button;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
   }
 
-  h2 {
-    margin-bottom: 1rem;
+  @include tablet {
+    .titleContainer {
+      h2 {
+        font-size: medium;
+      }
+    }
   }
-
 }
-
-.button {
-  background: linear-gradient(to bottom right, $gradient_blue_dark, $gradient_blue_light);
-  border: 0;
-  border-radius: 8px;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 2.5;
-  outline: transparent;
-  padding: 0 1rem;
-  text-align: center;
-  text-decoration: none;
-  transition: box-shadow .2s ease-in-out;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-}
-
-.button:not([disabled]):focus {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
-            -.125rem -.125rem 1rem rgba(46, 119, 158, 0.5),
-            .125rem .125rem 1rem rgba(114, 179, 219, 0.5);
-}
-
-.button:not([disabled]):hover {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(46, 119, 158, 0.5), .125rem .125rem 1rem rgba(114, 179, 219, 0.5);
-}
-
-.button:not([disabled]):active {
-  box-shadow: none;
-}
-
 
 .listLayout {
   .container {
-    flex: 1 1 100%; // reset
+    flex: 1 1 100%;
   }
 
   .containerLeft {
@@ -138,62 +118,158 @@
   .container_right {
     flex: 0 0 70%;
     display: grid;
-    align-items: center;
-    grid-template-columns: 3fr 6fr 1fr;
-    grid-template-rows: auto;
-    overflow: hidden;
+    grid-template-columns: auto 1fr auto;
+    // gap: 5px;
+    padding: 5px;
+    // grid-template-rows: auto auto auto;
+    // @include border_lime__bolder;
 
-    @media screen and (max-width: 1200px) {
-      h2 {
-        font-size: 12px;
-      }
+    grid-template-areas:
+      "title title title"
+      "priceAvailability description button"
+      "tags tags tags";
+
+    @include tablet {
+      grid-template-areas:
+        "title . ."
+        "priceAvailability description button"
+        "tags tags tags";
     }
-
-    &__middle {
-      display: flex;
-      align-items: first baseline;
-
-      &__left {
-        display: flex;
-        align-items: center;
-      }
-
-      .category {
-        flex: 0;
-        margin-right: 20px;
-      }
-
-      .description {
-        flex: 1;
-        margin-right: 20px;
-        margin-top: 0;
-      }
-
-      .priceContainer {
-        margin-top: 0;
-      }
-
-      .tagsContainer {
-        a {
-          font-size: 8px;
-        }
-      }
-
-      .availabilityContainer {
-        margin-left: auto;
-      }
-
-    }
-  }
-
-  .description {
-    font-size: 10px;
-  }
-
-  button {
-    font-size: 12px;
-    padding: 5px 15px;
   }
 }
 
+.button {
+  background: linear-gradient(to bottom right, $gradient_blue_dark, $gradient_blue_light);
+  border: 0;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
 
+.button:not([disabled]):focus {
+  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5), -0.125rem -0.125rem 1rem rgba(46, 119, 158, 0.5),
+    0.125rem 0.125rem 1rem rgba(114, 179, 219, 0.5);
+}
+
+.button:not([disabled]):hover {
+  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5), -0.125rem -0.125rem 1rem rgba(46, 119, 158, 0.5),
+    0.125rem 0.125rem 1rem rgba(114, 179, 219, 0.5);
+}
+
+.button:not([disabled]):active {
+  box-shadow: none;
+}
+
+// .listLayout {
+//   .container {
+//     flex: 1 1 100%; // reset
+//   }
+
+//   .containerLeft {
+//     flex: 0 0 30%;
+//   }
+
+//   .container_right {
+//     flex: 0 0 70%;
+//     // display: grid;
+//     // align-items: center;
+//     // grid-template-columns: 3fr 6fr 1fr;
+//     // grid-template-rows: auto;
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     overflow: hidden;
+//     @include border_lime__bolder;
+
+//     h2 {
+//       font-size: 10px;
+//     }
+
+//     @include tablet {
+//       h2 {
+//         font-size: medium;
+//       }
+//     }
+
+//     @include desktop {
+//       h2 {
+//         font-size: 12px;
+//       }
+//     }
+
+//     &__middle {
+//       display: flex;
+//       align-items: center;
+//       flex-direction: row;
+//       @include border_pink__bold;
+
+//       // category - brand -tags
+//       &__left {
+//         @include border_pink__bolder;
+//         display: flex;
+//         flex: 1;
+//         flex-direction: column;
+//         align-items: center;
+//       }
+
+//       .category {
+//         flex: 0;
+//         margin-right: 20px;
+//       }
+
+//       .description {
+//         flex: 1;
+//         margin-right: 20px;
+//         margin-top: 0;
+//       }
+
+//       .priceAndQntContainer {
+//         flex: 1;
+//         // @include border_orange__bold;
+//       }
+
+//       .priceContainer {
+//         margin-top: 0;
+//       }
+
+//       .tagsContainer {
+//         a {
+//           font-size: 8px;
+//         }
+//       }
+
+//       .availabilityContainer {
+//         margin-left: auto;
+//         font-size: 10px;
+
+//         @include tablet {
+//           font-size: inherit;
+//         }
+//       }
+
+//     }
+//   }
+
+//   .description {
+//     font-size: 10px;
+//   }
+
+//   button {
+//     font-size: 12px;
+//     padding: 5px 15px;
+//   }
+// }
