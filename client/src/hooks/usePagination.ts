@@ -59,7 +59,7 @@ export const usePagination = <T>(queryStringObj: T) => {
   const navigate = useNavigate()
   const [ searchParams ] = useSearchParams()
   const page = parseInt(searchParams.get('page') || '1')
-  const page_size = parseInt(searchParams.get('page_size') || '10')
+  const page_size = parseInt(searchParams.get('page_size') || '5')
   const { pathname } = useLocation()
   const scrollToTop = useScrollToTop()
 

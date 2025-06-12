@@ -1,0 +1,36 @@
+.button {
+//   background: linear-gradient(to bottom right, $gradient_blue_dark, $gradient_blue_light);
+  background-color: $blue-light-primary;
+  border: 0;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button:not([disabled]):focus {
+  box-shadow: 0 0 0.65rem rgba(196, 196, 196, 0.5), -0.125rem -0.125rem 1rem rgba(46, 119, 158, 0.5),
+    0.125rem 0.125rem 1rem rgba(114, 179, 219, 0.5);
+}
+
+.button:not([disabled]):hover {
+  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5), -0.125rem -0.125rem 1rem rgba(46, 119, 158, 0.5),
+    0.125rem 0.125rem 1rem rgba(114, 179, 219, 0.5);
+}
+
+.button:not([disabled]):active {
+  box-shadow: none;
+}

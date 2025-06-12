@@ -11,14 +11,8 @@
   }
 }
 
-// left and right parent
-.container {
-  // overflow: hidden;
-  flex: 0 0 50%;
-  // @include border_green__bold
-}
-
 .containerLeft {
+  flex: 0 0 50%;
   position: relative;
 
   .imageContainer {
@@ -48,15 +42,15 @@
 .container_right {
   display: grid;
   padding: 10px;
-  grid-template-columns: 1fr 1fr auto;
-  grid-template-rows: auto auto auto;
-  min-height: 150px;
-
-
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  // min-height: 150px;
   grid-template-areas:
-    "title title priceAvailability"
-    "description description description"
-    "tags tags button";
+    "title title .      .    .      .     "
+    "price price price  desc   desc   desc  "
+    "avail avail .      desc   desc    desc"
+    "tags tags   tags   .      .       .   "
+    "tags tags   tags   btn    btn     btn ";
 
   .titleContainer {
     h2 {
@@ -68,33 +62,44 @@
     grid-area: title;
     margin-bottom: 0;
   }
-  .priceAndQntContainer {
-    grid-area: priceAvailability;
-    .availabilityContainer {
-      font-size: 8px;
-    }
+
+  .priceContainer {
+    grid-area: price;
+    display: flex;
+    flex-wrap: wrap;
   }
+
+  .availabilityContainer {
+    grid-area: avail;
+    font-size: 10px;
+  }
+
   .descriptionContainer {
-    grid-area: description;
-    overflow-y: hidden;
-    font-size: 7px;
+    grid-area: desc;
+    // overflow-y: hidden;
+    font-size: 10px;
+  }
+
+  .btnContainer {
+    grid-area: btn;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .tagsContainer {
     grid-area: tags;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-self: flex-start;
+    font-size: 12px;
 
     & > a {
       text-decoration: underline;
       // color: $grey_m;
       margin-right: 5px;
     }
-  }
-
-  .btnContainer {
-    grid-area: button;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   @include tablet {
@@ -118,61 +123,30 @@
   .container_right {
     flex: 0 0 70%;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    padding: 5px 10px;
     // gap: 5px;
-    padding: 5px;
     // grid-template-rows: auto auto auto;
     // @include border_lime__bolder;
 
     grid-template-areas:
-      "title title title"
-      "priceAvailability description button"
-      "tags tags tags";
+      "title title .  .     desc  desc"
+      "price . avail avail  desc desc"
+      "tags tags . . . ."
+      "tags tags . . btn btn";
 
-    @include tablet {
-      grid-template-areas:
-        "title . ."
-        "priceAvailability description button"
-        "tags tags tags";
+      @include tablet {
+        grid-template-areas:
+          "title title .     desc desc ."
+          "price avail .     desc  desc ."
+          "tags  tags . . . ."
+          "tags tags . . . btn";
     }
   }
 }
 
-.button {
-  background: linear-gradient(to bottom right, $gradient_blue_dark, $gradient_blue_light);
-  border: 0;
-  border-radius: 5px;
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 2.5;
-  outline: transparent;
-  padding: 0 1rem;
-  text-align: center;
-  text-decoration: none;
-  transition: box-shadow 0.2s ease-in-out;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-}
 
-.button:not([disabled]):focus {
-  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5), -0.125rem -0.125rem 1rem rgba(46, 119, 158, 0.5),
-    0.125rem 0.125rem 1rem rgba(114, 179, 219, 0.5);
-}
-
-.button:not([disabled]):hover {
-  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5), -0.125rem -0.125rem 1rem rgba(46, 119, 158, 0.5),
-    0.125rem 0.125rem 1rem rgba(114, 179, 219, 0.5);
-}
-
-.button:not([disabled]):active {
-  box-shadow: none;
-}
 
 // .listLayout {
 //   .container {

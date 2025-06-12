@@ -1,9 +1,10 @@
 import styles from './ProductPreviewV1.module.scss'
 import { Link, useNavigate } from 'react-router-dom';
 
+import { BtnCard } from '../../Buttons/BtnCard/BtnCard';
 import { QuantityIndicator } from '../../../UI/Indicators/QuantityIndicator';
 import { useClassLister } from '../../../hooks/useClassLister';
-
+import { Rating } from '../../Rating/Rating';
 
 // TODO: move this interface
 interface ProductPreviewProps {
@@ -42,7 +43,7 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
     <div
       className={classes('containerProduct', `${layout}`)}>
 
-      <div className={[styles.containerLeft, styles.container].join(' ')}>
+      <div className={styles.containerLeft}>
         {/* TODO: fetch the image and not the thumb */}
         <a
           href={props.image}
@@ -54,19 +55,18 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
 
       {/* right panel */}
       <div className={classes('container_right', `${layout}`)}>
+
         <div className={styles.titleContainer}>
           <h2>{props.name}</h2>
         </div>
 
-        <div className={styles.priceAndQntContainer}>
-          <div className={styles.priceContainer}>
-            <span>Price: </span>
-            <span>€{props.price}</span>
-          </div>
+        <div className={styles.priceContainer}>
+          <span>Price: </span>
+          <span>€{props.price}</span>
+        </div>
 
-          <div className={styles.availabilityContainer}>
-            <QuantityIndicator availability={props.availability}/>
-          </div>
+        <div className={styles.availabilityContainer}>
+          <QuantityIndicator availability={props.availability}/>
         </div>
 
         <div className={styles.descriptionContainer}>
@@ -74,11 +74,10 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
         </div>
 
         <div className={styles.btnContainer}>
-          <button
-            onClick={() => handleProductDetail(category, slug)}
-            className={styles.button}>details</button>
+          <BtnCard handleClick={() => handleProductDetail(category, slug)}/>
         </div>
 
+        {/* category - brand - tags */}
         <div className={styles.tagsContainer}>
             {category && (
               <Link
@@ -96,52 +95,8 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
                 <Link to={`/search?tags=${tag}`}>#{tag}</Link>
               ))}
             </div>
-
-
         </div>
-
-
       </div>
-      {/* <div className={classes('container_right', 'container', `${layout}`)}>
-        <div className={styles.container_right__middle}>
-          <div className={styles.container_right__middle__left}>
-            <h2>{props.name}</h2>
-            {category && (
-              <Link
-                to={`/search?categories=${category}`}
-                className={styles.category}>{category}</Link>
-            )}
-            {brand && (
-              <Link
-                to={`/search?brand=${brand}`}
-                className={styles.category}>{brand}</Link>
-            )}
-
-            <div className={styles.tagsContainer}>
-              {tags?.map(tag => (
-                <Link to={`/search?tags=${tag}`}>#{tag}</Link>
-              ))}
-            </div>
-            <p className={styles.description}>{props.description}</p>
-          </div>
-
-          <div className={styles.priceAndQntContainer}>
-            <div className={styles.priceContainer}>
-              <div>Price: <span>{props.price}€</span></div>
-            </div>
-            <div className={styles.availabilityContainer}>
-              <QuantityIndicator availability={props.availability}/>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.container_right__bottom}>
-          <button
-            onClick={() => handleProductDetail(category, slug)}
-            className={styles.button}>details</button>
-        </div>
-      </div> */}
-
     </div>
   )
 }

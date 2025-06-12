@@ -30,6 +30,7 @@ interface PaginationObject {
 // *** --- Main --- ***
 export const Search = () => {
   const [layout, setLayout] = useState('')
+  const [currentPageSize, setCurrentPageSize] = useState(5);
   const [ searchParams, setSearchParams ] = useSearchParams()
   const classes = useClassLister(styles)
   const dispatch = useDispatch()
@@ -45,11 +46,22 @@ export const Search = () => {
 
   const { paramsStr,  } = useListSearchParams(['sort_by', 'search'])
 
+  console.log('currentLayout', layout)
+  useEffect(() => {
+    if (layout === 'listLayout') {
+      setCurrentPageSize(10)
+    } else {
+      setCurrentPageSize(5)
+    }
+  }, [page_size, layout])
+
+  console.log("currentpage", currentPageSize)
+
   const { data, isError, isFetching, isLoading, isSuccess, refetch } = useSearchProductItemQuery({
     query: searchValue,
     page,
     // category,
-    page_size: page_size,
+    page_size: currentPageSize,
     sort_by: sortValue || '',
     facets: paramsStr
   })
