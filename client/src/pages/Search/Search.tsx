@@ -22,6 +22,8 @@ import { ProductPreview1 } from '../../components/Product/ProductPreviewV1/Produ
 import { ControlBar } from '../../components/ControlBars/ControlBar/ControlBar';
 import { Spinner } from '../../components/Spinner/Spinner';
 
+import sortData from './data/sortData';
+
 
 interface PaginationObject {
   search: string
@@ -173,6 +175,7 @@ export const Search = () => {
         data={data}
         handleChangeLayout={handleChangeLayout}
         handleChangeSort={handleChangeSort}
+        sortData={sortData}
       />
 
       <div
@@ -183,7 +186,7 @@ export const Search = () => {
             key={id}
             layout={layout}
             { ...product }/>
-        ))}
+      ))}
       </div>
 
       <div className={styles.paginationContainer}>

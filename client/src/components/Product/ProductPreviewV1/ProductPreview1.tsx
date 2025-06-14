@@ -91,8 +91,10 @@ export const ProductPreview1 = (props: ProductPreviewProps) => {
             )}
 
             <div className={styles.tagsContainer}>
-              {tags?.map((tag: string) => (
-                <Link to={`/search?tags=${tag}`}>#{tag}</Link>
+              {tags?.map((tag: string, index: number) => (
+                <Link
+                  key={index}
+                  to={`/search?tags=${tag}`}>#{tag}</Link>
               ))}
             </div>
         </div>

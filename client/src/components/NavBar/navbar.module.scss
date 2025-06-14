@@ -1,21 +1,14 @@
 @use '../../styles/styles_v2/mixins_v2' as *;
 
 .navContainer {
-  padding: 5px 5px 5px 16px;
+  padding: 5px 16px 5px 16px;
   display: grid;
   grid-template-columns: auto 1fr auto auto;
-  gap: 16px;
+  gap: 4px;
   position: sticky;
   top: 0;
   z-index: 1000;
   transition: transform 0.2s ease-in-out;
-
-  // position: fixed;
-  // left:0;
-  // right: 0;
-  // overflow-x: hidden;
-  // flex-basis: 100%;
-  // animation: slideDown 0.3s forwards ease-in;
 
   &__hidden {
     @extend .navContainer;
@@ -24,8 +17,8 @@
     // animation: slideUp 0.3s forwards ease-in;
   }
 
-
   .leftContainer {
+    // @include border_green;
     grid-column: 1;
     display: flex;
     align-items: center;
@@ -36,6 +29,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .back {
+      // @include border_green__bolder;
+      padding: 0;
+      margin: 0;
+      margin-left: 5px;
+      max-width: 70px;
     }
   }
 
@@ -51,7 +52,8 @@
     grid-column: 1 / -1;
     display: flex;
     justify-content: center;
-    margin-right: 15px;
+    margin-top: 10px;
+    // @include border_green;
   }
 
   @include tablet {
@@ -63,6 +65,8 @@
     .searchContainer {
       grid-column: 2 / 3;
       order: 1;
+      margin-top: 0;
+      margin-right: 5px;
       justify-content: flex-end;
     }
 

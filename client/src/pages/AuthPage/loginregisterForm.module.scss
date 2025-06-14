@@ -2,6 +2,7 @@
 
 .container {
   @include border_pink;
+  margin-top: 3rem;
   border-radius: 15px;
   display: flex;
   align-items: center;

@@ -78,3 +78,7 @@ export interface ICategory {
   my_parent_category: string | null
 }
 
+export interface SortOption {
+  label: string;
+  value: string
+}

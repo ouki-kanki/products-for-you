@@ -8,6 +8,9 @@ import { ButtonGroup } from '../../../UI/ButtonGroup/ButtonGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FacetsList } from '../../Filters/FacetsList';
+import { DropDown } from '../../DropDowns/DropDown/DropDown';
+
+import type { SortOption } from '../../../types';
 
 import { useAppDispatch } from '../../../app/store/store';
 import { asyncToggleFacet } from '../../../features/filtering/facetSlice';
@@ -17,11 +20,12 @@ interface ControlBarProps {
   data: ListResponse<SearchProductItem> | undefined;
   sortValue: string
   handleChangeSort: (value: string) => void;
+  sortData: Array<SortOption>;
 }
 
 const animationDuration = 300;
 
-export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSort }: ControlBarProps) => {
+export const ControlBar = ({ handleChangeLayout, data, sortData, sortValue, handleChangeSort }: ControlBarProps) => {
   const [ isFilterOpen, setFilterOpen ] = useState(true)
   const [isAnimating, setIsAnimating] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof window.setTimeout>>(null)
@@ -117,10 +121,16 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
             onClick={(num) => handleChangeLayout(num)}
             width={200}/>
         </div>
-        <div>{ data?.results ? <b>{data.total_items}</b>: 'no' } products found</div>
-        <div className={styles.line}></div>
+        {/* <div>{ data?.results ? <b>{data.total_items}</b>: 'no' } products found</div> */}
+        {/* <div className={styles.line}></div> */}
         <div className={styles.sortContainer}>
-          <label htmlFor="sort_by">Sort by</label>
+          <DropDown
+            label='sort-by'
+            defaultValue={sortValue}
+            onChange={(value) => handleChangeSort(value)}
+            options={sortData}
+          />
+          {/* <label htmlFor="sort_by">Sort by</label>
           <select
               ref={selectBtnRef}
               value={sortValue || ''}
@@ -136,7 +146,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortValue, handleChangeSo
                 <option value="price">price</option>
                 <option value="price desc">price descenting</option>
               </div>
-            </select>
+            </select> */}
         </div>
         <FontAwesomeIcon
           className={styles.filter}

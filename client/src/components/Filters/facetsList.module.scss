@@ -1,6 +1,12 @@
 .facetsContainer {
   display: flex;
   flex-wrap: wrap;
+  // background: $gradient_blue;
+  // background: rgba(146, 146, 146, 0.7);
+  background-color: rgb(202, 202, 202);
+  padding: 5px 10px;
+  @include border_primary;
+  // border: 1px solid rgb(8, 124, 162);
 
   // add horizontal to the panel that is inisde the search component
   &.controlbar {
@@ -19,6 +25,9 @@
 
   &.sidebar {
     flex-direction: column;
+    padding: 0;
+    background-color: transparent;
+    border: none;
 
     @media  screen and (max-width: 906px) {
       display: none;
@@ -34,7 +43,6 @@
     // display: block;
     // display: none;
   }
-
 }
 
 .controlbar {
@@ -65,7 +73,6 @@
   display: flex;
   flex-direction: column;
   font-weight: 500;
-
 }
 
 .facetValueContainer {

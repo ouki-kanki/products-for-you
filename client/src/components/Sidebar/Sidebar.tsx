@@ -26,7 +26,7 @@ export const Sidebar = () => {
     `
   useEffect(() => {
     const handleCloseSidebar = (e: MouseEvent | TouchEvent) => {
-
+      // console.log("tirgger")
       // _symbol is part of the class for the btn on the navbar that closes the sidebar
       if (!sidebarRef.current
           // || sidebarRef.current.contains(e?.target as Node)

@@ -25,6 +25,10 @@ import { useLogoutMutation } from '../../api/authApiV2';
 import { useLazyGetUserProfileQuery } from '../../api/userApi';
 import { showNotification } from '../Notifications/showNotification';
 
+const SCROLL_THRESHOLD = 10;
+const WINDOW_HEIGHT = window.innerHeight
+const DOCUMENT_HEIGHT =document.documentElement.scrollHeight
+
 export const NavBar = () => {
   const [showNav, setShowNav] = useState(true)
   const { darkTheme } = useTheme()
@@ -67,27 +71,41 @@ export const NavBar = () => {
 
   // const debouncedCurrentScroll = useDebouncedValue<number>(window.scrollY, 200)
   const handleHideNavbar = useCallback(() => {
-    const currentScroll = window.scrollY
+    const currentScroll = window.scrollY || window.pageYOffset
+    const isNearBottom = currentScroll + WINDOW_HEIGHT >= DOCUMENT_HEIGHT - 50
 
-    // console.log("the current scroll", currentScroll)
-    // console.log("the last scroll", lastScrollValue.current)
-
-    if (currentScroll > lastScrollValue.current) {
-      setShowNav(false)
-    } else {
+    // for the rubber behavior of mobile browsers
+    if (window.scrollY < 5) {
       setShowNav(true)
+      return
     }
-    lastScrollValue.current = currentScroll
+
+    const documentHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
+    // console.log("current", currentScroll)
+    // console.log("doc hiehg", documentHeight)
+    // console.log('win height', windowHeight)
+
+    const nearBottom = documentHeight - (currentScroll + windowHeight) < 50
+
+    if (nearBottom) {
+      setShowNav(false)
+      return
+    }
+
+    if (Math.abs(currentScroll - lastScrollValue.current) > SCROLL_THRESHOLD) {
+      if (currentScroll > lastScrollValue.current) {
+        setShowNav(false)
+      } else {
+        setShowNav(true)
+      }
+      lastScrollValue.current = currentScroll
+    }
+
   }, [])
 
-
-  /**
-   * TODO: something is off if delay is used
-   * when the navbar hides it pushes the rest of the page up, when delay is used
-   * the whole animation seems to be off. i need to keep the rest of the content to the same position and have
-   * havbar sticky
-   */
-  const debouncedHandleHideNavbar = useDebouncedFunction(handleHideNavbar, 50)
+  const debouncedHandleHideNavbar = useDebouncedFunction(handleHideNavbar, 10)
 
   const handleBack = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -96,8 +114,8 @@ export const NavBar = () => {
   }, [navigate])
 
   useEffect(() => {
-    // window.addEventListener('scroll', debouncedHandleHideNavbar)
-    window.addEventListener('scroll', handleHideNavbar)
+    window.addEventListener('scroll', debouncedHandleHideNavbar)
+    // window.addEventListener('scroll', handleHideNavbar)
     window.addEventListener('keydown', handleBack as EventListenerOrEventListenerObject);
 
     return () => {

@@ -1,0 +1,79 @@
+@use '../../../styles/styles_v2/mixins_v2' as *;
+
+.container {
+    display: flex;
+    align-items: baseline;
+    // @include border_primary;
+    // border-radius: 10px 10px 0 0;
+}
+
+.dropDown {
+    all: unset;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background-color: $blue-light-primary;
+    padding-inline: 5px;
+}
+
+.labelContainer {
+    display: flex;
+    user-select: none;
+    justify-content: flex-start;
+    flex-grow: 1;
+    // text-overflow: ellipsis;
+    // padding-inline: 5px;
+    padding-block: .4rem;
+    // align-items: center;
+
+    .selectedValue {
+        margin-right: 5px;
+    }
+
+    .icon {
+        font-size: 0.9rem;
+        transition: transform 0.3s ease;
+
+        @include tablet {
+            font-size: 1.2rem;
+        }
+
+        &.is-active {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+
+.menu {
+    position: absolute;
+    // border: $border-primary;
+    // border-radius: 0 0 10px 10px;
+    background-color: $blue-light-active;
+    padding: 5px;
+    left: 0;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: all 0.2s ease;
+    min-width: 100%;
+    width: max-content;
+
+    z-index: 90;
+
+    &.is-active {
+        opacity: 1;
+        transition: all 0.2s ease;
+        transform: scaleY(1);
+    }
+
+    &_item {
+        transition: all 0.2s ease;
+        // background-color: red;
+        &:hover {
+            background-color: $blue-light-primary;
+        }
+    }
+}
+
+

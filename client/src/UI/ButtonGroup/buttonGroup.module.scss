@@ -1,7 +1,7 @@
  .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-  border: 2px solid $dark-gray;
+  border: $border-primary;
   border-radius: 10px;
   max-height: 40px;
   justify-content: space-evenly;
