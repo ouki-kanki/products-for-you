@@ -82,16 +82,20 @@ export const CheckoutForm = ({ handleCheckout, handleChange, handleValidationBlu
                 <CardElement options={cardElementOptions}/>
               </div>
             )}
-            <BaseInput
-              type='text-area'
-              value={extraShippingDetailsValue}
-              name='extraShippingDetails'
-              onChange={handleChange}
-              rows={4}
-              cols={50}
-              onBlur={() => handleValidationBlur('extraShippingDetails')}
-              label='extra details for shipping'
-            />
+            <div
+              className={styles.textArea}
+            >
+              <BaseInput
+                type='text-area'
+                value={extraShippingDetailsValue}
+                name='extraShippingDetails'
+                onChange={handleChange}
+                rows={4}
+                cols={20}
+                onBlur={() => handleValidationBlur('extraShippingDetails')}
+                label='extra details for shipping'
+              />
+            </div>
             <div className={styles.action}>
               <div className={styles.backContainer}>
                 <BaseButton

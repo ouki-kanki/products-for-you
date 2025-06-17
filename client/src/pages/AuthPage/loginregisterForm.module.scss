@@ -9,12 +9,13 @@
   justify-content: center;
   width: 100%;
 
+
   @include tablet {
     max-width: 70%;
   }
 
   @include desktop {
-    // max-width: 40%;
+    max-width: 60%;
   }
   // max-width: 700px;
 }
@@ -92,7 +93,7 @@
     position: absolute;
     height: 150%;
     width: 150%;
-    top: -20%;
+    top: -40%;
     left: -20%;
     transform: rotate(70deg);
     z-index: 0;

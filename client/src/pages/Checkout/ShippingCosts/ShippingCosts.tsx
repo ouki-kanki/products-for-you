@@ -67,6 +67,7 @@ export const ShippingCosts = () => {
             <div className={styles.value}></div>
             <div className={styles.value}>{pickupPlan.cost}</div>
             <input
+              id='plan_radio'
               type='radio'
               checked={selectedPlan?.planName === Plans.PICKUP_FROM_STORE}
               onChange={() => handlePlanChange(Plans.PICKUP_FROM_STORE)}

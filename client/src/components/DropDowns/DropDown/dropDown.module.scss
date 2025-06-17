@@ -5,6 +5,10 @@
     align-items: baseline;
     // @include border_primary;
     // border-radius: 10px 10px 0 0;
+
+    .label {
+
+    }
 }
 
 .dropDown {
@@ -44,7 +48,6 @@
     }
 }
 
-
 .menu {
     position: absolute;
     // border: $border-primary;
@@ -60,6 +63,10 @@
     width: max-content;
 
     z-index: 90;
+
+    :global(.dark-theme) & {
+        background-color: $dark-gray;
+    }
 
     &.is-active {
         opacity: 1;

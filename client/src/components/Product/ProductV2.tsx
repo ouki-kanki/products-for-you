@@ -217,7 +217,8 @@ export const ProductV2 = ({
 
                 <Rating/>
                 <div className={styles.availabilityContainer}>
-                  <QuantityIndicator availability={availability}/>
+                  <QuantityIndicator
+                    availability={availability}/>
                 </div>
               </div>
 

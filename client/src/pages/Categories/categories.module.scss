@@ -1,7 +1,10 @@
+@use '../../styles/styles_v2/mixins_v2' as *;
+
 .gridContainer {
-  // TODO: value behaves in a weird manner. check why is that
-  @include basic_auto_grid(18rem);
-  // TODO: this has to be the same on all pages
-  padding: 20px 50px;
+  @include basic_auto_grid(6rem);
+  // padding: 20px 50px;
+  @include tablet {
+    @include basic_auto_grid(16rem);
+  }
 }
 

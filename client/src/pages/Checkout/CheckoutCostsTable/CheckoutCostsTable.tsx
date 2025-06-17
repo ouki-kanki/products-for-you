@@ -9,6 +9,9 @@ interface CheckoutCostsTableProps {
 }
 
 export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: CheckoutCostsTableProps) => {
+
+  console.log("product", cart)
+
   return (
     <div className={styles.productsContainer}>
     <div className={`${styles.productRow} ${styles.productsHeader}`}>

@@ -59,8 +59,6 @@
   @include tablet {
     grid-template-columns: 1fr 1fr auto auto;
     padding-top: 10px;
-    // padding-left: 10px;
-    // padding-right: 21px;
 
     .searchContainer {
       grid-column: 2 / 3;

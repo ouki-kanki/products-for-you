@@ -1,3 +1,5 @@
+@use '../../styles/styles_v2/mixins_v2' as *;
+
 .container {
   h2 {
     font-family: 'Lemon', serif;
@@ -7,7 +9,10 @@
 
 .cartContainer {
   // @include border_lime();
-  width: 80%;
+
+  @include tablet {
+    width: 80%;
+  }
 }
 
 .row {
@@ -61,13 +66,23 @@
 
    .quantityIconContainer {
     // TODO: its the same on productDetail -> convert to mixin
-     height: 2em;
-     width: 2em;
+     height: 2.6em;
+     width: 2.6em;
      cursor: pointer;
 
      :hover {
-       height: 2.1em;
-       width: 2.1em;
+       height: 2.7em;
+       width: 2.7em;
+     }
+
+     @include tablet {
+      height: 2em;
+      width: 2em;
+
+      :hover {
+        height: 2.1em;
+        width: 2.1em;
+      }
      }
    }
 
@@ -162,9 +177,10 @@
   justify-content: flex-end;
   margin-top: 20px;
 
-  .orderBtn {
+  .checkoutBtn {
     // margin-top: 20px;
     @include btn_blue();
+    font-size: medium;
     padding: 15px;
   }
 
@@ -209,5 +225,9 @@
   .btnContainer {
     margin-top: 20px;
     text-align: end;
+
+    button {
+      margin-bottom: .5rem;
+    }
   }
 }

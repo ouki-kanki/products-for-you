@@ -147,7 +147,7 @@ class ProductItemExtendedSerializer(ProductItemSerializer):
         return obj.product.name
 
     class Meta(ProductItemSerializer.Meta):
-        fields = ProductItemSerializer.Meta.fields + ('name',)
+        fields = ProductItemSerializer.Meta.fields + ('name', 'availability')
 
 
 class ProductItemQuantitySerializer(serializers.ModelSerializer):

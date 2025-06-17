@@ -112,6 +112,8 @@
 }
 
 .listLayout {
+  @include border_green__bold;
+  // min-height: 140px;
   .container {
     flex: 1 1 100%;
   }

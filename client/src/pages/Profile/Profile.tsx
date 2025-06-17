@@ -1,6 +1,7 @@
 import { useEffect, useState, ChangeEvent, useMemo } from 'react'
 import { useAppDispatch } from '../../app/store/store';
 import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
+import { useProductNavigation } from '../../hooks/useProductNavigation';
 
 import { useGetUserProfileQuery, useGetFavoriteProductsQuery } from '../../api/userApi';
 import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
@@ -37,14 +38,12 @@ type Error = {
 export const Profile = () => {
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
   const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData, refetchOnMountOrArgChange: true })
-
-  console.log("the profile")
+  const { goToProductDetailWithConstructedInput } = useProductNavigation()
 
   // *** VALIDATION ***
   const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']
   const groupWithCommonValidators = Object.fromEntries(fieldsWithNotEmptyValidator.map(field => [field, [notEmptyValidator]])
   )
-
 
   const {fields: validatedFields, errors: validationErrors, isFormValid, registerField, changeField, touchField} = useValidationV2({
     ...groupWithCommonValidators,
@@ -52,8 +51,6 @@ export const Profile = () => {
     cellPhoneNumber: [phoneValidator],
     image: []
   })
-
-  console.log("val errors", validationErrors, isFormValid)
 
   const fieldNamesArray = useMemo(() => {
     return userProfileFields.map(field => field.name)
@@ -126,13 +123,11 @@ export const Profile = () => {
     }
   }, [refetch, strLocation])
 
-
   // if there is a change in fields show saveChanges btn
   useEffect(() => {
     const sanitizedValidatedFields: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(validatedFields)) {
       sanitizedValidatedFields[key] = value['value']
-      // sanitizedValidatedFields[]
     }
 
     if (profileData) {
@@ -162,10 +157,9 @@ export const Profile = () => {
       // TODO: the type is wrong -> data.image -> array of errors
       // TODO: handle stack notification. have to show all error messages
       // TODO: error system needs refactoring !!
-
+      // TODO: check the trello card
       const error = updateError as ValidationError
       if (error) {
-
         const data = error?.data
 
         if (data?.detail) {
@@ -200,6 +194,10 @@ export const Profile = () => {
     )
   }
 
+  const handleProductDetail = (slug: string) => {
+
+  }
+
   // TODO : use the form validation
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -221,7 +219,6 @@ export const Profile = () => {
       return ac
     }, {} as Record<string, unknown>)
 
-
     const submitData = convertCamelToSnake({
       data: filteredData as Partial<IUserProfile>
     })
@@ -233,7 +230,6 @@ export const Profile = () => {
       <Outlet/>
     )
   }
-
 
   return (
     <div className={styles.profileContainer}>
@@ -279,6 +275,7 @@ export const Profile = () => {
           data={favoriteProduts}
           isLoading={isFavoriteProductsLoading}
           isError={isFavoriteProductsError}
+          handleProductDetail={goToProductDetailWithConstructedInput}
         />
       </div>
       {/* <Outlet/> */}

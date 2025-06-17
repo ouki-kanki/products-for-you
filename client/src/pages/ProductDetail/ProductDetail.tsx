@@ -27,8 +27,6 @@ export const ProductDetail = () => {
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
 
-  console.log(data)
-
   useEffect(() => {
     if (slug) {
       trigger(slug)

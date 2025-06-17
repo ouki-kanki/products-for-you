@@ -12,6 +12,9 @@ import { SideBarField } from './SideBarField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
+import { useWindowSize } from "../../hooks/useWindowSize";
+
+// const IS_MOBILE = window.innerWidth < 431
 
 export const Sidebar = () => {
   const navigate = useNavigate()
@@ -19,6 +22,8 @@ export const Sidebar = () => {
   const isSideBarHidden = useSelector((state: RootState) => state.ui.isSidebarHidden)
   const { facets, sideBarFieldName } = useSelector((state: RootState) => state.filters)
   const sidebarRef = useRef<HTMLDivElement | null>(null)
+  const [width] = useWindowSize()
+
 
   const sidebarContainerStyles = `
     ${styles.sidebarContainer}
@@ -26,19 +31,20 @@ export const Sidebar = () => {
     `
   useEffect(() => {
     const handleCloseSidebar = (e: MouseEvent | TouchEvent) => {
+      if (width < 431) {
+        if (!isSideBarHidden && !sidebarRef.current?.contains(e.target)) {
+          dispatch(hideSidebar())
+        }
+      }
+
       // console.log("tirgger")
       // _symbol is part of the class for the btn on the navbar that closes the sidebar
-      if (!sidebarRef.current
-          // || sidebarRef.current.contains(e?.target as Node)
-          || e.target instanceof Element && e.target.classList.contains(styles.sidebarContainer)
-          || e.target instanceof Element && e.target.className.includes('_symbol')) {
-        return
-      }
-      // console.log("trigger")
-      // trigger only on mobile
-      if (window.innerWidth < 431) {
-        dispatch(hideSidebar())
-      }
+      // if (!sidebarRef.current
+      //     // || sidebarRef.current.contains(e?.target as Node)
+      //     || e.target instanceof Element && e.target.classList.contains(styles.sidebarContainer)
+      //     || e.target instanceof Element && e.target.className.includes('_symbol')) {
+      //   return
+      // }
     }
     if (!isSideBarHidden) {
       document.addEventListener("touchstart", handleCloseSidebar)
@@ -49,6 +55,12 @@ export const Sidebar = () => {
     }
   }, [])
 
+  const handleFieldClick = () => {
+    if (width < 431) {
+      dispatch(hideSidebar())
+    }
+  }
+
   const renderSideBarField = ({ title, icon, link }) => (
     <SideBarField
     key={title}
@@ -57,6 +69,7 @@ export const Sidebar = () => {
     link={link}
     name={sideBarFieldName}
     facets={facets}
+    onClick={handleFieldClick}
   />
   )
 

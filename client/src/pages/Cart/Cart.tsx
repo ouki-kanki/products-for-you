@@ -166,7 +166,7 @@ export const Cart = () => {
                 onClick={handleClearBtnClick}
                 className={styles.clearBtn}>clear</button>
               <div
-                className={styles.orderBtn}
+                className={styles.checkoutBtn}
                 onClick={handleGotoCheckout}
                 >Go to checkout</div>
             </div>

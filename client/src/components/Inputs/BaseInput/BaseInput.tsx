@@ -45,43 +45,46 @@ export const BaseInput = forwardRef<HTMLInputElement, IInputProps>(({ label='use
   }
 
   return (
-    <div className={styles.container}>
-      <label
-        className={`${styles.label} ${isFocused || value ? styles.focused : ""}`}
-        htmlFor={name}
-        >{label} {required && <span className={styles.required}> *required</span>}</label>
-        {type === 'input' ? (
-          <input
-            className={styles.input}
-            ref={ref}
-            type="text"
-            value={value}
-            name={name}
-            onChange={onChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={handleBlur}
+    <div className={styles.baseContainer}>
+      <div className={styles.container}>
+        <label
+          className={`${styles.label} ${isFocused || value ? styles.focused : ""}`}
+          htmlFor={name}
+          >{label} {required && <span className={styles.required}> *required</span>}
+        </label>
+          {type === 'input' ? (
+            <input
+              className={styles.input}
+              ref={ref}
+              type="text"
+              value={value}
+              name={name}
+              onChange={onChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={handleBlur}
+              />
+          ) : type === 'select' ? renderSelect && (
+                  <div className={styles.input}>
+                    {renderSelect(name)}
+                  </div>
+            ): (
+            <textarea
+              className={styles.textArea}
+              rows={rows}
+              cols={cols}
+              onChange={onChange}
+              name={name}
+              value={value}
+              onFocus={() => setIsFocused(true)}
+              onBlur={handleBlur}
             />
-        ) : type === 'select' ? renderSelect && (
-                <div className={styles.input}>
-                  {renderSelect(name)}
-                </div>
-          ): (
-          <textarea
-            className={styles.textArea}
-            rows={rows}
-            cols={cols}
-            onChange={onChange}
-            name={name}
-            value={value}
-            onFocus={() => setIsFocused(true)}
-            onBlur={handleBlur}
-          />
-        )}
-        <div className={styles.errorContainer}>
-          {errors && errors.map(error => (
-            <span key={error} className={styles.error}>{error}</span>
-          ))}
-        </div>
+          )}
+      </div>
+      <div className={styles.errorContainer}>
+        {errors && errors.map(error => (
+          <span key={error} className={styles.error}>{error}</span>
+        ))}
+      </div>
     </div>
   )
 })

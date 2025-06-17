@@ -1,6 +1,7 @@
 import styles from './productCardV3.module.scss'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useProductNavigation } from '../../hooks/useProductNavigation';
 
 import { BaseButton } from '../Buttons/baseButton/BaseButton';
 import { formatPrice } from '../../utils/utils';
@@ -52,6 +53,7 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ..
   const navigate = useNavigate()
   const [variationSlug, setVariationSlug] = useState<string>('')
   const promotion = rest.promotions ? rest.promotions[0] : null
+  const { goToProductDetailWithConstructedInput } = useProductNavigation()
 
   // TODO: dry this is used in featured and search pages. also need to refactor to use the active variation !
   const handleProductDetail = async () => {
@@ -61,13 +63,9 @@ export const ProductCardV3 = ({ product: { constructedUrl, slug, name, price, ..
   }
 
   const handleProductDetailAsync = async () => {
-    console.log("inside async clicked", isAsyncClicked)
-    // NOTE: do something before navigate to the new page
     // used to sroll the user to the top inside similar products and then navigate
     await handleClick()
-    navigate(`/products/${encodeURIComponent(constructedUrl)}/${slug}`, {
-      state: constructedUrl
-    })
+    goToProductDetailWithConstructedInput(constructedUrl, slug)
   }
 
   return (

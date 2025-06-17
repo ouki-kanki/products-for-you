@@ -4,6 +4,7 @@ import styles from './waveClipPath.module.scss'
 
 export const WaveClipPath = () => {
   const location = useLocation()
+  // console.log("location", location.pathname)
 
   const [direction, setDirection] = useState("M1,0c0,0-0.3,0.1-0.5,0.1S0.3,0,0,0.1V1h1L1,0z"); // Default clip-path
 
@@ -34,17 +35,16 @@ export const WaveClipPath = () => {
             <path className="st0" d={direction}/>
           </clipPath>
         </svg>
-
-
       </div>
         )
       }
-
-    <div className={styles.imageContainer}>
-      <img
-        className={styles.imageOne}
-        src='/public/images/sneaker_pink.png'></img>
-    </div>
+    {(location.pathname !== '/checkout/payment') && (
+      <div className={styles.imageContainer}>
+        <img
+          className={styles.imageOne}
+          src='/public/images/sneaker_pink.png'></img>
+      </div>
+    )}
   </div>
   )
 }

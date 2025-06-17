@@ -1,7 +1,13 @@
+@use '../../styles/styles_v2/mixins_v2' as *;
+
+
 .container {
-  // @include border_green;
-  width: 90%;
   margin: 0 auto;
+  // display: flex;
+
+  @include tablet {
+    width: 90%;
+  }
 
   & > div {
     // @include border_green;

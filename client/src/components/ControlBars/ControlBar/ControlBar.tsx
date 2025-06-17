@@ -121,7 +121,7 @@ export const ControlBar = ({ handleChangeLayout, data, sortData, sortValue, hand
             onClick={(num) => handleChangeLayout(num)}
             width={200}/>
         </div>
-        {/* <div>{ data?.results ? <b>{data.total_items}</b>: 'no' } products found</div> */}
+
         {/* <div className={styles.line}></div> */}
         <div className={styles.sortContainer}>
           <DropDown
@@ -130,23 +130,6 @@ export const ControlBar = ({ handleChangeLayout, data, sortData, sortValue, hand
             onChange={(value) => handleChangeSort(value)}
             options={sortData}
           />
-          {/* <label htmlFor="sort_by">Sort by</label>
-          <select
-              ref={selectBtnRef}
-              value={sortValue || ''}
-              onChange={(e) => handleChangeSort(e.target.value)}
-              name="sort_by"
-              id="sort_by"
-              >
-              <div className={styles.optionContainer}>
-                <option value="time">time</option>
-                <option value="time desc">time descenting</option>
-                <option value="name">name</option>
-                <option value="name desc">name descenting</option>
-                <option value="price">price</option>
-                <option value="price desc">price descenting</option>
-              </div>
-            </select> */}
         </div>
         <FontAwesomeIcon
           className={styles.filter}
@@ -154,6 +137,8 @@ export const ControlBar = ({ handleChangeLayout, data, sortData, sortValue, hand
           onClick={handleToggleFilter}
         />
       </div>
+
+      <div>{ data?.results ? <b>{data.total_items}</b>: 'no' } products found</div>
 
       <div
         className={`${styles.facetsContainer} ${isFilterOpen ? styles.open : ''} ${isAnimating ? styles.animating : ''}`}

@@ -1,5 +1,8 @@
+@use '../../../styles/styles_v2/mixins_v2' as *;
+
 .form {
   margin-top: 40px;
+  // @include border_pink;
 
   & > h3 {
     margin-bottom: 20px;
@@ -8,58 +11,60 @@
 
 .innerContainer {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  // width: 90%;
+  // @include border_lime__bold;
 
-  @media (max-width: 1200px) {
-    flex-direction: column;
+  @include tablet {
+    flex-direction: row;
   }
 }
 
 .section {
-  // @include border_lime__bold;
   flex-grow: 1;
-  margin-right: 40px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  // align-items: center;
+  // @include border_green;
+
+
+  @include tablet {
+    // width: 80%;
+    // align-items: flex-start;
+  }
 
   // field
   & > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 10px 0px 0;
-    margin-bottom: 5px;
-    // @include border_green;
+    flex: 1;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    max-width: 100%;
+    padding: 10px 0px 0px 0;
+    margin-bottom: 15px;
+
+    @include tablet {
+      margin-bottom: 0;
+    }
   }
 }
 
-//TODO: convert to mixin
-.input {
-  // @include border_green__bold;
-  height: $btn_height;
-  width: 100%;
-  max-width: 350px;
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: 1px solid  #dcdcdc;
-  font-size: medium;
-  font-weight: bold;
-  transition: border .1s ease-out;
-
-  &:hover {
-    border: 3px solid #a7a7a7;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: $search_color_primary;
-    font-size: medium;
-    font-weight: bold;
-  }
-}
 
 .right {
 
+}
+
+.textArea {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-start;
+
+  @include tablet {
+    justify-content: flex-start;
+    // margin-left: 2.5rem;
+  }
 }
 
 .cardElementContainer {
@@ -71,7 +76,6 @@
 
 .action {
   margin-top: 20px;
-  // @include border_green;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -91,4 +95,5 @@
 .backContainer {
   margin-right: 10px;
 }
+
 

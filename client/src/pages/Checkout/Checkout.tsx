@@ -4,9 +4,9 @@ import { useSearchParams, useNavigate, Outlet, useLocation } from 'react-router-
 import styles from './checkout.module.scss';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store/store';
-import { convertCamelToSnakeArr, convertCamelToSnake, prepareCartItems } from '../../utils/converters';
+import { convertCamelToSnake, prepareCartItems } from '../../utils/converters';
 
-import type { ICartItem, IShippingCosts } from '../../types/cartPayments';
+import type { IShippingCosts } from '../../types/cartPayments';
 import type { ShippingPlan } from '../../types/cartPayments';
 
 import { passWordValidator, notEmptyValidator, emailValidator } from '../../hooks/validation/validators';
@@ -30,6 +30,7 @@ import { useCalculateShippingCosts } from './hooks/useCalculateShippingCosts';
 import { isEmpty } from '../../utils/objUtils';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY as string)
+
 
 export const Checkout = () => {
   const location = useLocation()
@@ -296,7 +297,6 @@ export const Checkout = () => {
 
     }
   }
-
 
   return (
     <div className={styles.container}>

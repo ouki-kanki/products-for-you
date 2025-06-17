@@ -8,6 +8,11 @@
   @include border_primary;
   // border: 1px solid rgb(8, 124, 162);
 
+  :global(.dark-theme) & {
+    // background-color: $dark-gray;
+    background-color: var(--background-color-2);
+  }
+
   // add horizontal to the panel that is inisde the search component
   &.controlbar {
 

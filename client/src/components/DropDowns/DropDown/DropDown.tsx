@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import styles from './dropDown.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useClassLister } from '../../../hooks/useClassLister';
 import type { SortOption } from '../../../types';
-
 
 interface DropDownProps {
   label: string;
@@ -17,9 +16,8 @@ interface DropDownProps {
 export const DropDown = ({label, defaultValue,options,onChange}: DropDownProps) => {
   const [showMenu, setShowMenu] = useState(false)
   const [selectedValue, setSelectedValue] = useState(() => defaultValue || 'select...')
-  const dropDownRef = useRef(null)
+  const dropDownRef = useRef<HTMLButtonElement>(null)
   const classes = useClassLister(styles)
-
 
   // close menu when click outside
   useEffect(() => {
@@ -39,8 +37,6 @@ export const DropDown = ({label, defaultValue,options,onChange}: DropDownProps) 
     onChange(value)
     setSelectedValue(label)
   }
-
-  console.log("show menu", showMenu)
 
   const toggleMenu = () => setShowMenu((prev) => !prev)
 

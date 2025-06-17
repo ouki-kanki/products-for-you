@@ -25,7 +25,7 @@ interface SidebarFieldProps {
  *
  * @returns
  */
-export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldProps) => {
+export const SideBarField = ({ title, icon, link, name, onClick, facets }: SidebarFieldProps) => {
   const [isHovered, setIsHovered] = useState<string | null>(null)
   const location = useLocation()
   const rawPath = location.pathname
@@ -57,6 +57,7 @@ export const SideBarField = ({ title, icon, link, name, facets }: SidebarFieldPr
     <div className={styles.navFieldContainer}>
       <NavLink
         to={link}
+        onClick={onClick}
         className={({isActive}) => (
           `${styles.linkContainer} ${isHovered && styles.hovered} ${isActive ? styles.active : ''}`
         )}
