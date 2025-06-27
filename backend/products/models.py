@@ -469,6 +469,7 @@ class FavoriteProductItem(models.Model):
         return f"{self.user.email} - {self.product_item.product.name}"
 
 
+# *** OBSOLETE FOR REMOVAL ***
 class ProductReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_ratings')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_ratings')
