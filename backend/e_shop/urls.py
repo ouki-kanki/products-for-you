@@ -13,10 +13,10 @@ urlpatterns = [
     path('api/', include('api.urls')),
 
     # these are obsolete
-    path('users/', include('user_control.urls')),
+    # path('users/', include('user_control.urls')),
     path('products/', include('products.urls')),
-    path('cart/', include('shopping_cart.urls')),
-    path('orders/', include('order.urls')),
+    # path('cart/', include('shopping_cart.urls')),
+    # path('orders/', include('order.urls')),
 ]
 
 if settings.DEBUG:

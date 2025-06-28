@@ -25,12 +25,6 @@ class ShopOrderSerializer(serializers.ModelSerializer):
     stripe_payment_id = serializers.CharField(write_only=True)
     extra_shipping_details = serializers.CharField(write_only=True, allow_blank=True)
     session_cart = serializers.JSONField(write_only=True, allow_null=True)
-    # order_total = serializers.DecimalField(max_digits=10, decimal_places=2, coerce_to_string=True)
-    # order_total = serializers.SerializerMethodField()
-
-
-    # def get_order_total(self, obj): # noqa
-    #     return str(obj.order_total)
 
     class Meta:
         model = ShopOrder
@@ -51,7 +45,7 @@ class ShopOrderSerializer(serializers.ModelSerializer):
         product_item_instance = order_item_data.get('product_item')
         quantity_from_cart = order_item_data.get('quantity')
 
-        return product_item_instance, quantity_from_cart 
+        return product_item_instance, quantity_from_cart
 
     def create(self, validated_data):
         order_items = validated_data.pop('order_item', [])
@@ -71,7 +65,7 @@ class ShopOrderSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({
                     'product_item': f'{product_item_instance.variation_name} is sold'
                 })
-            
+
         with transaction.atomic():
             order = ShopOrder.objects.create(**validated_data)
 

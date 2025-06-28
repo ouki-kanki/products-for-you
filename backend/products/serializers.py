@@ -198,7 +198,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             return [
                 {
                     'slug': variation.slug,
-                    'product_url': request.build_absolute_uri(reverse('api:product-preview', args=[variation.slug])),
+                    'product_url': request.build_absolute_uri(reverse('products:product-preview', args=[variation.slug])),
                     'thumb': request.build_absolute_uri(variation.product_image.filter(is_default=True)
                                                         .first().thumbnail.url
                                                         ) if variation.product_image.filter(is_default=True).exists()

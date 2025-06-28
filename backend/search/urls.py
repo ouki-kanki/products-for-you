@@ -1,15 +1,6 @@
 from django.urls import path, include
 from .views import ProductItemSearchView, ProductItemSuggestView
-# from .views_old import SearchProductItemView, ProductItemsDocumentViewSet
 from rest_framework import routers
-
-
-# router = routers.DefaultRouter()
-# router.register(
-#     r'productitems',
-#     ProductItemsDocumentViewSet,
-#     basename='productitemdocument'
-# )
 
 
 app_name = 'search'
@@ -20,4 +11,3 @@ urlpatterns = [
 ]
 
 
-# urlpatterns += router.urls

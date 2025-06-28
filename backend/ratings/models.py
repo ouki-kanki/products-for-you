@@ -1,3 +1,37 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from user_control.models import CustomUser as User
+from products.models import Product
 
-# Create your models here.
+
+class RatingAspect(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class RatingScore(models.Model):
+    rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='scores')
+    aspect = models.ForeignKey(RatingAspect, on_delete=models.CASCADE)
+    score = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commments')
+    rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    is_approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class AdminResponse(models.Model):
+    comment = models.OneToOneField(Comment, on_delete=models.CASCADE, related_name='response')
+    responder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'is_staff': True})
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
