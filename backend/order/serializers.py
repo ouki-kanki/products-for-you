@@ -39,7 +39,6 @@ class ShopOrderSerializer(serializers.ModelSerializer):
             'created_at',
         )
 
-
     @staticmethod
     def get_item_instance_and_quantity(order_item_data):
         product_item_instance = order_item_data.get('product_item')

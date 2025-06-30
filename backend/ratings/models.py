@@ -7,6 +7,9 @@ from products.models import Product
 class RatingAspect(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
@@ -18,20 +21,20 @@ class RatingScore(models.Model):
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='scores')
     aspect = models.ForeignKey(RatingAspect, on_delete=models.CASCADE)
     score = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)]
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
     )
 
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commments')
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='comments')
-    text = models.TextField()
+    text = models.TextField(blank=True)
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class AdminResponse(models.Model):
-    comment = models.OneToOneField(Comment, on_delete=models.CASCADE, related_name='response')
+    comment = models.OneToOneField(Comment, on_delete=models.CASCADE, related_name='response', null=True, blank=True)
     responder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'is_staff': True})
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
