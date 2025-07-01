@@ -1,15 +1,11 @@
-from webbrowser import get
-from django.shortcuts import get_object_or_404
+from django.db.models import Avg
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from ratings.models import (
-    Rating, RatingAspect, RatingScore, AdminResponse
-)
-from user_control.models import CustomUser as User
-from products.models import Product, ProductItem
+from ratings.models import Rating, RatingAspect, RatingScore
 from .serializers import RatingSerializer
+from .utils import resolve_product_from_product_item_uuid
 
 
 class RatingCreateView(APIView):
@@ -25,24 +21,17 @@ class RatingCreateView(APIView):
         product_item_uuid = request.data.get('product_item_uuid')
         user = request.user
 
-        if (not user.is_authenticated):
-            return Response({
-                "message": 'user is not logged_in',
-            }, status=status.HTTP_400_BAD_REQUEST)
-
         if (not product_item_uuid):
             return Response({
                 "message": 'product_id was not provided'
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        product_item = get_object_or_404(ProductItem.objects.select_related('product'), uuid = product_item_uuid)
-        product = product_item.product
+        product = resolve_product_from_product_item_uuid(product_item_uuid)
 
         if Rating.objects.filter(user=user, product=product).exists():
             return Response({
                 "message": "rating is allready submited for the currect product"
             }, status=status.HTTP_400_BAD_REQUEST)
-
 
         serializer = RatingSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
@@ -59,14 +48,84 @@ class RatingUpdateView(APIView):
 
 
 class RatingDeleteView(APIView):
-    pass
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        product_item_uuid = request.data.get('product_item_uuid')
+        product = resolve_product_from_product_item_uuid(product_item_uuid)
+
+        rating = Rating.objects.filter(user=user, product=product).first()
+        if not rating:
+            return Response({
+                "message": 'rating not found for the current product'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        rating.delete()
+        return Response({
+            "message": "rating deleted"
+        }, status=status.HTTP_204_NO_CONTENT)
 
 
-class RatingProductGetOveral(APIView):
+class RatingsGetAverageOveral(APIView):
     """
-        get the overal rating to user for product preview cards
+        get the avg of overal ratings for the product preview cards
     """
-    pass
+    def get(self, request):
+        product_item_uuid = request.query_params.get('uuid')
+        product = resolve_product_from_product_item_uuid(product_item_uuid)
+
+        total_average = RatingScore.objects.filter(
+            rating__product=product,
+            aspect__name='overall'
+        ).aggregate(average_score=Avg('score'))['average_score']
+
+        if not total_average:
+            return Response({
+                "message": 'no reviews for the current product'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({
+            "product": product.name,
+            "rating_overall_avg": total_average
+        })
 
 
+class RatingsGetAllAspectsAverage(APIView):
+    """TODO: if a user does not provide score for the rating aspcects but only
+        the overall rating then during the calculation of each aspect current's user
+        rating is not involved in the calculation. if there 2 ratings and one has quality 10 and the other user only provides the overall then the avg quality for the product it will remain 10.
+        i should not allow te user to only give an overall rating ?
+        in the case that there are ratings that have aspects and ratings that have only the overall aspect then the avg overall will not match the avg of the aspects
+      """
+
+    def get(self, request):
+        product_item_uuid = request.query_params.get('uuid')
+        product = resolve_product_from_product_item_uuid(product_item_uuid)
+
+        number_of_ratings = Rating.objects.filter(product=product).count()
+
+        aspects_list = RatingScore.objects.filter(
+            rating__product=product
+        ).values(
+            'aspect__name'
+        ).annotate(
+            average=Avg('score')
+        )
+
+        normalized_aspect_list = [{"aspect": row["aspect__name"], "average": row["average"]} for row in aspects_list]
+
+        # remove the overall average from the list of aspects
+        overall_average = None
+        for i, item in enumerate(normalized_aspect_list):
+            if item['aspect'] == 'overall':
+                overall_average_dict = normalized_aspect_list.pop(i)
+                overall_average = overall_average_dict['average']
+                break
+
+        return Response({
+            "num_of_ratings": number_of_ratings,
+            "overall": overall_average,
+            "aspects_average": normalized_aspect_list
+        }, status=status.HTTP_200_OK)
 

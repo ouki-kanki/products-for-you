@@ -19,7 +19,7 @@ class Rating(models.Model):
 
 class RatingScore(models.Model):
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='scores')
-    aspect = models.ForeignKey(RatingAspect, on_delete=models.CASCADE)
+    aspect = models.ForeignKey(RatingAspect, on_delete=models.CASCADE, related_name='scores')
     score = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(10)]
     )

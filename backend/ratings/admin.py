@@ -16,13 +16,16 @@ class CommentInline(admin.StackedInline):
     extra = 0
 
 
-
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ['user', 'product', 'created_at']
+    list_display = ['user', 'product', 'overall_score', 'created_at']
     inlines = [RatingScoreInline]
     fields = ['user', 'product', 'created_at']
     readonly_fields = ['created_at']
+
+    def overall_score(self, obj):
+        score = obj.scores.filter(aspect__name='overall').first()
+        return score.score if score else '-'
 
 
 admin.site.register(RatingAspect)
