@@ -1,8 +1,9 @@
 from sqlite3 import DatabaseError
 from django.db import transaction
 from rest_framework import serializers
-from .models import Comment, Rating, RatingAspect, RatingScore
+from .models import AdminResponse, Comment, Rating, RatingAspect, RatingScore
 from products.models import ProductItem
+
 
 class RatingAspectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,6 +29,11 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['text']
 
+
+class AdminResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminResponse
+        fields = ['text']
 
 class RatingSerializer(serializers.ModelSerializer):
     product_item_uuid = serializers.UUIDField(write_only=True)
@@ -57,6 +63,8 @@ class RatingSerializer(serializers.ModelSerializer):
         rating_aspects = validated_data.pop('rating_aspects', [])
         overall_rating = validated_data.pop('overall_rating')
         comment_data = validated_data.pop('comment', None)
+
+        # if commend_data exists
 
         try:
             product_item = ProductItem.objects.select_related('product').get(
@@ -88,7 +96,7 @@ class RatingSerializer(serializers.ModelSerializer):
 
                         # calculate the overall rating from the aspects
                         total += score
-                        avg = round(total / len(rating_aspects))
+                    avg = round(total / len(rating_aspects))
 
                     overall_aspect, _ = RatingAspect.objects.get_or_create(name='overall')
                     # add the average rating score to the scores list
@@ -115,3 +123,33 @@ class RatingSerializer(serializers.ModelSerializer):
             })
 
         return super().create(validated_data)
+
+
+class RatingSerializerReadOnly(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    overall_score = serializers.SerializerMethodField()
+    aspects = serializers.SerializerMethodField()
+    admin_response = AdminResponseSerializer(read_only=True)
+    comment = CommentSerializer(source='comments.first', read_only=True)
+
+    class Meta:
+        model = Rating
+        fields = [
+            'username',
+            'overall_score',
+            'aspects',
+            'comment',
+            'admin_response'
+        ]
+
+    def get_overall_score(self, obj):
+        overall = obj.scores.filter(aspect__name='overall').first()
+        return overall.score if overall else None
+
+    def get_aspects(self, obj):
+        return {
+            score.aspect.name: score.score
+            for score in obj.scores.exclude(aspect__name='overall')
+        }
+
+

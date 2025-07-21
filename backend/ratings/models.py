@@ -16,6 +16,9 @@ class Rating(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'product')
+
 
 class RatingScore(models.Model):
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='scores')
