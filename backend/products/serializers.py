@@ -5,15 +5,19 @@ from rest_framework.reverse import reverse
 from rest_framework.validators import UniqueTogetherValidator
 
 from promotion.serializers import ProductOnPromotionSerializer
+import ratings
 from variations.serializers import VariationOptionsSerializer
 from .models import (
     Product, ProductItem, Category, ProductImage, FavoriteProductItem
 )
+from ratings.models import RatingScore
 
 from .utils import (
     get_list_of_parent_categories, representation_categories_to_list,
     add_favorite_product_to_ret
 )
+from ratings.utils import convert_rating_scale_to_five
+
 
 class CategoryAndParentCategoriesSerializer(serializers.Serializer):  # noqa
     '''
@@ -188,6 +192,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
     featured_position = serializers.SerializerMethodField()
     constructed_url = serializers.SerializerMethodField()
     variations = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
 
     def get_variations(self, obj):
         request = self.context.get('request')
@@ -241,6 +246,27 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         variations = obj.variation_option.all()
         return VariationOptionsSerializer(variations, many=True).data
 
+    def get_rating(self, obj):
+        ratings_qs = obj.product.ratings.all()
+        ratings_count = ratings_qs.count()
+
+        overall_scores = RatingScore.objects.filter(
+            rating__in=ratings_qs,
+            aspect__name='overall'
+        )
+
+        print("the overall scores")
+
+        if overall_scores.exists():
+            avg_score = sum(score.score for score in overall_scores) / overall_scores.count()
+        else:
+            avg_score = None
+
+        return {
+            'count': ratings_count,
+            'overall':convert_rating_scale_to_five(avg_score)
+        }
+
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         obj_of_categories = ret['category']
@@ -271,8 +297,8 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             'promotions',
             'featured_position',
             'constructed_url',
-            'variations'
-            # 'is_favorite'
+            'variations',
+            'rating'
         )
 
 

@@ -1,6 +1,4 @@
-import styles from './featuredProduct.module.scss'
 import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
-
 import { SectionContainer } from '../../components/Layout/SectionContainer/SectionContainer'
 import { IProduct } from '../../api/types'
 import { ProductV2 } from '../../components/Product/ProductV2'
@@ -26,6 +24,7 @@ export const FeaturedProduct = withLoadingAndError(({ data }: IFeaturedProductPr
             name={featuredItem.name}
             price={featuredItem.price}
             quantity={featuredItem.quantity}
+            rating={4.5}
             availability={featuredItem.availability}
             features={featuredItem.features}
             variations={featuredItem.variations}

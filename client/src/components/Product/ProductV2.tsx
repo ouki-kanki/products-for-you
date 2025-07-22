@@ -11,11 +11,7 @@ import { QuantityIndicator } from "../../UI/Indicators/QuantityIndicator";
 import { FavoritesBtn } from "../Buttons/FavoritesBtn/FavoritesBtn";
 import { Rating } from "../Rating/Rating";
 
-
 import kdeImage from "../../assets/kd14_low_res.png";
-import kdWhiteYellow from "../../assets/variations/kd14_yel_white.jpg";
-import kdIce from "../../assets/variations/kd14_ice.jpg";
-import kdDeepBlue from "../../assets/variations/kd14_deep_blue.jpg";
 
 import { IProduct } from "../../api/types";
 
@@ -52,6 +48,7 @@ export const ProductV2 = ({
   quantity,
   description,
   variations,
+  rating,
   availability,
   constructedUrl,
   handleFavorite,
@@ -148,21 +145,6 @@ export const ProductV2 = ({
       return (
         <div>could not load variations</div>
       )
-
-      // TODO: fallback, this was used for testing
-      return (
-        <div className={styles.variationsContainer}>
-          <div className={styles.varImageContainer}>
-            <img src={kdDeepBlue} alt="variation image" />
-          </div>
-          <div className={styles.varImageContainer}>
-            <img src={kdIce} alt="variation image" />
-          </div>
-          <div className={styles.varImageContainer}>
-            <img src={kdWhiteYellow} alt="variation image" />
-          </div>
-        </div>
-      );
     }
   };
 
@@ -215,7 +197,7 @@ export const ProductV2 = ({
                   price: {formatPrice(variationPrice as string)}
                 </h3>
 
-                <Rating/>
+                <Rating num={rating}/>
                 <div className={styles.availabilityContainer}>
                   <QuantityIndicator
                     availability={availability}/>

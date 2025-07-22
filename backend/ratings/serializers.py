@@ -3,7 +3,7 @@ from django.db import transaction
 from rest_framework import serializers
 from .models import AdminResponse, Comment, Rating, RatingAspect, RatingScore
 from products.models import ProductItem
-
+from .utils import convert_rating_scale_to_five
 
 class RatingAspectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,6 +34,7 @@ class AdminResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdminResponse
         fields = ['text']
+
 
 class RatingSerializer(serializers.ModelSerializer):
     product_item_uuid = serializers.UUIDField(write_only=True)
@@ -73,7 +74,7 @@ class RatingSerializer(serializers.ModelSerializer):
             product = product_item.product
         except ProductItem.DoesNotExist:
             raise serializers.ValidationError({
-                'product_uuid': 'Invalid produc_item uuid'
+                'product_uuid': 'Invalid product_item uuid'
             })
 
         try:
@@ -129,8 +130,8 @@ class RatingSerializerReadOnly(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     overall_score = serializers.SerializerMethodField()
     aspects = serializers.SerializerMethodField()
-    admin_response = AdminResponseSerializer(read_only=True)
     comment = CommentSerializer(source='comments.first', read_only=True)
+    admin_response = serializers.SerializerMethodField()
 
     class Meta:
         model = Rating
@@ -144,12 +145,18 @@ class RatingSerializerReadOnly(serializers.ModelSerializer):
 
     def get_overall_score(self, obj):
         overall = obj.scores.filter(aspect__name='overall').first()
-        return overall.score if overall else None
+        return convert_rating_scale_to_five(overall.score) if overall else None
 
     def get_aspects(self, obj):
         return {
-            score.aspect.name: score.score
+            score.aspect.name: convert_rating_scale_to_five(score.score)
             for score in obj.scores.exclude(aspect__name='overall')
         }
+
+    def get_admin_response(self, obj):
+        first_comment = obj.comments.first()
+        if first_comment and hasattr(first_comment, 'response'):
+            return AdminResponseSerializer(first_comment.response).data
+        return None
 
 

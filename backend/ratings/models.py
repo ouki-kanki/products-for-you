@@ -35,9 +35,15 @@ class Comment(models.Model):
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.user.username} - {self.created_at.strftime('%d-%B-%Y-%X')}'
+
 
 class AdminResponse(models.Model):
     comment = models.OneToOneField(Comment, on_delete=models.CASCADE, related_name='response', null=True, blank=True)
     responder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'is_staff': True})
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.responder.email}- {self.created_at.strftime('%d-%B-%Y-%X')}'

@@ -179,8 +179,10 @@ class GetListOfRatings(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
 
         serializer_data = RatingSerializerReadOnly(ratings, many=True).data
+        number_of_ratings = Rating.objects.filter(product=product).count()
 
         return Response({
+            'count': number_of_ratings,
             'ratings': serializer_data,
-        },status=status.HTTP_200_OK
+            }, status=status.HTTP_200_OK
         )

@@ -73,11 +73,9 @@ export const productsApi = createApi({
             listOfVariations
           }
         })
-
         return flattened
       }
     }),
-
     getFeaturedProducts: builder.query<FeaturedItems, string | void>({
       query: (pageSize) => ({
         url: `products/featured${pageSize ? `?pagesize=${pageSize}` : '' }`
