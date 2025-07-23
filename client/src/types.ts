@@ -46,7 +46,6 @@ export interface Iproduct {
   price: string;
   productThumbnails: Array<IThumbnail>;
   quantity: number
-  rating: number
   variations: Array<IVariation>
 }
 

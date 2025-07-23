@@ -1,0 +1,48 @@
+@use '../../../styles/styles_v2/mixins_v2' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.overallContainer {
+    align-self: flex-start;
+    margin-top: 1rem;
+    display: flex;
+    flex: 1;
+    align-items: baseline;
+
+    h3 {
+        margin-right: 5px;
+    }
+}
+
+.aspectsAverageContainer {
+    border: 1px solid var(--border-color);
+    margin-top: 1rem;
+    // border: 1px solid orange;
+    width: 100%;
+    padding-block: 10px;
+    padding-inline-start: 10px;
+
+    h3 {
+        text-decoration: underline;
+    }
+
+    .aspectContainer {
+        display: flex;
+        align-items: baseline;
+
+        h3 {
+            width: 120px;
+            font-size: 14px;
+            text-decoration: none;
+
+            @include tablet {
+                width: 140px;
+            }
+        }
+    }
+}

@@ -197,7 +197,10 @@ export const ProductV2 = ({
                   price: {formatPrice(variationPrice as string)}
                 </h3>
 
-                <Rating num={rating}/>
+                <Rating
+                  count={rating.count}
+                  overall={rating.overall}
+                />
                 <div className={styles.availabilityContainer}>
                   <QuantityIndicator
                     availability={availability}/>

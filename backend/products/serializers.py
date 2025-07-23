@@ -255,8 +255,6 @@ class ProductVariationSerializer(serializers.ModelSerializer):
             aspect__name='overall'
         )
 
-        print("the overall scores")
-
         if overall_scores.exists():
             avg_score = sum(score.score for score in overall_scores) / overall_scores.count()
         else:
@@ -264,7 +262,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
         return {
             'count': ratings_count,
-            'overall':convert_rating_scale_to_five(avg_score)
+            'overall': convert_rating_scale_to_five(avg_score)
         }
 
     def to_representation(self, instance):

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from ratings.models import Rating, RatingAspect, RatingScore, Comment, AdminResponse
 from .serializers import RatingSerializer, RatingSerializerReadOnly
-from .utils import resolve_product_from_product_item_uuid
+from .utils import convert_rating_scale_to_five, resolve_product_from_product_item_uuid
 
 
 class RatingCreateView(APIView):
@@ -101,7 +101,7 @@ class RatingsGetAverageOveral(APIView):
             "rating_overall_avg": total_average
         })
 
-
+# *** OBSOLETE ***
 class RatingsGetAllAspectsAverage(APIView):
     """
         Query Parameterers:
@@ -129,11 +129,9 @@ class RatingsGetAllAspectsAverage(APIView):
             average=Avg('score')
         )
 
-        print("the aspects list", aspects_list)
-
         normalized_aspect_list = [{"aspect": row["aspect__name"], "average": row["average"]} for row in aspects_list]
 
-        # remove the overall average from the list of aspects
+        # remove and extract the overall average from the list of aspects
         overall_average = None
         for i, item in enumerate(normalized_aspect_list):
             if item['aspect'] == 'overall':
@@ -154,8 +152,7 @@ class GetListOfRatings(APIView):
     Args:
         uuid: the productd uuid
     """
-    def get(self, request):
-        product_item_uuid = request.query_params.get('uuid')
+    def get(self, request, product_item_uuid):
         product = resolve_product_from_product_item_uuid(product_item_uuid)
 
         ratings = Rating.objects.filter(product=product) \
@@ -181,7 +178,29 @@ class GetListOfRatings(APIView):
         serializer_data = RatingSerializerReadOnly(ratings, many=True).data
         number_of_ratings = Rating.objects.filter(product=product).count()
 
+        aspects_list = RatingScore.objects.filter(
+            rating__product=product
+        ).values(
+            'aspect__name'
+        ).annotate(
+            average=Avg('score')
+        )
+
+        normalized_aspect_list = [
+            {"aspect": row["aspect__name"],
+             "average": convert_rating_scale_to_five(row["average"])} for row in aspects_list]
+
+        # remove and extract the overall average from the list of aspects
+        overall_average = None
+        for i, item in enumerate(normalized_aspect_list):
+            if item['aspect'] == 'overall':
+                overall_average_dict = normalized_aspect_list.pop(i)
+                overall_average = overall_average_dict['average']
+                break
+
         return Response({
+            'overall': overall_average,
+            'aspects_average': normalized_aspect_list,
             'count': number_of_ratings,
             'ratings': serializer_data,
             }, status=status.HTTP_200_OK

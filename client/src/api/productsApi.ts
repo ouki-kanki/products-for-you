@@ -1,19 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../api/baseConfig';
-import type { RootState } from '../app/store/store';
-import { AuthEnum } from './enums';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './authBaseApi';
-
 import { convertSnakeToCamel } from '../utils/converters';
 import { ICategory } from '../types';
-import { ICartItem, CartItemForServer } from '../types/cartPayments';
-
 
 import type { IProduct,
               IproductVariationPreview,
               IproductItem,
               IproductDetail,
-              FeaturedItems
+              FeaturedItems,
+              RatingsListData
              } from './types';
 
 interface IProductPaginatedResponse {
@@ -128,20 +123,20 @@ export const productsApi = createApi({
       onQueryStarted: (q) => {
         // console.log("Categories query -started--")
     }}),
-    // TODO: obsolete. was used inside categories
-    filterByCategory: builder.query<IProductApiResponse, string>({
-      query: (slug) => ({
-        url: `products/category/${slug}`
-      }),
-      transformResponse: (response) => {
-        return response
-      }
-    }),
     getItemQuantities: builder.mutation<ProductItemQntsResponse, string[]>({
       query: (uuid_list) => ({
         url: 'products/quantities',
         method: 'POST',
         body: { uuid_list }
+      })
+    }),
+    getListOfRatings: builder.query<RatingsListData, number>({
+      query: (product_uuid) => ({
+        url: `products/ratings/get-ratings/${product_uuid}`
+      }),
+      transformResponse: (res => {
+        convertSnakeToCamel(res)
+        return res
       })
     })
   })
@@ -161,5 +156,6 @@ export const {
   useLazyGetProductVariationPreviewQuery,
   useFilterByCategoryQuery,
   useLazyGetSimilarProductsQuery,
+  useLazyGetListOfRatingsQuery,
   useGetItemQuantitiesMutation
 } = productsApi

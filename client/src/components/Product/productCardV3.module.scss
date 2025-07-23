@@ -10,14 +10,11 @@
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   cursor: pointer;
-  // @include border_orange__bolder;
   max-width: 350px;
 
 }
 
 .title {
-  // background-color: red;
-  // margin-top: 10px;
   text-align: center;
   padding-top: 1.2rem;
   font-weight: bold;
@@ -26,8 +23,6 @@
 
 .imageContainer {
   overflow: hidden;
-  // position: absolute;
-  // border: $border-green-bolder;
   display: flex;
   align-items: center;
   justify-content: center;

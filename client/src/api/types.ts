@@ -31,6 +31,12 @@ export interface IProductThumbnailorImage {
   url: string
 }
 
+export interface RatingsAVG {
+  count: number;
+  overall: number;
+}
+
+
 export interface IProduct {
   name: string;
   availability: string;
@@ -43,6 +49,7 @@ export interface IProduct {
   variations: IVariation[];
   productThumbnails: IProductThumbnailorImage[];
   slug: string;
+  rating: RatingsAVG;
   constructedUrl: string;
   id: number;
 }
@@ -121,4 +128,28 @@ export interface Iorder {
 
 export interface LogoutData {
   message: string;
+}
+
+interface RatingsAspect {
+  aspect: string;
+  average: number;
+}
+
+interface Message {
+  text: string;
+}
+
+interface Rating {
+  adminResponse: null | Message
+  aspects: Array<Record<string, number>>;
+  comment: null | Message;
+  overallScore: number;
+  username: string
+}
+
+export interface RatingsListData {
+  aspectsAverage: Array<RatingsAspect>
+  count: number;
+  overall: number;
+  ratings: Array<Rating>
 }

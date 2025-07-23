@@ -6,11 +6,17 @@ import { faStar, faStarHalfAlt } from '@fortawesome/free-regular-svg-icons'
 import styles from './rating.module.scss'
 
 interface RatingProps {
-  num: number
-  numberOfRatings: number
+  count?: number
+  overall: number
 }
 
-export const Rating = ({ num, numberOfRatings }: RatingProps) => {
+/**
+ *
+ * @param overall the overall rating
+ * @param count the number of ratings for the current product
+ * @returns
+ */
+export const Rating = ({ count, overall }: RatingProps) => {
   const mapRating = (number: number) => {
     if (!number) {
       return 'no ratings yet'
@@ -55,9 +61,9 @@ export const Rating = ({ num, numberOfRatings }: RatingProps) => {
 
   return (
     <div className={styles.ratingsContainer}>
-      {mapRating(num)}
-      {numberOfRatings && (
-        <span>({numberOfRatings})</span>
+      {mapRating(overall)}
+      {count && (
+        <span>({count})</span>
       )}
     </div>
   )

@@ -7,13 +7,14 @@ import { isEmpty } from '../../utils/objUtils'
 import { useDispatch } from 'react-redux'
 import { addItem, activateCartUpdate, deactivateCartUpdate } from '../../features/cart/cartSlice'
 import { useLazyGetProductDetailQuery } from '../../api/productsApi'
+import { useLazyGetListOfRatingsQuery } from '../../api/productsApi'
 import { useLazyGetSimilarProductsQuery } from '../../api/productsApi'
 import { useHandleFavoriteItem } from '../../hooks/useHandleFavoriteItems'
 
 import { ProductDetails } from './ProductDetails/ProductDetails'
 import { ProductDetailImages } from './productDetailImages/ProductDetailImages'
 import { SimilarProducts } from '../../components/Product/SimilarProducts/SimilarProducts'
-
+import {ProductDetailRatings } from './ProductDetailRatings/ProductDetailRatings'
 
 export const ProductDetail = () => {
   const dispatch = useDispatch()
@@ -21,17 +22,27 @@ export const ProductDetail = () => {
   const { slug } = useParams()
   const navigate = useNavigate()
 
-  const [trigger, { data, isLoading }] = useLazyGetProductDetailQuery()
+  const [triggerFethProductDetail, { data, isLoading }] = useLazyGetProductDetailQuery()
+  const [triggerFetchRatings, {data: ratingsData, isRatingsLoading}] = useLazyGetListOfRatingsQuery()
   const [triggerSimilarProducts, { data: similarProductsData, isLoading: isSimilarProductsLoading, isError: isSimilarProductsError }] = useLazyGetSimilarProductsQuery()
   const [featuredImage, setFeaturedImage] = useState('')
   const [desiredQuantity, setDesiredQuantity] = useState<number>(1)
   const location = useLocation()
 
   useEffect(() => {
-    if (slug) {
-      trigger(slug)
-    }
-  }, [slug, trigger])
+    if (!slug) return;
+    triggerFethProductDetail(slug)
+  }, [slug, triggerFethProductDetail])
+
+  // fetch ratings
+  const product_item_uuid = data?.uuid
+  useEffect(() => {
+    if (!product_item_uuid) return;
+
+    console.log("yoyoyooy")
+    triggerFetchRatings(product_item_uuid)
+  }, [product_item_uuid])
+
 
   // fetch similar products
   const category = data?.categories[data?.categories.length - 1]
@@ -195,6 +206,11 @@ export const ProductDetail = () => {
             isError={isSimilarProductsError}
           />
       </div>
+      )}
+      {ratingsData && !isEmpty(ratingsData) && (
+        <div className={styles.sectionFour}>
+          <ProductDetailRatings data={ratingsData}/>
+        </div>
       )}
     </div>
   )

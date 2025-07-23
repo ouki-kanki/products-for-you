@@ -1,22 +1,17 @@
 // old component
 .container {
-  // overflow-x: hidden;
-
   &> h2 {
     margin-bottom: 2rem;
   }
 }
 
 .containerWithSlide {
-  // margin: 0 auto;
   max-width: 80%;
-  // width: 80%;
   color: red;
   display: flex;
   border: 1px solid red;
   overflow-x: auto;
   overflow-y: hidden;
-  // padding: 10px 50px;
 
   > div {
     padding: 10px 50px;
@@ -55,7 +50,6 @@
   height: 0.7em;
   margin: 0 0.3em;
   background: green;
-  // background: $box-shadow-btn;
   cursor: pointer;
 
   &:hover {
@@ -75,16 +69,12 @@
   overflow: hidden;
   position: relative;
   border: 2px solid green;
-  // height: 500px;
 }
 
 .carouselItem {
-  // width: 100%;
-  // width: 50%;
   border: $border-green;
   padding: 5px 10px;
   height: 500px;
-  // width: 500px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
