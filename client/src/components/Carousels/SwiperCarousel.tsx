@@ -1,46 +1,23 @@
 import { useState, useEffect, useRef, PropsWithChildren, ReactNode } from 'react'
 import styles from './swiperCarousel.module.scss'
-import { dummyItems, IDummyItem } from '../../data/dummyItems'
 import { useWindowSize } from '../../hooks/useWindowSize';
-
 import type { Iproduct } from '../../types';
 
 import "swiper/css";
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards, Navigation, Pagination, Autoplay } from 'swiper/modules'
 
-import { register } from 'swiper/element/bundle'
-
-
-
-interface IDummyItemProps {
-  item: IDummyItem;
-
+interface SwiperCarouselProps<T> {
+  data: T[],
+  renderCard: (item: T) => React.ReactNode;
+  loop: boolean;
 }
 
-const DummyItem = ({ item }:  IDummyItemProps) => (
-  <div
-    className={styles.dummyItem}
-    style={{ backgroundColor: item.color}}>
-    <h2>{item.name}</h2>
-  </div>
-)
-
-
-interface IItem {
-  [k: string]: unknown
-}
-
-interface ISwipperCarouselV1Props {
-  data: Array<Iproduct>;
-  renderCard: (item: IItem) => ReactNode
-}
-
-export const SwiperCarousel = ({ data,  renderCard}: ISwipperCarouselV1Props ) => {
+// TODO: accepts type of product!make it generic
+export const SwiperCarousel = <T,>({ data,  renderCard, loop=true}: SwiperCarouselProps<T> ) => {
   const [ windowWidth ] = useWindowSize()
   const [numberOfVisible, setNumberOfVisible] = useState(3)
 
@@ -70,13 +47,12 @@ export const SwiperCarousel = ({ data,  renderCard}: ISwipperCarouselV1Props ) =
 
 
   // console.log("the data", data)
-
   return (
     <div className={styles.container}>
       <Swiper
         className={styles.swiper}
         navigation
-        loop
+        loop={loop}
 
         // autoplay={{
         //   delay: 3000,
@@ -89,7 +65,7 @@ export const SwiperCarousel = ({ data,  renderCard}: ISwipperCarouselV1Props ) =
         centeredSlides={false}
         // effect='cards'
         spaceBetween={2}
-        slidesPerView={numberOfVisible}
+        slidesPerView={Math.min(numberOfVisible, data && data.length || 3)}
         // slidesPerGroup={numberOfVisible}
         // slidesPerView={1}
         // onSlideChange={() => console.log('slide change')}
@@ -100,13 +76,6 @@ export const SwiperCarousel = ({ data,  renderCard}: ISwipperCarouselV1Props ) =
             <SwiperSlide key={index}>{renderCard(item)}</SwiperSlide>
           ))
         }
-        {/* {
-          dummyItems.map(item => (
-            <SwiperSlide>
-              <DummyItem item={item} key={item.id}/>
-            </SwiperSlide>
-          ))
-        } */}
       </Swiper>
     </div>
   )

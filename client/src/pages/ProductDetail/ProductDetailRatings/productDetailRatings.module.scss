@@ -19,13 +19,18 @@
     }
 }
 
-.aspectsAverageContainer {
+.aspectsContainer {
     border: 1px solid var(--border-color);
     margin-top: 1rem;
+    max-width: 400px;
     // border: 1px solid orange;
     width: 100%;
     padding-block: 10px;
     padding-inline-start: 10px;
+
+    @include tablet {
+        align-self: flex-start;
+    }
 
     h3 {
         text-decoration: underline;
@@ -46,3 +51,18 @@
         }
     }
 }
+
+.ratingsContainer {
+    margin-block: 2rem;
+    .rating {
+        @include card(600px);
+
+        .commentContainer {
+            margin-block: 10px;
+            // border: 1px solid var(--border-color);
+            padding: 10px;
+        }
+    }
+}
+
+

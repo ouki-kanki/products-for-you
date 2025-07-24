@@ -139,7 +139,7 @@ interface Message {
   text: string;
 }
 
-interface Rating {
+export interface Rating {
   adminResponse: null | Message
   aspects: Array<Record<string, number>>;
   comment: null | Message;

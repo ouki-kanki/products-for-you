@@ -78,9 +78,8 @@
   }
 }
 
-
 // borders
-// TODO: remove for production . have it on the dev branch
+// TODO: REMOVE ON PRODUCTION
 @mixin border_green() {
   border: 1px solid green;
 }
@@ -160,4 +159,19 @@
   -ms-transform:rotate(-5deg);
   -o-transform:rotate(-5deg);
   transform:rotate(-20deg);
+}
+
+@mixin card($maxWidth: 350px) {
+    margin: 20px;
+    padding: 20px;
+    min-width: 250px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--background-color-2);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    cursor: pointer;
+    max-width: $maxWidth;
 }

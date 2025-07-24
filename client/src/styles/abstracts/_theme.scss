@@ -1,5 +1,5 @@
 @use './colors' as *;
-
+@use 'sass:map';
 
 $light-theme: (
   primary: $blue-light-primary,
@@ -13,48 +13,48 @@ $light-theme: (
   sidebar-background: #cdb4db,
   );
 
-  $dark-theme: (
-    primary: $lime-primary,
-    secondary: $lime-secondary,
-    border: $light_pink,
-    background: #1b1b1b,
-    second-background: #2f2f2f,
-    color: rgb(225, 228, 197),
-    color-on-white-bg: rgb(50, 50, 50),
-    link-color: #89cff0,
-    filter-clip_path: drop-shadow(5px 5px 5px #424242)
-    drop-shadow(5px 5px 15px #000000)
-    drop-shadow(5px 5px 15px #000000),
-    sidebar-background: rgb(16, 16, 16),
-    );
+$dark-theme: (
+  primary: $lime-primary,
+  secondary: $lime-secondary,
+  border: $light_pink,
+  background: #1b1b1b,
+  second-background: #2f2f2f,
+  color: rgb(225, 228, 197),
+  color-on-white-bg: rgb(50, 50, 50),
+  link-color: #89cff0,
+  filter-clip_path: drop-shadow(5px 5px 5px #424242)
+  drop-shadow(5px 5px 15px #000000)
+  drop-shadow(5px 5px 15px #000000),
+  sidebar-background: rgb(16, 16, 16),
+  );
 
 
 // backgournd-color-2 used for card background
 :root {
-  --background-color: #{map-get($light-theme, background)};
-  --background-color-2: #{map-get($light-theme, second-background)};
-  --border-color: #{map-get($light-theme, border)};
-  --text-color: #{map-get($light-theme, color)};
-  --primary-color: #{map-get($light-theme, primary)};
-  --secondary-color: #{map-get($light-theme, secondary)};
-  --link-color: #{map-get($light-theme, link-color)};
-  --filter-clip_path: #{map-get($light-theme, filter-clip_path)};
+  --background-color: #{map.get($light-theme, background)};
+  --background-color-2: #{map.get($light-theme, second-background)};
+  --border-color: #{map.get($light-theme, border)};
+  --text-color: #{map.get($light-theme, color)};
+  --primary-color: #{map.get($light-theme, primary)};
+  --secondary-color: #{map.get($light-theme, secondary)};
+  --link-color: #{map.get($light-theme, link-color)};
+  --filter-clip_path: #{map.get($light-theme, filter-clip_path)};
   --landing-gradient: linear-gradient(to bottom, lightblue, #444);
-  --sidebar-background: #{map-get($light-theme, sidebar-background)};
+  --sidebar-background: #{map.get($light-theme, sidebar-background)};
 }
 
 /* When `dark-theme` is added to <html>, override variables */
 .dark-theme {
-  --background-color: #{map-get($dark-theme, background)};
-  --background-color-2: #{map-get($dark-theme, second-background)};
-  --border-color: #{map-get($dark-theme, border)};
-  --text-color: #{map-get($dark-theme, color)};
-  --text-color-white-bg: #{map-get($dark-theme, color-on-white-bg)};
-  --primary-color: #{map-get($dark-theme, primary)};
-  --secondary-color: #{map-get($dark-theme, secondary)};
-  --link-color: #{map-get($dark-theme, link-color)};
-  --filter-clip_path: #{map-get($dark-theme, filter-clip_path)};
+  --background-color: #{map.get($dark-theme, background)};
+  --background-color-2: #{map.get($dark-theme, second-background)};
+  --border-color: #{map.get($dark-theme, border)};
+  --text-color: #{map.get($dark-theme, color)};
+  --text-color-white-bg: #{map.get($dark-theme, color-on-white-bg)};
+  --primary-color: #{map.get($dark-theme, primary)};
+  --secondary-color: #{map.get($dark-theme, secondary)};
+  --link-color: #{map.get($dark-theme, link-color)};
+  --filter-clip_path: #{map.get($dark-theme, filter-clip_path)};
   --landing-gradient: linear-gradient(to bottom, #444 50%, lightblue);
-  --sidebar-background: #{map-get($dark-theme, sidebar-background)};
+  --sidebar-background: #{map.get($dark-theme, sidebar-background)};
 }
 
