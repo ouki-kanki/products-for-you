@@ -1,9 +1,10 @@
 from decimal import Decimal
 from datetime import datetime
+from errno import EEXIST
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -106,12 +107,20 @@ class CalculateShippingCostsView(APIView):
             try:
                 product_id = item.get('uuid')
                 product_item = ProductItem.objects.select_related('product_details').get(uuid=product_id)
-                volume = product_item.product_details.volume
-                weight = product_item.product_details.weight
-                item_volumes.append({
-                    'volume': volume,
-                    'weight': weight
-                })
+
+                try:
+                    volume = product_item.product_details.volume
+                    weight = product_item.product_details.weight
+                    item_volumes.append({
+                        'volume': volume,
+                        'weight': weight
+                    })
+                except ObjectDoesNotExist:
+                    return Response({
+                        "message": 'product details are missing, '
+                        'cannot calculate volume, plesase contanct support'
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
             except ProductItem.DoesNotExist:
                 return Response({
                     "message": 'item in cart not found'

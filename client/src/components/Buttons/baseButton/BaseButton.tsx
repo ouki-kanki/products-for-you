@@ -14,7 +14,7 @@ interface ButtonProps {
   rounded?: boolean;
   isLoading?: boolean;
   type?: "button" | "submit" | "reset";
-  disabled: boolean
+  disabled: boolean;
 }
 
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar, faStarHalfAlt } from '@fortawesome/free-regular-svg-icons'
@@ -6,8 +6,10 @@ import { faStar, faStarHalfAlt } from '@fortawesome/free-regular-svg-icons'
 import styles from './rating.module.scss'
 
 interface RatingProps {
-  count?: number
-  overall: number
+  count?: number;
+  overall: number;
+  editable?: boolean;
+  onRatingChange?: (value: number) => void;
 }
 
 /**
@@ -16,7 +18,10 @@ interface RatingProps {
  * @param count the number of ratings for the current product
  * @returns
  */
-export const Rating = ({ count, overall }: RatingProps) => {
+export const Rating = ({ count, overall, editable=false, onRatingChange }: RatingProps) => {
+  const ratingRef = useRef<HTMLDivElement>(null)
+
+
   const mapRating = (number: number) => {
     if (!number) {
       return 'no ratings yet'
@@ -59,8 +64,21 @@ export const Rating = ({ count, overall }: RatingProps) => {
     return stars
   }
 
+  const handleTouchMove = () => {
+
+  }
+
+  const handleTouchEnd = () => {
+
+  }
+
   return (
-    <div className={styles.ratingsContainer}>
+    <div
+      className={styles.ratingsContainer}
+      ref={ratingRef}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      >
       {mapRating(overall)}
       {count && (
         <span>({count})</span>

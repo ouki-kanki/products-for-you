@@ -153,3 +153,15 @@ export interface RatingsListData {
   overall: number;
   ratings: Array<Rating>
 }
+
+export interface CreateRatingData {
+  product_item_uuid: string;
+  overall_rating: number;
+
+}
+
+export interface RatingAspectForGroup {
+  name: string
+}
+
+

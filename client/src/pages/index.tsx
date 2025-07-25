@@ -4,7 +4,6 @@ export {default as Categories} from './Categories/Categories'
 export {default as Contact} from './Contact'
 export {default as Account} from './Account'
 export {default as Settings} from './Settings/Settings'
-export { ProductsPage } from './ProductsPage';
 export { Login } from './AuthPage/Login'
 export { Register } from './AuthPage/Register/Register'
 export { Profile } from './Profile/Profile'
@@ -21,3 +20,4 @@ export { ActivationSuccess } from './Activation/ActivationSuccess'
 export { Orders } from './Orders/Orders';
 export { ShippingCosts } from './Checkout/ShippingCosts/ShippingCosts'
 export { OrderSuccess } from './Orders/OrderSuccess/OrderSuccess';
+export { RatingsCreate } from './Ratings/RatingsCreate/RatingsCreate';

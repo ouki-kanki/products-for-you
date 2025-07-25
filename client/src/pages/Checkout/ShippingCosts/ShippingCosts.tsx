@@ -17,15 +17,11 @@ export const ShippingCosts = () => {
   const { plans, handleShippingPlan } = useOutletContext<ContextProps>()
   const [selectedPlan, setSelectedPlan] = useState<ShippingPlan | null>(null)
 
-
-  console.log("the plans", plans)
-
   useEffect(() => {
     if (!plans || plans.length === 0) {
       navigate('/checkout')
     }
   }, [plans, navigate])
-
 
   const strPlans = plans && plans.length> 0 ? JSON.stringify(plans) : null
   useEffect(() => {
@@ -77,7 +73,6 @@ export const ShippingCosts = () => {
       </>
     )
   }
-
 
   return (
     <div>

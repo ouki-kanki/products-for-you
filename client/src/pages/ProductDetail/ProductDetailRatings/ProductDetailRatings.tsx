@@ -1,23 +1,18 @@
 import type { RatingsListData } from '../../../api/types'
 import { Rating } from '../../../components/Rating/Rating'
 import styles from './productDetailRatings.module.scss'
-import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel'
 import type { Rating as RatingType } from '../../../api/types'
 import { isEmpty } from '../../../utils/objUtils'
 
+import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel'
+import { BaseButton } from '../../../components/Buttons/baseButton/BaseButton'
+
 interface ProductDetailRatingProps {
-  data: RatingsListData
+  data: RatingsListData;
+  onCreateRating: () => void;
 }
 
-export const ProductDetailRatings = ({ data }: ProductDetailRatingProps) => {
-  console.log(data.ratings[1])
-
-  // const renderAspect = (aspect) => (
-  //   <div className={styles.aspectContainer}>
-  //     <h3>{aspect.aspect}</h3>
-  //     <
-  //   </div>
-  // )
+export const ProductDetailRatings = ({ data, onCreateRating }: ProductDetailRatingProps) => {
 
   return (
     <div className={styles.container}>
@@ -30,7 +25,7 @@ export const ProductDetailRatings = ({ data }: ProductDetailRatingProps) => {
       <div className={styles.aspectsContainer}>
           <h3>Overall</h3>
           {data.aspectsAverage.map(aspect => (
-            <div className={styles.aspectContainer}>
+            <div className={styles.aspectContainer} key={aspect.aspect}>
               <h3>{aspect.aspect}</h3>
               <Rating overall={aspect.average}/>
             </div>
@@ -49,7 +44,7 @@ export const ProductDetailRatings = ({ data }: ProductDetailRatingProps) => {
                 { rating.aspects && !isEmpty(rating.aspects) && (
                   <div className={styles.aspectsContainer}>
                     {Object.entries(rating.aspects).map(([aspect, value ]) => (
-                      <div className={styles.aspectContainer}>
+                      <div className={styles.aspectContainer} key={aspect}>
                         <h3>{aspect}</h3>
                         <Rating overall={value}/>
                       </div>
@@ -74,8 +69,10 @@ export const ProductDetailRatings = ({ data }: ProductDetailRatingProps) => {
               </div>
             ))
           }
-        />
+
+          />
       </div>
+          <BaseButton onClick={onCreateRating}>Add a rating</BaseButton>
     </div>
   )
 }

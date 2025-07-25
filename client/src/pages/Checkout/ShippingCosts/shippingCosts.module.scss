@@ -1,25 +1,3 @@
-// .planContainer {
-//   display: grid;
-//   grid-template-columns: repeat(5, auto);
-//   width: fit-content;
-//   max-width: 800px;
-//   column-gap: 10px;
-
-//   input {
-//     cursor: pointer;
-//   }
-
-//   .row {
-//     display: contents;
-
-//     .value {
-//       justify-self: start;
-//       // margin-right: 5px;
-//     }
-
-//   }
-// }
-
 .planContainer {
   display: flex;
   flex-wrap: wrap; // Adjusts layout if content exceeds width

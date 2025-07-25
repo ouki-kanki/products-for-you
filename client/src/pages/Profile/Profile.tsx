@@ -4,7 +4,7 @@ import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
 import { useProductNavigation } from '../../hooks/useProductNavigation';
 
 import { useGetUserProfileQuery, useGetFavoriteProductsQuery } from '../../api/userApi';
-import type { IUserProfile, IUserProfileBase } from '../../api/userApi';
+import type { IUserProfile } from '../../api/userApi';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
 import { useUploadProfileImageMutation } from '../../api/userProfileApi';
 
@@ -24,10 +24,10 @@ import { BaseInput } from '../../components/Inputs/BaseInput/BaseInput';
 import { BaseButton } from '../../components/Buttons/baseButton/BaseButton';
 import { userProfileFields } from './userProfileFields';
 
-
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { notEmptyValidator, phoneValidator } from '../../hooks/validation/validators';
 
+// TOOD: move to types. check if it allready exists
 type Error = {
   status: number;
   data: {
@@ -157,7 +157,6 @@ export const Profile = () => {
       // TODO: the type is wrong -> data.image -> array of errors
       // TODO: handle stack notification. have to show all error messages
       // TODO: error system needs refactoring !!
-      // TODO: check the trello card
       const error = updateError as ValidationError
       if (error) {
         const data = error?.data
@@ -167,12 +166,9 @@ export const Profile = () => {
             message: data.detail,
             type: 'danger'
           })
-
           return
         }
-
         const errorArray = Object.values(data).map(value => value[0])
-        console.log("the error array", errorArray)
 
         showNotification({
           message: errorArray[0],

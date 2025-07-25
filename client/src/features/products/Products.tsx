@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styles from './products.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableList,faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { ButtonGroup } from '../../UI/ButtonGroup/ButtonGroup';
 import { useLocation, useParams } from 'react-router-dom';
-import { useLazyFilterByCategoryQuery } from '../../api/productsApi';
 
 import { ProductCardV3 } from '../../components/Product/ProductCardV3';
 
@@ -21,13 +20,6 @@ export const Products = () => {
   const location = useLocation()
   const categorySlug = location.state?.categorySlug
   const { slug } = useParams()
-  const [trigger, result, lastPromiseInfo] = useLazyFilterByCategoryQuery()
-
-  useEffect(() => {
-    if (slug) {
-      trigger(slug)
-    }
-  }, [categorySlug, trigger])
 
   const data = result?.data
 

@@ -93,7 +93,6 @@ export const ProfileNew = () => {
     )
   }
 
-
   return (
     <form onSubmit={handleSubmit}>
       <h1>New User Profile</h1>

@@ -1,6 +1,4 @@
 import React from 'react'
-import styles from './latestProducts.module.scss';
-import { NavLink } from 'react-router-dom';
 
 import { SectionContainer } from '../../../components/Layout/SectionContainer/SectionContainer';
 import { ProductCardV3 } from '../../../components/Product/ProductCardV3';

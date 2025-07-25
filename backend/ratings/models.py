@@ -11,6 +11,14 @@ class RatingAspect(models.Model):
         return str(self.name)
 
 
+class AspectGroup(models.Model):
+    name = models.CharField(max_length=100)
+    aspects = models.ManyToManyField(RatingAspect)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')

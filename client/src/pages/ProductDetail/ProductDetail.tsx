@@ -1,7 +1,7 @@
 import styles from './productDetail.module.scss'
 import type { Promotion } from '../../api/types'
 import { useState, useEffect } from 'react'
-import { useParams, useLocation, Link, useNavigate } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { isEmpty } from '../../utils/objUtils'
 
 import { useDispatch } from 'react-redux'
@@ -39,10 +39,8 @@ export const ProductDetail = () => {
   useEffect(() => {
     if (!product_item_uuid) return;
 
-    console.log("yoyoyooy")
     triggerFetchRatings(product_item_uuid)
   }, [product_item_uuid])
-
 
   // fetch similar products
   const category = data?.categories[data?.categories.length - 1]
@@ -156,6 +154,10 @@ export const ProductDetail = () => {
     // navigate(featuredImage, { replace: true })
   }
 
+  const handleGoToCreateRating = (uuid: string) => {
+    navigate(`/ratings/create/${uuid}`)
+  }
+
   if (isLoading) {
     return (
       <div>Loading</div>
@@ -209,7 +211,10 @@ export const ProductDetail = () => {
       )}
       {ratingsData && !isEmpty(ratingsData) && (
         <div className={styles.sectionFour}>
-          <ProductDetailRatings data={ratingsData}/>
+          <ProductDetailRatings
+            data={ratingsData}
+            onCreateRating={() => handleGoToCreateRating(product_item_uuid)}
+            />
         </div>
       )}
     </div>

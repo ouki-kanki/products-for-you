@@ -7,7 +7,6 @@ import { Home,
   Categories,
   Contact,
   Settings,
-  ProductsPage,
   Login,
   Register,
   Activation,
@@ -21,7 +20,8 @@ import { Home,
   Checkout,
   Orders,
   ShippingCosts,
-  OrderSuccess
+  OrderSuccess,
+  RatingsCreate
  } from './pages'
 import { Search } from './pages/Search';
 import { PersistLogin } from './features/auth/PersistLogin';
@@ -45,8 +45,6 @@ export const EcommerceRoutes = () => (
           </Route>
           <Route path='/order-success' element={<OrderSuccess/>}/>
           <Route path='/settings' element={<Settings/>}/>
-          <Route path='/products/' element={<ProductsPage/>}/>
-          <Route path='/products/:slug' element={<ProductsPage/>}/>
           {/* <Route path='/testproducts/' element={<ProductsPage/>}/> */}
           <Route path='/products/:slug/:slug' element={<ProductDetail/>}/>
           <Route path='/search/' element={<Search/>}/>
@@ -60,6 +58,7 @@ export const EcommerceRoutes = () => (
               <Route path='create' element={<ProfileNew/>}/>
             </Route>
           </Route>
+          <Route path='/ratings/create/:uuid' element={<RatingsCreate/>}/>
       </Route>
       <Route path='login' element={<Login/>}/>
       <Route path='sign-up' element={<Register/>}/>

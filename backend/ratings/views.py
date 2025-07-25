@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from ratings.models import Rating, RatingAspect, RatingScore, Comment, AdminResponse
-from .serializers import RatingSerializer, RatingSerializerReadOnly
+from ratings.models import AspectGroup, Rating, RatingScore, Comment, AdminResponse
+from .serializers import RatingSerializer, RatingSerializerReadOnly, RatingAspectSerializer
 from .utils import convert_rating_scale_to_five, resolve_product_from_product_item_uuid
 
 
@@ -205,3 +205,32 @@ class GetListOfRatings(APIView):
             'ratings': serializer_data,
             }, status=status.HTTP_200_OK
         )
+
+
+class ProductAspectsAPIView(APIView):
+    """fetch the ratings aspects for the current aspects_group that is
+        related to the category or the product if the override flag in product is active
+    """
+    def get(self, request, product_item_uuid):
+        product = resolve_product_from_product_item_uuid(product_item_uuid)
+
+        if product.use_override_aspects and product.rating_aspects_group:
+            aspect_group = product.rating_aspects_group
+        else:
+            category = product.category
+            aspect_group = category.rating_aspects_group
+
+        # if there is no related group, fallback to default
+        if not aspect_group:
+            aspect_group = AspectGroup.objects.filter(name__iexact='default').first()
+
+        if not aspect_group:
+            return Response({
+                "message": "No rating aspect_group available"
+            }, status=status.HTTP_204_NO_CONTENT)
+
+        # fetch the aspects of the current group
+        aspects = aspect_group.aspects.all()
+
+        serializer = RatingAspectSerializer(aspects, many=True)
+        return Response(serializer.data)

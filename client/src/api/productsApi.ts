@@ -8,7 +8,8 @@ import type { IProduct,
               IproductItem,
               IproductDetail,
               FeaturedItems,
-              RatingsListData
+              RatingsListData,
+              RatingAspectForGroup
              } from './types';
 
 interface IProductPaginatedResponse {
@@ -138,6 +139,11 @@ export const productsApi = createApi({
         convertSnakeToCamel(res)
         return res
       })
+    }),
+    getRatingAspectsFromUuid: builder.query<RatingAspectForGroup[], string>({
+      query: (product_item_uuid) => ({
+        url: `products/ratings/rating-aspects/${product_item_uuid}`
+      })
     })
   })
 })
@@ -152,10 +158,9 @@ export const {
   useLazyGetProductDetailQuery,
   useGetCategoriesQuery,
   useLazyGetCategoriesQuery,
-  useLazyFilterByCategoryQuery,
   useLazyGetProductVariationPreviewQuery,
-  useFilterByCategoryQuery,
   useLazyGetSimilarProductsQuery,
   useLazyGetListOfRatingsQuery,
-  useGetItemQuantitiesMutation
+  useGetItemQuantitiesMutation,
+  useGetRatingAspectsFromUuidQuery
 } = productsApi

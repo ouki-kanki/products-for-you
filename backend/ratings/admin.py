@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (
-    Rating, RatingAspect, RatingScore, Comment, AdminResponse
+    Rating, RatingAspect, RatingScore,
+    AspectGroup, Comment, AdminResponse
 )
 
 
@@ -29,6 +30,7 @@ class RatingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(RatingAspect)
+admin.site.register(AspectGroup)
 admin.site.register(RatingScore)
 admin.site.register(Comment)
 admin.site.register(AdminResponse)

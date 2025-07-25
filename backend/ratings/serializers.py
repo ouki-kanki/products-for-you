@@ -5,6 +5,7 @@ from .models import AdminResponse, Comment, Rating, RatingAspect, RatingScore
 from products.models import ProductItem
 from .utils import convert_rating_scale_to_five
 
+
 class RatingAspectSerializer(serializers.ModelSerializer):
     class Meta:
         model = RatingAspect

@@ -2,7 +2,6 @@ import { authBaseApi } from "./authBaseApi";
 import { setCredentials } from "../features/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
 import { clearCredentials } from "../features/auth/authSlice";
-import { userApi } from "./userApi";
 import type { LogoutData } from "./types";
 
 export interface LoginCreds {

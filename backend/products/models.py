@@ -30,19 +30,25 @@ from .utils import get_list_of_parent_categories
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=50, blank=True)
     parent_category = models.ForeignKey("self",
                                         on_delete=models.SET_NULL, related_name='children', blank=True, null=True)
+    rating_aspects_group = models.ForeignKey('ratings.AspectGroup', on_delete=models.PROTECT,
+                                             null=True, blank=True, related_name='categories')
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=50, blank=True)
     is_featured = models.BooleanField(default=False)
     icon = models.ImageField(upload_to='categories/', blank=True, default='icons/placeholder.jpg')
+    position = models.IntegerField(blank=True, default=100,)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    position = models.IntegerField(blank=True, default=100,)
 
     class Meta:
         verbose_name_plural = "Categories"
         ordering = ['position']
+
+    @property
+    def is_leaf(self):
+        return not self.children.exists()
 
     def __str__(self):
         return str(self.name)
@@ -82,7 +88,7 @@ class Category(models.Model):
 
 
 # NOTE: sender is the class
-def category_pre_save(_sender, instance, *args, **kwargs):
+def category_pre_save(sender, instance, *args, **kwargs):
     if instance.slug is None or instance.slug == "":
         instance.slug = slugify(instance.name)
 
@@ -103,16 +109,19 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, default='')
-    features = ArrayField(models.CharField(max_length=255), default=list, blank=True, null=True)
-    slug = models.SlugField(max_length=50, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
+    rating_aspects_group = models.ForeignKey('ratings.AspectGroup', on_delete=models.PROTECT,
+                                             null=True, blank=True, related_name='products')
+    use_override_aspects = models.BooleanField(default=False)
+    name = models.CharField(max_length=255)
+    features = ArrayField(models.CharField(max_length=255), default=list, blank=True, null=True)
+    description = models.TextField(blank=True, default='')
+    slug = models.SlugField(max_length=50, blank=True)
+    icon = models.ImageField(upload_to='products/icons/', blank=True, default='icons/placeholder.jpg')
+    is_featured = models.BooleanField(default=False, verbose_name='Featured Product')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    is_featured = models.BooleanField(default=False, verbose_name='Featured Product')
-    icon = models.ImageField(upload_to='products/icons/', blank=True, default='icons/placeholder.jpg')
 
     class Meta:
         verbose_name = "Product"
@@ -168,7 +177,6 @@ class Product(models.Model):
 def product_pre_save(sender, instance, *args, **kwargs):
     if instance.slug == "" or instance.slug is None:
         slugify_unique(sender, instance, instance.name)
-
 
 pre_save.connect(product_pre_save, Product)
 
@@ -294,14 +302,6 @@ def product_item_pre_save(sender, instance, *args, **kwargs):
 
 @receiver(post_save, sender=ProductItem) # noqa
 def product_item_post_save(sender, instance, created, **kwargs):
-    # if created and (instance.slug is None or instance.slug == ''):
-
-    # if instance.generate_tags:
-    #     tag_names = set()
-
-    #     if instance.product.category:
-    #         tag_names.add(instance.product.category.name.strip())
-
     def generate_slug_and_sku():
         need_generate = False
         if instance.slug is None or instance.slug == '':
@@ -364,7 +364,9 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to=upload_product_item_image)
     is_default = models.BooleanField(default=False)
     has_thumbnail = models.BooleanField(default=False)
-    remove_background = models.BooleanField(default=False, help_text="removes the bg of the image, to revert you need to reupload the image!")
+    remove_background = models.BooleanField(
+        default=False,
+        help_text="removes the bg of the image, to revert you need to reupload the image!")
     thumbnail = models.ImageField(upload_to=upload_product_thumb, blank=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -484,8 +486,6 @@ class ProductReview(models.Model):
 
 
 # NOT IMPLEMENTED
-
-
 class Banner(models.Model):
     """
     BANNERS FOR THE LANDING PAGE

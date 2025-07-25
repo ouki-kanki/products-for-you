@@ -43,10 +43,17 @@ admin.site.site_header = 'Products For You Administration'
 class CategoryAdminForm(forms.ModelForm):
     icon_name = forms.CharField(required=False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        instance = kwargs.get('instance')
+
+        if instance and not instance.is_leaf:
+            self.fields['rating_aspects_group'].disabled = True
+            self.fields['rating_aspects_group'].help_text = "can only add aspects if the category has no children categories"
+
     class Meta:
         model = Category
         fields = '__all__'
-
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
