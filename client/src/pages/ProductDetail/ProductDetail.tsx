@@ -16,6 +16,8 @@ import { ProductDetailImages } from './productDetailImages/ProductDetailImages'
 import { SimilarProducts } from '../../components/Product/SimilarProducts/SimilarProducts'
 import {ProductDetailRatings } from './ProductDetailRatings/ProductDetailRatings'
 
+import { BaseButton } from '../../components/Buttons/baseButton/BaseButton'
+
 export const ProductDetail = () => {
   const dispatch = useDispatch()
   const { handleFavorite } = useHandleFavoriteItem()
@@ -87,7 +89,6 @@ export const ProductDetail = () => {
         return
       }
     }
-
     setDesiredQuantity((prevQnt) => prevQnt + 1)
   }
 
@@ -99,7 +100,6 @@ export const ProductDetail = () => {
     if (desiredQuantity <= 1) {
       return
     }
-
     setDesiredQuantity(prevQnt => prevQnt - 1)
   }
 
@@ -150,8 +150,6 @@ export const ProductDetail = () => {
   const handleNavigateToImage = () => {
     // TODO: have to find a better way to handle this
     window.location.href = featuredImage;
-    // TODO: this does not behave as expected. why ?
-    // navigate(featuredImage, { replace: true })
   }
 
   const handleGoToCreateRating = (uuid: string) => {
@@ -164,7 +162,6 @@ export const ProductDetail = () => {
     )
   }
 
-  // TODO: need to handle this situation better
   if (!data) {
     return (
       <h3>we are sorry, could not find info for the current product.</h3>
@@ -213,10 +210,15 @@ export const ProductDetail = () => {
         <div className={styles.sectionFour}>
           <ProductDetailRatings
             data={ratingsData}
-            onCreateRating={() => handleGoToCreateRating(product_item_uuid)}
             />
         </div>
       )}
+      <div className={styles.createRatingBtnContainer}>
+        <BaseButton
+          size='md'
+          onClick={() => handleGoToCreateRating(product_item_uuid)}>Add a rating</BaseButton>
+      </div>
+
     </div>
   )
 }
