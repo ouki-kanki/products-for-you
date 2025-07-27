@@ -120,8 +120,8 @@ export const Rating = ({ count, overall, editable=false, onRatingChange }: Ratin
       <div
         className={styles.ratingsContainer}
         ref={ratingRef}
-        // onTouchMove={handleTouchMove}
-        // onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         // onMouseMove={handlePointerMove}
         // onMouseUp={handlePointerUp}
         onClick={handleClick}
