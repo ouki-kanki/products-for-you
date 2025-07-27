@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useRef, useEffect } from 'react'
+import { SyntheticEvent, useRef, useEffect } from 'react'
 import { WithoutSidebar } from '../../hocs/WithoutSidebar/WithoutSidebar';
 import styles from './loginregisterForm.module.scss'
 

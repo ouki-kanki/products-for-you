@@ -1,4 +1,7 @@
+@use '../../../styles/styles_v2/_mixins_v2.scss' as *;
+
 .container {
+    max-width: 350px;
 }
 
 .radioContainer {
@@ -6,6 +9,32 @@
     padding: 10px;
 
     h3 {
-        margin-left: 10px;;
+        margin-left: 10px;
     }
 }
+
+.ratingsContainer {
+    margin-bottom: 2rem;
+}
+
+
+.ratingContainer {
+    display: flex;
+    align-items: center;
+
+    h3 {
+        margin-right: 10px;
+        width: 130px;
+    }
+}
+
+.submitContainer {
+    margin-block: 20px;
+    display: flex;
+    justify-content: center;
+
+    @include tablet {
+        justify-content: flex-end;
+    }
+}
+

@@ -14,7 +14,7 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 
   Django, django-rest-framework, elastic-search, jwt-authentication, stripe payments
 
-#### Key Features
+### Key Features
 
 - faceted search, advanced search functionality using elastic search
 - user authentication using jwt
@@ -24,6 +24,16 @@ Products-For-You is a e-commerce web site build with django-rest-framework and R
 - shipping costs calculation using dimensional factor, different tax-rates application
 - promotions-discounts system
 - order history
+- rating system
+
+  ### regarding the ui ux
+  - mobile-first responsive design
+  - dark theme is provided
+
+
+### Rating System
+  - the user can provide an overall rating or rate different aspects of the product
+  - groups of rating aspects can be associated with category of products & they can even overriden by the product if this is a necessity
 
 
 #### Some Features regarding the react app
@@ -71,7 +81,6 @@ flowchart LR
 ---
 
 ## SSL configuration
-
 
 there are 2 options regarding running the dev servers with https
 
@@ -138,61 +147,10 @@ then inside vite.config.ts
 after this setup it vite will serve the app through https
 
 
-for the django server there is the django-sslserver package that can be installed with pip.
+for django server there is the django-sslserver package that can be installed with pip.
 https://github.com/teddziuba/django-sslserver
 
-
-
-
-
-
-
 ---
-
-## DJANGO SERVER SETUP
-
-
-[^1]: (inside the root of the project)
-```python
-pip install -r requirement.txt
-```
----
-3) run the database (docker has to be configured on the operating system)
-
-- navigate to  ``root -> backend -> db``
-
-- ```shell
-  docker-compose up -d
-```
-
----
-4) make migrations
-```python
-python manage.py makemigrations
-```
-
-```python
-python manage.py migrate
-```
----
-5) Create superuser
-
-```bash
-python manage.py createsuperuser
-```
-
-## Client setup
----
-- cd into client directory
-- install required dependencies
-
-``yarn``
-
-- start the development server
-
-``yarn run dev``
-
 
 ## Licence
----
 [GNU](https://www.gnu.org/licenses/gpl-3.0.html)

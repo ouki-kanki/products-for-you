@@ -154,10 +154,16 @@ export interface RatingsListData {
   ratings: Array<Rating>
 }
 
-export interface CreateRatingData {
-  product_item_uuid: string;
-  overall_rating: number;
+interface RatingAspectForCreate {
+  aspect: string;
+  score: number;
+}
 
+export interface RatingCreateData {
+  product_item_uuid: string;
+  overall_rating: number | null;
+  rating_aspects : Array<RatingAspectForCreate>;
+  comment: string | null;
 }
 
 export interface RatingAspectForGroup {

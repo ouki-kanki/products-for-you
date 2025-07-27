@@ -9,7 +9,8 @@ import type { IProduct,
               IproductDetail,
               FeaturedItems,
               RatingsListData,
-              RatingAspectForGroup
+              RatingAspectForGroup,
+              RatingCreateData
              } from './types';
 
 interface IProductPaginatedResponse {
@@ -144,6 +145,13 @@ export const productsApi = createApi({
       query: (product_item_uuid) => ({
         url: `products/ratings/rating-aspects/${product_item_uuid}`
       })
+    }),
+    createRating: builder.mutation<unknown, RatingCreateData>({
+      query: (rating) => ({
+        url: 'products/ratings/create',
+        method: 'POST',
+        body: rating
+      })
     })
   })
 })
@@ -162,5 +170,6 @@ export const {
   useLazyGetSimilarProductsQuery,
   useLazyGetListOfRatingsQuery,
   useGetItemQuantitiesMutation,
-  useGetRatingAspectsFromUuidQuery
+  useGetRatingAspectsFromUuidQuery,
+  useCreateRatingMutation
 } = productsApi

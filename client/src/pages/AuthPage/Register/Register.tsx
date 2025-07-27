@@ -44,7 +44,7 @@ export const Register = () => {
         errorMessage = data.email.join('')
       }
       if (data.password) {
-        console.log("password error")
+        // console.log("password error")
       }
 
       // TODO: handle notification async

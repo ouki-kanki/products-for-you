@@ -5,14 +5,14 @@ import type { Rating as RatingType } from '../../../api/types'
 import { isEmpty } from '../../../utils/objUtils'
 
 import { SwiperCarousel } from '../../../components/Carousels/SwiperCarousel'
-import { BaseButton } from '../../../components/Buttons/baseButton/BaseButton'
 
 interface ProductDetailRatingProps {
   data: RatingsListData;
-  onCreateRating: () => void;
 }
 
-export const ProductDetailRatings = ({ data, onCreateRating }: ProductDetailRatingProps) => {
+export const ProductDetailRatings = ({ data }: ProductDetailRatingProps) => {
+
+  console.log(data)
 
   return (
     <div className={styles.container}>
@@ -22,15 +22,17 @@ export const ProductDetailRatings = ({ data, onCreateRating }: ProductDetailRati
         <Rating overall={data.overall} count={data.count}/>
       </div>
 
-      <div className={styles.aspectsContainer}>
-          <h3>Overall</h3>
-          {data.aspectsAverage.map(aspect => (
-            <div className={styles.aspectContainer} key={aspect.aspect}>
-              <h3>{aspect.aspect}</h3>
-              <Rating overall={aspect.average}/>
-            </div>
-          ))}
-      </div>
+      {data.aspectsAverage.length > 0 && (
+        <div className={styles.aspectsContainer}>
+            <h3>Overall</h3>
+            {data.aspectsAverage.map(aspect => (
+              <div className={styles.aspectContainer} key={aspect.aspect}>
+                <h3>{aspect.aspect}</h3>
+                <Rating overall={aspect.average}/>
+              </div>
+            ))}
+        </div>
+      )}
 
       <div className={styles.ratingsContainer}>
         <SwiperCarousel<RatingType>
@@ -69,10 +71,8 @@ export const ProductDetailRatings = ({ data, onCreateRating }: ProductDetailRati
               </div>
             ))
           }
-
           />
       </div>
-          <BaseButton onClick={onCreateRating}>Add a rating</BaseButton>
     </div>
   )
 }

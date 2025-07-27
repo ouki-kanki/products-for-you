@@ -1,8 +1,8 @@
 from sqlite3 import DatabaseError
 from django.db import transaction
 from rest_framework import serializers
-from .models import AdminResponse, Comment, Rating, RatingAspect, RatingScore
 from products.models import ProductItem
+from .models import AdminResponse, Comment, Rating, RatingAspect, RatingScore
 from .utils import convert_rating_scale_to_five
 
 
@@ -39,7 +39,7 @@ class AdminResponseSerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
     product_item_uuid = serializers.UUIDField(write_only=True)
-    overall_rating = serializers.IntegerField(required=False, min_value=1, max_value=10)
+    overall_rating = serializers.IntegerField(required=False, allow_null=True, min_value=1, max_value=10)
     # NOTE: this serializer is important to validate that the dictionaries inside the list are valid
     rating_aspects = RatingScoreSerializer(many=True, required=False)
     comment = CommentSerializer(required=False)
@@ -66,7 +66,7 @@ class RatingSerializer(serializers.ModelSerializer):
         overall_rating = validated_data.pop('overall_rating')
         comment_data = validated_data.pop('comment', None)
 
-        # if commend_data exists
+        print(overall_rating)
 
         try:
             product_item = ProductItem.objects.select_related('product').get(
@@ -84,9 +84,16 @@ class RatingSerializer(serializers.ModelSerializer):
 
                 scores = []
                 total = 0
-                if rating_aspects:
+                sanitized_aspects_count = 0
+
+                # if overall is provited by the user do not create aspects
+                if rating_aspects and not overall_rating:
                     for item in rating_aspects:
-                        name = item['aspect']
+                        name = str(item.get('aspect', '')).strip().lower()
+
+                        # if accidentally the front provides an overall value in aspects list remove it
+                        if name == 'overall':
+                            continue
                         score = item['score']
                         aspect_obj, _ = RatingAspect.objects.get_or_create(name=name)
                         score_serializer = RatingScoreSerializer(data={
@@ -98,9 +105,11 @@ class RatingSerializer(serializers.ModelSerializer):
 
                         # calculate the overall rating from the aspects
                         total += score
-                    avg = round(total / len(rating_aspects))
+                        sanitized_aspects_count += 1
 
+                    avg = round(total / sanitized_aspects_count) if sanitized_aspects_count > 0 else 0
                     overall_aspect, _ = RatingAspect.objects.get_or_create(name='overall')
+
                     # add the average rating score to the scores list
                     scores.append(RatingScore(rating=rating, aspect=overall_aspect, score=avg))
                 else:

@@ -63,7 +63,7 @@ export const ProductV2 = ({
   const [variationPrice, setVariationPrice] = useState<string | null>(null);
   const [variationProductThumbnails, setVariationProductsThumbnails] = useState({});
   const [variationSlug, setVariationSlug] = useState<string>("");
-  const [trigger, { data }, lastPromiseInfo] = useLazyGetProductVariationPreviewQuery();
+  const [trigger, { data }] = useLazyGetProductVariationPreviewQuery();
 
   // removes the current variation from the list of other variations
   const [omitedVariationSlug, setOmitedVariationSlug] = useState(slug || null)
@@ -82,7 +82,6 @@ export const ProductV2 = ({
   useEffect(() => {
     if (strVariationResult) {
       const selectedVariation = JSON.parse(strVariationResult);
-      console.log("the new variation", selectedVariation)
       setNewQuantity(selectedVariation.quantity);
       setVariationPrice(selectedVariation.price);
       setVariationProductsThumbnails(selectedVariation.productThumbnails);
@@ -122,7 +121,7 @@ export const ProductV2 = ({
     setCurrentImage(url);
   };
 
-  // render the variation images on the right of the panel
+  // renders the variation images on the right of the panel
   const renderVariations = () => {
     if (variations && variations.length > 0) {
       return (

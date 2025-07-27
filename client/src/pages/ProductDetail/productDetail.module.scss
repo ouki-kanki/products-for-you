@@ -27,7 +27,8 @@
     // background: rgba(255, 255, 255, 0.2);
     order: -1;
     flex: 1 1 40%;
-    padding: 2rem 1rem;
+    padding-block: 2rem;
+    padding-left: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -59,7 +60,7 @@
     @include tablet {
       order: unset;
       padding: 2rem 0;
-      margin: 0 1rem;
+      // margin: 0 1rem;
       background: transparent;
     }
 }
@@ -84,5 +85,16 @@
 
   @include tablet {
     grid-column: span 2;
+  }
+}
+
+.createRatingBtnContainer {
+  margin-top: 2rem;
+  text-align: center;
+
+  @include tablet {
+    text-align: end;
+    grid-column: span 2;
+
   }
 }
