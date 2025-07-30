@@ -1,11 +1,19 @@
+@use '../../../styles//styles_v2/mixins_v2' as *;
+
 .inputContainer {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 95%;
+  width: 75%;
   max-width: 400px;
   min-width: 50px;
+
+  @include tablet {
+    margin-inline: 10px;
+    width: 95%;
+
+  }
 
   svg {
     path {

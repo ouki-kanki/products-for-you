@@ -8,7 +8,7 @@ import type { Promotion } from "../api/types"
  */
 export const getPromotion = (promotions: Array<Promotion>) => {
   const promotion: Promotion | null = promotions.length > 0 ? promotions[0] : null
-  console.log("inside promo val", promotion)
+  // console.log("inside promo val", promotion)
   if (promotion && promotion.is_active) {
     return promotion
   }

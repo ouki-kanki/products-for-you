@@ -1,6 +1,7 @@
-import React from 'react'
 import { usePagination } from '../../../hooks/usePagination'
 import styles from './favoriteProducts.module.scss'
+import { Link } from 'react-router-dom'
+
 
 import { formatPrice } from '../../../utils/utils'
 import { getPromotion } from '../../../utils/promotionValidate'
@@ -12,6 +13,7 @@ import { withLoadingAndError } from '../../../hocs/LoadingError/withLoadingAndEr
 // import { ProductPreview1 } from '../../../components/Product/ProductPreviewV1/ProductPreview1'
 
 import { BtnCard } from '../../../components/Buttons/BtnCard/BtnCard'
+import { useMemo } from 'react'
 // TODO: replace Record with the actual product type
 interface IfavoriteProductsProps {
   data: Record<string, string>[];
@@ -29,21 +31,36 @@ export const FavoriteProducts = withLoadingAndError(({ data, handleProductDetail
 
   if (data.results.length === 0) {
     return (
-      <div>there no favorite products</div>
+      <div>
+        <h3>no favorite products found.</h3>
+        <Link to='/search'>add your favorite products</Link>
+      </div>
     )
   }
 
+  // TODO: this does not solve the recalculation isssue
+  // i have to do the calculation isnside RTk endpoint ?
+  // maybe apply a deep comparison ?
+  const favoriteProductsWithPromotion = useMemo(() => {
+    if (!data) return;
+
+    return data.results.map(product => ({
+      ...product,
+      promotion: getPromotion(product.promotions)
+    }))
+  }, [data])
+
   return (
     <div className={styles.container}>
-      {data && data.results.map(product => (
+      {favoriteProductsWithPromotion.map(product => (
         <div
           className={styles.favoriteProductContainer}
           key={product.slug}
           >
-            {getPromotion(product.promotions) && (
+            {product.promotion && (
               <div className={styles.bannerContainer}>
                 <SalesBanner
-                  promotion={getPromotion(product.promotions)}
+                  promotion={product.promotion}
                   size='sm'
                   />
               </div>

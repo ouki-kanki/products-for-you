@@ -6,7 +6,8 @@ import type { LogoutData } from "./types";
 
 export interface LoginCreds {
   email: string;
-  password: string
+  password: string;
+  reCaptchaToken: string | null;
 }
 
 interface JwtPayload {
@@ -14,8 +15,6 @@ interface JwtPayload {
   user_id: number;
   uuid: string;
 }
-
-
 
 interface RegisterData {
   username?: string;
@@ -34,19 +33,23 @@ interface RegisterReturnData {
 export const authApi = authBaseApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation({
-      query: ({ email, password }: LoginCreds) => ({
+      query: ({ email, password, reCaptchaToken }: LoginCreds) => ({
         url: '/auth/token/',
         method: 'POST',
         body: {
           email,
-          password
+          password,
+          reCaptchaToken
         }
       })
     }),
     loginDemo: builder.mutation({
-      query: () => ({
+      query: ({ reCaptchaToken }) => ({
         url: '/auth/token/demo',
-        method: 'POST'
+        method: 'POST',
+        body: {
+          reCaptchaToken
+        }
       })
     }),
     // cookie is http, clear it on the server

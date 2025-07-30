@@ -16,11 +16,11 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
+from mixins.verify_captcha_mixin import RecaptchaVerifyMixin
 
 from .serializers import (
     MyTokenObtainSerializer, MyDemoTokenObtainSerializer,
@@ -28,12 +28,16 @@ from .serializers import (
 from .auth_utils import send_activation_email
 
 
-class MyTokenObtainPairView(TokenObtainPairView):
+class MyTokenObtainPairView(RecaptchaVerifyMixin, TokenObtainPairView):
     """ login -> get a pair of access and refresh tokens """
     serializer_class = MyTokenObtainSerializer
 
-    # def get_queryset(self):
     def post(self, request, *args, **kwargs):
+        recaptcha_error_response = self.verify_or_error_response(request, action='login')
+
+        if recaptcha_error_response:
+            return recaptcha_error_response
+
         response = super().post(request, *args, **kwargs)
         refresh_token = response.data['refresh']
         response.set_cookie(
@@ -49,10 +53,19 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 # TODO: demo-user
 # mark the demo user as active
-class DemoTokenObtainPairView(APIView):
+class DemoTokenObtainPairView(RecaptchaVerifyMixin, APIView):
+    """ logins a demo account
 
+    Args:
+        reCaptchaToken: recaptcha token from client
+    """
     # create a demo user
     def post(self, request, *args, **kwargs):
+        recaptcha_error_response = self.verify_or_error_response(request, action='login')
+
+        if recaptcha_error_response:
+            return recaptcha_error_response
+
         try:
             demo_user, created = User.objects.get_or_create(
                 username='demo_user',

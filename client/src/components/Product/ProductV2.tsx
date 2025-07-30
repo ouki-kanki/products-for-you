@@ -229,7 +229,8 @@ export const ProductV2 = ({
             )}
           </div>
           <div className={styles.actionContainer}>
-            <Button>buy now</Button>
+            {/* <Button>buy now</Button> */}
+            <button className={styles.btnBuy}>buy now</button>
           </div>
         </div>
       </div>

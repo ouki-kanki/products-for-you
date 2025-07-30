@@ -2,6 +2,7 @@ import { useEffect, useState, ChangeEvent, useMemo } from 'react'
 import { useAppDispatch } from '../../app/store/store';
 import { Outlet, useNavigate, useLocation, Location } from 'react-router-dom'
 import { useProductNavigation } from '../../hooks/useProductNavigation';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 
 import { useGetUserProfileQuery, useGetFavoriteProductsQuery } from '../../api/userApi';
 import type { IUserProfile } from '../../api/userApi';
@@ -19,6 +20,7 @@ import { userApi } from '../../api/userApi';
 
 import { FavoriteProducts } from './FavoriteProducts/FavoriteProducts';
 import { Spinner } from '../../components/Spinner/Spinner';
+import { BotBanner } from '../../components/Banners/BotBanner/BotBanner';
 
 import { BaseInput } from '../../components/Inputs/BaseInput/BaseInput';
 import { BaseButton } from '../../components/Buttons/baseButton/BaseButton';
@@ -39,6 +41,7 @@ export const Profile = () => {
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
   const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData, refetchOnMountOrArgChange: true })
   const { goToProductDetailWithConstructedInput } = useProductNavigation()
+  const { runCaptcha, isBot, setIsBot } = useRecaptcha()
 
   // *** VALIDATION ***
   const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']
@@ -114,7 +117,6 @@ export const Profile = () => {
     }
   }, [isUploadImageError, isUploadImageSuccess, uploadImageError, apiDispatch, resetApiState, refetch])
 
-
   const strLocation = JSON.stringify(location)
   useEffect(() => {
     const location = JSON.parse(strLocation)
@@ -176,7 +178,6 @@ export const Profile = () => {
         })
       }
     }
-
     if (isUpdateSuccess) {
       showNotification({
         message: 'profile updated successfully'
@@ -190,13 +191,15 @@ export const Profile = () => {
     )
   }
 
-  const handleProductDetail = (slug: string) => {
-
-  }
-
   // TODO : use the form validation
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
+    const captchaToken = await runCaptcha(null)
+
+    if (!captchaToken) {
+      setIsBot(true)
+      return
+    }
     // check if form is valid
     if (!isFormValid) {
       showNotification({
@@ -204,7 +207,6 @@ export const Profile = () => {
       })
       return
     }
-
     const data = convertSnakeToCamelV2(profileData as IUserProfile)
 
     // omit fields if they are not changed
@@ -218,13 +220,20 @@ export const Profile = () => {
     const submitData = convertCamelToSnake({
       data: filteredData as Partial<IUserProfile>
     })
-    updateUserProfile(submitData as Partial<IUserProfile>)
+
+    updateUserProfile({
+      profile_data: submitData as Partial<IUserProfile>,
+      reCaptchaToken: captchaToken})
   }
-  // console.log("the data", profileData)
+
   if (!profileData) {
     return (
       <Outlet/>
     )
+  }
+
+  if (isBot) {
+    return <BotBanner/>
   }
 
   return (
@@ -274,7 +283,6 @@ export const Profile = () => {
           handleProductDetail={goToProductDetailWithConstructedInput}
         />
       </div>
-      {/* <Outlet/> */}
     </div>
   )
 }

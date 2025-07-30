@@ -1,11 +1,11 @@
 import { useEffect, SyntheticEvent } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { showNotification } from '../../components/Notifications/showNotification';
-import { useNavigate, Navigate } from 'react-router-dom';
-import styles from './login.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 import { setCredentials } from '../../features/auth/authSlice';
 import { useLoginMutation, useLoginDemoMutation } from '../../api/authApi';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useDispatch } from 'react-redux';
 import { useValidation } from '../../hooks/useValidation/useValidation';
 import { useLocaleStorage } from '../../hooks/useLocaleStorage';
@@ -13,8 +13,7 @@ import { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/type
 
 import { getLoginFields } from './getLoginFields';
 import { LoginRegisterForm } from './LoginRegisterForm';
-import { Button } from '../../UI/Button/Button';
-
+import { BotBanner } from '../../components/Banners/BotBanner/BotBanner';
 interface LoginData {
   access: string;
   refresh: string;
@@ -56,7 +55,7 @@ const {
   const [login, { data, isLoading, isError: isLoginError, isSuccess: isLoginSuccess, error: loginError }] = useLoginMutation()
   const [demoLogin, { data: demoLoginData, isLoading: isDemoLoading, isError: isErrorDemoLogin, isSuccess: isDemoLoginSuccess, error: demoError }] = useLoginDemoMutation()
   const loginFields = getLoginFields(handleEmailChange, handlePasswordChange, email, password, handleInputBlur, emailError, passwordError)
-
+  const { runCaptcha } = useRecaptcha()
 
   // TODO: have to return one type of errors from server and remove this crap
   const handleErrorNotifications = (error: Error) => {
@@ -135,11 +134,11 @@ const {
 
   }, [isLoginSuccess, isDemoLoginSuccess, isLoginError, isErrorDemoLogin, navigate, loginError])
 
-
   const handleDemoLogin = async (e: SyntheticEvent) => {
     e.preventDefault()
+    const reCaptchaToken = await runCaptcha('login')
 
-    const data = await demoLogin().unwrap() as LoginData
+    const data = await demoLogin({ reCaptchaToken }).unwrap() as LoginData
     const { username, email: userEmail, uuid } = jwtDecode<JwtPayload>(data.access)
     const user = username ? username : userEmail
 
@@ -152,8 +151,9 @@ const {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
+    const reCaptchaToken = await runCaptcha('login')
 
-    const data = await login({ email, password }).unwrap() as LoginData
+    const data = await login({ email, password, reCaptchaToken }).unwrap() as LoginData
     const { username, email: userEmail, uuid } = jwtDecode<JwtPayload>(data.access)
     const user = username ? username : userEmail
 
