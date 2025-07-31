@@ -11,13 +11,14 @@ export const useCalculateShippingCosts = () => {
   const [calculateShippingCosts, {data: shippingCostsData, isSuccess: isShippingCostsSuccess, error: shippingCostsError, isError: isShippingCostsError, isLoading: isShippingCostsLoading}] = useCalculateShippingCostsMutation()
   // omit the fields that are not needed
 
-  const calculateShipping = async (items: ICartItem[], validatedFields: Record<string, Field>) => {
+  const calculateShipping = async (items: ICartItem[], validatedFields: Record<string, Field>, recaptchaToken: string) => {
     const filteredItems = prepareCartItems(items)
 
     try {
       const res = await calculateShippingCosts({
         city: validatedFields.city.value,
         zipCode: validatedFields.zipCode.value,
+        recaptchaToken,
         items: filteredItems
       })
 

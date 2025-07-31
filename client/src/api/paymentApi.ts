@@ -14,6 +14,7 @@ interface IPaymentResponse {
 
 interface IPaymentData {
   planId: string;
+  recaptchaToken: string;
 }
 
 export const paymentApi = createApi({
@@ -47,7 +48,6 @@ export const paymentApi = createApi({
       }),
       transformResponse: (res) => {
         const plans = [ ...res.plans ]
-        console.log("the plans", plans)
         const camelPlans = convertSnakeToCamelArray(plans)
         return {
           taxRate: res.tax_rate,

@@ -191,12 +191,23 @@ export const Profile = () => {
     )
   }
 
+  const handleImageUpload = async (data: FormData) => {
+    const recaptchaToken = await runCaptcha(null)
+
+    if (!recaptchaToken) {
+      setIsBot(true)
+      return
+    }
+
+    uploadProfileImage({formData: data, recaptchaToken})
+  }
+
   // TODO : use the form validation
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
-    const captchaToken = await runCaptcha(null)
+    const recaptchaToken = await runCaptcha(null)
 
-    if (!captchaToken) {
+    if (!recaptchaToken) {
       setIsBot(true)
       return
     }
@@ -223,7 +234,7 @@ export const Profile = () => {
 
     updateUserProfile({
       profile_data: submitData as Partial<IUserProfile>,
-      reCaptchaToken: captchaToken})
+      recaptchaToken})
   }
 
   if (!profileData) {
@@ -259,7 +270,7 @@ export const Profile = () => {
           <div className={styles.imageContainer}>
             {profileData?.image && (
               <ProfileImage
-                handleImageUpLoad={(data) => uploadProfileImage(data)}
+                handleImageUpLoad={(data) => handleImageUpload(data)}
                 imageUrl={profileData.image}/>
             )}
 

@@ -15,10 +15,11 @@ else
     echo "docker is allready running"
 fi
 
+cd ../docker
+
 qutebrowser &
 drawio &
 chromium &
 # dbeaver &
 
-cd ../docker
 

@@ -80,7 +80,7 @@ class UserProfileUpdate(UserUpdateMixin, RecaptchaVerifyMixin, generics.UpdateAP
 
     def patch(self, request, *args, **kwargs):
         print("inside the patch method")
-        recaptcha_error_repsonse = self.verify_or_error_response(request)
+        recaptcha_error_repsonse = self.verify_captcha_or_error_response(request)
 
         if recaptcha_error_repsonse:
             return recaptcha_error_repsonse

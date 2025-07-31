@@ -14,9 +14,8 @@ import { BotBanner } from '../../../components/Banners/BotBanner/BotBanner'
 export const Register = () => {
   const [username, setUsername] = useState('')
   const [register, {data, isLoading, isError, isSuccess, error}] = useRegisterMutation()
-  const [isBot, setIsBot ] = useState(true)
   const navigate = useNavigate()
-  const { runCaptcha } = useRecaptcha()
+  const { runCaptcha, isBot, setIsBot } = useRecaptcha()
 
   const {
     email,
@@ -36,6 +35,7 @@ export const Register = () => {
     setUsername(value)
   }
 
+  const uid = data?.uid
   useEffect(() => {
     let timeoutid: TimeoutId;
     if (isError) {
@@ -61,6 +61,7 @@ export const Register = () => {
       })
     }
 
+
     if (isSuccess) {
       showNotification({
         appearFrom: 'from-top',
@@ -71,11 +72,11 @@ export const Register = () => {
       })
 
       timeoutid = setTimeout(() => {
-        navigate(`/activate/${data.uid}`, { replace: false })
+        navigate(`/activation-pending/${uid}`, { replace: false })
       }, 1600)
     }
     return () => clearTimeout(timeoutid)
-  }, [isError, error, isSuccess, navigate])
+  }, [isError, error, isSuccess, navigate, uid])
 
   // getRegisterFields
   const registerFields = getRegisterFields({
@@ -112,7 +113,6 @@ export const Register = () => {
 
   if (isBot) {
     return <BotBanner/>
-
   }
 
   return (

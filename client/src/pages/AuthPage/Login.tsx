@@ -136,9 +136,9 @@ const {
 
   const handleDemoLogin = async (e: SyntheticEvent) => {
     e.preventDefault()
-    const reCaptchaToken = await runCaptcha('login')
+    const recaptchaToken = await runCaptcha('login')
 
-    const data = await demoLogin({ reCaptchaToken }).unwrap() as LoginData
+    const data = await demoLogin({ recaptchaToken }).unwrap() as LoginData
     const { username, email: userEmail, uuid } = jwtDecode<JwtPayload>(data.access)
     const user = username ? username : userEmail
 
@@ -151,9 +151,9 @@ const {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
-    const reCaptchaToken = await runCaptcha('login')
+    const recaptchaToken = await runCaptcha('login')
 
-    const data = await login({ email, password, reCaptchaToken }).unwrap() as LoginData
+    const data = await login({ email, password, recaptchaToken }).unwrap() as LoginData
     const { username, email: userEmail, uuid } = jwtDecode<JwtPayload>(data.access)
     const user = username ? username : userEmail
 

@@ -16,8 +16,8 @@ export { DeliveryTerms } from './DeliveryTerms/DeliveryTerms'
 export { TermsOfUse } from './TermsOfUse/TermsOfUse'
 export { Checkout } from './Checkout/Checkout';
 export { Activation } from './Activation/Activation';
-export { ActivationSuccess } from './Activation/ActivationSuccess'
 export { Orders } from './Orders/Orders';
 export { ShippingCosts } from './Checkout/ShippingCosts/ShippingCosts'
 export { OrderSuccess } from './Orders/OrderSuccess/OrderSuccess';
 export { RatingsCreate } from './Ratings/RatingsCreate/RatingsCreate';
+export { ActivationPending } from './Activation/ActivationPending'

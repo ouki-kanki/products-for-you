@@ -8,8 +8,6 @@ export interface UiState {
 const sidebarStateFromStorage = localStorage.getItem("is_sidebar_hidden")
 const isMobile = window.innerWidth < 431
 
-console.log("inside the slice", isMobile)
-
 const initialState: UiState = {
   isSidebarHidden: sidebarStateFromStorage ? JSON.parse(sidebarStateFromStorage) : isMobile,
   isCartModalOpen: false

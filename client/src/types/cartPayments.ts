@@ -45,7 +45,8 @@ export interface IshippingData {
   city: string;
   zipCode: string;
   coutry?: string;
-  items: CartItemForServer[]
+  items: CartItemForServer[];
+  recaptchaToken: string;
 }
 
 export interface IShippingCosts {

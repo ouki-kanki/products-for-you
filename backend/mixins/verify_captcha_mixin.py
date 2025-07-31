@@ -27,7 +27,7 @@ class RecaptchaVerifyMixin:
 
         # TODO: verify score in relation with the type of action
 
-    def verify_or_error_response(self, request, action=None):
+    def verify_captcha_or_error_response(self, request, action=None):
         """_summary_
 
         Args:
@@ -37,7 +37,7 @@ class RecaptchaVerifyMixin:
         Returns:
             Response: the response with the error
         """
-        token = request.data.get("reCaptchaToken")
+        token = request.data.get("recaptchaToken")
 
         try:
             self._verify_recaptcha(token, action)

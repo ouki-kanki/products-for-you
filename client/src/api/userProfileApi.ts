@@ -26,13 +26,17 @@ export const userProfileApi = createApi({
         formData: true
       })
     }),
-    uploadProfileImage: builder.mutation<void, FormData>({
-      query: (formData) => ({
-        url: 'user-control/profile/upload-image',
-        method: 'PATCH',
-        body: formData as FormData,
-        formData: true
-      })
+    uploadProfileImage: builder.mutation<{ imageUrl: string }, { formData: FormData, recaptchaToken: string}>({
+      queryFn: async ({ formData: formDataPayload, recaptchaToken }, _queryApi, _extraOptions, baseQuery) => {
+        return await baseQuery({
+          url: 'user-control/profile/upload-image',
+          method: 'PATCH',
+          body: formDataPayload as FormData,
+          headers: {
+            'X-Recaptcha-Token': recaptchaToken
+          }
+        })
+      },
     })
   })
 })

@@ -35,7 +35,7 @@ export type IUserProfile = IUserProfileBase & Record<string, string>
 
 interface UpdateData {
   profile_data: Partial<IUserProfile>;
-  reCaptchaToken: string;
+  recaptchaToken: string;
 }
 
 export const userApi = authBaseApi.injectEndpoints({
@@ -47,12 +47,12 @@ export const userApi = authBaseApi.injectEndpoints({
       },
     }),
     updateUserProfile: builder.mutation<void, UpdateData>({
-      query: ({ profile_data, reCaptchaToken }) => ({
+      query: ({ profile_data, recaptchaToken }) => ({
         url: 'user-control/profile/update',
         method: 'PATCH',
         body: {
           profile_data,
-          reCaptchaToken
+          recaptchaToken
         }
       })
     }),

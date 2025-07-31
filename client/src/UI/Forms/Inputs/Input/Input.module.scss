@@ -2,7 +2,7 @@
   display: flex;
   width: 270px;
   flex-direction: column;
-  
+
   label {
     align-self: flex-start;
   }
@@ -31,15 +31,19 @@
   font-size: medium;
   font-weight: bold;
   transition: border .1s ease-out;
-  
+
+  :global(.dark-theme) & {
+    color: #555;
+  }
+
   &:hover {
     border: 3px solid #a7a7a7;
   }
-  
+
   &:focus {
     outline: none;
   }
-  
+
   &::placeholder {
     // color: $search_color_primary;
     color: #bdbdbd;
