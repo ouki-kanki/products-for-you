@@ -18,6 +18,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.tokens import AccessToken
 
+from e_shop.throttling.resend_email import ResendEmailThrottle
 from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
 from mixins.verify_captcha_mixin import RecaptchaVerifyMixin
@@ -181,21 +182,31 @@ class RegistrationView(APIView):
 
 
 class ResendEmailView(APIView):
+    throttle_classes = [ResendEmailThrottle]
+
     def get(self, request, *args, **kwargs): # noqa
         uidb64 = kwargs.get('user_id')
         uid = force_str(urlsafe_base64_decode(uidb64))
 
         # check if the user exists and send an email
         user = User.objects.get(pk=uid)
-        print("the user email", user.email)
 
         if not user:
             return Response({
-                "message": 'server error'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                "message": 'user not found'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        # send email
-        send_activation_email(request, user)
+        if user.is_verified:
+            return Response({
+                "message": 'user is allready verified'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # try:
+        #     send_activation_email(request, user)
+        # except ActivationEmailError as e:
+        #     return Response({
+        #         "message": str(e)
+        #     }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({
             "message": 'email was send',

@@ -202,10 +202,18 @@ REST_FRAMEWORK = {
         'anon': '6/second',
         'user': '1000/day',
         'cart_limit': '2/second',
+        'resend_email': '2/minute',
         # 'cart_limit': '20/minute'
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
+}
+
+# THROTTLE - INTERVALS
+
+# all in seconds
+THROTTLE_INTERVALS = {
+    'resend_email': 30
 }
 
 
