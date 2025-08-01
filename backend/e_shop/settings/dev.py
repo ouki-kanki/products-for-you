@@ -4,7 +4,7 @@ from .settings import *
 from decouple import config
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.240.3.1', '192.168.100.4']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.240.3.1', '192.168.100.27']
 CORS_ALLOWED_ORIGINS += ["http://172.240.3.1"]
 CSRF_TRUSTED_ORIGINS += ["http://172.240.3.1"]
 

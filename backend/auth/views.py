@@ -1,6 +1,5 @@
-from urllib.parse import urlparse
+import binascii
 from jsonschema import ValidationError
-import requests
 from decouple import config
 
 from django.db.utils import IntegrityError
@@ -16,11 +15,14 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.tokens import AccessToken
 
+from e_shop.throttling.resend_email import ResendEmailThrottle
 from user_control.serializers import UserSerializer
 from user_control.models import CustomUser as User
+from mixins.verify_captcha_mixin import RecaptchaVerifyMixin
+from exceptions.custom_exceptions import ActivationEmailError
 
 from .serializers import (
     MyTokenObtainSerializer, MyDemoTokenObtainSerializer,
@@ -28,12 +30,16 @@ from .serializers import (
 from .auth_utils import send_activation_email
 
 
-class MyTokenObtainPairView(TokenObtainPairView):
+class MyTokenObtainPairView(RecaptchaVerifyMixin, TokenObtainPairView):
     """ login -> get a pair of access and refresh tokens """
     serializer_class = MyTokenObtainSerializer
 
-    # def get_queryset(self):
     def post(self, request, *args, **kwargs):
+        recaptcha_error_response = self.verify_captcha_or_error_response(request, action='login')
+
+        if recaptcha_error_response:
+            return recaptcha_error_response
+
         response = super().post(request, *args, **kwargs)
         refresh_token = response.data['refresh']
         response.set_cookie(
@@ -49,10 +55,19 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 # TODO: demo-user
 # mark the demo user as active
-class DemoTokenObtainPairView(APIView):
+class DemoTokenObtainPairView(RecaptchaVerifyMixin, APIView):
+    """ logins a demo account
 
+    Args:
+        reCaptchaToken: recaptcha token from client
+    """
     # create a demo user
     def post(self, request, *args, **kwargs):
+        recaptcha_error_response = self.verify_captcha_or_error_response(request, action='login')
+
+        if recaptcha_error_response:
+            return recaptcha_error_response
+
         try:
             demo_user, created = User.objects.get_or_create(
                 username='demo_user',
@@ -155,29 +170,43 @@ class RegistrationView(APIView):
             response_data = serializer.data
             response_data['uid'] = urlsafe_base64_encode(force_bytes(user.pk))
 
-            send_activation_email(request, user)
+            try:
+                send_activation_email(request, user)
+            except ActivationEmailError as e:
+                return Response({
+                    "message": str(e)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ResendEmailView(APIView):
+    throttle_classes = [ResendEmailThrottle]
+
     def get(self, request, *args, **kwargs): # noqa
         uidb64 = kwargs.get('user_id')
         uid = force_str(urlsafe_base64_decode(uidb64))
-        print("the user id", uid)
 
         # check if the user exists and send an email
         user = User.objects.get(pk=uid)
-        print("the user email", user.email)
 
         if not user:
             return Response({
-                "message": 'server error'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                "message": 'user not found'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        # send email
-        send_activation_email(request, user)
+        if user.is_verified:
+            return Response({
+                "message": 'user is allready verified'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # try:
+        #     send_activation_email(request, user)
+        # except ActivationEmailError as e:
+        #     return Response({
+        #         "message": str(e)
+        #     }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({
             "message": 'email was send',
@@ -186,40 +215,44 @@ class ResendEmailView(APIView):
 
 class ActivateUserView(APIView):
     """
-    activate the user and
-    send signal to the client to redirect the user
-    to login page
+    extract the user_id and activate the user
     """
     def get(self, request, *args, **kwargs): # noqa
-        uidb64 = kwargs.get('token')
+        token_str = request.query_params.get("token")
+        if not token_str:
+            return Response({
+                "message": 'token is missing cannot activate'
+            }, status=status.HTTP_400_BAD_REQUEST)
         try:
-            uid = force_str(urlsafe_base64_decode(uidb64))
-            print("the user id", uid)
-            user = User.objects.get(pk=uid)
-            print("the user", user)
+            token = AccessToken(token_str)
+        except (TokenError, InvalidToken):
+            return Response({
+                "message": 'invalid or expired token'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-            # TODO if user is not found raise error
+        try:
+            uidb64 = token.get("user_id")
+            uid = force_str(urlsafe_base64_decode(uidb64))
+        except (binascii.Error, UnicodeDecodeError):
+            return Response({
+                "message": "Invalid base64-econded user-id"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({
+                "message": "User ID could not be decoded"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = User.objects.get(pk=uid)
             user.is_verified = True
             user.save()
+        except User.DoesNotExist:
+            return Response({
+                "message": "user does not exist, could not activate"
+            }, status=status.HTTP_404_NOT_FOUND)
 
-        except Exception:
-            user = None
-            return Response({'message': 'could not activate user'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        host = request.get_host()
-        domain = urlparse(f'//{host}').hostname
-        print("domain", domain)
-
-        try:
-            response = requests.post(
-                f'http://{domain}:8765/activate_user',
-                timeout=5
-            )
-            response.raise_for_status()
-            return Response(response.json(), status=status.HTTP_200_OK)
-        except requests.exceptions.RequestException as e:
-            print("server error", e)
-            return Response({'message': 'service is not available'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        return Response({
+            "message": 'user activated'
+        }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

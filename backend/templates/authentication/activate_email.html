@@ -17,7 +17,7 @@
         <p>Use the following link to activate the account now!</p>
 {#        <a href="http://{{ domain }}{% url 'api:auth:activate_user' uidb64=uid token=token %}">activate clown</a>#}
 {#        <a href="http://{{ domain }}{% url 'api:auth:activate_test' token=token %}">activate clown</a>#}
-        <a href="http://{{ domain }}/activation-success/{{ uidb64 }}">activate clown</a>
+        <a href="https://{{ domain }}/activate?token={{ token }}">activate clown</a>
     </body>
     </html>
 {% endautoescape %}

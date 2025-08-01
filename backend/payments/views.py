@@ -17,6 +17,7 @@ from inventory.models import Store
 from shopping_cart.models import Cart
 from shopping_cart.mixins import CartMixin, CartLockMixin
 from mixins.throtle_temp_ban_mixins import TempBanMixin
+from mixins.verify_captcha_mixin import RecaptchaVerifyMixin
 
 from .models import ShippingPlanOption, Location
 from .serializers import ShippingPlanOptionSerializer, LocationListSerializer
@@ -36,14 +37,19 @@ class LocationListview(APIView):
         }, status=status.HTTP_200_OK)
 
 
-class CalculateShippingCostsView(APIView):
+class CalculateShippingCostsView(APIView, RecaptchaVerifyMixin):
     """
     returns a list of available plans for the current region
     """
     def post(self, request): # noqa
+        recatcha_error_response = self.verify_captcha_or_error_response(request, action='checkout')
+
+        if recatcha_error_response:
+            return recatcha_error_response
+
         data = request.data
         destination_city = data.get('city', '').strip().lower()
-        destination_country = data.get('country', '').strip().lower()
+        # destination_country = data.get('country', '').strip().lower()
         items = data.get('items', [])
 
         if not destination_city:
@@ -86,7 +92,6 @@ class CalculateShippingCostsView(APIView):
                 ]
             }, status=status.HTTP_200_OK)
 
-        available_plans = []
         # TODO: call DHL API
         # check if dhl provides an api to calculate shipping costs
 
@@ -155,11 +160,7 @@ class CalculateShippingCostsView(APIView):
 
             option_data['cost'] = round(cost, 2)
             plans.append(option_data)
-        old_plans = plans
-        print(pickup_plan)
-        print("the plans", plans)
         plans.append(pickup_plan)
-        print("the new plans", plans)
 
         return Response({
             "plans": plans,
@@ -168,8 +169,15 @@ class CalculateShippingCostsView(APIView):
 
 # TODO: add support for paypal payments
 # TODO: store the amounts in cents in the shipping plan options
-class CreatePaymentIntentAPIView(APIView, CartLockMixin, TempBanMixin):
+class CreatePaymentIntentAPIView(APIView, CartLockMixin, TempBanMixin, RecaptchaVerifyMixin):
+
     def post(self, request): # noqa
+        print("the request", request.data)
+        captcha_error_response = self.verify_captcha_or_error_response(request, 'payment_add')
+
+        if captcha_error_response:
+            return captcha_error_response
+
         ban_response = self.ban_after_many_requests(request)
         if ban_response:
             return ban_response
@@ -196,9 +204,10 @@ class CreatePaymentIntentAPIView(APIView, CartLockMixin, TempBanMixin):
         except Exception as e:
             return exceptions.generic_exception(e)
 
-        return Response({
-            "message": 'test the api'
-        }, status=status.HTTP_202_ACCEPTED)
+        # REMOVE THIS FOR THE PAYMENT TO WORK !~!!
+        # return Response({
+        #     "message": 'test the api'
+        # }, status=status.HTTP_202_ACCEPTED)
 
         # take plan uuid  from the front and find the plan find the location and add to the total cost
         plan_option_id = request.data.get('planId')

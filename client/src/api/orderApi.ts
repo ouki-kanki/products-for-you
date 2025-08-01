@@ -38,6 +38,7 @@ export interface Order {
   paymentId: string;
   shippingPlanId: string;
   userDetails: UserDetailsOrder;
+  recaptchaToken: string;
 }
 
 interface OrderResponse {

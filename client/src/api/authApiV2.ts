@@ -3,6 +3,10 @@ import { BASE_URL } from "./baseConfig";
 import { LogoutData } from "./types";
 import { clearCredentials } from "../features/auth/authSlice";
 
+
+// TODO: this has to be moved to the auth api.
+// there were implication regarding the injected endpoints in
+// the original api and i had to move the logout endpoint here.
 export const authApiV2 = createApi({
   reducerPath: 'authApiV2',
   baseQuery: fetchBaseQuery({

@@ -1,3 +1,4 @@
+from functools import partial
 import logging
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -10,15 +11,16 @@ from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 
 from common.util.custom_pagination import CustomPageNumberPagination
+from common.permissions import IsAuthButNotDemo
 from products.models import ProductItem, FavoriteProductItem
 from products.serializers import FavoriteProductItemSerializer, ProductItemExtendedSerializer
 from order.serializers import ShopOrderSerializerForClient
 from order.models import ShopOrder
+from mixins.verify_captcha_mixin import RecaptchaVerifyMixin
 
 from .models import CustomUser as User, UserDetail
 from .serializers import UserSerializer, UserDetailSerializer
 from .mixins import UserUpdateMixin
-from common.permissions import IsAuthButNotDemo
 
 logger = logging.getLogger(__name__)
 
@@ -72,12 +74,23 @@ class UserProfileInsertView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class UserProfileUpdate(UserUpdateMixin, generics.UpdateAPIView):
+class UserProfileUpdate(UserUpdateMixin, RecaptchaVerifyMixin, generics.UpdateAPIView):
     permission_classes = [IsAuthenticated, IsAuthButNotDemo]
     serializer_class = UserDetailSerializer
 
-    def perform_update(self, serializer):
-        serializer.save()
+    def patch(self, request, *args, **kwargs):
+        print("inside the patch method")
+        recaptcha_error_repsonse = self.verify_captcha_or_error_response(request)
+
+        if recaptcha_error_repsonse:
+            return recaptcha_error_repsonse
+
+        profile_data = request.data.get('profile_data', {})
+        print(profile_data)
+        serializer = self.get_serializer(instance=self.get_object(), data=profile_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
 
 
 class UploadProfileImageView(UserUpdateMixin, generics.UpdateAPIView):

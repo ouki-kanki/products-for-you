@@ -25,17 +25,19 @@ import type { Stripe, StripeCardElement, StripeError, } from '@stripe/stripe-js'
 import type { Order } from '../../api/orderApi';
 import { PaymentIntentStatus, CheckoutBtnMode } from '../../enums';
 
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { useCalculateShippingCosts } from './hooks/useCalculateShippingCosts';
 import { isEmpty } from '../../utils/objUtils';
+import { BotBanner } from '../../components/Banners/BotBanner/BotBanner';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY as string)
-
 
 export const Checkout = () => {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { runCaptcha, isBot, setIsBot } = useRecaptcha()
 
   const [shippingPlan, setShippingPlan] = useState<ShippingPlan | null>(null)
   const [extraShippingDetails, setExtraShippingDetails] = useState('')
@@ -172,19 +174,34 @@ export const Checkout = () => {
       })
     }
 
-    const total = cart.total
     const items = cart.items
 
     if (mode === CheckoutBtnMode.calculateShipping) {
-      calculateShipping(items, validatedFields)
+      const recaptchaToken = await runCaptcha('checkout')
+
+      if (!recaptchaToken) {
+        setIsBot(true)
+        return
+      }
+      calculateShipping(items, validatedFields, recaptchaToken)
       return
     }
 
+    // **** PAYMENT ****
     try {
       // when the user clicks procced to payment
       setIsLoading(true)
+
+      const recaptchaToken = await runCaptcha('payment_add')
+
+      if (!recaptchaToken) {
+        setIsBot(true)
+        setIsLoading(false)
+        return
+      }
+
       const { planOptionId } = shippingPlan as ShippingPlan
-      const { client_secret } = await createPaymentIntent({ planId: planOptionId }).unwrap()
+      const { client_secret } = await createPaymentIntent({ planId: planOptionId, recaptchaToken }).unwrap()
       const { firstName, lastName, userEmail, city, state, country, shippingAddress, billingAddress, zipCode, phoneNumber } = validatedFields
 
       const paymentMethodReq = await stripeRef?.createPaymentMethod({
@@ -204,6 +221,7 @@ export const Checkout = () => {
         }
       })
 
+
       if (!isEmpty(paymentMethodReq?.error as StripeError)) {
         setIsLoading(false)
         showNotification({
@@ -213,6 +231,7 @@ export const Checkout = () => {
         return
       }
 
+      // paymentIntent has to return the client secret
       if (isEmpty(paymentMethodReq as Record<string, unknown>) || !client_secret) {
         setIsLoading(false)
         showNotification({
@@ -226,6 +245,8 @@ export const Checkout = () => {
       const confirmedCardPayment = await stripeRef?.confirmCardPayment(client_secret, {
         payment_method: paymentMethodReq.paymentMethod?.id as string,
       })
+
+      console.log("the confirmed payment", confirmedCardPayment)
 
       const copyCart = { ...cart, items: prepareCartItems([...cart.items])}
 
@@ -296,6 +317,10 @@ export const Checkout = () => {
       }
 
     }
+  }
+
+  if (isBot) {
+    return <BotBanner/>
   }
 
   return (

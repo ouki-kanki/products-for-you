@@ -26,8 +26,8 @@ urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register_user'),
 
     # TODO: change it and use it
-    path('activate-user/<token>', ActivateUserView.as_view(), name='activate_user'),
-    path('resend-email/<user_id>', ResendEmailView.as_view(), name='resend_email'),
+    path('activate-user/', ActivateUserView.as_view(), name='activate_user'),
+    path('resend-email/<str:user_id>', ResendEmailView.as_view(), name='resend_email'),
 
     path('activation-form/', view_activation_template, name='get_activation_form'),
 ]

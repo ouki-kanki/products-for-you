@@ -1,71 +1,61 @@
-import { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { BASE_SOCKET_URL } from '../../api/baseConfig'
-import { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { showNotification } from '../../components/Notifications/showNotification'
 import { useLazyResendEmailQuery } from '../../api/authApi'
+import { useActivateUserQuery } from '../../api/authApi'
+import { jwtDecode } from 'jwt-decode'
+import { Spinner } from '../../components/Spinner/Spinner'
 
+interface DecodedToken {
+  user_id: string;
+}
 
 export const Activation = () => {
   const navigate = useNavigate()
-  const { user_id } = useParams()
-  const [trigger] = useLazyResendEmailQuery()
+  const [ searchParams ] = useSearchParams()
+  const token = searchParams.get("token")
 
+  const [ userId, setUserId ] = useState<string | null>(null)
+  const [resendEmail] = useLazyResendEmailQuery()
+  const { data: VerificationData, isLoading: verificationLoading, isError: verificationError, isSuccess: verificationSuccess } = useActivateUserQuery(token as string)
 
-  // effect on success navigate to login
+  console.log("the user id", userId)
+
   useEffect(() => {
-    let timeoutid: TimeoutId
-    const socket = new WebSocket(`${BASE_SOCKET_URL}`)
+    if (!token) return;
 
-    socket.onopen = () => {
-      console.log("connection established")
+    const decodedToken = jwtDecode<DecodedToken>(token)
+    setUserId(decodedToken.user_id)
+  },[token])
+
+  useEffect(() => {
+    if (verificationSuccess) {
+      showNotification({
+        'message': 'account activated'
+      })
+      navigate('/login')
     }
 
-    socket.addEventListener("message", (e) => {
-      console.log("the message from server", e.data, e.source)
-    })
-
-    socket.onmessage = (message) => {
-      console.log("the message", message)
-      const { data } = message
-
-      if (data === 'user_activated') {
-
-        timeoutid = setTimeout(() => {
-          showNotification({
-            appearFrom: 'from-bottom',
-            duration: 2000,
-            hideDirection: 'to-bottom',
-            message: 'User activated.You may login',
-            position: 'bottom-right'
-          })
-          navigate('/login')
-        }, 1200)
-      }
+    if (verificationError) {
+      showNotification({
+        message: 'could not activate the acount',
+        type: 'danger'
+      })
     }
+  }, [verificationSuccess, verificationError, navigate])
 
-    socket.onclose = () => {
-      console.log("connection closed")
-    }
-
-    return () => {
-      socket.close()
-      clearTimeout(timeoutid)
-    }
-  }, [navigate])
-
-  const handleResendEmail = (uid: string) => {
-    if (uid) {
-      trigger(uid)
+  const handleResendEmail = (userId: string) => {
+    if (userId) {
+      resendEmail(userId)
     }
   }
 
   return (
     <div>
-      <h1>Account activation</h1>
-      <p>Please use the link in the email that was send to you to activate the account</p>
+      <h1>Activating Account</h1>
+      <Spinner/>
       <br />
-      <a href="#" onClick={() => handleResendEmail(user_id as string)}>resend activation email</a>
+      <a href="#" onClick={() => handleResendEmail(userId as string)}>resend activation email</a>
     </div>
   )
 }

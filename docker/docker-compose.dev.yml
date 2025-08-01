@@ -2,15 +2,13 @@ version: '3.8'
 
 services:
   client:
-    image: client-dev-image
+    image: client-dev-image:latest
     build:
       dockerfile: Dockerfile.dev
     container_name: client-dev-container
     volumes:
       - ../client:/client
       - node_modules:/client/node_modules/
-    # ports:
-      # - "5173:5173"
     environment:
       - NODE_ENV=development
     extends:

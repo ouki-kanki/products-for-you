@@ -1,8 +1,8 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-from decouple import config
 from urllib.parse import quote_plus as urlquote
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR project_root/e-shop
@@ -12,6 +12,7 @@ SITE_URL = 'http://localhost:5173'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_API_KEY")
+RECAPTCHA_SECRET_KEY = config("RECAPTCHA_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
@@ -201,10 +202,18 @@ REST_FRAMEWORK = {
         'anon': '6/second',
         'user': '1000/day',
         'cart_limit': '2/second',
+        'resend_email': '2/minute',
         # 'cart_limit': '20/minute'
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
+}
+
+# THROTTLE - INTERVALS
+
+# all in seconds
+THROTTLE_INTERVALS = {
+    'resend_email': 30
 }
 
 

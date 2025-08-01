@@ -1,5 +1,7 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useRecaptcha } from '../../../hooks/useRecaptcha'
+
 import { LoginRegisterForm } from '../LoginRegisterForm'
 import { useValidation } from '../../../hooks/useValidation/useValidation'
 import { getRegisterFields } from '../getRegisterFields'
@@ -7,15 +9,14 @@ import { getRegisterFields } from '../getRegisterFields'
 import { useRegisterMutation } from '../../../api/authApi'
 import { showNotification } from '../../../components/Notifications/showNotification'
 import { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types'
-import styles from './register.module.scss';
-
+import { BotBanner } from '../../../components/Banners/BotBanner/BotBanner'
 
 export const Register = () => {
   const [username, setUsername] = useState('')
-  const [userId, setUserId] = useState('')
   const [register, {data, isLoading, isError, isSuccess, error}] = useRegisterMutation()
   const navigate = useNavigate()
-  // useValidation
+  const { runCaptcha, isBot, setIsBot } = useRecaptcha()
+
   const {
     email,
     emailError,
@@ -34,6 +35,7 @@ export const Register = () => {
     setUsername(value)
   }
 
+  const uid = data?.uid
   useEffect(() => {
     let timeoutid: TimeoutId;
     if (isError) {
@@ -59,6 +61,7 @@ export const Register = () => {
       })
     }
 
+
     if (isSuccess) {
       showNotification({
         appearFrom: 'from-top',
@@ -69,13 +72,11 @@ export const Register = () => {
       })
 
       timeoutid = setTimeout(() => {
-        navigate(`/activate/${data.uid}`, { replace: false })
+        navigate(`/activation-pending/${uid}`, { replace: false })
       }, 1600)
     }
-
     return () => clearTimeout(timeoutid)
-
-  }, [isError, error, isSuccess, navigate])
+  }, [isError, error, isSuccess, navigate, uid])
 
   // getRegisterFields
   const registerFields = getRegisterFields({
@@ -95,6 +96,12 @@ export const Register = () => {
 
   const handleRegister = async (e: SyntheticEvent) => {
     e.preventDefault()
+    const token =  await runCaptcha('signup')
+
+    if (!token) {
+      setIsBot(true)
+      return
+    }
 
     await register({
       email,
@@ -104,6 +111,9 @@ export const Register = () => {
     })
   }
 
+  if (isBot) {
+    return <BotBanner/>
+  }
 
   return (
       <LoginRegisterForm

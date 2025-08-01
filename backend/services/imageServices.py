@@ -23,7 +23,7 @@ def generate_thumbnail_v2(instance, image_field, suffix, size=(300, 200)):
         return
 
     original_image = Image.open(getattr(instance, image_field))
-    image = original_image.convert("RGB")    
+    image = original_image.convert("RGB")
     image.thumbnail(size, Image.LANCZOS)
     temp_thumb = BytesIO()
     image.save(temp_thumb, "PNG")
@@ -43,10 +43,10 @@ def generate_thumbnail_v2(instance, image_field, suffix, size=(300, 200)):
 def remove_background(input_image_field, output_path, col_low=(0, 0, 100), col_up=(50, 50, 255)):
     if not input_image_field:
         return
-    
+
     image = cv2.imread(input_image_field.path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
+
     # second approach .needs refinement
     # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     # mask = cv2.inRange(hsv, col_low, col_up)
@@ -61,7 +61,7 @@ def remove_background(input_image_field, output_path, col_low=(0, 0, 100), col_u
     cv2.imwrite(output_path, result)
 
 
-# OBSOLETE FOR REMOVE 
+# OBSOLETE FOR REMOVE
 def compare_images_delete_prev_if_not_same(instance, old_instance, name_of_image_field: str, **kwargs) -> bool:
     """
     compares the prev and currenct instance on the provided field and if they are not the same it deletes the image from disk
@@ -83,9 +83,9 @@ def compare_images_delete_prev_if_not_same(instance, old_instance, name_of_image
             print(f"file not found in {old_image_path}")
         except Exception as e:
             print("there was an error", e)
-    
+
     return is_same
-    
+
 
 def delete_image_from_filesystem(instance, name_of_field):
     """
@@ -100,4 +100,4 @@ def delete_image_from_filesystem(instance, name_of_field):
             os.remove(item_path)
     except Exception as e:
         # TODO: throw an error and catch it in the manager to so in the admin some notif
-        print("yo cannot del")    
+        print("yo cannot del")

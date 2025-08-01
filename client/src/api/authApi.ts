@@ -6,7 +6,8 @@ import type { LogoutData } from "./types";
 
 export interface LoginCreds {
   email: string;
-  password: string
+  password: string;
+  recaptchaToken: string | null;
 }
 
 interface JwtPayload {
@@ -14,8 +15,6 @@ interface JwtPayload {
   user_id: number;
   uuid: string;
 }
-
-
 
 interface RegisterData {
   username?: string;
@@ -34,19 +33,23 @@ interface RegisterReturnData {
 export const authApi = authBaseApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation({
-      query: ({ email, password }: LoginCreds) => ({
+      query: ({ email, password, recaptchaToken }: LoginCreds) => ({
         url: '/auth/token/',
         method: 'POST',
         body: {
           email,
-          password
+          password,
+          recaptchaToken
         }
       })
     }),
     loginDemo: builder.mutation({
-      query: () => ({
+      query: ({ recaptchaToken }) => ({
         url: '/auth/token/demo',
-        method: 'POST'
+        method: 'POST',
+        body: {
+          recaptchaToken
+        }
       })
     }),
     // cookie is http, clear it on the server
@@ -102,8 +105,8 @@ export const authApi = authBaseApi.injectEndpoints({
       }),
     }),
     activateUser: builder.query<void, string>({
-      query: (uidb64) => ({
-        url: `auth/activate-user/${uidb64}`
+      query: (token) => ({
+        url: `auth/activate-user?token=${token}`
       })
     }),
     resendEmail: builder.query<void, string>({
@@ -122,4 +125,5 @@ export const {
   useRegisterMutation,
   useLazyActivateUserQuery,
   useLazyResendEmailQuery,
+  useActivateUserQuery
 } = authApi

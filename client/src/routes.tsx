@@ -10,7 +10,6 @@ import { Home,
   Login,
   Register,
   Activation,
-  ActivationSuccess,
   Profile,
   ErrorPage,
   LandingPage,
@@ -21,7 +20,8 @@ import { Home,
   Orders,
   ShippingCosts,
   OrderSuccess,
-  RatingsCreate
+  RatingsCreate,
+  ActivationPending
  } from './pages'
 import { Search } from './pages/Search';
 import { PersistLogin } from './features/auth/PersistLogin';
@@ -62,8 +62,8 @@ export const EcommerceRoutes = () => (
       </Route>
       <Route path='login' element={<Login/>}/>
       <Route path='sign-up' element={<Register/>}/>
-      <Route path='activate/:user_id' element={<Activation/>}/>
-      <Route path='activation-success/:uidb64' element={<ActivationSuccess/>}/>
+      <Route path='/activate' element={<Activation/>}/>
+      <Route path='/activation-pending/:uid' element={<ActivationPending/>}/>
     </Route>
   </Routes>
 )

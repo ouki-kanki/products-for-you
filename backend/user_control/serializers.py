@@ -5,6 +5,7 @@ from common.validators.field_validators import is_numeric
 
 from .models import CustomUser, UserDetail
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -41,14 +42,14 @@ class UserDetailSerializer(serializers.ModelSerializer):
             return obj.get('email', None)
         return obj.email
 
-    def validate(self, data):
+    def validate(self, attrs):
         number_fields = ('phone_number', 'cell_phone_number')
         for field in number_fields:
-            value = data.get(field, '')
+            value = attrs.get(field, '')
             if value == '':
                 continue
             is_numeric(value, field)
-        return data
+        return attrs
 
     def validate_image(self, value): # noqa
         if value and not value.content_type.startswith('image/'):

@@ -33,6 +33,11 @@ type orderParams = {
 
 export type IUserProfile = IUserProfileBase & Record<string, string>
 
+interface UpdateData {
+  profile_data: Partial<IUserProfile>;
+  recaptchaToken: string;
+}
+
 export const userApi = authBaseApi.injectEndpoints({
   endpoints: builder => ({
     getUserProfile: builder.query<IUserProfile, void>({
@@ -41,11 +46,14 @@ export const userApi = authBaseApi.injectEndpoints({
           return convertSnakeToCamelV2(response)
       },
     }),
-    updateUserProfile: builder.mutation<void, Partial<IUserProfile>>({
-      query: (body) => ({
+    updateUserProfile: builder.mutation<void, UpdateData>({
+      query: ({ profile_data, recaptchaToken }) => ({
         url: 'user-control/profile/update',
         method: 'PATCH',
-        body
+        body: {
+          profile_data,
+          recaptchaToken
+        }
       })
     }),
     getOrders: builder.query<Iorder, orderParams>({
