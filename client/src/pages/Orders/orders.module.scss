@@ -59,6 +59,12 @@
   width: 100%;
   overflow-x: auto;
   // margin-bottom: 20px;
+  button {
+    padding-inline: 10px;
+    padding-block: 5px;
+    outline: none;
+    border: none;
+  }
 }
 
 .status {
@@ -70,3 +76,4 @@
     color: tomato;
   }
 }
+

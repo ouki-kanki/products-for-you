@@ -158,9 +158,14 @@ class LogOutView(APIView):
         return response
 
 
-class RegistrationView(APIView):
+class RegistrationView(RecaptchaVerifyMixin, APIView):
     """ register the user and send an activation email, redirects the user to the activation page """
     def post(self, request): # noqa
+        recaptcha_error_response = self.verify_captcha_or_error_response(request, action='signup')
+
+        if recaptcha_error_response:
+            return recaptcha_error_response
+
         serializer = RegistrationSerializer(data=request.data)
 
         # TODO: if email cannot be send the user will get an error that something went wrong but the registration /

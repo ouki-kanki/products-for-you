@@ -28,6 +28,7 @@ import { userProfileFields } from './userProfileFields';
 
 import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { notEmptyValidator, phoneValidator } from '../../hooks/validation/validators';
+import { Button } from '../../UI/Button/Button';
 
 // TOOD: move to types. check if it allready exists
 type Error = {
@@ -247,9 +248,16 @@ export const Profile = () => {
     return <BotBanner/>
   }
 
+  const testNotification = () => {
+    showNotification({
+      "message": "test notification"
+    })
+  }
+
   return (
     <div className={styles.profileContainer}>
       <h1>User Profile</h1>
+      <Button onClick={testNotification}>test</Button>
       <div className={styles.mainContainer}>
         <form className={styles.left}>
           {userProfileFields.filter(field => field.name !== 'image').map(field => (

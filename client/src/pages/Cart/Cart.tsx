@@ -98,6 +98,9 @@ export const Cart = () => {
     )
   }
 
+  // TODO: discount is not caluclated in this page
+  // if the item has discount the Subtotal is the discounted price
+  // it is better to show theprice before discount and then apply the discount if there is any
   return (
     <div className={styles.container}>
       <h2>Your Items</h2>
@@ -159,7 +162,7 @@ export const Cart = () => {
             </div>
             <div className={styles.totalFinal}>
               <div>Total: </div>
-              <div>{cart.total}<span>€</span></div>
+              <div>{cart.total + (cart.total * 0.24)}<span>€</span></div>
             </div>
             <div className={styles.BtnContainer}>
               <button

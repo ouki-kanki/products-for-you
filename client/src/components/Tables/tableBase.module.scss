@@ -1,24 +1,37 @@
+@use '../../styles/styles_v2/mixins_v2' as *;
+
+$cell-width: auto;
+
 .table {
   display: grid;
   max-width: 800px;
-  // width: 100%;
   border-collapse: collapse;
-  // background-color: black;
 
   .row {
     display: grid;
-    // background-color: $blue-light-secondary;
     grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-    // height: 50px;
 
     &.header {
       border: 1px solid #ddd;
       background-color: #f4f4f4;
       font-weight: bold;
 
+      :global(.dark-theme) & {
+        background-color: var(--background-color-2);
+      }
+
       tr {
         th:first-child {
           opacity: 0;
+        }
+
+        th {
+          // @include border_green;
+          width: $cell-width;
+
+          @include tablet {
+            width: auto;
+          }
         }
       }
     }
@@ -29,21 +42,30 @@
 
     .cell {
       padding: 10px;
-      border: 1px
+      // border: 1px solid #555;
     }
 
     td {
+      // @include border_lime;
       // background-color: black;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 70px;
+      width: &$cell-width;
+      font-size: 10px;
+
+      @include tablet {
+        width: auto;
+        font-size: inherit;
+      }
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        cursor: pointer;
       }
     }
   }
@@ -53,10 +75,22 @@
   tr {
     &:nth-child(even) {
       background-color: $blue-light-primary;
+      color: red;
+
+      td {
+        :global(.dark-theme) & {
+          color: $header-subtitle;
+        }
+      }
+
     }
 
     &:nth-child(odd) {
       background-color: #ffffff;
+
+      :global(.dark-theme) & {
+        background-color: var(--background-color-2);
+      }
     }
   }
 }

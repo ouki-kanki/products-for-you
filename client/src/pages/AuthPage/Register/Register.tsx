@@ -96,9 +96,9 @@ export const Register = () => {
 
   const handleRegister = async (e: SyntheticEvent) => {
     e.preventDefault()
-    const token =  await runCaptcha('signup')
+    const recaptchaToken =  await runCaptcha('signup')
 
-    if (!token) {
+    if (!recaptchaToken) {
       setIsBot(true)
       return
     }
@@ -107,7 +107,8 @@ export const Register = () => {
       email,
       password,
       password2: secondPassword,
-      username
+      username,
+      recaptchaToken
     })
   }
 

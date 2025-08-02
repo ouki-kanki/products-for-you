@@ -48,6 +48,12 @@ $arrow-grey: #777;
     transform: scale(1);
   }
 
+  &.top-right {
+    color: pink;
+    top: -100%;
+    left: 100%;
+  }
+
   &.bottom-right {
     top: 140%;
     transform-origin: -20% -100%;

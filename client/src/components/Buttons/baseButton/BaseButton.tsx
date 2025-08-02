@@ -19,7 +19,8 @@ interface ButtonProps {
 
 
 // TODO: add some methods to change the color and size with the provided props
-export const BaseButton = ({ children, size = 'md',
+export const BaseButton = ({ children,
+                             size='md',
                              type,
                              onClick,
                              rounded,

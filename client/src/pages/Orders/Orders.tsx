@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { TableBase } from '../../components/Tables/TableBase';
 import { Divider } from '../../components/Divider/Divider';
-import { BaseButton } from '../../components/Buttons/baseButton/BaseButton';
 import { useClassLister } from '../../hooks/useClassLister';
 
 import { useGetOrdersQuery } from '../../api/userApi';
@@ -36,15 +35,17 @@ export const Orders = () => {
     'thumb',
     'name',
     'sku',
-    'quantity',
+    'qnt',
     'price',
-    ''
+    // ''
   ]
 
   return (
     <div className={styles.mainContainer}>
       <div className={styles.ordersContainer}>
-        <ToolTip>
+        <ToolTip
+          message='hello'
+        >
           <h2>My orders</h2>
         </ToolTip>
         {ordersData && ordersData.results.map((order, index) => (
@@ -75,18 +76,15 @@ export const Orders = () => {
                   data={order.orderItem}
                   renderRow={(item) => (
                     <>
-                      <td>
+                      <td
+                        onClick={() => handleProductDetail(item.slug)}
+                      >
                         <img src={item.thumbnail} alt='product thumb' />
                       </td>
                       <td>{item.slug}</td>
                       <td>{item.sku}</td>
                       <td>{item.quantity}</td>
                       <td>{item.price}</td>
-                      <td>
-                        <BaseButton
-                          onClick={() => handleProductDetail(item.slug)}
-                          size='sm'>details</BaseButton>
-                      </td>
                     </>
                   )}
                   />

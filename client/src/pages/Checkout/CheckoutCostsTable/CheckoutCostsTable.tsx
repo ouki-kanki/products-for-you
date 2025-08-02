@@ -34,16 +34,16 @@ export const CheckoutCostsTable = ({ cart, shippingPlan, shippingCostsData }: Ch
       <div className={`${styles.productRow} ${styles.itemRow}`}>
         <div></div>
         <div></div>
-        <div>shipping</div>
-        <div>${shippingPlan?.cost}</div>
+        <div>tax rate</div>
+        <div>{shippingPlan?.taxRate}%</div>
       </div>
     )}
     {shippingCostsData && (
       <div className={`${styles.productRow} ${styles.itemRow}`}>
         <div></div>
         <div></div>
-        <div>tax rate</div>
-        <div>${shippingPlan?.taxRate}</div>
+        <div>shipping costs</div>
+        <div>${shippingPlan?.cost}</div>
       </div>
     )}
     {shippingCostsData && shippingPlan && (

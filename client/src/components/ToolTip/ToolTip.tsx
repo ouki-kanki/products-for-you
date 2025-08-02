@@ -9,7 +9,7 @@ interface IToolTipProps {
   message: string;
 }
 
-export const ToolTip = ({ children, showDelay=300, hideDelay=200, position='top-right', message }: IToolTipProps) => {
+export const ToolTip = ({ children, showDelay=100, hideDelay=200, position='top-right', message }: IToolTipProps) => {
   const [isVisible, setIsVisible] = useState(false)
   const showTimeout = useRef<NodeJS.Timeout | null>(null)
   const hideTimeout = useRef<NodeJS.Timeout | null>(null)
