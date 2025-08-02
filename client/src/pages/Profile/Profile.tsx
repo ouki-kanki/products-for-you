@@ -30,6 +30,8 @@ import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { notEmptyValidator, phoneValidator } from '../../hooks/validation/validators';
 import { Button } from '../../UI/Button/Button';
 
+import { ShowNotificationV2 } from '../../components/Notifications/V2/showNotificationV2';
+
 // TOOD: move to types. check if it allready exists
 type Error = {
   status: number;
@@ -249,9 +251,19 @@ export const Profile = () => {
   }
 
   const testNotification = () => {
-    showNotification({
-      "message": "test notification"
-    })
+    // showNotification({
+    //   "message": "test notification"
+    // })
+    ShowNotificationV2([
+      {
+        id: 1,
+        message: 'yoyo'
+      },
+      {
+        id: 2,
+        message: 'yoyoyoyo'
+      }
+    ])
   }
 
   return (

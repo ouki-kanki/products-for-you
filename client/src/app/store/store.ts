@@ -9,6 +9,9 @@ import facetRecucer from '../../features/filtering/facetSlice'
 
 import { productsSlice } from "../../features/products/productsSlice";
 import authReducer from '../../features/auth/authSlice';
+import { notificationSlice } from "../../features/notifications/notificationSlice";
+import notificationReducer from "../../features/notifications/notificationSlice";
+
 import {
   userApi,
   productsApi,
@@ -27,6 +30,7 @@ export const store = configureStore({
     ui: uiReducer,
     cart: cartReducer,
     filters: facetRecucer,
+    notifications: notificationReducer,
     [productsSlice.reducerPath]: productsSlice.reducer,
 
     // this is the old api
@@ -56,7 +60,7 @@ export const store = configureStore({
       searchApi.middleware,
       cartApi.middleware,
       cartMiddleware,
-      paymentApi.middleware
+      paymentApi.middleware,
     ])
   )
 })

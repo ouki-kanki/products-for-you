@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import styles from './notification.module.scss'
+import { useState } from "react"
+import styles from './notificationV2.module.scss'
 
 
 type HideDirection = 'to-top' | 'to-right' | 'to-bottom' | 'to-left'
@@ -15,23 +15,8 @@ export interface NotificationProps {
 }
 
 
-export const _Notification = ({ duration, position, appearFrom, hideDirection, type, message, overrideDefaultHideDirection }: NotificationProps) => {
+export const NotificationV2 = ({ duration, position, appearFrom, hideDirection, type, message, overrideDefaultHideDirection }: NotificationProps) => {
   const [hideNotification, setHideNotification] = useState(false)
-
-  if (!overrideDefaultHideDirection) {
-    // create the class name for hiding the notification
-    hideDirection = appearFrom.replace('from', 'to') as HideDirection
-  }
-
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setHideNotification(true)
-    }, duration - 500)
-
-    return () => {
-      clearTimeout(id)
-    }
-  }, [duration])
 
   return (
     <div className= {
