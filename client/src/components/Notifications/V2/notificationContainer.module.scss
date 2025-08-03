@@ -6,13 +6,21 @@
     flex-direction: column-reverse;
     flex-wrap: wrap;
     gap: 0.5rem;
+    // min-width: 200px;
+    width: 220px;
+    // width: 230px;
+    // max-width: 400px;
 }
 
 .notification {
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    // padding: 0.5rem 0.75rem;
     transform: translateX(100%);
     opacity: 0;
     animation: slideInFadeOut var(--duration, 3000ms) ease-in-out forwards;
-    animation-delay: var(--delay, 0ms);
+    // animation-delay: var(--delay, 0ms);
 }
 
 @keyframes slideInFadeOut {

@@ -15,7 +15,7 @@ export interface NotificationProps {
 }
 
 
-export const NotificationV2 = ({ duration, position, appearFrom, hideDirection, type, message, overrideDefaultHideDirection }: NotificationProps) => {
+export const NotificationV2 = ({ duration, position, appearFrom, hideDirection, type = 'success', message, overrideDefaultHideDirection }: NotificationProps) => {
   const [hideNotification, setHideNotification] = useState(false)
 
   return (
