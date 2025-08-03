@@ -1,5 +1,4 @@
 from decimal import Decimal
-import json
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -8,11 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from payments.models import ShippingPlanOption
-from products.models import ProductItem
 from shopping_cart.models import Cart
 from shopping_cart.mixins import CartMixin, CartLockMixin, OrderMixin
 from user_control.models import CustomUser
-from .models import ShopOrder
 from .serializers import ShopOrderSerializer
 from common.exceptions.exceptions import generic_exception
 from common.services import email_service

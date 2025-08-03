@@ -10,7 +10,7 @@ import { hideSidebar } from './features/UiFeatures/UiFeaturesSlice';
 import { EcommerceRoutes } from './routes';
 import { Sidebar } from './components/Sidebar/Sidebar'
 import { CartModal } from './pages'
-import { Spinner } from './components/Spinner/Spinner';
+import { NotificationsPortal } from './portals/NotificationsPortal';
 
 import { useDebounce } from './hooks/useDebounce';
 
@@ -77,6 +77,7 @@ function App() {
       <div className={contentNavContainerStyles}>
           <EcommerceRoutes/>
       </div>
+      <NotificationsPortal/>
     </div>
   )
 }

@@ -18,7 +18,7 @@ class RecaptchaVerifyMixin:
         try:
             response = requests.post(url, data=data, timeout=5)
             result = response.json()
-            print(result)
+            # print(result)
         except requests.exceptions.Timeout as exp:
             raise ValidationError("reCAPTCHA service took long to respond") from exp
 

@@ -312,7 +312,8 @@ export const Checkout = () => {
         })
       } else {
         showNotification({
-          "message": 'something went wrong'
+          "message": 'something went wrong',
+          "type": "danger"
         })
       }
 

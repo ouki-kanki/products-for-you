@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 // redux
 
+// TODO: clean these
 export interface IServerError {
   statusCode: number,
   description: string,
@@ -11,6 +12,14 @@ export interface IServerErrorV2 {
   status: number,
   data: Record<string, unknown>
 }
+
+export type Error = {
+  status: number;
+  data: {
+    message: string
+  }
+}
+
 
 export type ApiError = {
   data: {

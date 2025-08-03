@@ -13,9 +13,6 @@ const _prepareLink = (path: string) => (page: string, queryString: string): stri
   let queryStr = queryString
 
   // remove the old page from the queryString
-
-
-  console.log("the que", queryString)
   queryStr += queryStr ? '&' : ''
 
   if (page) {

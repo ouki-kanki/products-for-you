@@ -8,7 +8,7 @@ interface SalesBannerProps {
 }
 
 export const SalesBanner = ({ promotion, size = 'md' }: SalesBannerProps) => {
-  console.log(promotion)
+  // console.log("sales banner is running . useMemo to avoid rerenders")
   return (
     <div className={`${styles.salesBanner} ${styles[`${size}`]}`}>
       <div className={styles.salesName}>

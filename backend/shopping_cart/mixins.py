@@ -4,10 +4,11 @@ from django.utils.timezone import now
 from products.models import ProductItem
 from promotion.models import ProductsOnPromotion
 from shopping_cart.serializers import CartSerializer
-from .models import Cart
 
 from common.exceptions.exceptions import generic_exception
 from common.util.santizers import strip_zero_decimals_from_str
+
+from .models import Cart
 
 
 class CartMixin:

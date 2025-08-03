@@ -6,6 +6,7 @@ import { useRecaptcha } from '../../hooks/useRecaptcha';
 
 import { useGetUserProfileQuery, useGetFavoriteProductsQuery } from '../../api/userApi';
 import type { IUserProfile } from '../../api/userApi';
+import type { Error } from '../../types';
 import { useUpdateUserProfileMutation } from '../../api/userApi';
 import { useUploadProfileImageMutation } from '../../api/userProfileApi';
 
@@ -30,21 +31,21 @@ import { useValidationV2 } from '../../hooks/validation/useValidationV2';
 import { notEmptyValidator, phoneValidator } from '../../hooks/validation/validators';
 import { Button } from '../../UI/Button/Button';
 
-import { ShowNotificationV2 } from '../../components/Notifications/V2/showNotificationV2';
+import { useNotifications } from '../../hooks/useNotifications';
+import { NotificationProps } from '../../components/Notifications/_Notification';
 
-// TOOD: move to types. check if it allready exists
-type Error = {
-  status: number;
-  data: {
-    message: string
-  }
-}
 
 export const Profile = () => {
   const { data: profileData, refetch, isError, error, isLoading } = useGetUserProfileQuery()
   const { data: favoriteProduts, isError: isFavoriteProductsError, isLoading: isFavoriteProductsLoading, error: favoriteProductsError } = useGetFavoriteProductsQuery(undefined, { skip: !profileData, refetchOnMountOrArgChange: true })
+
   const { goToProductDetailWithConstructedInput } = useProductNavigation()
   const { runCaptcha, isBot, setIsBot } = useRecaptcha()
+  const {
+    showNotification: sendNotification,
+    handleSequentialArrayOfNotifications,
+    handleStackedNotificationsArray
+  } = useNotifications()
 
   // *** VALIDATION ***
   const fieldsWithNotEmptyValidator = ['firstName', 'lastName', 'ShippingAddress', 'BillingAddress', 'city']
@@ -82,8 +83,6 @@ export const Profile = () => {
   const navigate = useNavigate()
   const [isInEdit, setIsInEdit] = useState(false)
   const location: Location = useLocation()
-  // const [state, dispatch] = useReducer(fieldsReducer, initialState)
-
   const profileStr = JSON.stringify(profileData)
 
   //  ******
@@ -251,19 +250,44 @@ export const Profile = () => {
   }
 
   const testNotification = () => {
+    const notifications: NotificationProps[] = [
+      {
+        message: 'yoyoy'
+      },
+      {
+        message: 'hey thersfsdfkjldfjksdfsdfsdjfsdfsdksdljfasdfadjsflasdjfdasjfljk',
+        duration: 6000
+      },
+      {
+        message: 'try again',
+        type: 'danger'
+      }
+    ]
+
+    // sendNotification({
+    //   message: 'its a nice day'
+    // })
+
+    handleStackedNotificationsArray(notifications)
+
+    // sendNotification({
+    //   message: 'yoyoy'
+    // })
+
     // showNotification({
     //   "message": "test notification"
     // })
-    ShowNotificationV2([
-      {
-        id: 1,
-        message: 'yoyo'
-      },
-      {
-        id: 2,
-        message: 'yoyoyoyo'
-      }
-    ])
+
+    // ShowNotificationV2([
+    //   {
+    //     id: 1,
+    //     message: 'yoyo'
+    //   },
+    //   {
+    //     id: 2,
+    //     message: 'yoyoyoyo'
+    //   }
+    // ])
   }
 
   return (
