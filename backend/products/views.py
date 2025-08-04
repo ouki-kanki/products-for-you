@@ -20,7 +20,7 @@ from .serializers import (
 )
 
 
-class ProductsAndRelatedVariationsView(generics.ListAPIView):
+class LatestProductsView(generics.ListAPIView):
     """
     endpoint: api/products/latest/
     description: get products sort by created_at

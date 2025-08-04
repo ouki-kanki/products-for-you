@@ -1,20 +1,23 @@
 from decimal import Decimal
 
+from django.core.cache import cache
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, status, serializers
+
+from rest_framework.decorators import api_view
+from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+import stripe
+from common.exceptions.exceptions import generic_exception
+from common.services import email_service
 from payments.models import ShippingPlanOption
 from shopping_cart.models import Cart
 from shopping_cart.mixins import CartMixin, CartLockMixin, OrderMixin
 from user_control.models import CustomUser
 from .serializers import ShopOrderSerializer
-from common.exceptions.exceptions import generic_exception
-from common.services import email_service
 
-import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -140,3 +143,32 @@ class OrderCreateView(APIView, CartMixin, CartLockMixin, OrderMixin):
 
 
 order_create_view = OrderCreateView.as_view()
+
+
+@api_view(['GET'])
+def valkey_test_view(request):
+    try:
+        request.session['valkey_test'] = 'yes this is valkey'
+        session_value = request.session.get('valkey_test')
+    except Exception as e:
+        return Response({
+            "message": f"error in session {str(e)}"
+        })
+
+    try:
+        cache.set('test_key', 'hellow_valkey', timeout=60)
+        val = cache.get('test_key')
+
+    except Exception as e:
+        return Response({
+            "message": f'could not set the cache: {e}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({
+        "message": {
+            "cache": val,
+            "session": session_value
+        }
+    }, status=status.HTTP_200_OK)
+
+

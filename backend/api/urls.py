@@ -7,15 +7,14 @@ from drf_spectacular.views import (
     SpectacularAPIView, SpectacularSwaggerSplitView, SpectacularSwaggerView
 )
 
-from order.views import OrderCreateView
-
 
 app_name = 'api'
 urlpatterns = [
     path('categories/', CategoryListView.as_view(), name='categories'),
     path('categories/featured', CategoryFeaturedListView.as_view(), name='categories'),
 
-    path('orders/create', OrderCreateView.as_view(), name='order-create'),
+    # path('orders/create', OrderCreateView.as_view(), name='order-create'),
+    path('orders/', include('order.urls')),
 
     path('products/', include('products.urls')),
     path('cart/', include('shopping_cart.urls')),

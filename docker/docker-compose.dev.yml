@@ -62,8 +62,20 @@ services:
       - products_for_you_net
     volumes:
       - db_elasticsearch-data:/usr/share/elasticsearch/data
+  valkey:
+    image: valkey/valkey:latest
+    container_name: valkey_container
+    ports:
+      - "6379:6379"
+    command: ["valkey-server", "--requirepass", "${VALKEY_PASSWORD}"]
+    volumes:
+      - valkey_data:/data
+    networks:
+      - products_for_you_net
+    restart: unless-stopped
 volumes:
   node_modules:
+  valkey_data:
   db_products_for_you:
     external: true
   db_elasticsearch-data:

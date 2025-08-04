@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import (
-    ProductsAndRelatedVariationsView,
+    LatestProductsView,
     FeaturedProductsListView,
     PromotedProductItemsListApiView,
     GetDefaultVariationsView,
@@ -15,7 +15,7 @@ from .views import (
 
 app_name = 'products'
 urlpatterns = [
-    path('latest/', ProductsAndRelatedVariationsView.as_view(), name='latest-products'),
+    path('latest/', LatestProductsView.as_view(), name='latest-products'),
     path('featured/', FeaturedProductsListView.as_view(), name='featured-products'),
     path('promoted/', PromotedProductItemsListApiView.as_view(), name='promoted-products'),
     path('default/', GetDefaultVariationsView.as_view(), name='default-product-items'),

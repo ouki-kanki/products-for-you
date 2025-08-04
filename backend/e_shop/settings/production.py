@@ -25,3 +25,22 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# VALKEY
+# NOTE: needs the name of the service and not the name of the container
+CACHES = {
+    "default": {
+        "BACKEND": "django_valkey.cache.ValkeyCache",
+        "LOCATION": "valkey://valkey:6379/0",
+        "OPTIONS": {
+            "PASSWORD": config('VALKEY_PASSWORD')
+        }
+    },
+    "session": {
+        "BACKEND": "django_valkey.cache.ValkeyCache",
+        "LOCATION": "valkey://valkey:6379/1",
+        "OPTIONS": {
+            "PASSWORD": config('VALKEY_PASSWORD')
+        }
+    }
+}

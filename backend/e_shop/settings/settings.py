@@ -18,7 +18,6 @@ RECAPTCHA_SECRET_KEY = config("RECAPTCHA_SECRET_KEY")
 DEBUG = config("DEBUG")
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,7 +50,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,8 +80,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'e_shop.wsgi.application'
-ASGI_APPLICATION = 'e_shop.asgi.application'
+# WSGI_APPLICATION = 'e_shop.wsgi.application'
+# ASGI_APPLICATION = 'e_shop.asgi.application'
 
 # --- *** --- CHANNELS CONFIG --- *** ---
 
@@ -109,8 +107,6 @@ DATABASES = {
 
 # CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', ]
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173", 'http://127.0.0.1:5173', ]
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTP_ONLY = True
 CSRF_TRUSTED_ORIGINS = [
@@ -216,7 +212,6 @@ THROTTLE_INTERVALS = {
     'resend_email': 30
 }
 
-
 # JWT
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
@@ -265,21 +260,10 @@ ELASTICSEARCH_INDEX_NAMES = {
 
 PAGE_SIZE = 5
 MAX_PAGE_SIZE_LIMIT = 30
-# REST_AUTH_SERIALIZERS = {
-#     'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',
-#     'TOKEN_SERIALIZER': 'users.serializers.TokenSerializer'
-#     # 'LOGIN_SERIALIZER': 'users.serializers.CustomLoginSerializer'
-# }
-
-# REST_AUTH_REGISTER_SERIALIZERS = {
-#     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
-# }
-
 
 #  SMTP SETTINGS
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
@@ -291,3 +275,7 @@ EMAIL_RECEIVERS_LIST = [config('EMAIL_RECEIVER_ONE'),]
 # stores configuration
 DEFAULT_STORE_CITY = 'ATH'
 PICKUP_PLAN_UUID = config('PICKUP_PLAN_UUID')
+
+
+
+
