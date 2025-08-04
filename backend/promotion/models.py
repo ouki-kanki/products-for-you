@@ -65,7 +65,7 @@ class Promotion(models.Model):
     slug = models.SlugField(max_length=50, blank=True, default='')
     description = models.TextField()
     promo_reduction = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=False)
+    date_override = models.BooleanField(default=False)
     is_scheduled = models.BooleanField(default=False)
     promo_start = models.DateField()
     promo_end = models.DateField()
@@ -77,6 +77,13 @@ class Promotion(models.Model):
         ProductItem,
         through=ProductsOnPromotion,
         related_name="products_on_promotion")
+
+    @property
+    def is_active(self):
+        if self.date_override:
+            return True
+        today = timezone.now().date()
+        return self.promo_start <= today <= self.promo_end
 
     def clean(self):
         if self.promo_start > self.promo_end:

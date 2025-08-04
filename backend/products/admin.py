@@ -25,7 +25,6 @@ from .models import (
     ProductItem,
     Category,
     Brand,
-    Discount,
     ProductImage,
     FeaturedItem,
     ProductDetail,
@@ -286,11 +285,6 @@ class FeaturedItemAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-@admin.register(Discount)
-class DiscountAdmin(admin.ModelAdmin):
-    list_display = ('code', 'discount_value', 'discount_type', 'is_active', 'created_at', )
-
-
 class ProductImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductImageForm, self).__init__(*args, **kwargs)
@@ -398,18 +392,14 @@ class ProductItemAdmin(admin.ModelAdmin):
     form = ProductItemForm
 
     def active_promotion(self, obj): # noqa
-        current_date = timezone.now().date()
-        active_promotions = obj.product_inventory.filter(
-            Q(promotion_id__is_active=True) |
-            Q(promotion_id__is_scheduled=True,
-              promotion_id__promo_start__lte=current_date,
-              promotion_id__promo_end__gte=current_date)
-        )
+        promotions = obj.product_inventory.select_related('promotion_id').all()
 
-        active_promotions = [item.promotion_id.name for item in active_promotions]
-        active_promotions = ', '.join(active_promotions) if active_promotions else '-'
-        print(active_promotions)
-        return active_promotions
+        active_promotions = [
+            item.promotion_id.name for item in promotions
+            if item.promotion_id.is_active
+            ]
+
+        return ', '.join(active_promotions) if active_promotions else '-'
 
     @staticmethod
     def format_qnt(quantity, color):

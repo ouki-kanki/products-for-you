@@ -73,9 +73,24 @@ services:
     networks:
       - products_for_you_net
     restart: unless-stopped
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq_container
+    hostname: rabbitmq-node
+    ports:
+      - "5672:5672" # this is to connect celery
+      - "15672:15672" # this is for the management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - products_for_you_net
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 volumes:
   node_modules:
   valkey_data:
+  rabbitmq_data:
   db_products_for_you:
     external: true
   db_elasticsearch-data:

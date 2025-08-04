@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'promotion',
     'payments',
     'inventory',
-    'ratings'
+    'ratings',
+    'core_tasks',
 ]
 
 MIDDLEWARE = [

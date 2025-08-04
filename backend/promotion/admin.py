@@ -17,7 +17,7 @@ class ProductOnPromotion(admin.StackedInline):
 @admin.register(Promotion)
 class PromotionAdmin(admin.ModelAdmin):
     model = Promotion
-    list_display = ('name', 'is_active', 'promo_start', 'promo_end')
+    list_display = ('name', 'is_active', 'date_override', 'promo_start', 'promo_end')
     inlines = (ProductOnPromotion,)
 
 

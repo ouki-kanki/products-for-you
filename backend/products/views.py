@@ -171,17 +171,18 @@ class PromotedProductItemsListApiView(generics.ListAPIView):
 
     def get_queryset(self):
         current_date = timezone.now().date()
+
         promotion_qs = ProductsOnPromotion.objects.filter(
-            Q(promotion_id__is_active=True) |
-            Q(promotion_id__is_scheduled=True,
-              promotion_id__promo_start__lte=current_date,
-              promotion_id__promo_end__gte=current_date)
+            Q(promotion_id__date_override=True) |
+            Q(
+                promotion_id__promo_start__lte=current_date,
+                promotion_id__promo_end__gte=current_date)
 
         ).prefetch_related('promotion_id')
 
         return ProductItem.objects.filter(
             product_inventory__in=promotion_qs
-        ) .prefetch_related(
+        ).prefetch_related(
             Prefetch('product_inventory', queryset=promotion_qs, to_attr='active_promotions')
         ).distinct()
 

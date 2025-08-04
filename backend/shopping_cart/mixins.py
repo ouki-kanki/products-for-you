@@ -84,14 +84,17 @@ class CartMixin:
         product_item = ProductItem.objects.get(uuid=product_item_uuid)
         price = product_item.price
 
-        promotion = ProductsOnPromotion.objects.filter(
-            product_item_id__uuid=product_item_uuid,
-            promotion_id__is_active=True,
-            promotion_id__promo_start__lte=now(),
-            promotion_id__promo_end__gte=now()
-        ).first()
+        products_on_promotion = ProductsOnPromotion.objects.filter(
+            product_item_id__uuid=product_item_uuid
+        ).select_related('promotion_id')
 
-        return promotion.promo_price if promotion else price
+        active_prices = [
+            link_item.promo_price
+            for link_item in products_on_promotion
+            if link_item.promotion_id.is_active
+        ]
+
+        return min(active_prices) if active_prices else price
 
 
 class CartLockMixin:

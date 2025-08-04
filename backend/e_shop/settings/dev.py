@@ -32,9 +32,6 @@ DEBUG = True
 
 WSGI_APPLICATION = 'e_shop.wsgi.dev.application'
 
-
-print("the wsgi application", WSGI_APPLICATION)
-
 REST_FRAMEWORK_DEV_SETTINGS = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
@@ -86,3 +83,18 @@ CACHES = {
         }
     }
 }
+
+# CELERY
+CELERY_BROKER_URL = (
+    f"amqp://{config('RABBITMQ_DEFAULT_USER')}:"
+    f"{config('RABBITMQ_DEFAULT_PASSWORD')}@localhost:5672//"
+)
+
+CELERY_RESULT_BACKEND = (
+    f"db+postgresql://{config("DB_USER")}:"
+    f"{config("DB_PASSWORD")}@{config("DB_HOST")}:{config("DB_PORT")}/"
+    f"{config("DB_NAME")}"
+)
+
+CELERY_TASK_RESULT_EXPIRES = 86400  # 24 hours
+
