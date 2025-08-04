@@ -246,7 +246,7 @@ export const Checkout = () => {
         payment_method: paymentMethodReq.paymentMethod?.id as string,
       })
 
-      console.log("the confirmed payment", confirmedCardPayment)
+      // console.log("the confirmed payment", confirmedCardPayment)
 
       const copyCart = { ...cart, items: prepareCartItems([...cart.items])}
 

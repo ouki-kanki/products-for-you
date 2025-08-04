@@ -183,7 +183,6 @@ class ProductAndCategoriesSerializer(serializers.ModelSerializer):
 class ProductVariationSerializer(serializers.ModelSerializer):
     product_images = ProductThumbNailSerializer(many=True, read_only=True, source='product_image')
     current_variation = serializers.SerializerMethodField()
-    # discount = serializers.StringRelatedField(many=True)
     name = serializers.SerializerMethodField()
     category = ProductAndCategoriesSerializer(source='product')
     description = serializers.SerializerMethodField()

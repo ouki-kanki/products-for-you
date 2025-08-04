@@ -86,8 +86,6 @@ class Promotion(models.Model):
         if not self.id and not self.slug:
             slugify_unique(Promotion, self, self.name)
 
-
-
         super(Promotion, self).save(*args, **kwargs)
 
         # when promo_reduction changes calculate the promo_price
